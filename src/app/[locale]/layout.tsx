@@ -6,6 +6,7 @@ import SmoothScrolling from "@/components/smooth-scroll";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 // import { GoogleTagManager } from "@next/third-parties/google";
+import { TwentyFirstToolbar } from '@21st-extension/toolbar-next';
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -14,17 +15,13 @@ type RootLayoutProps = {
   };
 };
 
-
 export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
   const { locale } = await params;
   return (
-    <html
-      lang={locale}
-      suppressHydrationWarning
-    >
+    <html lang={locale} suppressHydrationWarning>
       {/* <GoogleTagManager gtmId="GTM-KG68PP37" /> */}
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,6 +33,11 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://cdn.sanity.io" />
       </head>
       <body>
+        <TwentyFirstToolbar
+          config={{
+            plugins: [], // Add your custom plugins here
+          }}
+        />
         <ThemeProvider attribute="class" defaultTheme="light">
           <LocaleWrapper locale={locale}>
             <SmoothScrolling>

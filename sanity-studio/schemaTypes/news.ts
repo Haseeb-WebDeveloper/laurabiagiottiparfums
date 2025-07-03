@@ -26,16 +26,6 @@ export const news = defineType({
             }
         }),
         defineField({
-            name: "description",
-            type: "object",
-            title: "Description",
-            fields: [
-                { name: "en", type: "text", title: "English" },
-                { name: "it", type: "text", title: "Italian" },
-                { name: "de", type: "text", title: "German" }
-            ]
-        }),
-        defineField({
             name: "featuredImage",
             title: "Featured Image",
             type: "image",
