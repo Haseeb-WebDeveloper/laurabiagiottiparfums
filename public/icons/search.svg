@@ -1,0 +1,17 @@
+  <svg className="icon-menu-tool" viewBox="0 0 15 16" fill="none" stroke="currentColor"
+                      strokeWidth="var(--border-width--main)"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      vectorEffect="non-scaling-stroke"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10.75 11.25L13.9999 14.4999" stroke="currentColor"
+                        strokeWidth="var(--border-width--main)"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        vectorEffect="non-scaling-stroke" />
+                      <path d="M1 7.07127C1 10.1482 3.49434 12.6425 6.57127 12.6425C8.11237 12.6425 9.50742 12.0168 10.516 11.0055C11.5212 9.99776 12.1425 8.60708 12.1425 7.07127C12.1425 3.99434 9.64819 1.5 6.57127 1.5C3.49434 1.5 1 3.99434 1 7.07127Z" stroke="currentColor"
+                        strokeWidth="var(--border-width--main)"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        vectorEffect="non-scaling-stroke" />
+                    </svg>
