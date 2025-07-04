@@ -1,12 +1,9 @@
 import "./globals.css";
-import LocaleWrapper from "@/components/i18n/LocaleWrapper";
-import { ThemeProvider } from "@/components/theme-provider";
 import { LOCALES } from "@/lib/i18n/constants";
-import SmoothScrolling from "@/components/smooth-scroll";
-import Navbar from "@/components/layout/navbar";
-import Footer from "@/components/layout/footer";
+import AppProvider from "@/provider/app-provider.js";
 // import { GoogleTagManager } from "@next/third-parties/google";
-import { TwentyFirstToolbar } from '@21st-extension/toolbar-next';
+
+
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -33,20 +30,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://cdn.sanity.io" />
       </head>
       <body>
-        <TwentyFirstToolbar
-          config={{
-            plugins: [], // Add your custom plugins here
-          }}
-        />
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <LocaleWrapper locale={locale}>
-            <SmoothScrolling>
-              <Navbar />
-              {children}
-              <Footer />
-            </SmoothScrolling>
-          </LocaleWrapper>
-        </ThemeProvider>
+        <AppProvider locale={locale}>{children}</AppProvider>
       </body>
     </html>
   );

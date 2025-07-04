@@ -1,9 +1,7 @@
-import HorizontalScroll from "@/components/test/horizontal-scroll";
-import GSAPCardsAnimation from "@/components/test/notes";
-import ParallaxCard from "@/components/test/parallax-card";
-import Rotate from "@/components/test/rotate";
+import BrandPageComponent from "@/components/brand/brand-page";
 import { LOCALES } from "@/lib/i18n/constants";
-import { Metadata } from "next";
+import { getBrandPageContent } from "@/lib/i18n/getSanityContent";
+import { BrandPage } from "@/types/brand";
 
 export default async function Home({
   params,
@@ -11,17 +9,11 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // const HomePageData: HomePageData = await getHomePageData(locale);
+  const brandPageData: BrandPage | null = (await getBrandPageContent(locale)) as BrandPage;
 
   return (
-    <div>
-      <h1>Home</h1>
-      <Rotate />
-      <ParallaxCard />
-      <HorizontalScroll />
-      <GSAPCardsAnimation />
-      <Rotate />
-      <Rotate />
+    <div className="bg-background">
+      <BrandPageComponent brandPageData={brandPageData} />
     </div>
   );
 }

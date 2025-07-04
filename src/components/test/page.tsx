@@ -1,7 +1,5 @@
-import HorizontalScroll from "@/components/test/horizontal-scroll";
-import GSAPCardsAnimation from "@/components/test/notes";
-import ParallaxCard from "@/components/test/parallax-card";
-import Rotate from "@/components/test/rotate";
+import ScrollRing from "@/components/test/3d";
+import ThreeColumnScroll from "@/components/test/card";
 import { LOCALES } from "@/lib/i18n/constants";
 import { Metadata } from "next";
 
@@ -13,16 +11,157 @@ export default async function Home({
   const { locale } = await params;
   // const HomePageData: HomePageData = await getHomePageData(locale);
 
+  // Prepare the heading data to pass to client component
+  const headingData = {
+    locale,
+    enHeading: {
+      text: "Brands, products and everything in between",
+      pacificoWord: "between",
+    },
+    itHeading: {
+      text: "Progettazione di Brand e prodotti Digitali",
+      pacificoWord: "prodotti",
+    },
+    esHeading: {
+      text: "Marcas, productos y todo lo demás",
+      pacificoWord: "demás",
+    },
+  };
+
+  const dummyProducts = [
+    {
+      id: "1",
+      image:
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=400&fit=crop",
+      title: "Premium Wireless Headphones",
+      description:
+        "Experience crystal-clear audio with our premium wireless headphones featuring noise cancellation and 30-hour battery life.",
+      meta: {
+        price: "$299.99",
+        category: "Electronics",
+        rating: 5,
+      },
+    },
+    {
+      id: "2",
+      image:
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop",
+      title: "Minimalist Desk Setup",
+      description:
+        "Transform your workspace with our sleek, minimalist desk setup that combines functionality with modern aesthetics.",
+      meta: {
+        price: "$599.99",
+        category: "Furniture",
+        rating: 4,
+      },
+    },
+    {
+      id: "3",
+      image:
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=400&fit=crop",
+      title: "Luxury Timepiece",
+      description:
+        "Crafted with precision and elegance, this luxury timepiece features Swiss movement and premium materials.",
+      meta: {
+        price: "$1,299.99",
+        category: "Accessories",
+        rating: 5,
+      },
+    },
+    {
+      id: "4",
+      image:
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop",
+      title: "Athletic Running Shoes",
+      description:
+        "Engineered for performance and comfort, these running shoes feature advanced cushioning and breathable materials.",
+      meta: {
+        price: "$179.99",
+        category: "Sports",
+        rating: 4,
+      },
+    },
+    {
+      id: "5",
+      image:
+        "https://images.unsplash.com/photo-1545127398-14699f92334b?w=600&h=400&fit=crop",
+      title: "Vintage Leather Jacket",
+      description:
+        "Timeless style meets modern craftsmanship in this vintage-inspired leather jacket made from premium cowhide.",
+      meta: {
+        price: "$399.99",
+        category: "Fashion",
+        rating: 5,
+      },
+    },
+    {
+      id: "6",
+      image:
+        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600&h=400&fit=crop",
+      title: "Gourmet Coffee Blend",
+      description:
+        "Discover the perfect balance of rich flavors in our signature gourmet coffee blend, sourced from premium beans.",
+      meta: {
+        price: "$24.99",
+        category: "Food & Drink",
+        rating: 4,
+      },
+    },
+    {
+      id: "7",
+      image:
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&h=400&fit=crop",
+      title: "Smart Home Device",
+      description:
+        "Control your entire home with voice commands using our advanced smart home device with AI integration.",
+      meta: {
+        price: "$149.99",
+        category: "Smart Home",
+        rating: 5,
+      },
+    },
+    {
+      id: "8",
+      image:
+        "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=600&h=400&fit=crop",
+      title: "Organic Skincare Set",
+      description:
+        "Nourish your skin with our complete organic skincare set, formulated with natural ingredients and essential oils.",
+      meta: {
+        price: "$89.99",
+        category: "Beauty",
+        rating: 4,
+      },
+    },
+    {
+      id: "9",
+      image:
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
+      title: "Professional Camera",
+      description:
+        "Capture life's moments with stunning clarity using our professional-grade camera with advanced autofocus.",
+      meta: {
+        price: "$899.99",
+        category: "Photography",
+        rating: 5,
+      },
+    },
+  ];
+
+  const ringImages = [
+    '/3d-test.webp', // Abstract art 1
+    '/3d-test.webp', // Abstract art 2
+    '/3d-test.webp', // Abstract art 3
+    '/3d-test.webp', // Abstract art 4
+    '/3d-test.webp', // Abstract art 5
+    '/3d-test.webp', // Abstract art 6
+  ];
+
   return (
-    <div>
-      <h1>Home</h1>
-      <Rotate />
-      <ParallaxCard />
-      <HorizontalScroll />
-      <GSAPCardsAnimation />
-      <Rotate />
-      <Rotate />
-    </div>
+    <>
+      {/* <ThreeColumnScroll products={dummyProducts} /> */}
+      <ScrollRing images={ringImages} />
+    </>
   );
 }
 

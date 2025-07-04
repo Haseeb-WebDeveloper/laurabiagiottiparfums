@@ -36,52 +36,10 @@ export const news = defineType({
             title: "Content",
             type: "object",
             fields: [
-                {
-                    name: "en",
-                    title: "English",
-                    description: "English content",
-                    type: "array",
-                    of: [
-                        { type: "block" },
-                        {
-                            type: "image",
-                            options: {
-                                hotspot: true,
-                            },
-                        },
-                    ],
-                },
-                {
-                    name: "it",
-                    title: "Italian",
-                    description: "Italian content",
-                    type: "array",
-                    of: [
-                        { type: "block" },
-                        {
-                            type: "image",
-                            options: {
-                                hotspot: true,
-                            },
-                        },
-                    ],
-                },
-                {
-                    name: "de",
-                    title: "German",
-                    description: "German content",
-                    type: "array",
-                    of: [
-                        { type: "block" },
-                        {
-                            type: "image",
-                            options: {
-                                hotspot: true,
-                            },
-                        },
-                    ],
-                },
-            ],
+                { name: "en", type: "text", title: "English" },
+                { name: "it", type: "text", title: "Italian" },
+                { name: "de", type: "text", title: "German" }
+            ]
         }),
     ],
     preview: {

@@ -1,286 +1,288 @@
-// branding solutions
-export const getAllBrandingSolutionsSlugQuery = () => `
-*[_type == "studioBrandingSolutions"] {
+// news For SITEMAP
+export const getAllNewsSlugQuery = () => `
+*[_type == "news"] {
   "slug": slug.current,
   _updatedAt
 }
 `;
 
-// digital products solutions
-export const getAllDigitalProductsSolutionsSlugQuery = () => `
-*[_type == "studioDigitalProductsSolutions"] {
+// perfumes For SITEMAP
+export const getAllPerfumesSlugQuery = () => `
+*[_type == "perfume"] {
   "slug": slug.current,
   _updatedAt
 }
 `;
-// Content
-export const contentQuery = (locale: string) => `
-  content.${locale}[] {
-    ...,
-    _type == "mediaBlock" => {
-      width,
-      height,
-      gap,
-      justifyContent,
-      files[] {
-        file {
-          asset->{
+
+
+// News List
+export const getNewsListQuery = (locale: string) => `
+  *[_type == "news"] | order(_createdAt desc){
+    "title": title.${locale},
+    "slug": slug.current,
+    _createdAt,
+    _updatedAt,
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      },
+    },
+
+    "content": content.${locale},
+  }
+`;
+
+// Individual News
+export const getNewsBySlugQuery = (slug: string, locale: string) => `
+  *[_type == "news" && slug.current == "${slug}"][0]{
+    _createdAt,
+    _updatedAt,
+    "title": title.${locale},
+    "slug": slug.current,
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      },
+    },
+    "content": content.${locale}
+  }
+`;
+
+
+export const getBrandPageQuery = (locale: string) => `
+ *[_type == "brand"][0]{
+    _createdAt,
+    _updatedAt,
+    firstSection {
+      "title": title.${locale},
+      "description": description.${locale},
+      images[] {
+        image {
+          asset -> {
+            _id,
             url
           }
         },
-        rounded,
-        autoplay,
-        loop,
-        muted
+        alt
+      },
+      "bottomText": bottomText.${locale}
+    },
+    secondSection {
+      "title": title.${locale},
+      image {
+        image {
+          asset -> {
+            _id,
+            url
+          }
+        },
+        alt
       }
     },
-    _type == "howItWorks" => {
+    thirdSection {
+      "text": text.${locale},
+      image {
+        image {
+          asset -> {
+            _id,
+            url
+          }
+        },
+        alt
+      }
+    },
+    fourthSection {
+      "title": title.${locale},
+      "text": text.${locale},
+      image {
+        image {
+          asset -> {
+            _id,
+            url
+          }
+        },
+        alt
+      }
+    },
+    lastSection {
+      "text": text.${locale},
+      url
+    }
+  }
+`;
+
+// Perfumes
+export const getMensPerfumesQuery = (locale: string) => `
+  *[_type == "perfume" && category == "mens"] {
+    _id,
+    title,
+    category,
+    "subCategory": subCategory->name.${locale},
+    "slug": slug.current,
+    "description": description.${locale},
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    "olfactoryFamily": olfactoryFamily.${locale},
+    nose,
+    "scentDescription": scentDescription.${locale},
+    heroProductImage {
+      asset -> {
+        _id,
+        url
+      }
+    }
+  }
+`;
+
+export const getWomensPerfumesQuery = (locale: string) => `
+  *[_type == "perfume" && category == "womens"] {
+    _id,
+    title,
+    "slug": slug.current,
+    "description": description.${locale},
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    "olfactoryFamily": olfactoryFamily.${locale},
+    nose,
+    "scentDescription": scentDescription.${locale},
+    heroProductImage {
+      asset -> {
+        _id,
+        url
+      }
+    }
+  }
+`;
+
+// Perfume by slug
+export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
+  *[_type == "perfume" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    category,
+    "subCategory": subCategory->name.${locale},
+    "slug": slug.current,
+    "description": description.${locale},
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    heroSectionImages[] {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    olfactoryNotes[] {
+      image {
+        asset -> {
+          _id,
+          url
+        }
+      },
+      "title": title.${locale},
+      notes[] {
+        "name": ${locale}
+      }
+    },
+    "olfactoryFamily": olfactoryFamily.${locale},
+    nose,
+    "scentDescription": scentDescription.${locale},
+    bgFile {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    productImagesSection {
+      "title": title.${locale},
+      "description": description.${locale},
+      images[] {
+        asset -> {
+          _id,
+          url
+        }
+      }
+    },
+    heroProductImage {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          url
+        }
+      }
+    },
+    "previousProduct": previousProduct->{
       title,
-      paragraph,
-      steps[] {
-        title,
-        description,
-        points[]
-      }
-    },
-    _type == "titleBlock" => {
-      layout,
-      text {
-        content,
-        tag
-      }
-    },
-    _type == "fileBlock" => {
-      file {
-        asset->{
-          url
-        }
-      },
-      height,
-      autoplay,
-      loop,
-      muted
-    },
-    _type == "centerTextBlock" => {
-      text,
-      isItalic
-    },
-    _type == "textImageBlock" => {
-      layout,
-      height,
-      text[] {
-        content,
-        tag
-      },
-      image {
-        asset->{
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
           url
         }
       }
     },
-    _type == "image" => {
-      asset->{
-        url
+    "nextProduct": nextProduct->{
+      title,
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
       }
     },
-    _type == "imageCarouselBlock" => {
-      media[] {
-        ...,
-        _type == "image" => {
-          asset->{
-            url
-          }
-        },
-        _type == "file" => {
-          asset->{
-            url
-          }
+    "relatedProducts": relatedProducts[]->{
+      _id,
+      title,
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
+          url
         }
       }
     }
   }
 `;
 
-
-
-
-export const getAllLocales = () => `
-  *[_type == "figmentaStudioHomePage"] {
-    en,
-    it
-  }[0]
-`;
-
-
-// FAQ
-export const getFaqQuery = () => `
-  *[_type == "faq"] {
+// Navbar Perfumes
+export const getNavbarPerfumesQuery = (locale: string) => `
+  *[_type == "perfume"] {
+    _id,
     title,
-    faqs
-  }[0]
-`;
-
-
-export const getContactPageQuery = (locale: string) => `
-*[_type == "contact" && website == "Studio"][0] {
-  "heading": heading.${locale},
-  locations[] {
-    locationName,
-    email,
-    image {
-      asset->{
+    category,
+    "slug": slug.current,
+    featuredImage {
+      asset -> {
         _id,
         url
       }
     }
-  },
-  faq->{
-    title,
-    faqs[] {
-      "question": question.${locale},
-      "answer": answer.${locale}
-    }
-  },
-  logos[] {
-    image {
-      asset->{
-        _id,
-        url
-      }
-    },
-    alt
   }
-}
-`;
-
-// Get a single case study
-export const getCaseStudyBySlugQuery = (slug: string, locale: string) => `
-*[_type == "caseStudy" && slug.current == "${slug}"][0]{
-  name,
-  "slug": slug.current,
-  featuredImage {
-    asset->{
-      url
-    }
-  },
-  logo {
-    asset->{
-      url
-    }
-  },
-  clientName,
-  location,
-  categories[]->{
-    name,
-    image {
-      asset->{
-        url
-      }
-    }
-  },
-  "content": content.${locale}[] {
-    ...,
-    _type == "mediaBlock" => {
-      width,
-      height,
-      gap,
-      justifyContent,
-      files[] {
-        file {
-          asset->{
-            url
-          }
-        },
-        rounded,
-        autoplay,
-        loop,
-        muted
-      }
-    },
-    _type == "howItWorks" => {
-        title,
-        paragraph,
-        steps[] {
-          title,
-          description,
-          points[]
-        },
-    },
-    _type == "titleBlock" => {
-      layout,
-      text {
-        content,
-        tag
-      }
-    },
-    _type == "fileBlock" => {
-      file {
-        asset->{
-          url
-        }
-      },
-      height,
-      autoplay,
-      loop,
-      muted
-    },
-    _type == "centerTextBlock" => {
-      text,
-      isItalic
-    },
-    _type == "textImageBlock" => {
-      layout,
-      height,
-      text[] {
-        content,
-        tag
-      }, 
-      image {
-        asset->{
-          url
-        }
-      }
-    },
-    _type == "image" => {
-      asset->{
-        url
-      }
-    },
-    _type == "imageCarouselBlock" => {
-      media[] {
-        ...,
-        _type == "image" => {
-          asset->{
-            url
-          }
-        },
-        _type == "file" => {
-          asset->{
-            url
-          }
-        }
-      }
-    }
-  },
-}
-`;
-
-
-// SEO
-// Get a single case study
-export const getCaseStudyBySlugForSEOQuery = (slug: string) => `
-*[_type == "caseStudy" && slug.current == "${slug}"][0]{
-  metaTitle,
-  metaDescription,
-  ogTitle,
-  ogDescription,
-  twitterTitle,
-  twitterDescription,
-  ogImage {
-    asset->{
-      url
-    }
-  }
-}
 `;
 

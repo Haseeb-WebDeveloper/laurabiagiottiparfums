@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { setCookie } from 'cookies-next';
+import { DEFAULT_LOCALE } from './constants';
 
 type LocaleContextType = {
   locale: string;
@@ -44,9 +45,15 @@ export const LocaleProvider = ({
     // Redirect to the same page but with new locale
     const currentPath = pathname || '/';
     const segments = currentPath.split('/');
-    segments[1] = newLocale; // Replace locale segment
-    const newPath = segments.join('/');
     
+    // For Italian, use root path
+    if (newLocale === DEFAULT_LOCALE) {
+      segments.splice(1, 1); // Remove the locale segment if it exists
+    } else {
+      segments[1] = newLocale; // Replace or add locale segment
+    }
+    
+    const newPath = segments.join('/') || '/';
     router.push(newPath);
   };
 

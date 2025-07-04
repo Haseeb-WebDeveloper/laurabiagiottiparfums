@@ -1,9 +1,7 @@
-import HorizontalScroll from "@/components/test/horizontal-scroll";
-import GSAPCardsAnimation from "@/components/test/notes";
-import ParallaxCard from "@/components/test/parallax-card";
-import Rotate from "@/components/test/rotate";
+import NewsList from "@/components/news/new-list";
 import { LOCALES } from "@/lib/i18n/constants";
-import { Metadata } from "next";
+import { getNewsPageContent } from "@/lib/i18n/getSanityContent";
+import { NewsListItem } from "@/types/news";
 
 export default async function Home({
   params,
@@ -11,17 +9,11 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // const HomePageData: HomePageData = await getHomePageData(locale);
+  const newsPageData: NewsListItem[] | null = await getNewsPageContent(locale);
 
   return (
-    <div>
-      <h1>Home</h1>
-      <Rotate />
-      <ParallaxCard />
-      <HorizontalScroll />
-      <GSAPCardsAnimation />
-      <Rotate />
-      <Rotate />
+    <div className="bg-background">
+      <NewsList news={newsPageData || []} />
     </div>
   );
 }

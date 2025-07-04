@@ -1,8 +1,8 @@
 import { defineField, defineType } from "sanity";
 
-export const perfume = defineType({
-    name: "perfume",
-    title: "Perfume",
+export const mainPerfume = defineType({
+    name: "mainPerfume",
+    title: "Main Perfume",
     type: "document",
     fields: [
         defineField({
@@ -49,7 +49,6 @@ export const perfume = defineType({
                 layout: "dropdown",
             },
             validation: Rule => Rule.required(),
-
         }),
         defineField({
             name: "subCategory",
@@ -63,7 +62,72 @@ export const perfume = defineType({
             type: "array",
             title: "Hero Section Images",
             description: "This will be used the the 1st section of this perfume slug page.",
-            of: [{ type: "image", title: "Image" }],
+            of: [
+                {
+                    type: "object",
+                    title: "Image with Title",
+                    fields: [
+                        { name: "image", type: "image", title: "Image" },
+                        { name: "title", type: "string", title: "Title" },
+                    ]
+                },
+            ],
+        }),
+        // 2nd section text
+        defineField({
+            name: "secondSectionQuoteText",
+            type: "object",
+            title: "Second Section Quote Text",
+            fields: [
+                { name: "en", type: "text", title: "English" },
+                { name: "it", type: "text", title: "Italian" },
+                { name: "de", type: "text", title: "German" },
+            ]
+        }),
+        // 3rd section Media
+        defineField({
+            name: "bgFile",
+            type: "file",
+            title: "Background Asset (Video or Image)",
+            description: "This will be used as the background asset for the perfume slug page.",
+            options: {
+                accept: "video/*, image/*",
+            },
+        }),
+        defineField({
+            name: "bigHeading",
+            type: "object",
+            title: "Big Heading",
+            fields: [
+                { name: "en", type: "string", title: "English" },
+                { name: "it", type: "string", title: "Italian" },
+                { name: "de", type: "string", title: "German" },
+            ]
+        }),
+        // 4th section Text + File
+        defineField({
+            name: "fourthSectionTextImage",
+            type: "object",
+            title: "Fourth Section Text + File",
+            fields: [
+                {
+                    name: "title", type: "object", title: "Title",
+                    fields: [
+                        { name: "en", type: "string", title: "English" },
+                        { name: "it", type: "string", title: "Italian" },
+                        { name: "de", type: "string", title: "German" },
+                    ]
+                },
+                {
+                    name: "text", type: "object", title: "Text",
+                    fields: [
+                        { name: "en", type: "text", title: "English" },
+                        { name: "it", type: "text", title: "Italian" },
+                        { name: "de", type: "text", title: "German" },
+                    ]
+                },
+                { name: "file", type: "file", title: "File" },
+            ]
         }),
         defineField({
             name: "olfactoryNotes",
@@ -158,48 +222,137 @@ export const perfume = defineType({
             ],
 
         }),
+        // Sixth section (heading, 4 files, 1stContent(title, description), 2ndContent(title, description)
         defineField({
-            name: "bgFile",
-            type: "file",
-            title: "Background Asset (Video or Image)",
-            description: "This will be used as the background asset for the perfume slug page.",
-            options: {
-                accept: "video/*, image/*",
-            },
-        }),
-        defineField({
-            name: "productImagesSection",
+            name: "sixthSection",
             type: "object",
-            title: "Product Images Section",
+            title: "Sixth Section",
             fields: [
                 {
-                    name: "title",
+                    name: "heading",
                     type: "object",
-                    title: "Section Title",
+                    title: "Heading",
                     fields: [
                         { name: "en", type: "string", title: "English" },
                         { name: "it", type: "string", title: "Italian" },
                         { name: "de", type: "string", title: "German" },
-                    ],
+                    ]
                 },
                 {
-                    name: "description",
-                    type: "object",
-                    title: "Section Description",
-                    fields: [
-                        { name: "en", type: "string", title: "English" },
-                        { name: "it", type: "string", title: "Italian" },
-                        { name: "de", type: "string", title: "German" },
-                    ],
-                },
-                {
-                    name: "images",
+                    name: "files",
                     type: "array",
-                    title: "Images",
-                    of: [{ type: "image", title: "Image" }],
+                    title: "Files",
+                    of: [{ type: "file", title: "File" }],
+                    validation: Rule => Rule.required().max(4)
                 },
-            ],
+                {
+                    name: "firstContent",
+                    type: "object",
+                    title: "First Content",
+                    fields: [
+                        {
+                            name: "title",
+                            type: "object",
+                            title: "Title",
+                            fields: [
+                                { name: "en", type: "string", title: "English" },
+                                { name: "it", type: "string", title: "Italian" },
+                                { name: "de", type: "string", title: "German" },
+                            ]
+                        },
+                        {
+                            name: "description",
+                            type: "object",
+                            title: "Description",
+                            fields: [
+                                { name: "en", type: "string", title: "English" },
+                                { name: "it", type: "string", title: "Italian" },
+                                { name: "de", type: "string", title: "German" },
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "secondContent",
+                    type: "object",
+                    title: "Second Content",
+                    fields: [
+                        {
+                            name: "title",
+                            type: "object",
+                            title: "Title",
+                            fields: [
+                                { name: "en", type: "string", title: "English" },
+                                { name: "it", type: "string", title: "Italian" },
+                                { name: "de", type: "string", title: "German" },
+                            ]
+                        },
+                        {
+                            name: "description",
+                            type: "object",
+                            title: "Description",
+                            fields: [
+                                { name: "en", type: "string", title: "English" },
+                                { name: "it", type: "string", title: "Italian" },
+                                { name: "de", type: "string", title: "German" },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }),
 
+        // Seventh section (heading, 4 files, Content(title, description))
+        defineField({
+            name: "seventhSection",
+            type: "object",
+            title: "Seventh Section",
+            fields: [
+                {
+                    name: "heading",
+                    type: "object",
+                    title: "Heading",
+                    fields: [
+                        { name: "en", type: "string", title: "English" },
+                        { name: "it", type: "string", title: "Italian" },
+                        { name: "de", type: "string", title: "German" },
+                    ]
+                },
+                {
+                    name: "files",
+                    type: "array",
+                    title: "Files",
+                    of: [{ type: "file", title: "File" }],
+                    validation: Rule => Rule.required().max(4)
+                },
+                {
+                    name: "content",
+                    type: "object",
+                    title: "Content",
+                    fields: [
+                        {
+                            name: "title",
+                            type: "object",
+                            title: "Title",
+                            fields: [
+                                { name: "en", type: "string", title: "English" },
+                                { name: "it", type: "string", title: "Italian" },
+                                { name: "de", type: "string", title: "German" },
+                            ]
+                        },
+                        {
+                            name: "description",
+                            type: "object",
+                            title: "Description",
+                            fields: [
+                                { name: "en", type: "string", title: "English" },
+                                { name: "it", type: "string", title: "Italian" },
+                                { name: "de", type: "string", title: "German" },
+                            ]
+                        }
+                    ]
+                },
+            ]
         }),
         defineField({
             name: "heroProductImage",
@@ -289,22 +442,7 @@ export const perfume = defineType({
 
         }),
         // --- Buy field ends here ---
-        defineField({
-            name: "previousProduct",
-            type: "reference",
-            to: [{ type: "perfume" }],
-            title: "Previous Product",
-            description: "Reference to the previous perfume in the sequence",
 
-        }),
-        defineField({
-            name: "nextProduct",
-            type: "reference",
-            to: [{ type: "perfume" }],
-            title: "Next Product",
-            description: "Reference to the next perfume in the sequence",
-
-        }),
         defineField({
             name: "relatedProducts",
             type: "array",

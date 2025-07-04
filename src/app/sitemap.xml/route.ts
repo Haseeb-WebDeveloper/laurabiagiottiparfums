@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import {
-  getAllCaseStudiesSlugQuery,
-  getAllDigitalProductsSolutionsSlugQuery,
-  getAllBrandingSolutionsSlugQuery,
+  getAllNewsSlugQuery,
+  getAllPerfumesSlugQuery,
 } from '@/lib/sanity/queries';
 import { fetchSanityData } from '@/lib/sanity/fetch';
 import { LOCALES } from '@/lib/i18n/constants';
@@ -11,9 +10,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studio.figmenta.co
 
 export async function GET() {
 
-  const caseStudies = await fetchSanityData(getAllCaseStudiesSlugQuery());
-  const digitalProducts = await fetchSanityData(getAllDigitalProductsSolutionsSlugQuery());
-  const brandingSolutions = await fetchSanityData(getAllBrandingSolutionsSlugQuery());
+  const news = await fetchSanityData(getAllNewsSlugQuery());
+  const perfumes = await fetchSanityData(getAllPerfumesSlugQuery());
 
   const pages = [];
 
@@ -27,24 +25,19 @@ export async function GET() {
         changefreq: 'daily'
       },
       { 
-        url: `${BASE_URL}/${locale}/digital-products`, 
+        url: `${BASE_URL}/${locale}/perfumes`, 
         lastModified: new Date().toISOString(),
         priority: 0.9,
         changefreq: 'weekly'
       },
-      { 
-        url: `${BASE_URL}/${locale}/branding`, 
-        lastModified: new Date().toISOString(),
-        priority: 0.9,
-        changefreq: 'weekly'
-      }
+
     );
   }
   // Digital product slugs
-  for (const product of digitalProducts as any[]) {
+  for (const product of perfumes as any[]) {
     for (const locale of LOCALES) {
       pages.push({
-        url: `${BASE_URL}/${locale}/digital-products/${product.slug}`,
+        url: `${BASE_URL}/${locale}/perfumes/${product.slug}`,
         lastModified: product._updatedAt,
         priority: 0.8,
         changefreq: 'weekly'
@@ -52,23 +45,11 @@ export async function GET() {
     }
   }
 
-  // Branding slugs
-  for (const branding of brandingSolutions as any[]) {
+  // News (correct path)
+  for (const study of news as any[]) {
     for (const locale of LOCALES) {
       pages.push({
-        url: `${BASE_URL}/${locale}/branding/${branding.slug}`,
-        lastModified: branding._updatedAt,
-        priority: 0.8,
-        changefreq: 'weekly'
-      });
-    }
-  }
-
-  // Case studies (correct path)
-  for (const study of caseStudies as any[]) {
-    for (const locale of LOCALES) {
-      pages.push({
-        url: `${BASE_URL}/${locale}/case-study/${study.slug}`,
+        url: `${BASE_URL}/${locale}/news/${study.slug}`,
         lastModified: study._updatedAt,
         priority: 0.8,
         changefreq: 'weekly'

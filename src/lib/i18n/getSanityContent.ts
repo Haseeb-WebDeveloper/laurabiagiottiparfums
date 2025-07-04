@@ -1,264 +1,111 @@
+import { Perfume } from '@/types/perfume';
 import { fetchSanityData } from '../sanity/fetch';
-import {
-  getAllLocales,
-  getContactPageQuery,
-  getCaseStudyBySlugQuery,
-  getBrandingPageQuery, getBrandingSolutionBySlugQuery, getDigitalProductSolutionBySlugQuery, getAllCaseStudiesSlugQuery, getAllBrandingSolutionsSlugQuery, getAllDigitalProductsSolutionsSlugQuery, getHomePageQuery, getDigitalProductsPageQuery, getCaseStudyBySlugForSEOQuery, getBrandingSolutionBySlugForSEOQuery, getDigitalProductSolutionBySlugForSEOQuery, getCaseStudyContentBySlugQuery,
-  getMultiStepCalculatorsQuery
-} from '../sanity/queries';
-
+import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsListQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery } from '../sanity/queries';
+import { NewsListItem } from '@/types/news';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
 
-export async function getAllLocalizedContent() {
-  return fetchSanityData<{ en: string; it: string }>(
-    getAllLocales(),
-    {},
-    { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-  );
-}
-
-
-export async function getContactPageContent(locale: string) {
+// Perfumes
+export async function getMensPerfumes(locale: string) {
   try {
     const data = await fetchSanityData(
-      getContactPageQuery(locale),
+      getMensPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as Perfume[];
   } catch (error) {
-    console.error('Error fetching contact page content:', error);
+    console.error('Error fetching men\'s perfumes:', error);
     return null;
   }
 }
 
-// home page data
-export async function getHomePageData(locale: string): Promise<any> {
+export async function getWomensPerfumes(locale: string) {
   try {
-    const data = await fetchSanityData<any>(
-      getHomePageQuery(locale),
+    const data = await fetchSanityData(
+      getWomensPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as Perfume[];
   } catch (error) {
-    console.error('Error fetching home page data:', error);
+    console.error('Error fetching women\'s perfumes:', error);
     return null;
   }
 }
 
-
-// Get a single case study
-export async function getCaseStudyContentBySlug(slug: string, locale: string): Promise<any> {
+// News List
+export async function getNewsPageContent(locale: string) {
   try {
-    const data = await fetchSanityData<any>(
-      getCaseStudyContentBySlugQuery(slug, locale),
+    const data = await fetchSanityData(
+      getNewsListQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as NewsListItem[];
   } catch (error) {
-    console.error('Error fetching case study:', error);
+    console.error('Error fetching news page content:', error);
     return null;
   }
 }
 
 
-
-// get branding page data
-export async function getBrandingPageData(locale: string): Promise<any> {
+// News By Slug
+export async function getNewsBySlug(slug: string, locale: string) {
   try {
-    const data = await fetchSanityData<any>(
-      getBrandingPageQuery(locale),
+    const data = await fetchSanityData(
+      getNewsBySlugQuery(slug, locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
     return data;
   } catch (error) {
-    console.error('Error fetching branding page data:', error);
+    console.error('Error fetching news by slug:', error);
     return null;
   }
 }
 
-
-// get digital products page data
-export async function getDigitalProductsPageData(locale: string): Promise<any> {
+// Brand
+export async function getBrandPageContent(locale: string) {
   try {
-    const data = await fetchSanityData<any>(
-      getDigitalProductsPageQuery(locale),
+    const data = await fetchSanityData(
+      getBrandPageQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
     return data;
   } catch (error) {
-    console.error('Error fetching digital products page data:', error);
+    console.error('Error fetching brand page content:', error);
     return null;
   }
 }
 
-
-// Get a single case study
-export async function getCaseStudyBySlug(slug: string, locale: string): Promise<any> {
+// Perfume by slug
+export async function getPerfumeBySlug(slug: string, locale: string) {
   try {
-    const data = await fetchSanityData<any>(
-      getCaseStudyBySlugQuery(slug, locale),
+    const data = await fetchSanityData(
+      getPerfumeBySlugQuery(slug, locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as Perfume;
   } catch (error) {
-    console.error('Error fetching case study:', error);
+    console.error('Error fetching perfume by slug:', error);
     return null;
   }
 }
 
-
-
-export async function getBrandingSolutionBySlug(slug: string, locale: string): Promise<any> {
+// Navbar Perfumes
+export async function getNavbarPerfumes(locale: string) {
   try {
-    const data = await fetchSanityData<any>(
-      getBrandingSolutionBySlugQuery(slug, locale),
+    const data = await fetchSanityData(
+      getNavbarPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as Perfume[];
   } catch (error) {
-    console.error('Error fetching branding solution:', error);
+    console.error('Error fetching navbar perfumes:', error);
     return null;
   }
 }
-
-
-// Digital Products
-export async function getDigitalProductSolutionBySlug(slug: string, locale: string): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getDigitalProductSolutionBySlugQuery(slug, locale),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching digital product solution:', error);
-    return null;
-  }
-}
-
-
-
-// Get all case studies slugs
-export async function getAllCaseStudiesSlugs(): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getAllCaseStudiesSlugQuery(),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching all case studies slugs:', error);
-    return null;
-  }
-}
-
-
-// Get all branding solutions slugs
-export async function getAllBrandingSolutionsSlugs(): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getAllBrandingSolutionsSlugQuery(),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching all branding solutions slugs:', error);
-    return null;
-  }
-}
-
-
-// Get all digital products solutions slugs
-export async function getAllDigitalProductsSolutionsSlugs(): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getAllDigitalProductsSolutionsSlugQuery(),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching all digital products solutions slugs:', error);
-    return null;
-  }
-}
-
-
-
-
-// SEO Fetching Case Study
-export async function getCaseStudyBySlugForSEO(slug: string): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getCaseStudyBySlugForSEOQuery(slug),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching case study:', error);
-    return null;
-  }
-}
-
-
-// SEO Fetching Branding Solution
-export async function getBrandingSolutionBySlugForSEO(slug: string): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getBrandingSolutionBySlugForSEOQuery(slug),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching branding solution:', error);
-    return null;
-  }
-}
-
-
-// SEO Fetching Digital Product Solution
-export async function getDigitalProductSolutionBySlugForSEO(slug: string): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getDigitalProductSolutionBySlugForSEOQuery(slug),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching digital product solution:', error);
-    return null;
-  }
-}
-
-
-
-
-export async function getMultiStepCalculators(locale: string): Promise<any> {
-  try {
-    const data = await fetchSanityData<any>(
-      getMultiStepCalculatorsQuery({ locale }),
-      {},
-      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data;
-  } catch (error) {
-    console.error('Error fetching multi step calculators:', error);
-    return null;
-  }
-}
-
-

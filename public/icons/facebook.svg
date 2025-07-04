@@ -1,0 +1,11 @@
+  <svg
+            className="w-[1rem] h-[1rem] flex justify-center items-center"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.23109 15.5V9H4V6H6.23109V3.90499C6.23109 1.62288 7.67583 0.5 9.71163 0.5C10.6868 0.5 11.5249 0.572602 11.7691 0.605055V2.98999L10.3572 2.99063C9.25003 2.99063 9 3.51675 9 4.28879V6H12L11 9H9V15.5H6.23109Z"
+              fill="currentColor"
+            />
+          </svg>

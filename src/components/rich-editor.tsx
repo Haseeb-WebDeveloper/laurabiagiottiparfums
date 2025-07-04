@@ -13,9 +13,10 @@ import MediaBlock from './editor/media-block'
 
 interface RichEditorProps {
   content: TypedObject | TypedObject[] | any
+  lineClamp?: number
 }
 
-export default function RichEditor({ content }: RichEditorProps) {
+export default function RichEditor({ content, lineClamp }: RichEditorProps) {
   const components: Partial<PortableTextReactComponents> = {
     types: {
       image: ({ value }: any) => (
@@ -68,7 +69,7 @@ export default function RichEditor({ content }: RichEditorProps) {
         }
 
         return (
-          <p className="editor-content text-[5vw] md:text-[1.6vw] leading-[170%] md:mb-[1vw] mb-[4vw]">
+          <p className={`editor-content text-[5vw] md:text-[1.6vw] leading-[170%] md:mb-[1vw] mb-[4vw] ${lineClamp ? `line-clamp-${lineClamp}` : ''}`}>
             {children}
           </p>
         )
