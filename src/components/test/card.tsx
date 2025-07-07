@@ -65,8 +65,6 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
       const centerSpeed = 2000 ; 
       const rightSpeed = 1000;  
 
-      console.log(leftSpeed, centerSpeed, rightSpeed);
-
       // Create individual ScrollTriggers for each column
       ScrollTrigger.create({
         trigger: container,

@@ -13,9 +13,13 @@ export default async function CaseStudyPage({
 
   console.log(slug, locale);
 
-  const news = await getNewsBySlug(slug, locale) as NewsItem;
+  const news = (await getNewsBySlug(slug, locale)) as NewsItem;
 
-  return <NewsSlug news={news} />;
+  return (
+    <div className="bg-background 2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <NewsSlug news={news} />
+    </div>
+  );
 }
 
 // export async function generateStaticParams() {

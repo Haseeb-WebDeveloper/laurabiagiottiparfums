@@ -1,6 +1,6 @@
-import { Perfume } from '@/types/perfume';
+import { Perfume, CombinedPerfume, NavbarPerfumes } from '@/types/perfume';
 import { fetchSanityData } from '../sanity/fetch';
-import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsListQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery } from '../sanity/queries';
+import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery } from '../sanity/queries';
 import { NewsListItem } from '@/types/news';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
@@ -38,11 +38,11 @@ export async function getWomensPerfumes(locale: string) {
 export async function getNewsPageContent(locale: string) {
   try {
     const data = await fetchSanityData(
-      getNewsListQuery(locale),
+      getNewsPageQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data as NewsListItem[];
+    return data ;
   } catch (error) {
     console.error('Error fetching news page content:', error);
     return null;
@@ -102,10 +102,99 @@ export async function getNavbarPerfumes(locale: string) {
       getNavbarPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data as Perfume[];
+    ) as NavbarPerfumes;
+    console.dir(data, { depth: null });
+    if (!data) return null;
+
+    const { collections, mainPerfumes, perfumes } = data;
+
+    // Function to combine and sort perfumes by category
+    const combinePerfumesByCategory = (category: "mens" | "womens") => {
+      const categoryCollections = collections
+        .filter((item) => item.category === category)
+        .map((item) => ({ ...item, type: 'collection' as const }));
+
+      const categoryMainPerfumes = mainPerfumes
+        .filter((item) => item.category === category)
+        .map((item) => ({ ...item, type: 'mainPerfume' as const }));
+
+      const categoryPerfumes = perfumes
+        .filter((item) => item.category === category)
+        .map((item) => ({ ...item, type: 'perfume' as const }));
+
+      // Combine in the specified order: collections -> mainPerfumes -> perfumes
+      return [...categoryCollections, ...categoryMainPerfumes, ...categoryPerfumes] as CombinedPerfume[];
+    };
+
+    // Create combined arrays for both categories
+    const mensPerfumes = combinePerfumesByCategory("mens");
+    const womensPerfumes = combinePerfumesByCategory("womens");
+
+    return {
+      mens: mensPerfumes,
+      womens: womensPerfumes
+    };
+
   } catch (error) {
     console.error('Error fetching navbar perfumes:', error);
+    return null;
+  }
+}
+
+// Search Results
+export async function getSearchResults(searchTerm: string, locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getSearchResultsQuery(searchTerm, locale),
+      {},
+      { revalidate: 0 } // No cache for search results
+    ) as {
+      perfumes?: any[];
+      collections?: any[];
+      news?: any[];
+    };
+
+    if (!data) return null;
+    return {
+      perfumes: [...(data.perfumes || []), ...(data.collections || [])].sort((a, b) => {
+        // Sort by type: mainPerfume first, then perfume, then collections
+        const typeOrder = { mainPerfume: 0, perfume: 1, collections: 2 };
+        return typeOrder[a._type as keyof typeof typeOrder] - typeOrder[b._type as keyof typeof typeOrder];
+      }),
+      news: data.news || []
+    };
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    return null;
+  }
+}
+
+// Get Main Perfume by slug
+export async function getMainPerfumeBySlug(slug: string, locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getMainPerfumeBySlugQuery(slug, locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error('Error fetching main perfume by slug:', error);
+    return null;
+  }
+}
+
+// Get Collection by slug
+export async function getCollectionBySlug(slug: string, locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getCollectionBySlugQuery(slug, locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error('Error fetching collection by slug:', error);
     return null;
   }
 }

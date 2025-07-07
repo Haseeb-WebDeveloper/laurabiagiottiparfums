@@ -1,13 +1,16 @@
 "use client";
 
-import { Perfume } from "@/types/perfume";
+import { CombinedPerfume } from "@/types/perfume";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 
 interface PerfumeDropdownProps {
-  perfumes: Perfume[];
+  perfumes: {
+    mens: CombinedPerfume[];
+    womens: CombinedPerfume[];
+  };
   category: "mens" | "womens";
   locale: string;
   categoryName: string;
@@ -25,14 +28,12 @@ export default function PerfumeDropdown({
   onMouseEnter,
   onMouseLeave
 }: PerfumeDropdownProps) {
-  const [hoveredPerfume, setHoveredPerfume] = useState<Perfume | null>(null);
+  const [hoveredPerfume, setHoveredPerfume] = useState<CombinedPerfume | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
-  const filteredPerfumes = perfumes.filter(
-    (perfume) => perfume.category === (category === "mens" ? "mens" : "womens")
-  );
+  const categoryPerfumes = category === "mens" ? perfumes.mens : perfumes.womens;
 
   useEffect(() => {
     if (!dropdownRef.current) return;
@@ -101,6 +102,11 @@ export default function PerfumeDropdown({
     return () => ctx.revert();
   }, [isOpen]);
 
+  // Split perfumes into two columns
+  const midPoint = Math.ceil(categoryPerfumes?.length / 2);
+  const firstColumnPerfumes = categoryPerfumes.slice(0, midPoint);
+  const secondColumnPerfumes = categoryPerfumes.slice(midPoint);
+
   return (
     <div 
       className="relative"
@@ -109,14 +115,14 @@ export default function PerfumeDropdown({
     >
       <div 
         ref={dropdownRef}
-        className="absolute left-0 top-[10rem] bg-background z-[110] w-screen overflow-hidden border-b border-foreground/[0.08]"
+        className="overflow-hidden border-b border-foreground/[0.08]"
         style={{ display: "none" }}
       >
         <div className="max-w mx-auto px-[2rem] py-[4rem]">
           <div className="flex justify-center gap-[1rem]">
-            {/* 1-3 */}
+            {/* First Column */}
             <div className="w-[200px] flex flex-col justify-center gap-4">
-              {filteredPerfumes.slice(0, 3).map((perfume, index) => (
+              {firstColumnPerfumes.map((perfume, index) => (
                 <div
                   key={perfume._id}
                   ref={el => {
@@ -129,18 +135,20 @@ export default function PerfumeDropdown({
                     onMouseEnter={() => setHoveredPerfume(perfume)}
                     onMouseLeave={() => setHoveredPerfume(null)}
                   >
-                    <p className="text-lg font-medium">{perfume.title}</p>
+                    <p className="text-lg font-medium">
+                      {perfume.localized?.value.title || perfume.title}
+                    </p>
                   </Link>
                 </div>
               ))}
             </div>
-            {/* 4-6 */}
+            {/* Second Column */}
             <div className="w-[200px] flex flex-col justify-center gap-4">
-              {filteredPerfumes.slice(3, 6).map((perfume, index) => (
+              {secondColumnPerfumes.map((perfume, index) => (
                 <div
                   key={perfume._id}
                   ref={el => {
-                    if (el) titleRefs.current[index + 3] = el;
+                    if (el) titleRefs.current[index + midPoint] = el;
                   }}
                 >
                   <Link
@@ -149,7 +157,9 @@ export default function PerfumeDropdown({
                     onMouseEnter={() => setHoveredPerfume(perfume)}
                     onMouseLeave={() => setHoveredPerfume(null)}
                   >
-                    <p className="text-lg font-medium">{perfume.title}</p>
+                    <p className="text-lg font-medium">
+                      {perfume.localized?.value.title || perfume.title}
+                    </p>
                   </Link>
                 </div>
               ))}
@@ -160,7 +170,7 @@ export default function PerfumeDropdown({
                 <div className="relative w-[220px] h-[160px] rounded-[1rem] overflow-hidden">
                   <Image
                     src={hoveredPerfume.featuredImage.asset.url}
-                    alt={hoveredPerfume.title}
+                    alt={hoveredPerfume.localized?.value.title || hoveredPerfume.title}
                     fill
                     className="object-cover rounded-[1rem] transition-transform duration-300 hover:scale-110"
                   />

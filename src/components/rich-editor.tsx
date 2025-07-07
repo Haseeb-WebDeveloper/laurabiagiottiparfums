@@ -2,14 +2,7 @@ import { PortableText, PortableTextReactComponents } from '@portabletext/react'
 import { TypedObject } from '@portabletext/types'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/client'
-import TextImageBlock from './editor/text-image-block'
-import ImageCarouselBlock from './editor/image-carousel-block'
-import React from 'react'
-import CenterTextBlock from './editor/center-text-block'
-import TitleBlock from './editor/title-block'
-import HowItWorks from './editor/how-it-works'
-import FileBlock from './editor/file-block'
-import MediaBlock from './editor/media-block'
+
 
 interface RichEditorProps {
   content: TypedObject | TypedObject[] | any
@@ -25,51 +18,27 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
           alt={value.alt || ''}
           width={800}
           height={500}
-          className="editor-content my-[0.5vw] rounded-lg shadow-md object-cover w-full h-auto aspect-video object-center"
+          className="my-[0.5vw] rounded-lg shadow-md object-cover w-full h-auto aspect-video object-center"
         />
       ),
-      mediaBlock: ({ value }: any) => {
-        return (
-          <div className='editor-content media'>
-            <MediaBlock value={value} />
-          </div>
-        )
-      },
-      howItWorks: ({ value }: any) => {
-        return <HowItWorks value={value} />
-      },
-      titleBlock: ({ value }: any) => {
-        return <TitleBlock value={value} />
-      },
-      fileBlock: ({ value }: any) => {
-        return <FileBlock value={value} />
-      },
-      centerTextBlock: ({ value }: any) => {
-        return <CenterTextBlock value={value} />
-      },
-      textImageBlock: ({ value }: any) => {
-        return <TextImageBlock value={value} />
-      },
-      imageCarouselBlock: ({ value }: any) => {
-        return <ImageCarouselBlock value={value} />
-      }
+      
     },
     block: {
-      h1: ({ children }) => <h1 className="editor-content text-[8vw] md:text-[4vw] font-bold mb-[8vw] md:pb-[1vw] leading-[130%]">{children}</h1>,
-      h2: ({ children }) => <h2 className="editor-content text-[7vw] md:text-[3.5vw] font-semibold mb-[3vw] md:mb-[0.8vw] leading-[130%]">{children}</h2>,
-      h3: ({ children }) => <h3 className="editor-content text-[6vw] md:text-[2.3vw] font-medium mb-[3vw] md:mb-[0.8vw] leading-[130%]">{children}</h3>,
-      h4: ({ children }) => <h4 className="editor-content text-[6vw] md:text-[1.7vw] font-medium mb-[3vw] md:mb-[0.8vw]">{children}</h4>,
-      h5: ({ children }) => <h5 className="editor-content text-[5.5vw] md:text-[1.6vw] font-medium mb-[3vw] md:mb-[0.8vw]">{children}</h5>,
-      h6: ({ children }) => <h6 className="editor-content text-[5vw] md:text-[1.6vw] font-medium mb-[3vw] md:mb-[0.8vw]">{children}</h6>,
+      h1: ({ children }) => <h1 className="text-[8vw] md:text-[4vw] font-bold mb-[8vw] md:pb-[1vw] leading-[130%]">{children}</h1>,
+      h2: ({ children }) => <h2 className="text-[7vw] md:text-[3.5vw] font-semibold mb-[3vw] md:mb-[0.8vw] leading-[130%]">{children}</h2>,
+      h3: ({ children }) => <h3 className="text-[6vw] md:text-[2.3vw] font-medium mb-[3vw] md:mb-[0.8vw] leading-[130%]">{children}</h3>,
+      h4: ({ children }) => <h4 className="text-[6vw] md:text-[1.7vw] font-medium mb-[3vw] md:mb-[0.8vw]">{children}</h4>,
+      h5: ({ children }) => <h5 className="text-[5.5vw] md:text-[1.6vw] font-medium mb-[3vw] md:mb-[0.8vw]">{children}</h5>,
+      h6: ({ children }) => <h6 className="text-[5vw] md:text-[1.6vw] font-medium mb-[3vw] md:mb-[0.8vw]">{children}</h6>,
       normal: ({ children }) => {
         const isEmpty = !children || (Array.isArray(children) && children.length === 1 && typeof children[0] === 'string' && children[0].trim() === '')
 
         if (isEmpty) {
-          return <div className="editor-content h-[12vw] md:h-[4vw]" />
+          return <div className="h-[4vw] md:h-[0.8vw]" />
         }
 
         return (
-          <p className={`editor-content text-[5vw] md:text-[1.6vw] leading-[170%] md:mb-[1vw] mb-[4vw] ${lineClamp ? `line-clamp-${lineClamp}` : ''}`}>
+          <p  gsap-target="paragraph-1" className={`${lineClamp ? `line-clamp-${lineClamp}` : ''}`}>
             {children}
           </p>
         )
@@ -77,18 +46,18 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
       ,
 
       blockquote: ({ children }) => (
-        <blockquote className="editor-content border-l-[0.25vw] border-[#433E3E] pl-[1vw] italic text-[5vw] md:text-[1.5vw] leading-[170%] md:mb-[1vw] mb-[4vw]">
+        <blockquote className="border-l-[0.25vw] border-[#433E3E] pl-[1vw] italic text-[5vw] md:text-[1.5vw] leading-[170%] md:mb-[1vw] mb-[4vw]">
           {children}
         </blockquote>
       ),
     },
     list: {
       bullet: ({ children }) => <ul className="editor-content">{children}</ul>,
-      number: ({ children }) => <ol className="editor-content list-decimal">{children}</ol>,
+      number: ({ children }) => <ol className="list-decimal">{children}</ol>,
     },
     listItem: {
       bullet: ({ children }) => (
-        <li className="editor-content flex items-start justify-start gap-[4vw] md:gap-[1vw] ml-0">
+        <li className="flex items-start justify-start gap-[4vw] md:gap-[1vw] ml-0">
           <Image
             src="/icons/tick.svg"
             alt="Bullet point"
@@ -99,7 +68,7 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
           <span className='text-[5vw] md:text-[1.6vw] leading-[170%]'>{children}</span>
         </li>
       ),
-      number: ({ children }) => <li className="editor-content mb-[0.063vw] text-[5vw] md:text-[2vw]">{children}</li>,
+      number: ({ children }) => <li className="mb-[0.063vw] text-[5vw] md:text-[2vw]">{children}</li>,
     },
     marks: {
       link: ({ value, children }) => (
@@ -107,18 +76,18 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
           href={value?.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="editor-content underline"
+          className="underline"
         >
           {children}
         </a>
       ),
-      strong: ({ children }) => <strong className="editor-content font-bold">{children}</strong>,
-      em: ({ children }) => <em className="editor-content italic">{children}</em>,
+      strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+      em: ({ children }) => <em className="italic">{children}</em>,
       code: ({ children }) => (
-        <code className="editor-content bg-gray-100 px-[0.063vw] rounded text-[0.875vw] font-mono">{children}</code>
+        <code className="bg-gray-100 px-[0.063vw] rounded text-[0.875vw] font-mono">{children}</code>
       ),
     },
-    hardBreak: () => <br className="editor-content h-[12vw] md:h-[4vw]" />,
+    hardBreak: () => <br className="h-[4vw] md:h-[0.8vw]" />,
   }
 
   return (

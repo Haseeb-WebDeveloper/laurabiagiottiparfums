@@ -1,7 +1,11 @@
 import NewsList from "@/components/news/new-list";
 import { LOCALES } from "@/lib/i18n/constants";
 import { getNewsPageContent } from "@/lib/i18n/getSanityContent";
-import { NewsListItem } from "@/types/news";
+import { NewsPage } from "@/types/news";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default async function Home({
   params,
@@ -9,11 +13,11 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const newsPageData: NewsListItem[] | null = await getNewsPageContent(locale);
+  const newsPageData = await getNewsPageContent(locale) as NewsPage | null;
 
   return (
-    <div className="bg-background">
-      <NewsList news={newsPageData || []} />
+    <div className="bg-background 2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <NewsList news={newsPageData?.news || []} />
     </div>
   );
 }

@@ -1,5 +1,9 @@
 import { SanityImageAsset } from "./sanity";
 
+export interface NewsPage {
+  news: NewsListItem[];
+}
+
   export interface NewsListItem {
     _createdAt: string;
     _updatedAt: string;
@@ -8,6 +12,7 @@ import { SanityImageAsset } from "./sanity";
     featuredImage: {
       asset: SanityImageAsset;
     };
+    description: string;
     content: string;
   }
 
@@ -19,5 +24,6 @@ import { SanityImageAsset } from "./sanity";
     featuredImage: {
       asset: SanityImageAsset;
     };
+    description: string;
     content: string;
   }

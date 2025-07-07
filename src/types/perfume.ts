@@ -48,7 +48,9 @@ export interface Perfume {
   category: 'mens' | 'womens';
   subCategory: string;
   featuredImage: {
-    asset: SanityImage;
+    asset: {
+      url: string;
+    };
   };
   heroSectionImages?: {
     asset: SanityImage;
@@ -70,4 +72,19 @@ export interface Perfume {
   previousProduct?: RelatedProduct;
   nextProduct?: RelatedProduct;
   relatedProducts?: RelatedProduct[];
+  localized?: {
+    value: {
+      title: string;
+    };
+  };
+}
+
+export interface NavbarPerfumes {
+  perfumes: Perfume[];
+  collections: Perfume[];
+  mainPerfumes: Perfume[];
+}
+
+export interface CombinedPerfume extends Perfume {
+  type: 'collection' | 'mainPerfume' | 'perfume';
 } 

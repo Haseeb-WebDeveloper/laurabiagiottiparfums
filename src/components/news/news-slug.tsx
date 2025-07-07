@@ -1,32 +1,48 @@
 import { NewsItem } from "@/types/news";
-import { formatDate } from "@/utils/formet-data";
-import Image from "next/image";
+import { formatDateOnly } from "@/utils/formet-data";
 import Link from "next/link";
+import { ParallaxImage } from "../ui/ParallaxImage";
+import RichEditor from "../rich-editor";
 
 export default function NewsSlug({ news }: { news: NewsItem }) {
   return (
-    <div className="px-[1.7rem] u-container">
-      <div className="flex justify-between gap-4">
+    <div className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[10rem] mb-[13rem]">
+      <div className="flex flex-col lg:flex-row justify-between gap-8">
         {/* Image */}
-        <div className="w-full">
-          <Image
-            src={news.featuredImage?.asset.url || ""}
-            alt={news.title}
-            width={500}
-            height={500}
-            className=""
-          />
+        <div className="w-full lg:max-w-[32.5%]">
+          <div className="image-container rounded-[1rem] w-full">
+            <ParallaxImage
+              className="h-[120%]"
+              src={news.featuredImage?.asset.url || ""}
+              alt={news.title}
+              width={1000}
+              height={1200}
+              speed={1}
+            />
+          </div>
         </div>
         {/* Content */}
-        <div className="w-full space-y-[1rem]">
+        <div className="w-full lg:w-[50%] space-y-[1rem] lg:px-2">
           <h3 className="">{news.title}</h3>
-          <p>{formatDate(news._createdAt)}</p>
-          <p className="">{news.content}</p>
+          <div
+            // gsap-target="heading-1"
+            className="uppercase tracking-[0.1em] text-[0.875rem] font-[700]"
+          >
+            {formatDateOnly(news._createdAt)}
+          </div>
+           
+          {/* Content */}
+          <div className="lg:max-w-[84%] pr-2">
+          <RichEditor content={news.content} />
+          </div>
 
           {/* More News */}
           <div className="flex flex-col gap-[1rem]">
-            <Link href="/news" className="w-fit h-fit cursor-pointer p-[0.555rem] leading-0 rounded-[0.45rem] text-[.75rem] font-[400] border hover:border-foreground border-transparent text-pretty capitalize transition-colors duration-300">
-              <p>Discover all news</p>
+            <Link
+              href="/news"
+              className="inline-block w-fit cursor-pointer uppercase px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
+              <span>Discover all news</span>
             </Link>
           </div>
         </div>
