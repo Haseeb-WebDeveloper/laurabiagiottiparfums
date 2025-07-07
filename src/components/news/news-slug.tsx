@@ -10,14 +10,13 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
       <div className="flex flex-col lg:flex-row justify-between gap-8">
         {/* Image */}
         <div className="w-full lg:max-w-[32.5%]">
-          <div className="image-container rounded-[1rem] w-full">
+          <div className="aspect-[4/5] w-full relative">
             <ParallaxImage
-              className="h-[120%]"
+              className="rounded-[1rem]"
               src={news.featuredImage?.asset.url || ""}
               alt={news.title}
-              width={1000}
-              height={1200}
-              speed={1}
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
           </div>
         </div>
@@ -30,10 +29,10 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
           >
             {formatDateOnly(news._createdAt)}
           </div>
-           
+
           {/* Content */}
           <div className="lg:max-w-[84%] pr-2">
-          <RichEditor content={news.content} />
+            <RichEditor content={news.content} />
           </div>
 
           {/* More News */}

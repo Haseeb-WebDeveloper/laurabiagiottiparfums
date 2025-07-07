@@ -12,7 +12,7 @@ export default async function Home({
   const brandPageData: BrandPage | null = (await getBrandPageContent(locale)) as BrandPage;
 
   return (
-    <div className="bg-background">
+    <div className="bg-background 2xl:px-[34px] lg:px-[38px] px-[18px]">
       <BrandPageComponent brandPageData={brandPageData} />
     </div>
   );

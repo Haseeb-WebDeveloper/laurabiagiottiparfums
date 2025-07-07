@@ -9,19 +9,18 @@ export default function NewsList({ news }: { news: NewsListItem[] }) {
   console.log(news);
 
   return (
-    <div className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[8.2rem] mb-[10rem]">
+    <div className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[8.2rem] mb-[15rem]">
       <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem]">News</h1>
       <div className="2xl:mt-[3.8rem] lg:mt-[3.75rem] mt-[3rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-16 lg:gap-y-20">
         {news.map((item, index) => (
           <div key={index} className="space-y-[1.9rem]">
-            <div className="image-container rounded-[1rem]">
+            <div className="aspect-[4/5] w-full relative">
               <ParallaxImage
-                className="h-[120%]"
                 src={item.featuredImage?.asset.url || ""}
                 alt={item.title}
-                width={1000}
-                height={1200}
-                speed={1}
+                className="rounded-[1rem]"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                priority={index < 4} // Load first 4 images immediately
               />
             </div>
             <div className="space-y-[0.3rem]">

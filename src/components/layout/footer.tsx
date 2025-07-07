@@ -20,8 +20,8 @@ export default function Footer() {
           </div>
           {/* right side */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-4 gap-12">
-            <div className="w-full space-y-2">
-              <h3>Info</h3>
+            <div className="w-full space-y-2  lg:space-y-4">
+              <h5 gsap-target="heading-1">Info</h5>
               <ul>
                 <li>
                   <Link gsap-target="heading-1" href="/">
@@ -30,8 +30,8 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div className="w-full space-y-2">
-              <h3 gsap-target="heading-1">Fragrances</h3>
+            <div className="w-full space-y-2  lg:space-y-4">
+              <h5 gsap-target="heading-1">Fragrances</h5>
               <ul className="flex flex-col gap-2">
                 <li>
                   <Link gsap-target="heading-1" href="/">
@@ -45,8 +45,8 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div className="w-full space-y-2">
-              <h3 gsap-target="heading-1">Brand</h3>
+            <div className="w-full space-y-2  lg:space-y-4">
+              <h5 gsap-target="heading-1">Brand</h5>
               <ul className="flex flex-col gap-2">
                 <li>
                   <Link gsap-target="heading-1" href="/">
