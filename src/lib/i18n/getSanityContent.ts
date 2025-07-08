@@ -1,6 +1,6 @@
-import { Perfume, CombinedPerfume, NavbarPerfumes } from '@/types/perfume';
+import { Perfume, CombinedPerfume, NavbarPerfumes, SubCategory } from '@/types/perfume';
 import { fetchSanityData } from '../sanity/fetch';
-import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery } from '../sanity/queries';
+import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery } from '../sanity/queries';
 import { NewsListItem } from '@/types/news';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
@@ -30,6 +30,22 @@ export async function getWomensPerfumes(locale: string) {
     return data as Perfume[];
   } catch (error) {
     console.error('Error fetching women\'s perfumes:', error);
+    return null;
+  }
+}
+
+
+// Sub Categories
+export async function getAllSubCategories(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getAllSubCategoriesQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as SubCategory[];
+  } catch (error) {
+    console.error('Error fetching sub categories:', error);
     return null;
   }
 }

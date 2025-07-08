@@ -14,6 +14,13 @@ export const getAllPerfumesSlugQuery = () => `
 }
 `;
 
+// Sub Category
+export const getAllSubCategoriesQuery = (locale: string) => `
+  *[_type == "sub-category"] {
+    "name": name.${locale},
+  }
+`;
+
 // News Page
 export const getNewsPageQuery = (locale: string) => `
   *[_type == "newsPage"][0] {
@@ -32,8 +39,6 @@ export const getNewsPageQuery = (locale: string) => `
     }
   }
 `;
-
-
 
 // News List
 export const getNewsListQuery = (locale: string) => `
@@ -70,7 +75,6 @@ export const getNewsBySlugQuery = (slug: string, locale: string) => `
     "content": content.${locale}
   }
 `;
-
 
 export const getBrandPageQuery = (locale: string) => `
  *[_type == "brand"][0]{
@@ -157,6 +161,20 @@ export const getMensPerfumesQuery = (locale: string) => `
         _id,
         url
       }
+    },
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          url
+        }
+      }
     }
   }
 `;
@@ -181,6 +199,20 @@ export const getWomensPerfumesQuery = (locale: string) => `
       asset -> {
         _id,
         url
+      }
+    },
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          url
+        }
       }
     }
   }
@@ -293,7 +325,10 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
 `;
 
 // Get single perfume by slug
-export const getMainPerfumeBySlugQuery = (slug: string, locale: string) => `*[_type == "mainPerfume" && slug.current == "${slug}"][0] {
+export const getMainPerfumeBySlugQuery = (
+  slug: string,
+  locale: string
+) => `*[_type == "mainPerfume" && slug.current == "${slug}"][0] {
   _id,
   _type,
   title,
@@ -345,7 +380,10 @@ export const getAllMainPerfumesQuery = (locale: string) => `
 `;
 
 // Get perfumes by category
-export const getMainPerfumesByCategoryQuery = (category: string, locale: string) => `
+export const getMainPerfumesByCategoryQuery = (
+  category: string,
+  locale: string
+) => `
   *[_type == "mainPerfume" && category == "${category}"] | order(_createdAt desc) {
     _id,
     _createdAt,
@@ -371,7 +409,10 @@ export const getMainPerfumesByCategoryQuery = (category: string, locale: string)
 `;
 
 // Get perfumes by subcategory
-export const getMainPerfumesBySubCategoryQuery = (subCategoryId: string, locale: string) => `
+export const getMainPerfumesBySubCategoryQuery = (
+  subCategoryId: string,
+  locale: string
+) => `
   *[_type == "mainPerfume" && subCategory._ref == "${subCategoryId}"] | order(_createdAt desc) {
     _id,
     _createdAt,
@@ -397,7 +438,10 @@ export const getMainPerfumesBySubCategoryQuery = (subCategoryId: string, locale:
 `;
 
 // Get featured/limited perfumes for homepage
-export const getFeaturedMainPerfumesQuery = (locale: string, limit: number = 6) => `
+export const getFeaturedMainPerfumesQuery = (
+  locale: string,
+  limit: number = 6
+) => `
   *[_type == "mainPerfume"] | order(_createdAt desc) [0...${limit}] {
     _id,
     title,
@@ -444,9 +488,11 @@ export const getMainPerfumeSlugsQuery = () => `
   }
 `;
 
-
 // Get single collection by slug
-export const getCollectionBySlugQuery = (slug: string, locale: string) => `*[_type == "collections" && slug.current == "${slug}"][0] {
+export const getCollectionBySlugQuery = (
+  slug: string,
+  locale: string
+) => `*[_type == "collections" && slug.current == "${slug}"][0] {
   _id,
   _type,
   title,
@@ -495,7 +541,10 @@ export const getAllCollectionsQuery = (locale: string) => `
 `;
 
 // Get collections by category
-export const getCollectionsByCategoryQuery = (category: string, locale: string) => `
+export const getCollectionsByCategoryQuery = (
+  category: string,
+  locale: string
+) => `
   *[_type == "collections" && category == "${category}"] | order(_createdAt desc) {
     _id,
     _createdAt,
@@ -518,7 +567,10 @@ export const getCollectionsByCategoryQuery = (category: string, locale: string) 
 `;
 
 // Get featured collections for homepage
-export const getFeaturedCollectionsQuery = (locale: string, limit: number = 4) => `
+export const getFeaturedCollectionsQuery = (
+  locale: string,
+  limit: number = 4
+) => `
   *[_type == "collections"] | order(_createdAt desc) [0...${limit}] {
     _id,
     title,
@@ -618,7 +670,10 @@ export const searchCollectionsQuery = (searchTerm: string, locale: string) => `
 `;
 
 // Get collections that contain a specific product
-export const getCollectionsByProductQuery = (productId: string, locale: string) => `
+export const getCollectionsByProductQuery = (
+  productId: string,
+  locale: string
+) => `
   *[_type == "collections" && references("${productId}")] {
     _id,
     title,
@@ -777,4 +832,3 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     }
   }
 }`;
-

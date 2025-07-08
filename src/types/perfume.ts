@@ -88,3 +88,9 @@ export interface NavbarPerfumes {
 export interface CombinedPerfume extends Perfume {
   type: 'collection' | 'mainPerfume' | 'perfume';
 } 
+
+
+
+export interface SubCategory {
+  name: string;
+} 

@@ -571,7 +571,7 @@ p {
 @media screen and (max-width: 767px) {
   h3 {
     font-family: var(--h5--font-family);
-    font-size: var(--h5--font-size);
+    font-size: 1.8rem;
     line-height: var(--h5--line-height);
     font-weight: var(--h5--font-weight);
     letter-spacing: var(--h5--letter-spacing);
