@@ -26,8 +26,6 @@ export default function BuyNowPopup({
     return null;
   });
 
-  console.log(selectedCountry);
-
   if (!isOpen) return null;
 
   // If locale is it/de, directly show websites for that country
@@ -37,8 +35,6 @@ export default function BuyNowPopup({
     window.open(url, "_blank");
     onClose();
   };
-
-  console.log("showCountrySelection", showCountrySelection);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-100">

@@ -42,14 +42,12 @@ export default function PerfumesList({
           {subCategories.map((subCategory, index: number) => (
             <div
               key={index}
-              className={`cursor-pointer flex items-center justify-center uppercase lg:px-[1.94rem] lg:py-[0.24rem] px-[2.6rem] py-[0.3rem] rounded-[0.5rem] text-[0.75rem] font-[400] border-[1px] border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300 ${
-                selectedCategory === subCategory.name
-                  ? "bg-foreground text-background"
-                  : ""
-              }`}
+              className={`cursor-pointer flex items-center justify-center uppercase lg:px-[1.94rem] lg:py-[0.24rem] px-[2.6rem] py-[0.3rem] rounded-[0.5rem] text-[0.75rem] font-[400] border-[1px] border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300`}
               onClick={() =>
                 setSelectedCategory(
-                  selectedCategory === subCategory.name ? null : subCategory.name
+                  selectedCategory === subCategory.name
+                    ? null
+                    : subCategory.name
                 )
               }
             >

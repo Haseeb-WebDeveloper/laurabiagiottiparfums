@@ -1,4 +1,4 @@
-interface SanityImage {
+export interface SanityImage {
   _id: string;
   url: string;
 }

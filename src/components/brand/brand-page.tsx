@@ -30,8 +30,6 @@ export default function BrandPageComponent({
     });
   });
 
-  console.log(brandPageData.secondSection);
-
   return (
     <div className=" max-w 2xl:mt-[13rem] lg:mt-[13.5rem] mt-[0.8rem] lg:mb-[15rem] mb-[8.5rem] overflow-hidden">
       {/* First Section */}

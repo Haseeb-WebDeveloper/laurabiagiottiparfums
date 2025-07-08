@@ -1,12 +1,9 @@
-import Image from "next/image";
 import { NewsListItem } from "@/types/news";
 import { formatDate } from "@/utils/formet-data";
-import RichEditor from "../rich-editor";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 
 export default function NewsList({ news }: { news: NewsListItem[] }) {
-  console.log(news);
 
   return (
     <div className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[8.2rem] mb-[15rem]">

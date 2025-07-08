@@ -1,5 +1,5 @@
 import PerfumeSlugHeroSection from "./perfume-slug-hero-section";
-import { Perfume } from "@/types/perfume";
+import { Perfume, SubCategory } from "@/types/perfume";
 import Image from "next/image";
 import Link from "next/link";
 import OlfactoryNotes from "./olfactory-notes";
@@ -7,35 +7,45 @@ import OlfactoryNotes from "./olfactory-notes";
 export default function PerfumeSlug({
   perfume,
   locale,
+  subCategories,
 }: {
   perfume: Perfume;
   locale: string;
+  subCategories: SubCategory[];
 }) {
+
+
   return (
-    <div className="min-h-screen bg-background px-[1.7rem] u-container">
-      {/* header title category and sub category*/}
-      <div className="flex justify-between items-center gap-[4rem] mt-[6rem] mb-[2rem]">
-        <h1>{perfume.title}</h1>
-        <div className="flex gap-[2rem]">
-          <Link
-            href={`/${locale}/${perfume.category}`}
-            className="cursor-pointer p-[0.555rem] leading-0 rounded-[0.45rem] text-[.75rem] font-[400] border hover:border-foreground border-transparent text-pretty capitalize transition-colors duration-300"
-          >
-            {perfume.category}
-          </Link>
-          <Link
-            href={`/${locale}/${perfume.category}`}
-            className="cursor-pointer p-[0.555rem] leading-0 rounded-[0.45rem] text-[.75rem] font-[400] border hover:border-foreground border-transparent text-pretty capitalize transition-colors duration-300"
-          >
-            {perfume.subCategory}
-          </Link>
+    <div className="max-w mb-[15rem] lg:mt-[10.6rem] mt-[8.2rem]">
+      {/* header title category and sub category 1st Section*/}
+      <div className="min-h-screen overflow-hidden flex flex-col justify-center bg-red-500">
+        <div className="flex flex-col lg:flex-row gap-4 justify-between items-end">
+          <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]">
+            {perfume.title}
+          </h1>
+          <div className="flex gap-10 h-fit">
+            <div
+              className={`cursor-pointer h-fit w-fit text-[0.9rem] font-[400] `}
+            >
+              {perfume.category === "mens"
+                ? "men's Perfume"
+                : "women's Perfume"}
+            </div>
+            <div
+              className={`cursor-pointer h-fit w-fit text-[0.9rem] font-[400] `}
+            >
+              {perfume.subCategory}
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:mt-[2.3rem] mt-[1.5rem]">
+          <PerfumeSlugHeroSection
+            heroSectionImages={perfume.heroSectionImages || []}
+            description={perfume.description}
+          />
         </div>
       </div>
-
-      <PerfumeSlugHeroSection
-        heroSectionImages={perfume.heroSectionImages || []}
-        description={perfume.description}
-      />
 
       <OlfactoryNotes olfactoryNotes={perfume.olfactoryNotes || []} />
 

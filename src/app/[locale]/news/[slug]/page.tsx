@@ -11,8 +11,6 @@ export default async function CaseStudyPage({
 }) {
   const { slug, locale } = await params;
 
-  console.log(slug, locale);
-
   const news = (await getNewsBySlug(slug, locale)) as NewsItem;
 
   return (
