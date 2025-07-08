@@ -16,6 +16,7 @@ interface ParallaxImageProps {
   priority?: boolean;
   quality?: number;
   sizes?: string;
+  objectPosition?: string;
 }
 
 export function ParallaxImage({
@@ -26,6 +27,7 @@ export function ParallaxImage({
   priority = false,
   quality = 100,
   sizes,
+  objectPosition = "center",
 }: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -78,7 +80,7 @@ export function ParallaxImage({
         src={src}
         alt={alt}
         fill={true}
-        className="object-cover"
+        className={`object-cover object-${objectPosition} `}
         priority={priority}
         quality={quality}
         sizes={sizes}
