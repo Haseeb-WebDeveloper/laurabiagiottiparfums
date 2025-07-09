@@ -33,29 +33,29 @@ export async function GET() {
 
     );
   }
-  // Digital product slugs
-  for (const product of perfumes as any[]) {
-    for (const locale of LOCALES) {
-      pages.push({
-        url: `${BASE_URL}/${locale}/perfumes/${product.slug}`,
-        lastModified: product._updatedAt,
-        priority: 0.8,
-        changefreq: 'weekly'
-      });
-    }
-  }
+  // // Digital product slugs
+  // for (const product of perfumes as any[]) {
+  //   for (const locale of LOCALES) {
+  //     pages.push({
+  //       url: `${BASE_URL}/${locale}/perfumes/${product.slug}`,
+  //       lastModified: product._updatedAt,
+  //       priority: 0.8,
+  //       changefreq: 'weekly'
+  //     });
+  //   }
+  // }
 
-  // News (correct path)
-  for (const study of news as any[]) {
-    for (const locale of LOCALES) {
-      pages.push({
-        url: `${BASE_URL}/${locale}/news/${study.slug}`,
-        lastModified: study._updatedAt,
-        priority: 0.8,
-        changefreq: 'weekly'
-      });
-    }
-  }
+  // // News (correct path)
+  // for (const study of news as any[]) {
+  //   for (const locale of LOCALES) {
+  //     pages.push({
+  //       url: `${BASE_URL}/${locale}/news/${study.slug}`,
+  //       lastModified: study._updatedAt,
+  //       priority: 0.8,
+  //       changefreq: 'weekly'
+  //     });
+  //   }
+  // }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

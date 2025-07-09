@@ -313,6 +313,7 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
     "relatedProducts": relatedProducts[]->{
       _id,
       title,
+      "description": description.${locale},
       "slug": slug.current,
       featuredImage {
         asset -> {

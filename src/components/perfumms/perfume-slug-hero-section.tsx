@@ -3,16 +3,19 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
+import BuyNowPopup from "../ui/buy-now-popup";
 
 export default function PerfumeSlugHeroSection({
   heroSectionImages,
   description,
+  buy,
+  locale,
 }: {
   heroSectionImages: {
     asset: {
@@ -20,10 +23,25 @@ export default function PerfumeSlugHeroSection({
     };
   }[];
   description: string;
+  buy?: {
+    countries: {
+      countryName: string;
+      websites: {
+        logo: {
+          asset: {
+            url: string;
+          };
+        };
+        url: string;
+      }[];
+    }[];
+  };
+  locale: string;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const mainSwiperRef = useRef<SwiperType | null>(null);
   const thumbSwiperRef = useRef<SwiperType | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,7 +80,7 @@ export default function PerfumeSlugHeroSection({
     <div className="w-full">
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
         {/* Left Column - Main Carousel (35% width) */}
-        <div className="w-full lg:w-[32.5%] flex justify-center">
+        <div className="w-full max-w-[32.5%] flex justify-center">
           <div className="relative w-full max-w-[450px] aspect-square">
             <Swiper
               modules={[Autoplay]}
@@ -82,15 +100,24 @@ export default function PerfumeSlugHeroSection({
             >
               {heroSectionImages.map((image, index) => (
                 <SwiperSlide key={index}>
-                  <div className="relative w-full rounded-[1rem] h-full">
-                    <Image
-                      src={image.asset.url}
-                      alt={`Product image ${index + 1}`}
-                      width={400}
-                      height={500}
-                      className="object-cover w-full h-full rounded-[1rem]"
-                      priority={index === 0}
-                    />
+                  <div className="relative w-full h-full rounded-[1rem] overflow-hidden">
+                    <div className="aspect-square w-full h-full">
+                      <Image
+                        src={image.asset.url}
+                        alt={`Product image ${index + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px"
+                        className="object-cover rounded-[1rem]"
+                        priority={index === 0}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        quality={90}
+                      />
+                      {/* <img
+                        src={image.asset.url}
+                        alt={`Product image ${index + 1}`}
+                        className="object-cover rounded-[1rem]"
+                      /> */}
+                    </div>
                   </div>
                 </SwiperSlide>
               ))}
@@ -107,7 +134,10 @@ export default function PerfumeSlugHeroSection({
             </div>
 
             {/* Shop Now Button */}
-            <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
+            <button
+              onClick={() => setIsPopupOpen(true)}
+              className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
               Shop Now
             </button>
           </div>
@@ -169,6 +199,15 @@ export default function PerfumeSlugHeroSection({
           </div>
         </div>
       </div>
+
+      {buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          countries={buy.countries}
+          locale={locale}
+        />
+      )}
     </div>
   );
 }

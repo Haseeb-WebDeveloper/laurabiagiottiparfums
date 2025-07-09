@@ -733,3 +733,19 @@ p {
     }
   }
 }
+
+
+
+
+
+
+/* Note */
+
+.note-hover-shadow{
+  box-shadow: 30px 30px 84px rgba(180, 133, 94, 0.451);
+}
+
+.note-image-hover{
+  filter: saturate(100%);
+  opacity: 1;
+}

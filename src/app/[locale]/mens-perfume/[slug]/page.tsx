@@ -23,7 +23,7 @@ export default async function PerfumePage({
   const perfume = await getPerfumeBySlug(slug, locale);
   if (perfume) {
     return (
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <div className="bg-background overflow-hidden">
         <PerfumeSlug perfume={perfume} locale={locale} subCategories={subCategories || []} />
       </div>
     );

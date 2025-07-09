@@ -1,5 +1,5 @@
 import HorizontalScroll from "@/components/test/horizontal-scroll";
-import GSAPCardsAnimation from "@/components/test/notes";
+import GSAPCardsAnimation from "@/components/ui/notes-animation";
 import ParallaxCard from "@/components/test/parallax-card";
 import Rotate from "@/components/test/rotate";
 import { LOCALES } from "@/lib/i18n/constants";

@@ -1,5 +1,5 @@
 export interface SanityImage {
-  _id: string;
+  _id?: string;
   url: string;
 }
 
@@ -23,7 +23,7 @@ export interface Country {
   websites: Website[];
 }
 
-interface ProductImagesSection {
+export interface ProductImagesSection {
   title: string;
   description: string;
   images: {
@@ -31,9 +31,10 @@ interface ProductImagesSection {
   }[];
 }
 
-interface RelatedProduct {
+export interface RelatedProduct {
   _id: string;
   title: string;
+  description: string;
   slug: string;
   featuredImage: {
     asset: SanityImage;
@@ -59,19 +60,19 @@ export interface Perfume {
   olfactoryFamily: string;
   nose: string;
   scentDescription: string;
-  bgFile?: {
+  bgFile: {
     asset: SanityImage;
   };
-  productImagesSection?: ProductImagesSection;
-  heroProductImage?: {
+  productImagesSection: ProductImagesSection;
+  heroProductImage: {
     asset: SanityImage;
   };
   buy?: {
     countries: Country[];
   };
-  previousProduct?: RelatedProduct;
-  nextProduct?: RelatedProduct;
-  relatedProducts?: RelatedProduct[];
+  previousProduct: RelatedProduct;
+  nextProduct: RelatedProduct;
+  relatedProducts: RelatedProduct[];
   localized?: {
     value: {
       title: string;

@@ -39,26 +39,21 @@ export default function BuyNowPopup({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-100">
       <div className="relative bg-background px-10 py-16 max-w-[90%] h-fit max-h-[90%] overflow-y-auto w-full lg:w-fit lg:max-w-[420px]">
-        <div className="flex justify-between items-center mb-6">
+        <div className=" flex justify-between items-center mb-6">
           <p className="max-w-[90%]">
             {!selectedCountry
               ? "Select Country"
               : "Continuing you will be redirected to the website of one of our partners where you can purchase your fragrance."}
           </p>
-          <div className="absolute right-4 top-4">
-            <button
-              onClick={onClose}
-              className="cursor-pointer"
-            >
-              <Image
-                src="/icons/close.svg"
-                alt="Close"
-                width={400}
-                height={400}
-                className="invert w-auto h-auto max-w-[30px] max-h-[30px]"
-              />
-            </button>
-          </div>
+          <button onClick={onClose} className="cursor-pointer absolute top-4 right-4 z-100">
+            <Image
+              src="/icons/close.svg"
+              alt="Close"
+              width={400}
+              height={400}
+              className="w-full h-full max-w-[20px] opacity-90 aspect-square"
+            />
+          </button>
         </div>
 
         {showCountrySelection && !selectedCountry ? (
