@@ -1,5 +1,5 @@
 import { SanityAssetDocument } from "next-sanity";
-import { Ingredient, SanityImage, SubCategory } from "./perfume";
+import { Ingredient, RelatedProduct, SanityImage, SubCategory } from "./perfume";
 
 interface SanityFile {
   asset: SanityAssetDocument & {
@@ -45,7 +45,7 @@ export interface Collection {
   };
   firstSection: FirstSection;
   productsCollection: CollectionPerfume[];
-  relatedProducts: CollectionPerfume[];
+  relatedProducts: RelatedProduct[];
 }
 
 // Query function return type

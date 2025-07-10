@@ -1048,18 +1048,15 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       "description": description.${locale}
     },
   },
-  relatedProducts[]-> {
+  "relatedProducts": relatedProducts[]->{
     _id,
     title,
-    "slug": slug.current,
     "description": description.${locale},
-    category,
+    "slug": slug.current,
     featuredImage {
-      asset-> {
-        url,
-        metadata {
-          dimensions
-        }
+      asset -> {
+        _id,
+        url
       }
     }
   }

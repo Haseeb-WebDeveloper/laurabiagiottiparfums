@@ -2,6 +2,7 @@ import { Collection, CollectionPerfume } from "@/types/collection";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import BigFileAnimation from "../perfumms/big-file-animation";
 import ImageTextSection from "./image-text-section";
+import RelatedPerfumes from "../perfumms/related-perfumes";
 
 export default function CollectionSlug({
   collection,
@@ -10,7 +11,6 @@ export default function CollectionSlug({
   collection: Collection;
   locale: string;
 }) {
-
   return (
     <div className=" mb-[15rem] lg:mt-[14.8rem] mt-[7rem]">
       {/* 1st hero section */}
@@ -60,6 +60,13 @@ export default function CollectionSlug({
         products={collection.productsCollection}
         locale={locale}
       />
+
+      {/* Related Products */}
+      <div className="mt-[2rem]">
+        <div className="max-w">
+          <RelatedPerfumes relatedPerfumes={collection.relatedProducts} />
+        </div>
+      </div>
     </div>
   );
 }

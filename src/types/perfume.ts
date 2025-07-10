@@ -83,11 +83,6 @@ export interface Perfume {
   previousProduct: RelatedProduct;
   nextProduct: RelatedProduct;
   relatedProducts: RelatedProduct[];
-  localized?: {
-    value: {
-      title: string;
-    };
-  };
 }
 
 export interface NavbarPerfumes {
