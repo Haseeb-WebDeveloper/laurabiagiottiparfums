@@ -14,7 +14,6 @@ export const getAllPerfumesSlugQuery = () => `
 }
 `;
 
-
 // SEO
 // Main Perfume slugs for static generation
 export const getMainPerfumeSlugsQuery = () => `
@@ -23,8 +22,6 @@ export const getMainPerfumeSlugsQuery = () => `
   }
 `;
 
-
-
 // Collection slugs for static generation
 export const getCollectionSlugsQuery = () => `
   *[_type == "collections" && defined(slug.current)] {
@@ -32,16 +29,12 @@ export const getCollectionSlugsQuery = () => `
   }
 `;
 
-
-
 // Sub Category
 export const getAllSubCategoriesQuery = (locale: string) => `
   *[_type == "sub-category"] {
     "name": name.${locale},
   }
 `;
-
-
 
 // Navbar Perfumes
 export const getNavbarPerfumesQuery = (locale: string) => `{
@@ -64,8 +57,10 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
   "collections": *[_type == "collections"] {
     _id,
     title,
+    "description": description.${locale},
     "slug": slug.current,
     category,
+    "subCategory": subCategory->name.${locale},
     featuredImage {
       asset-> {
         url
@@ -80,6 +75,7 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
   "mainPerfumes": *[_type == "mainPerfume"] {
     _id,
     title,
+    "description": description.${locale},
     "slug": slug.current,
     category,
     featuredImage {
@@ -89,7 +85,6 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
     },
   }
 }`;
-
 
 // Search Results
 export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
@@ -180,7 +175,6 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     }
   }
 }`;
-
 
 // News Page
 export const getNewsPageQuery = (locale: string) => `
@@ -299,25 +293,17 @@ export const getBrandPageQuery = (locale: string) => `
   }
 `;
 
-// Perfumes
-export const getMensPerfumesQuery = (locale: string) => `
-  *[_type == "perfume" && category == "mens"] {
+// Perfumes  TODO uncomment collections
+export const getMensPerfumesQuery = (locale: string) => `{
+  "perfumes": *[_type == "perfume" && category == "mens"] {
     _id,
+    _type,
     title,
     category,
     "subCategory": subCategory->name.${locale},
     "slug": slug.current,
     "description": description.${locale},
     featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    "olfactoryFamily": olfactoryFamily.${locale},
-    nose,
-    "scentDescription": scentDescription.${locale},
-    heroProductImage {
       asset -> {
         _id,
         url
@@ -337,14 +323,48 @@ export const getMensPerfumesQuery = (locale: string) => `
         }
       }
     }
-  }
-`;
+  },
+  "mainPerfumes": *[_type == "mainPerfume" && category == "mens"] {
+    _id,
+    _type,
+    title,
+    category,
+    "subCategory": subCategory->name.${locale},
+    "slug": slug.current,
+    "description": description.${locale},
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      }
+    }
+  },
+  // "collections": *[_type == "collections" && category == "mens"] {
+  //   _id,
+  //   _type,
+  //   title,
+  //   "description": description.${locale},
+  //   category,
+  //   "subCategory": subCategory->name.${locale},
+  //   "slug": slug.current,
+  //   featuredImage {
+  //     asset -> {
+  //       _id,
+  //       url
+  //     }
+  //   }
+  // }
+}`;
 
 // Womens Perfumes
 export const getWomensPerfumesQuery = (locale: string) => `
-  *[_type == "perfume" && category == "womens"] {
+{
+  "perfumes": *[_type == "perfume" && category == "womens"] {
     _id,
+    _type,
     title,
+    category,
+    "subCategory": subCategory->name.${locale},
     "slug": slug.current,
     "description": description.${locale},
     featuredImage {
@@ -353,10 +373,61 @@ export const getWomensPerfumesQuery = (locale: string) => `
         url
       }
     },
-    "olfactoryFamily": olfactoryFamily.${locale},
-    nose,
-    "scentDescription": scentDescription.${locale},
-    heroProductImage {
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          url
+        }
+      }
+    }
+  },
+  "mainPerfumes": *[_type == "mainPerfume" && category == "womens"] {
+    _id,
+    _type,
+    title,
+    category,
+    "subCategory": subCategory->name.${locale},
+    "slug": slug.current,
+    "description": description.${locale},
+    featuredImage {
+      asset -> {
+        _id,
+        url
+      }
+    }
+  },
+  // "collections": *[_type == "collections" && category == "womens"] {
+  //   _id,
+  //   _type,
+  //   title,
+  //   "description": description.${locale},
+  //   category,
+  //   "subCategory": subCategory->name.${locale},
+  //   "slug": slug.current,
+  //   featuredImage {
+  //     asset -> {
+  //       _id,
+  //       url
+  //     }
+  //   }
+  // }
+}
+`;
+
+// Main Perfumes List
+export const getMainPerfumesListQuery = (locale: string) => `
+  *[_type == "mainPerfume"] {
+    title,
+    "slug": slug.current,
+    "description": description.${locale},
+    featuredImage {
       asset -> {
         _id,
         url
@@ -615,7 +686,6 @@ export const getMainPerfumeBySlugQuery = (
   }
 }`;
 
-
 // Single Collection by slug
 export const getCollectionBySlugQuery = (
   slug: string,
@@ -626,6 +696,8 @@ export const getCollectionBySlugQuery = (
   title,
   "slug": slug.current,
   category,
+  // "description": description.${locale},
+  "subCategory": subCategory->name.${locale},
   featuredImage {
     asset-> {
       url,
@@ -641,7 +713,7 @@ export const getCollectionBySlugQuery = (
         }
       }
     },
-    "description": description.${locale},
+    // "description": description.${locale},
     bgMedia {
       asset-> {
         url,
@@ -680,12 +752,6 @@ export const getCollectionBySlugQuery = (
     }
   }
 }`;
-
-
-
-
-
-
 
 // Single Product by slug
 export const getProductBySlugQuery = (slug: string, locale: string) => `{
@@ -920,8 +986,10 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
   _id,
   _type,
   title,
+  "description": description.${locale},
   "slug": slug.current,
   category,
+  "subCategory": subCategory->name.${locale},
   featuredImage {
     asset-> {
       url,

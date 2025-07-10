@@ -7,6 +7,18 @@ import { NewsListItem } from '@/types/news';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
 
+type MensProductsResponse = {
+  perfumes: Perfume[];
+  mainPerfumes: MainPerfume[];
+  // collections: Collection[];
+};
+
+type WomensProductsResponse = {
+  perfumes: Perfume[];
+  mainPerfumes: MainPerfume[];
+  // collections: Collection[];
+};
+
 // Perfumes
 export async function getMensPerfumes(locale: string) {
   try {
@@ -14,8 +26,23 @@ export async function getMensPerfumes(locale: string) {
       getMensPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data as Perfume[];
+    ) as MensProductsResponse;
+
+    // Convert mainPerfumes and collections to Perfume type format
+    const mainPerfumesAsPerfumes = data.mainPerfumes.map(mp => ({
+      ...mp,
+      _type: "perfume" as const,
+      buy: undefined // Since main perfumes don't have buy info
+    }));
+
+    // const collectionsAsPerfumes = data.collections.map(c => ({
+    //   ...c,
+    //   _type: "perfume" as const,
+    //   buy: undefined // Since collections don't have buy info
+    // }));
+
+    // Combine all products   TODO add  ...collectionsAsPerfumes
+    return [...data.perfumes, ...mainPerfumesAsPerfumes] as Perfume[];
   } catch (error) {
     console.error('Error fetching men\'s perfumes:', error);
     return null;
@@ -28,8 +55,23 @@ export async function getWomensPerfumes(locale: string) {
       getWomensPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    );
-    return data as Perfume[];
+    ) as WomensProductsResponse;
+
+    // Convert mainPerfumes and collections to Perfume type format
+    const mainPerfumesAsPerfumes = data.mainPerfumes.map(mp => ({
+      ...mp,
+      _type: "perfume" as const,
+      buy: undefined // Since main perfumes don't have buy info
+    }));
+
+    // const collectionsAsPerfumes = data.collections.map(c => ({
+    //   ...c,
+    //   _type: "perfume" as const,
+    //   buy: undefined // Since collections don't have buy info
+    // }));
+
+    // Combine all products   TODO add  ...collectionsAsPerfumes
+    return [...data.perfumes, ...mainPerfumesAsPerfumes] as Perfume[];
   } catch (error) {
     console.error('Error fetching women\'s perfumes:', error);
     return null;

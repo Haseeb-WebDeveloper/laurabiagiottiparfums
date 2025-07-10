@@ -10,6 +10,18 @@ export const collections = defineType({
       title: 'Title',
       type: 'string',
     }),
+    // TODO add description
+    // defineField({
+    //     name: "description",
+    //     type: "object",
+    //     title: "Description",
+    //     description: "This will show when we will show this collection in the women or men perfume page.",
+    //     fields: [
+    //         { name: "en", type: "text", title: "English" },
+    //         { name: "it", type: "text", title: "Italian" },
+    //         { name: "de", type: "text", title: "German" }
+    //     ]
+    // }),
     defineField({
       name: 'firstSection',
       title: 'First Section',
@@ -78,6 +90,13 @@ export const collections = defineType({
         layout: 'dropdown',
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+        name: "subCategory",
+        title: "Sub Category",
+        type: "reference",
+        to: [{ type: "sub-category" }],
+        validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'productsCollection',

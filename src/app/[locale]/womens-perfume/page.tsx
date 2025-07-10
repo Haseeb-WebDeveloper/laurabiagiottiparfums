@@ -11,8 +11,11 @@ export default async function WomensPerfumePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const perfumes = await getWomensPerfumes(locale);
-  const subCategories = await getAllSubCategories(locale);
+
+  const [perfumes, subCategories] = await Promise.all([
+    getWomensPerfumes(locale),
+    getAllSubCategories(locale),
+  ]);
 
   if (!perfumes) {
     return <div>No perfumes found</div>;

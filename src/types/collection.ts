@@ -1,5 +1,5 @@
 import { SanityAssetDocument } from "next-sanity";
-import { SanityImage } from "./perfume";
+import { SanityImage, SubCategory } from "./perfume";
 
 interface SanityFile {
   asset: SanityAssetDocument & {
@@ -30,8 +30,10 @@ export interface Collection {
   _id: string;
   _type: string;
   title: string;
+  description: string;
   slug: string;
   category: "mens" | "womens";
+  subCategory: SubCategory;
   featuredImage: SanityImage;
   firstSection: FirstSection;
   productsCollection: CollectionPerfume[];
