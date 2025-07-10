@@ -1,5 +1,5 @@
-import CollectionSlug from "@/components/perfumms/collection-slug";
-import MainPerfumeSlug from "@/components/perfumms/main-perfume-slug";
+import CollectionSlug from "@/components/perfume-collection/collection-slug";
+import MainPerfumeSlug from "@/components/main-perfumes/main-perfume-slug";
 import PerfumeSlug from "@/components/perfumms/perfume-slug";
 import { LOCALES } from "@/lib/i18n/constants";
 import {

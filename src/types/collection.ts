@@ -1,5 +1,5 @@
 import { SanityAssetDocument } from "next-sanity";
-import { SanityImage, SubCategory } from "./perfume";
+import { Ingredient, SanityImage, SubCategory } from "./perfume";
 
 interface SanityFile {
   asset: SanityAssetDocument & {
@@ -8,19 +8,25 @@ interface SanityFile {
 }
 
 // Referenced perfume type (for productsCollection and relatedProducts)
-interface CollectionPerfume {
+export interface CollectionPerfume {
   _id: string;
   title: string;
   slug: string;
   description: string;
   category: "mens" | "womens";
-  featuredImage: SanityImage;
+  heroSectionImages?: {
+    asset: SanityImage;
+  }[];
+  isPartOfCollection?: boolean;
+  ingredients?: Ingredient[];
 }
 
 // First section content type
 interface FirstSection {
   tagLine: string;
-  image: SanityImage;
+  image: {
+    asset: SanityImage;
+  };
   description: string;
   bgMedia: SanityFile;
 }
@@ -34,7 +40,9 @@ export interface Collection {
   slug: string;
   category: "mens" | "womens";
   subCategory: SubCategory;
-  featuredImage: SanityImage;
+  featuredImage: {
+    asset: SanityImage;
+  };
   firstSection: FirstSection;
   productsCollection: CollectionPerfume[];
   relatedProducts: CollectionPerfume[];

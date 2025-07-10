@@ -13,14 +13,9 @@ const LanguageSwitcher: React.FC = () => {
 
   // Switch language and navigate to the equivalent path in the new language
   const handleLanguageChange = (newLocale: string) => {
-    console.log('\n--- Language Switch Debug ---');
-    console.log('Current pathname:', pathname);
-    console.log('Current locale:', locale);
-    console.log('New locale:', newLocale);
 
     // Get the current path without any locale prefix
     const pathWithoutLocale = pathname.replace(/^\/(en|it|de)/, "") || "/";
-    console.log('Path without locale:', pathWithoutLocale);
 
     // Set new locale in the cookie
     setCookie("NEXT_LOCALE", newLocale, {
@@ -29,13 +24,11 @@ const LanguageSwitcher: React.FC = () => {
       sameSite: "lax",
       secure: process.env.NODE_ENV === 'production',
     });
-    console.log('Cookie set:', newLocale);
 
     // For Italian, use root path, for others use locale prefix
     const newPath = newLocale === DEFAULT_LOCALE 
       ? (pathWithoutLocale === "/" ? "/" : pathWithoutLocale)
       : `/${newLocale}${pathWithoutLocale}`;
-    console.log('New path:', newPath);
 
     // Navigate to the new path
     router.push(newPath);

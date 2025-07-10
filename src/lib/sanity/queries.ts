@@ -483,6 +483,17 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
         "name": ${locale}
       }
     },
+    isPartOfCollection,
+    ingredients[] {
+      "ingredientName": ingredientName.${locale},
+      image {
+        asset -> {
+          _id,
+          url
+        }
+      },
+      "description": description.${locale}
+    },
     "olfactoryFamily": olfactoryFamily.${locale},
     nose,
     "scentDescription": scentDescription.${locale},
@@ -1019,14 +1030,23 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     "slug": slug.current,
     "description": description.${locale},
     category,
-    featuredImage {
-      asset-> {
-        url,
-        metadata {
-          dimensions
-        }
+    heroSectionImages[] {
+      asset -> {
+        _id,
+        url
       }
-    }
+    },
+    isPartOfCollection,
+    ingredients[] {
+      "ingredientName": ingredientName.${locale},
+      image {
+        asset -> {
+          _id,
+          url
+        }
+      },
+      "description": description.${locale}
+    },
   },
   relatedProducts[]-> {
     _id,

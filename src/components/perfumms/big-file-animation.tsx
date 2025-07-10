@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
+import Image from "next/image";
 
 interface BigFileAnimationProps {
   file: {
@@ -20,18 +21,20 @@ export default function BigFileAnimation({
   className = "",
 }: BigFileAnimationProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isVideo = file.asset.url.endsWith('.mp4') || file.asset.url.endsWith('.webm');
 
   useGSAP(() => {
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    const video = videoRef.current;
+    const mediaElement = isVideo ? videoRef.current : imageRef.current;
     const container = containerRef.current;
 
-    if (!video || !container) return;
+    if (!mediaElement || !container) return;
 
     // Set initial styles
     gsap.set(container, {
@@ -40,7 +43,7 @@ export default function BigFileAnimation({
       overflow: "hidden",
     });
 
-    gsap.set(video, {
+    gsap.set(mediaElement, {
       width: "100%",
       height: "100%",
       objectFit: "cover",
@@ -57,7 +60,6 @@ export default function BigFileAnimation({
         start: "top 130%",
         end: end,
         scrub: 1,
-        markers: true,
       },
     });
 
@@ -65,7 +67,7 @@ export default function BigFileAnimation({
       width: "100%",
       height: "100vh",
     }).to(
-      video,
+      mediaElement,
       {
         borderTopLeftRadius: "0px",
         borderTopRightRadius: "0px",
@@ -78,7 +80,7 @@ export default function BigFileAnimation({
       tl.kill();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, [isVideo]);
 
   return (
     <div className="flex justify-center items-center absolute left-0 w-full h-full">
@@ -86,15 +88,25 @@ export default function BigFileAnimation({
         ref={containerRef}
         className={`relative lg:max-h-[75vh] max-h-[55vh] ${className}`}
       >
-        <video
-          ref={videoRef}
-          src={file.asset.url}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        />
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            src={file.asset.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <Image
+            ref={imageRef}
+            src={file.asset.url}
+            alt="Animation media"
+            fill
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
     </div>
   );

@@ -41,6 +41,14 @@ export interface RelatedProduct {
   };
 }
 
+export interface Ingredient {
+  ingredientName: string;
+  image: {
+    asset: SanityImage;
+  };
+  description: string;
+}
+
 export interface Perfume {
   _id: string;
   title: string;
@@ -57,6 +65,8 @@ export interface Perfume {
     asset: SanityImage;
   }[];
   olfactoryNotes?: OlfactoryNote[];
+  isPartOfCollection?: boolean;
+  ingredients?: Ingredient[];
   olfactoryFamily: string;
   nose: string;
   scentDescription: string;
@@ -89,8 +99,6 @@ export interface NavbarPerfumes {
 export interface CombinedPerfume extends Perfume {
   type: 'collection' | 'mainPerfume' | 'perfume';
 } 
-
-
 
 export interface SubCategory {
   name: string;
