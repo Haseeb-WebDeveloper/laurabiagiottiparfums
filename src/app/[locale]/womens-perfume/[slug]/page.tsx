@@ -3,9 +3,7 @@ import MainPerfumeSlug from "@/components/perfumms/main-perfume-slug";
 import PerfumeSlug from "@/components/perfumms/perfume-slug";
 import { LOCALES } from "@/lib/i18n/constants";
 import {
-  getCollectionBySlug,
-  getMainPerfumeBySlug,
-  getPerfumeBySlug,
+  getProductBySlug,
   getAllSubCategories,
 } from "@/lib/i18n/getSanityContent";
 
@@ -16,36 +14,47 @@ export default async function PerfumePage({
 }) {
   const { slug, locale } = await params;
 
-  // Sub category
-  const subCategories = await getAllSubCategories(locale);
+  // Fetch sub categories and product data in parallel
+  const [subCategories, productData] = await Promise.all([
+    getAllSubCategories(locale),
+    getProductBySlug(slug, locale),
+  ]);
 
-  // Try to fetch from each source in order
-  const perfume = await getPerfumeBySlug(slug, locale);
-  if (perfume) {
+
+  // Render based on which type of product was found
+  if (productData.perfume) {
     return (
       <div className="bg-background overflow-hidden">
-        <PerfumeSlug perfume={perfume} locale={locale} subCategories={subCategories || []} />
+        <PerfumeSlug 
+          perfume={productData.perfume} 
+          locale={locale} 
+          subCategories={subCategories || []} 
+        />
       </div>
     );
   }
 
-  // const mainPerfume = await getMainPerfumeBySlug(slug, locale);
-  // if (mainPerfume) {
-  //   return (
-  //     <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
-  //       <MainPerfumeSlug perfume={mainPerfume} locale={locale} />
-  //     </div>
-  //   );
-  // }
+  if (productData.mainPerfume) {
+    return (
+      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] mt-[30rem]">
+        <MainPerfumeSlug 
+          mainPerfume={productData.mainPerfume} 
+          locale={locale} 
+        />
+      </div>
+    );
+  }
 
-  // const collection = await getCollectionBySlug(slug, locale);
-  // if (collection) {
-  //   return (
-  //     <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
-  //       <CollectionSlug collection={collection} locale={locale} />
-  //     </div>
-  //   );
-  // }
+  if (productData.collection) {
+    return (
+      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <CollectionSlug 
+          collection={productData.collection} 
+          locale={locale} 
+        />
+      </div>
+    );
+  }
 
   return <div>Content not found</div>;
 }
