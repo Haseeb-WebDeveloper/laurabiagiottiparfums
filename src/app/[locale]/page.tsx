@@ -18,7 +18,7 @@ export default async function Home({
       <Rotate />
       <ParallaxCard />
       <HorizontalScroll />
-      <GSAPCardsAnimation />
+      {/* <GSAPCardsAnimation /> */}
       <Rotate />
       <Rotate />
     </div>

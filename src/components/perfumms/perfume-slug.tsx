@@ -32,12 +32,12 @@ export default function PerfumeSlug({
   };
 
   return (
-    <div className=" mb-[15rem] lg:mt-[10.6rem] mt-[8.2rem]">
+    <div className=" mb-[15rem] lg:mt-[10.6rem] mt-[1rem]">
       {/* header title category and sub category 1st Section*/}
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w">
-          <div className="min-h-screen overflow-hidden flex flex-col justify-center">
-            <div className="flex flex-col lg:flex-row gap-4 justify-between items-end">
+          <div className="min-h-[100vh] overflow-hidden flex flex-col justify-center">
+            <div className="flex flex-col lg:flex-row gap-4 justify-between xl:items-end">
               <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]">
                 {perfume.title}
               </h1>
@@ -70,7 +70,7 @@ export default function PerfumeSlug({
       </div>
 
       {/* Olfactory Notes Section */}
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
         <div className="mt-[3rem] max-w">
           <NotesAnimation
             notes={perfume?.olfactoryNotes || []}
@@ -80,9 +80,8 @@ export default function PerfumeSlug({
       </div>
 
       {/* Olfactory Family */}
-
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
-        <div className="-mt-[3rem] max-w">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="lg:-mt-[3rem] -mt-[22rem] max-w">
           <OlfactoryFamily
             olfactoryFamily={perfume.olfactoryFamily}
             nose={perfume.nose}
@@ -94,8 +93,8 @@ export default function PerfumeSlug({
       </div>
 
       {/* Media Files Section */}
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
-        <div className="mt-[3rem] max-w">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="lg:mt-[3rem] max-w">
           <BigFileAnimation
             file={perfume.bgFile}
             className="w-full h-full object-cover"
@@ -104,8 +103,8 @@ export default function PerfumeSlug({
       </div>
 
       {/* Product Images Section */}
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
-        <div className="mt-[100vh] max-w">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="lg:mt-[100vh] mt-[90vh] max-w">
           <ProductsSection
             products={perfume.productImagesSection}
             locale={locale}
@@ -114,7 +113,7 @@ export default function PerfumeSlug({
         </div>
       </div>
       {/* Main Products Pics Section */}
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] border-b-[1px] md:border-none border-foreground">
         <div className="max-w">
           <MainProductImage
             image={perfume.heroProductImage}
@@ -126,7 +125,7 @@ export default function PerfumeSlug({
       </div>
 
       {/* Navigation Section */}
-      <div className="my-[8rem] overflow-x-hidden">
+      <div className="my-[8rem] overflow-x-hidden hidden md:block  ">
         <NextPrePerfume
           previous={perfume.previousProduct}
           next={perfume.nextProduct}
@@ -134,7 +133,7 @@ export default function PerfumeSlug({
       </div>
 
       {/* Related Products */}
-      <div className="2xl:px-[34px] lg:px-[38px] px-[18px]">
+      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w">
           <RelatedPerfumes relatedPerfumes={perfume.relatedProducts} />
         </div>

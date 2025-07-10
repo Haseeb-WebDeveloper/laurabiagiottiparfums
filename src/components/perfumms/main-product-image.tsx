@@ -62,8 +62,8 @@ export default function MainProductImage({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
-    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center">
-      <div className="h-full w-[600px]">
+    <div className="w-full lg:min-h-[80vh] pb-[5rem] flex flex-col items-center justify-center">
+      <div className="h-full lg:max-w-[600px]">
         <Image
           src={image.asset.url}
           alt={`${title} - Image 1`}

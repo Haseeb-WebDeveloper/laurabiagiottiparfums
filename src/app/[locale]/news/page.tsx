@@ -16,7 +16,7 @@ export default async function Home({
   const newsPageData = await getNewsPageContent(locale) as NewsPage | null;
 
   return (
-    <div className="bg-background 2xl:px-[34px] lg:px-[38px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
       <NewsList news={newsPageData?.news || []} />
     </div>
   );

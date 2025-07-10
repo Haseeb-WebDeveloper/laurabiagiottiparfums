@@ -14,12 +14,173 @@ export const getAllPerfumesSlugQuery = () => `
 }
 `;
 
+
+// SEO
+// Main Perfume slugs for static generation
+export const getMainPerfumeSlugsQuery = () => `
+  *[_type == "mainPerfume" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`;
+
+
+
+// Collection slugs for static generation
+export const getCollectionSlugsQuery = () => `
+  *[_type == "collections" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`;
+
+
+
 // Sub Category
 export const getAllSubCategoriesQuery = (locale: string) => `
   *[_type == "sub-category"] {
     "name": name.${locale},
   }
 `;
+
+
+
+// Navbar Perfumes
+export const getNavbarPerfumesQuery = (locale: string) => `{
+  "perfumes": *[_type == "perfume"] {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    featuredImage {
+      asset-> {
+        url
+      }
+    },
+    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
+      value {
+        title
+      }
+    }
+  },
+  "collections": *[_type == "collections"] {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    featuredImage {
+      asset-> {
+        url
+      }
+    },
+    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
+      value {
+        title
+      }
+    }
+  },
+  "mainPerfumes": *[_type == "mainPerfume"] {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    featuredImage {
+      asset-> {
+        url
+      }
+    },
+  }
+}`;
+
+
+// Search Results
+export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
+  "perfumes": *[
+    _type in ["perfume", "mainPerfume"] &&
+    (
+      title match "*${searchTerm}*" ||
+      description match "*${searchTerm}*" ||
+      coalesce(
+        *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
+        false
+      )
+    )
+  ] {
+    _id,
+    _type,
+    title,
+    "slug": slug.current,
+    description,
+    category,
+    featuredImage {
+      asset-> {
+        url
+      }
+    },
+    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
+      value {
+        title,
+        description
+      }
+    }
+  },
+  "collections": *[
+    _type == "collections" &&
+    (
+      title match "*${searchTerm}*" ||
+      description match "*${searchTerm}*" ||
+      coalesce(
+        *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
+        false
+      )
+    )
+  ] {
+    _id,
+    _type,
+    title,
+    "slug": slug.current,
+    description,
+    category,
+    featuredImage {
+      asset-> {
+        url
+      }
+    },
+    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
+      value {
+        title,
+        description
+      }
+    }
+  },
+  "news": *[
+    _type == "news" &&
+    (
+      title match "*${searchTerm}*" ||
+      description match "*${searchTerm}*" ||
+      coalesce(
+        *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
+        false
+      )
+    )
+  ] {
+    _id,
+    _type,
+    title,
+    "slug": slug.current,
+    description,
+    featuredImage {
+      asset-> {
+        url
+      }
+    },
+    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
+      value {
+        title,
+        description
+      }
+    }
+  }
+}`;
+
 
 // News Page
 export const getNewsPageQuery = (locale: string) => `
@@ -218,7 +379,7 @@ export const getWomensPerfumesQuery = (locale: string) => `
   }
 `;
 
-// Perfume by slug
+// Single Perfume by slug
 export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
   *[_type == "perfume" && slug.current == "${slug}"][0] {
     _id,
@@ -325,7 +486,7 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
   }
 `;
 
-// Get single perfume by slug
+// Single Main Perfume by slug
 export const getMainPerfumeBySlugQuery = (
   slug: string,
   locale: string
@@ -336,160 +497,126 @@ export const getMainPerfumeBySlugQuery = (
   "slug": slug.current,
   description,
   category,
+  subCategory-> {
+    _id,
+    title,
+    "slug": slug.current
+  },
   featuredImage {
     asset-> {
-      url
+      url,
     }
   },
   heroSectionImages[] {
-    asset-> {
-      url
+    title,
+    image {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
     }
   },
-  "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-    value {
+  secondSectionQuoteText,
+  bgFile {
+    asset-> {
+      url,
+      mimeType
+    }
+  },
+  bigHeading,
+  fourthSectionTextImage {
+    title,
+    text,
+    file {
+      asset-> {
+        url,
+        mimeType
+      }
+    }
+  },
+  olfactoryNotes[] {
+    image {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    },
+    title,
+    notes[] {
+      en,
+      it,
+      de
+    }
+  },
+  olfactoryFamily,
+  nose,
+  scentDescription,
+  sixthSection {
+    heading,
+    files[] {
+      asset-> {
+        url,
+        mimeType
+      }
+    },
+    firstContent {
       title,
       description
+    },
+    secondContent {
+      title,
+      description
+    }
+  },
+  seventhSection {
+    heading,
+    files[] {
+      asset-> {
+        url,
+        mimeType
+      }
+    },
+    content {
+      title,
+      description
+    }
+  },
+  heroProductImage {
+    asset-> {
+      url,
+    }
+  },
+  buy {
+    countries[] {
+      countryName,
+      websites[] {
+        logo {
+          asset-> {
+            url
+          }
+        },
+        url
+      }
+    }
+  },
+  relatedProducts[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    featuredImage {
+      asset-> {
+        url
+      }
     }
   }
 }`;
 
-// Get all perfumes with basic info
-export const getAllMainPerfumesQuery = (locale: string) => `
-  *[_type == "mainPerfume"] | order(_createdAt desc) {
-    _id,
-    _createdAt,
-    _updatedAt,
-    title,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    "slug": slug.current,
-    "description": description.${locale},
-    category,
-    subCategory -> {
-      _id,
-      title,
-      "slug": slug.current
-    },
-    "olfactoryFamily": olfactoryFamily.${locale},
-    nose
-  }
-`;
 
-// Get perfumes by category
-export const getMainPerfumesByCategoryQuery = (
-  category: string,
-  locale: string
-) => `
-  *[_type == "mainPerfume" && category == "${category}"] | order(_createdAt desc) {
-    _id,
-    _createdAt,
-    _updatedAt,
-    title,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    "slug": slug.current,
-    "description": description.${locale},
-    category,
-    subCategory -> {
-      _id,
-      title,
-      "slug": slug.current
-    },
-    "olfactoryFamily": olfactoryFamily.${locale},
-    nose
-  }
-`;
-
-// Get perfumes by subcategory
-export const getMainPerfumesBySubCategoryQuery = (
-  subCategoryId: string,
-  locale: string
-) => `
-  *[_type == "mainPerfume" && subCategory._ref == "${subCategoryId}"] | order(_createdAt desc) {
-    _id,
-    _createdAt,
-    _updatedAt,
-    title,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    "slug": slug.current,
-    "description": description.${locale},
-    category,
-    subCategory -> {
-      _id,
-      title,
-      "slug": slug.current
-    },
-    "olfactoryFamily": olfactoryFamily.${locale},
-    nose
-  }
-`;
-
-// Get featured/limited perfumes for homepage
-export const getFeaturedMainPerfumesQuery = (
-  locale: string,
-  limit: number = 6
-) => `
-  *[_type == "mainPerfume"] | order(_createdAt desc) [0...${limit}] {
-    _id,
-    title,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    "slug": slug.current,
-    "description": description.${locale},
-    category,
-    "olfactoryFamily": olfactoryFamily.${locale}
-  }
-`;
-
-// Search perfumes by title or description
-export const searchMainPerfumesQuery = (searchTerm: string, locale: string) => `
-  *[_type == "mainPerfume" && (
-    title match "${searchTerm}*" ||
-    description.${locale} match "${searchTerm}*" ||
-    olfactoryFamily.${locale} match "${searchTerm}*"
-  )] | order(_createdAt desc) {
-    _id,
-    title,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    "slug": slug.current,
-    "description": description.${locale},
-    category,
-    "olfactoryFamily": olfactoryFamily.${locale},
-    nose
-  }
-`;
-
-// Get perfume slugs for static generation
-export const getMainPerfumeSlugsQuery = () => `
-  *[_type == "mainPerfume" && defined(slug.current)] {
-    "slug": slug.current
-  }
-`;
-
-// Get single collection by slug
+// Single Collection by slug
 export const getCollectionBySlugQuery = (
   slug: string,
   locale: string
@@ -498,338 +625,355 @@ export const getCollectionBySlugQuery = (
   _type,
   title,
   "slug": slug.current,
-  description,
   category,
   featuredImage {
     asset-> {
-      url
+      url,
     }
   },
-  heroSectionImages[] {
-    asset-> {
-      url
+  firstSection {
+    "tagLine": tagLine.${locale},
+    image {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    },
+    "description": description.${locale},
+    bgMedia {
+      asset-> {
+        url,
+        mimeType
+      }
     }
   },
-  "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-    value {
-      title,
-      description
+  productsCollection[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    "description": description.${locale},
+    category,
+    featuredImage {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    }
+  },
+  relatedProducts[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    "description": description.${locale},
+    category,
+    featuredImage {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
     }
   }
 }`;
 
-// Get all collections with basic info
-export const getAllCollectionsQuery = (locale: string) => `
-  *[_type == "collections"] | order(_createdAt desc) {
+
+
+
+
+
+
+// Single Product by slug
+export const getProductBySlugQuery = (slug: string, locale: string) => `{
+  "perfume": *[_type == "perfume" && slug.current == "${slug}"][0] {
     _id,
-    _createdAt,
-    _updatedAt,
     title,
+    category,
+    "subCategory": subCategory->name.${locale},
     "slug": slug.current,
+    "description": description.${locale},
     featuredImage {
       asset -> {
         _id,
         url
       }
     },
-    category,
-    firstSection {
-      "tagLine": tagLine.${locale},
-      "description": description.${locale}
-    },
-    "productsCount": count(productsCollection)
-  }
-`;
-
-// Get collections by category
-export const getCollectionsByCategoryQuery = (
-  category: string,
-  locale: string
-) => `
-  *[_type == "collections" && category == "${category}"] | order(_createdAt desc) {
-    _id,
-    _createdAt,
-    _updatedAt,
-    title,
-    "slug": slug.current,
-    featuredImage {
+    heroSectionImages[] {
       asset -> {
         _id,
         url
       }
     },
-    category,
-    firstSection {
-      "tagLine": tagLine.${locale},
-      "description": description.${locale}
-    },
-    "productsCount": count(productsCollection)
-  }
-`;
-
-// Get featured collections for homepage
-export const getFeaturedCollectionsQuery = (
-  locale: string,
-  limit: number = 4
-) => `
-  *[_type == "collections"] | order(_createdAt desc) [0...${limit}] {
-    _id,
-    title,
-    "slug": slug.current,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    category,
-    firstSection {
-      "tagLine": tagLine.${locale},
-      "description": description.${locale}
-    },
-    "productsCount": count(productsCollection)
-  }
-`;
-
-// Get collection slugs for static generation
-export const getCollectionSlugsQuery = () => `
-  *[_type == "collections" && defined(slug.current)] {
-    "slug": slug.current
-  }
-`;
-
-// Get collections with specific products (detailed view)
-export const getCollectionsWithProductsQuery = (locale: string) => `
-  *[_type == "collections"] | order(_createdAt desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    category,
-    firstSection {
-      "tagLine": tagLine.${locale},
-      "description": description.${locale}
-    },
-    productsCollection[] -> {
-      _id,
-      title,
-      category,
-      "description": description.${locale},
-      heroSectionImages[] {
+    olfactoryNotes[] {
+      image {
         asset -> {
           _id,
           url
         }
       },
+      "title": title.${locale},
+      notes[] {
+        "name": ${locale}
+      }
+    },
+    "olfactoryFamily": olfactoryFamily.${locale},
+    nose,
+    "scentDescription": scentDescription.${locale},
+    bgFile {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    productImagesSection {
+      "title": title.${locale},
+      "description": description.${locale},
+      images[] {
+        asset -> {
+          _id,
+          url
+        }
+      }
+    },
+    heroProductImage {
+      asset -> {
+        _id,
+        url
+      }
+    },
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          url
+        }
+      }
+    },
+    "previousProduct": previousProduct->{
+      title,
       "slug": slug.current,
-      buy {
-        countries[] {
-          countryName,
-          websites[] {
-            logo {
-              asset -> {
-                _id,
-                url
-              }
-            },
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
+      }
+    },
+    "nextProduct": nextProduct->{
+      title,
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
+      }
+    },
+    "relatedProducts": relatedProducts[]->{
+      _id,
+      title,
+      "description": description.${locale},
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
+      }
+    }
+  },
+  "mainPerfume": *[_type == "mainPerfume" && slug.current == "${slug}"][0] {
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  description,
+  category,
+  subCategory-> {
+    _id,
+    title,
+    "slug": slug.current
+  },
+  featuredImage {
+    asset-> {
+      url,
+    }
+  },
+  heroSectionImages[] {
+    title,
+    image {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    }
+  },
+  secondSectionQuoteText,
+  bgFile {
+    asset-> {
+      url,
+      mimeType
+    }
+  },
+  bigHeading,
+  fourthSectionTextImage {
+    title,
+    text,
+    file {
+      asset-> {
+        url,
+        mimeType
+      }
+    }
+  },
+  olfactoryNotes[] {
+    image {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    },
+    title,
+    notes[] {
+      en,
+      it,
+      de
+    }
+  },
+  olfactoryFamily,
+  nose,
+  scentDescription,
+  sixthSection {
+    heading,
+    files[] {
+      asset-> {
+        url,
+        mimeType
+      }
+    },
+    firstContent {
+      title,
+      description
+    },
+    secondContent {
+      title,
+      description
+    }
+  },
+  seventhSection {
+    heading,
+    files[] {
+      asset-> {
+        url,
+        mimeType
+      }
+    },
+    content {
+      title,
+      description
+    }
+  },
+  heroProductImage {
+    asset-> {
+      url,
+    }
+  },
+  buy {
+    countries[] {
+      countryName,
+      websites[] {
+        logo {
+          asset-> {
             url
           }
+        },
+        url
+      }
+    }
+  },
+  relatedProducts[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    featuredImage {
+      asset-> {
+        url
+      }
+    }
+  }
+},
+  "collection": *[_type == "collections" && slug.current == "${slug}"][0] {
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  category,
+  featuredImage {
+    asset-> {
+      url,
+    }
+  },
+  firstSection {
+    "tagLine": tagLine.${locale},
+    image {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    },
+    "description": description.${locale},
+    bgMedia {
+      asset-> {
+        url,
+        mimeType
+      }
+    }
+  },
+  productsCollection[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    "description": description.${locale},
+    category,
+    featuredImage {
+      asset-> {
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    }
+  },
+  relatedProducts[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    "description": description.${locale},
+    category,
+    featuredImage {
+      asset-> {
+        url,
+        metadata {
+          dimensions
         }
       }
     }
   }
-`;
-
-// Search collections
-export const searchCollectionsQuery = (searchTerm: string, locale: string) => `
-  *[_type == "collections" && (
-    title match "${searchTerm}*" ||
-    firstSection.tagLine.${locale} match "${searchTerm}*" ||
-    firstSection.description.${locale} match "${searchTerm}*"
-  )] | order(_createdAt desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    category,
-    firstSection {
-      "tagLine": tagLine.${locale},
-      "description": description.${locale}
-    },
-    "productsCount": count(productsCollection)
-  }
-`;
-
-// Get collections that contain a specific product
-export const getCollectionsByProductQuery = (
-  productId: string,
-  locale: string
-) => `
-  *[_type == "collections" && references("${productId}")] {
-    _id,
-    title,
-    "slug": slug.current,
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    category,
-    firstSection {
-      "tagLine": tagLine.${locale},
-      "description": description.${locale}
-    }
-  }
-`;
-
-// Navbar Perfumes
-export const getNavbarPerfumesQuery = (locale: string) => `{
-  "perfumes": *[_type == "perfume"] {
-    _id,
-    title,
-    "slug": slug.current,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title
-      }
-    }
-  },
-  "collections": *[_type == "collections"] {
-    _id,
-    title,
-    "slug": slug.current,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title
-      }
-    }
-  },
-  "mainPerfumes": *[_type == "mainPerfume"] {
-    _id,
-    title,
-    "slug": slug.current,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title
-      }
-    }
-  }
-}`;
-
-export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
-  "perfumes": *[
-    _type in ["perfume", "mainPerfume"] &&
-    (
-      title match "*${searchTerm}*" ||
-      description match "*${searchTerm}*" ||
-      coalesce(
-        *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
-        false
-      )
-    )
-  ] {
-    _id,
-    _type,
-    title,
-    "slug": slug.current,
-    description,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title,
-        description
-      }
-    }
-  },
-  "collections": *[
-    _type == "collections" &&
-    (
-      title match "*${searchTerm}*" ||
-      description match "*${searchTerm}*" ||
-      coalesce(
-        *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
-        false
-      )
-    )
-  ] {
-    _id,
-    _type,
-    title,
-    "slug": slug.current,
-    description,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title,
-        description
-      }
-    }
-  },
-  "news": *[
-    _type == "news" &&
-    (
-      title match "*${searchTerm}*" ||
-      description match "*${searchTerm}*" ||
-      coalesce(
-        *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
-        false
-      )
-    )
-  ] {
-    _id,
-    _type,
-    title,
-    "slug": slug.current,
-    description,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title,
-        description
-      }
-    }
-  }
+}
 }`;

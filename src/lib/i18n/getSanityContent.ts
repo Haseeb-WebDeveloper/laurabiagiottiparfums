@@ -1,6 +1,8 @@
 import { Perfume, CombinedPerfume, NavbarPerfumes, SubCategory } from '@/types/perfume';
+import { Collection } from '@/types/collection';
+import { MainPerfume } from '@/types/main-perfume';
 import { fetchSanityData } from '../sanity/fetch';
-import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery } from '../sanity/queries';
+import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery, getProductBySlugQuery } from '../sanity/queries';
 import { NewsListItem } from '@/types/news';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
@@ -186,14 +188,14 @@ export async function getSearchResults(searchTerm: string, locale: string) {
 }
 
 // Get Main Perfume by slug
-export async function getMainPerfumeBySlug(slug: string, locale: string) {
+export async function getMainPerfumeBySlug(slug: string, locale: string): Promise<MainPerfume | null> {
   try {
     const data = await fetchSanityData(
       getMainPerfumeBySlugQuery(slug, locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as MainPerfume;
   } catch (error) {
     console.error('Error fetching main perfume by slug:', error);
     return null;
@@ -201,16 +203,40 @@ export async function getMainPerfumeBySlug(slug: string, locale: string) {
 }
 
 // Get Collection by slug
-export async function getCollectionBySlug(slug: string, locale: string) {
+export async function getCollectionBySlug(slug: string, locale: string): Promise<Collection | null> {
   try {
     const data = await fetchSanityData(
       getCollectionBySlugQuery(slug, locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     );
-    return data;
+    return data as Collection;
   } catch (error) {
     console.error('Error fetching collection by slug:', error);
     return null;
+  }
+}
+
+type ProductResponse = {
+  perfume: Perfume | null;
+  mainPerfume: MainPerfume | null;
+  collection: Collection | null;
+};
+
+export async function getProductBySlug(slug: string, locale: string): Promise<ProductResponse> {
+  try {
+    const data = await fetchSanityData(
+      getProductBySlugQuery(slug, locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as ProductResponse;
+  } catch (error) {
+    console.error('Error fetching product by slug:', error);
+    return {
+      perfume: null,
+      mainPerfume: null,
+      collection: null
+    };
   }
 }

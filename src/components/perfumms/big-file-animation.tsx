@@ -5,6 +5,8 @@ import { SanityImage } from "@/types/perfume";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { useMediaQuery } from "react-responsive";
 
 interface BigFileAnimationProps {
   file: {
@@ -20,7 +22,9 @@ export default function BigFileAnimation({
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+
+  useGSAP(() => {
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
@@ -40,16 +44,20 @@ export default function BigFileAnimation({
       width: "100%",
       height: "100%",
       objectFit: "cover",
-      borderRadius: "1000px",
+      borderTopLeftRadius: "1000px",
+      borderTopRightRadius: "1000px",
     });
+
+    const end = isDesktop ? "bottom 110%" : "bottom 90%";
 
     // Create the animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
         start: "top 130%",
-        end: "bottom 110%",
+        end: end,
         scrub: 1,
+        markers: true,
       },
     });
 
@@ -59,7 +67,8 @@ export default function BigFileAnimation({
     }).to(
       video,
       {
-        borderRadius: "0px",
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px",
       },
       "<"
     ); // The "<" makes this animation start at the same time as the container animation
@@ -73,7 +82,10 @@ export default function BigFileAnimation({
 
   return (
     <div className="flex justify-center items-center absolute left-0 w-full h-full">
-      <div ref={containerRef} className={`relative max-h-[75vh] ${className}`}>
+      <div
+        ref={containerRef}
+        className={`relative lg:max-h-[75vh] max-h-[55vh] ${className}`}
+      >
         <video
           ref={videoRef}
           src={file.asset.url}

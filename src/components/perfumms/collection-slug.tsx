@@ -1,31 +1,14 @@
-import PerfumeSlugHeroSection from "./perfume-slug-hero-section";
+import { Collection } from "@/types/collection";
 
-interface CollectionProps {
-  collection: {
-    title: string;
-    description: string;
-    heroSectionImages: {
-      asset: {
-        url: string;
-      };
-    }[];
-    localized?: {
-      value: {
-        title: string;
-        description: string;
-      };
-    };
-  };
+export default function CollectionSlug({
+  collection,
+  locale,
+}: {
+  collection: Collection;
   locale: string;
-}
-
-export default function CollectionSlug({ collection, locale }: CollectionProps) {
+}) {
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* <PerfumeSlugHeroSection
-        heroSectionImages={collection.heroSectionImages}
-        description={collection.localized?.value.description || collection.description}
-      /> */}
+    <div className="container mx-auto px-4 py-8 mt-[30rem]">
       <p>Collection Slug</p>
     </div>
   );

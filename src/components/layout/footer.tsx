@@ -4,7 +4,7 @@ import SocialIcons from "./social";
 
 export default function Footer() {
   return (
-    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] lg:px-[38px] px-[18px]">
+    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
       <div className="max-w">
         {/* Footer top */}
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b border-foreground pb-[6rem]">
@@ -21,7 +21,7 @@ export default function Footer() {
           {/* right side */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-4 gap-12">
             <div className="w-full space-y-2  lg:space-y-4">
-              <h5 gsap-target="heading-1">Info</h5>
+              <div gsap-target="heading-1" className="text-[1.6rem] lg:text-[1.5rem] font-[500]">Info</div>
               <ul>
                 <li>
                   <Link gsap-target="heading-1" href="/">
@@ -31,7 +31,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="w-full space-y-2  lg:space-y-4">
-              <h5 gsap-target="heading-1">Fragrances</h5>
+              <div gsap-target="heading-1" className="text-[1.6rem] lg:text-[1.5rem] font-[500]" >Fragrances</div>
               <ul className="flex flex-col gap-2">
                 <li>
                   <Link gsap-target="heading-1" href="/">
@@ -46,7 +46,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="w-full space-y-2  lg:space-y-4">
-              <h5 gsap-target="heading-1">Brand</h5>
+              <div gsap-target="heading-1" className="text-[1.6rem] lg:text-[1.5rem] font-[500]">Brand</div>
               <ul className="flex flex-col gap-2">
                 <li>
                   <Link gsap-target="heading-1" href="/">

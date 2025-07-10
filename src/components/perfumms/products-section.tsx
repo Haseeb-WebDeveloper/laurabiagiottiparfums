@@ -29,8 +29,40 @@ export default function ProductsSection({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
-    <section className="pt-[6.5rem]">
-      <div className="w-[100%] flex flex-col md:flex-row gap-[2rem]">
+    <section className="lg:pt-[6.5rem]">
+      {/* Mobile Layout */}
+
+      <div className="md:hidden flex flex-col gap-[4rem]">
+        <div className="w-full h-[380px]">
+          <ParallaxImage
+            src={products.images[0].asset.url}
+            alt={`${products.title} - Image 1`}
+            className="rounded-[1rem] md:rounded-none w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="w-full flex flex-col justify-center px-[1rem]">
+          <h2 className="mb-[1rem] max-w-[70%]">{products.title}</h2>
+          <p className="mb-[1.5rem]">{products.description}</p>
+          <button
+            onClick={() => setIsPopupOpen(true)}
+            className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+          >
+            Shop Now
+          </button>
+        </div>
+
+        <div className="w-full h-[380px]">
+          <ParallaxImage
+            src={products.images[0].asset.url}
+            alt={`${products.title} - Image 1`}
+            className="rounded-[1rem] md:rounded-none w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:flex w-[100%] flex-col md:flex-row gap-[2rem]">
         {/* 1-2 images */}
         <div className="w-[28%] pt-[2.5rem] flex flex-col gap-[4rem]">
           {products.images.slice(0, 2).map((image, index) => (
@@ -67,7 +99,7 @@ export default function ProductsSection({
           <div className="w-full h-full flex  flex-col items-center justify-center">
             <h2 className="text-center mb-[1rem]">{products.title}</h2>
             <p className="text-center mb-[1.5rem]">{products.description}</p>
-            <button 
+            <button
               onClick={() => setIsPopupOpen(true)}
               className="cursor-pointer flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >

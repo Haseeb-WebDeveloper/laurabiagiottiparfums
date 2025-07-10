@@ -14,13 +14,14 @@ export default function RelatedPerfumes({
   const { locale } = useLocale();
 
   return (
-    <section className="lg:max-w-[83%] w-full mx-auto">
-      <h3 className=" mb-12">Related Perfumes</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 justify-between gap-8">
+    <section className="lg:max-w-[83%] w-full mx-auto mt-[5rem]">
+      <h3 className=" mb-12 hidden md:flex">Related Perfumes</h3>
+      <h2 className=" mb-12 md:hidden">Related Perfumes</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 justify-between lg:gap-8 gap-16">
         {relatedPerfumes.map((related, index) => (
           <div key={index} className={`w-full flex ${index == 0 ? "justify-start" : "justify-end"}`}>
             <div className="max-w-[415px] group space-y-[1.9rem]">
-              <div className="h-[305px] w-full relative">
+              <div className="lg:h-[305px] h-[420px] w-full relative">
                 <ParallaxImage
                   src={related.featuredImage?.asset.url || ""}
                   alt={related.title}

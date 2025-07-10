@@ -33,14 +33,14 @@ export default function OlfactoryFamily({
 
   return (
     <div className="flex flex-col md:flex-row gap-[2rem]">
-      {/* Left Column */}
-      <div className="w-full flex flex-col md:flex-row gap-[2rem]">
-        <div className="w-full space-y-[0.7rem]">
-          <h3>Olfactory Family</h3>
-          <span className="text-[1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
-            {olfactoryFamily}
-          </span>
-        </div>
+        {/* Left Column */}
+        <div className="w-full flex flex-col md:flex-row lg:gap-[2rem] gap-[1.5rem]">
+          <div className="w-full space-y-[0.7rem]">
+            <h3>Olfactory Family</h3>
+            <span className="text-[1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
+              {olfactoryFamily}
+            </span>
+          </div>
         <div className="w-full space-y-[0.7rem]">
           <h3>Nose</h3>
           <span className="text-[1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
