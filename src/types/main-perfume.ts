@@ -1,5 +1,5 @@
 import { SanityAssetDocument } from "next-sanity";
-import { Country, SanityImage } from "./perfume";
+import { Country, OlfactoryNote, RelatedProduct, SanityImage } from "./perfume";
 
 interface SanityFile {
   asset: SanityAssetDocument & {
@@ -27,16 +27,6 @@ interface FourthSectionTextImage {
   file: SanityFile;
 }
 
-// Olfactory notes types
-interface OlfactoryNote {
-  [locale: string]: string; // The note text in the current locale
-}
-
-interface OlfactoryNoteCategory {
-  image: SanityImage;
-  title: string;
-  notes: OlfactoryNote[];
-}
 
 // Sixth section content types
 interface SectionContent {
@@ -44,7 +34,7 @@ interface SectionContent {
   description: string;
 }
 
-interface SixthSection {
+export interface SixthSectionInterface {
   heading: string;
   files: SanityFile[];
   firstContent: SectionContent;
@@ -52,19 +42,12 @@ interface SixthSection {
 }
 
 // Seventh section content type
-interface SeventhSection {
+export interface SeventhSectionInterface {
   heading: string;
   files: SanityFile[];
   content: SectionContent;
 }
 
-// Related product type
-interface RelatedProduct {
-  _id: string;
-  title: string;
-  slug: string;
-  featuredImage: SanityImage;
-}
 
 // Main perfume interface
 export interface MainPerfume {
@@ -81,13 +64,15 @@ export interface MainPerfume {
   bgFile: SanityFile;
   bigHeading: string;
   fourthSectionTextImage: FourthSectionTextImage;
-  olfactoryNotes: OlfactoryNoteCategory[];
+  olfactoryNotes: OlfactoryNote[];
   olfactoryFamily: string;
   nose: string;
   scentDescription: string;
-  sixthSection: SixthSection;
-  seventhSection: SeventhSection;
-  heroProductImage: SanityImage;
+  sixthSection: SixthSectionInterface;
+  seventhSection: SeventhSectionInterface;
+  heroProductImage: {
+    asset: SanityImage;
+  };
   buy?: {
     countries: Country[];
   };

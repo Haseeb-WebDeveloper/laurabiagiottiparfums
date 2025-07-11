@@ -121,10 +121,10 @@ export default function NotesAnimation({
   return (
     <div className="w-full">
       <div ref={containerRef} className=" relative">
-        <h2 className="lg:mb-[6rem] mb-[5rem]">{header}</h2>
+        <h2 className="lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">{header}</h2>
         <div className="sticky top-0 lg:h-[40rem] h-[80rem] flex items-start justify-center">
           {/* horizontal string */}
-          <div className="absolute top-[13%] left-0 w-full h-[1px] bg-foreground/10"></div>
+          <div className="hidden lg:block absolute top-[13%] left-0 w-full h-[1px] bg-foreground/10"></div>
 
           {notes?.map((note, index) => (
             <div
@@ -157,7 +157,7 @@ export default function NotesAnimation({
                 </div>
 
                 {/* Mobile/Tablet layout: image on left, text on right */}
-                <div className="flex md:hidden gap-[1.5rem]">
+                <div className="flex md:hidden gap-[1.5rem] w-[90vw]">
                   <Image
                     src={note.image.asset.url}
                     alt={note.title}
@@ -166,7 +166,7 @@ export default function NotesAnimation({
                     className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 lg:w-[120px] lg:h-[120px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <h3 className="mb-[1rem]">{note.title}</h3>
+                    <h3 className="mb-[1rem] text-[1.9rem] font-[700]">{note.title}</h3>
                     <div className="flex flex-col gap-[0.5rem]">
                       {note.notes.map((note, key) => (
                         <p key={key}>{note.name}</p>

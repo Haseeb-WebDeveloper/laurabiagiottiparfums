@@ -1,9 +1,7 @@
+import AppProvider from "@/provider/app-provider";
 import "./globals.css";
 import { LOCALES } from "@/lib/i18n/constants";
-import AppProvider from "@/provider/app-provider.js";
 // import { GoogleTagManager } from "@next/third-parties/google";
-
-
 
 type RootLayoutProps = {
   children: React.ReactNode;

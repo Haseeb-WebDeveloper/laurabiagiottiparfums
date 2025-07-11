@@ -15,7 +15,9 @@ export default function RelatedPerfumes({
 
   return (
     <section className="lg:max-w-[83%] w-full mx-auto mt-[5rem]">
-      <div className=" mb-12 text-[3rem] font-[500]">Related Perfumes</div>
+      <h3 className="mb-12 lg:text-[3rem] text-[2.5rem] font-[500]">
+        Related Perfumes
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 justify-between lg:gap-8 gap-16">
         {relatedPerfumes.map((related, index) => (
           <div key={index} className={`w-full flex ${index == 0 ? "justify-start" : "justify-end"}`}>

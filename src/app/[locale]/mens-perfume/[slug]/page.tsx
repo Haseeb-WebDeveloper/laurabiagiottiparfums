@@ -20,16 +20,14 @@ export default async function PerfumePage({
     getProductBySlug(slug, locale),
   ]);
 
-
-
   // Render based on which type of product was found
   if (productData.perfume) {
     return (
       <div className="bg-background overflow-hidden">
-        <PerfumeSlug 
-          perfume={productData.perfume} 
-          locale={locale} 
-          subCategories={subCategories || []} 
+        <PerfumeSlug
+          perfume={productData.perfume}
+          locale={locale}
+          subCategories={subCategories || []}
         />
       </div>
     );
@@ -37,10 +35,10 @@ export default async function PerfumePage({
 
   if (productData.mainPerfume) {
     return (
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] mt-[30rem]">
-        <MainPerfumeSlug 
-          mainPerfume={productData.mainPerfume} 
-          locale={locale} 
+      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <MainPerfumeSlug
+          mainPerfume={productData.mainPerfume}
+          locale={locale}
         />
       </div>
     );
@@ -49,10 +47,7 @@ export default async function PerfumePage({
   if (productData.collection) {
     return (
       <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
-        <CollectionSlug 
-          collection={productData.collection} 
-          locale={locale} 
-        />
+        <CollectionSlug collection={productData.collection} locale={locale} />
       </div>
     );
   }

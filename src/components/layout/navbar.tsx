@@ -187,7 +187,7 @@ export default function Navbar() {
                   alt="logo"
                   width={200}
                   height={200}
-                  className="w-[11rem]"
+                  className="w-[11rem] dark:invert"
                 />
               </Link>
             </div>

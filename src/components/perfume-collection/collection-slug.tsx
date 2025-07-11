@@ -12,7 +12,7 @@ export default function CollectionSlug({
   locale: string;
 }) {
   return (
-    <div className=" mb-[15rem] lg:mt-[14.8rem] mt-[7rem]">
+    <div className="mb-[15rem] lg:mt-[14.8rem] mt-[7rem]">
       {/* 1st hero section */}
       <section className="lg:mb-[100vh] mb-[75vh]">
         <h1 className="text-center 2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide">

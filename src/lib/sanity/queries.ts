@@ -594,23 +594,20 @@ export const getMainPerfumeBySlugQuery = (
     image {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     }
   },
-  secondSectionQuoteText,
+  "secondSectionQuoteText": secondSectionQuoteText.${locale},
   bgFile {
     asset-> {
       url,
       mimeType
     }
   },
-  bigHeading,
+  "bigHeading": bigHeading.${locale},
   fourthSectionTextImage {
-    title,
-    text,
+    "title": title.${locale},
+    "text": text.${locale},
     file {
       asset-> {
         url,
@@ -622,23 +619,18 @@ export const getMainPerfumeBySlugQuery = (
     image {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     },
-    title,
+    "title": title.${locale},
     notes[] {
-      en,
-      it,
-      de
+      "name": ${locale}
     }
   },
-  olfactoryFamily,
+  "olfactoryFamily": olfactoryFamily.${locale},
   nose,
-  scentDescription,
+  "scentDescription": scentDescription.${locale},
   sixthSection {
-    heading,
+    "heading": heading.${locale},
     files[] {
       asset-> {
         url,
@@ -646,16 +638,16 @@ export const getMainPerfumeBySlugQuery = (
       }
     },
     firstContent {
-      title,
-      description
+      "title": title.${locale},
+      "description": description.${locale}
     },
     secondContent {
-      title,
-      description
+      "title": title.${locale},
+      "description": description.${locale}
     }
   },
   seventhSection {
-    heading,
+    "heading": heading.${locale},
     files[] {
       asset-> {
         url,
@@ -663,8 +655,8 @@ export const getMainPerfumeBySlugQuery = (
       }
     },
     content {
-      title,
-      description
+      "title": title.${locale},
+      "description": description.${locale}
     }
   },
   heroProductImage {
@@ -685,16 +677,18 @@ export const getMainPerfumeBySlugQuery = (
       }
     }
   },
-  relatedProducts[]-> {
-    _id,
-    title,
-    "slug": slug.current,
-    featuredImage {
-      asset-> {
-        url
+  "relatedProducts": relatedProducts[]->{
+      _id,
+      title,
+      "description": description.${locale},
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
       }
     }
-  }
 }`;
 
 // Single Collection by slug
@@ -719,9 +713,6 @@ export const getCollectionBySlugQuery = (
     image {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     },
     // "description": description.${locale},
@@ -741,9 +732,6 @@ export const getCollectionBySlugQuery = (
     featuredImage {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     }
   },
@@ -756,9 +744,6 @@ export const getCollectionBySlugQuery = (
     featuredImage {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     }
   }
@@ -891,23 +876,20 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     image {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     }
   },
-  secondSectionQuoteText,
+  "secondSectionQuoteText": secondSectionQuoteText.${locale},
   bgFile {
     asset-> {
       url,
       mimeType
     }
   },
-  bigHeading,
+  "bigHeading": bigHeading.${locale},
   fourthSectionTextImage {
-    title,
-    text,
+    "title": title.${locale},
+    "text": text.${locale},
     file {
       asset-> {
         url,
@@ -919,23 +901,18 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     image {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     },
-    title,
+    "title": title.${locale},
     notes[] {
-      en,
-      it,
-      de
+      "name": ${locale}
     }
   },
-  olfactoryFamily,
+  "olfactoryFamily": olfactoryFamily.${locale},
   nose,
-  scentDescription,
+  "scentDescription": scentDescription.${locale},
   sixthSection {
-    heading,
+    "heading": heading.${locale},
     files[] {
       asset-> {
         url,
@@ -943,16 +920,16 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       }
     },
     firstContent {
-      title,
-      description
+      "title": title.${locale},
+      "description": description.${locale}
     },
     secondContent {
-      title,
-      description
+      "title": title.${locale},
+      "description": description.${locale}
     }
   },
   seventhSection {
-    heading,
+    "heading": heading.${locale},
     files[] {
       asset-> {
         url,
@@ -960,8 +937,8 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       }
     },
     content {
-      title,
-      description
+      "title": title.${locale},
+      "description": description.${locale}
     }
   },
   heroProductImage {
@@ -982,16 +959,18 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       }
     }
   },
-  relatedProducts[]-> {
-    _id,
-    title,
-    "slug": slug.current,
-    featuredImage {
-      asset-> {
-        url
+  "relatedProducts": relatedProducts[]->{
+      _id,
+      title,
+      "description": description.${locale},
+      "slug": slug.current,
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
       }
     }
-  }
 },
   "collection": *[_type == "collections" && slug.current == "${slug}"][0] {
   _id,
@@ -1011,9 +990,6 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     image {
       asset-> {
         url,
-        metadata {
-          dimensions
-        }
       }
     },
     "description": description.${locale},

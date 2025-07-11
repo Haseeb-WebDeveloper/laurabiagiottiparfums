@@ -37,10 +37,10 @@ export function ParallaxImage({
     const container = containerRef.current;
     if (!container) return;
 
-    const img = container.querySelector("img");
-    if (!img) return;
+    const element = container.querySelector("img, video");
+    if (!element) return;
 
-    // Create timeline for this image
+    // Create timeline for this element
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
@@ -52,7 +52,7 @@ export function ParallaxImage({
 
     // Add animation to timeline
     tl.fromTo(
-      img,
+      element,
       {
         y: "-10%",
         scale: 1.2, // Start slightly scaled up to prevent white edges during parallax
@@ -73,20 +73,34 @@ export function ParallaxImage({
     };
   }, []);
 
+  // Check if source is a video
+  const isVideo = src.endsWith('.mp4') || src.endsWith('.webm');
+
   return (
     <div
       ref={containerRef}
       className={`img-container relative overflow-hidden w-full h-full ${className}`}
     >
-      <Image
-        src={src}
-        alt={alt}
-        fill={true}
-        className={`object-${objectFit} object-${objectPosition} `}
-        priority={priority}
-        quality={quality}
-        sizes={sizes}
-      />
+      {isVideo ? (
+        <video
+          src={src}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className={`w-full h-full object-${objectFit} object-${objectPosition}`}
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          fill={true}
+          className={`object-${objectFit} object-${objectPosition}`}
+          priority={priority}
+          quality={quality}
+          sizes={sizes}
+        />
+      )}
     </div>
   );
 }

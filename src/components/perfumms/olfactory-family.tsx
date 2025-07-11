@@ -31,19 +31,21 @@ export default function OlfactoryFamily({
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  console.log(olfactoryFamily, nose, scentDescription);
+
   return (
     <div className="flex flex-col md:flex-row gap-[2rem]">
         {/* Left Column */}
         <div className="w-full flex flex-col md:flex-row lg:gap-[2rem] gap-[1.5rem]">
           <div className="w-full space-y-[0.7rem]">
-            <h3>Olfactory Family</h3>
-            <span className="text-[1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
+            <h3 className="text-[2rem] lg:font-[600] font-[700]">Olfactory Family</h3>
+            <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
               {olfactoryFamily}
             </span>
           </div>
         <div className="w-full space-y-[0.7rem]">
-          <h3>Nose</h3>
-          <span className="text-[1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
+          <h3 className="text-[2rem] lg:font-[600] font-[700]">Nose</h3>
+          <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
             {nose}
           </span>
         </div>
