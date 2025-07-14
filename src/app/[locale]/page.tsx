@@ -1,9 +1,14 @@
-import HorizontalScroll from "@/components/test/horizontal-scroll";
+import HorizontalScroll from "@/components/home/horizontal-scroll";
 import GSAPCardsAnimation from "@/components/ui/notes-animation";
 import ParallaxCard from "@/components/test/parallax-card";
-import Rotate from "@/components/test/rotate";
+import Rotate from "@/components/home/rotate";
 import { LOCALES } from "@/lib/i18n/constants";
-import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { getHomePage } from "@/lib/i18n/getSanityContent";
+import HomePage from "@/components/home/home-page";
+// import ParallaxProductCards from "@/components/test/new-cards";
+import ThreeColumnScroll from "@/components/home/three-column-scroll";
 
 export default async function Home({
   params,
@@ -11,16 +16,15 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // const HomePageData: HomePageData = await getHomePageData(locale);
+  const homeData = await getHomePage(locale);
 
   return (
-    <div>
-      <Rotate />
-      <ParallaxCard />
-      <HorizontalScroll />
-      {/* <GSAPCardsAnimation /> */}
-      <Rotate />
-      <Rotate />
+    <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      {homeData && <HomePage homeData={homeData} locale={locale} />}
+       {/* News Section */}
+       {/* <div className="mt-[10rem]">
+        <HorizontalScroll cards={homeData?.news || []} locale={locale} />
+      </div> */}
     </div>
   );
 }

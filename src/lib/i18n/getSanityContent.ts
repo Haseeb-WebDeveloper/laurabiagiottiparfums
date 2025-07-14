@@ -2,8 +2,8 @@ import { Perfume, CombinedPerfume, NavbarPerfumes, SubCategory } from '@/types/p
 import { Collection } from '@/types/collection';
 import { MainPerfume } from '@/types/main-perfume';
 import { fetchSanityData } from '../sanity/fetch';
-import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery, getProductBySlugQuery } from '../sanity/queries';
-import { NewsListItem } from '@/types/news';
+import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery, getProductBySlugQuery, getHomePageQuery } from '../sanity/queries';
+import { HomePageInterface } from '@/types/home-page';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
 
@@ -18,6 +18,23 @@ type WomensProductsResponse = {
   mainPerfumes: MainPerfume[];
   // collections: Collection[];
 };
+
+
+// Home Page
+export async function getHomePage(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getHomePageQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as HomePageInterface;
+  } catch (error) {
+    console.error('Error fetching home page:', error);
+    return null;
+  }
+}
+
 
 // Perfumes
 export async function getMensPerfumes(locale: string) {

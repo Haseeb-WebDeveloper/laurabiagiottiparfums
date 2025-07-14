@@ -172,3 +172,101 @@ p {
   margin-left: auto;
   margin-right: auto;
 }
+
+
+
+
+
+
+
+
+
+
+/* 
+
+
+
+._360-wheel-container {
+  height: 25vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  transform: scale(.8);
+}
+
+.rotation-container {
+  width: 100%;
+  transform-style: preserve-3d;
+  transform: perspective(1700px)rotateX(-6deg)rotateY(0)rotateZ(0);
+}
+
+
+.rotation_controller {
+  width: 100%;
+  transform-style: preserve-3d;
+  height: 25vh;
+  transform: rotateX(0)rotateY(.01deg)rotateZ(0);
+}
+
+
+
+.slide {
+  width: 100%;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  inset: 0%;
+  transform: rotateX(0)rotateY(.01deg)rotateZ(0);
+}
+
+
+.media-container {
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, calc(100%*1.1));
+}
+
+
+.medial-flex {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  transform: rotate(0)perspective(843px);
+}
+
+
+
+.course-video-container {
+  z-index: 50;
+  width: 100%;
+  position: relative;
+} */
+
+
+
+
+
+
+.main{
+  overflow-x:hidden;
+}
+.horizontal-sliders{
+  display:flex;
+  flex-wrap:no-wrap;
+  width: 500%;
+  overflow-x:hidden;
+}
+.slide{
+  height:80vh;
+  width:100%;
+}
+.slide:nth-child(2n){
+  background-color:aqua;
+}
+.next-block{
+  height:100vh;
+  background:blue;
+}

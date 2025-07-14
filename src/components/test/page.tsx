@@ -1,5 +1,5 @@
 import ScrollRing from "@/components/test/3d";
-import ThreeColumnScroll from "@/components/test/card";
+import ThreeColumnScroll from "@/components/home/three-column-scroll";
 import { LOCALES } from "@/lib/i18n/constants";
 import { Metadata } from "next";
 

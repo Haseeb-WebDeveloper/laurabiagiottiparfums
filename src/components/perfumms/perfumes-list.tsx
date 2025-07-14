@@ -15,7 +15,7 @@ export default function PerfumesList({
 }: {
   perfumes: Perfume[];
   slugPrefix: string;
-  title: string;
+  title?: string;
   locale: string;
   subCategories: SubCategory[];
 }) {

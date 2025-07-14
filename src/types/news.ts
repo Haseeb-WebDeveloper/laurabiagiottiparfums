@@ -1,4 +1,4 @@
-import { SanityImageAsset } from "./sanity";
+import { SanityImageAssetDocument } from "next-sanity";
 
 export interface NewsPage {
   news: NewsListItem[];
@@ -10,7 +10,7 @@ export interface NewsPage {
     title: string;
     slug: string;
     featuredImage: {
-      asset: SanityImageAsset;
+      asset: SanityImageAssetDocument;
     };
     description: string;
     content: string;
@@ -22,7 +22,7 @@ export interface NewsPage {
     title: string;
     slug: string;
     featuredImage: {
-      asset: SanityImageAsset;
+      asset: SanityImageAssetDocument;
     };
     description: string;
     content: string;

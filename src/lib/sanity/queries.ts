@@ -1038,3 +1038,57 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
   }
 }
 }`;
+
+// Home Page Query
+export const getHomePageQuery = (locale: string) => `
+  *[_type == "homePage"][0] {
+    perfumes[]-> {
+      _id,
+      _type,
+      title,
+      "slug": slug.current,
+      "description": description.${locale},
+      category,
+      featuredImage {
+        asset-> {
+          url
+        }
+      }
+    },
+    circularIngridientsImages[] {
+      asset-> {
+        url
+      }
+    },
+    textImageSection {
+      image {
+        asset-> {
+          url
+        }
+      },
+      "heading": heading.${locale},
+      "description": description.${locale}
+    },
+    news[]-> {
+      _id,
+      _updatedAt,
+      _createdAt,
+      "title": title.${locale},
+      "description": description.${locale},
+      "slug": slug.current,
+      featuredImage {
+        asset-> {
+          url
+        }
+      }
+    },
+    socialMediaImages[] {
+      image {
+        asset-> {
+          url
+        }
+      },
+      url
+    }
+  }
+`;

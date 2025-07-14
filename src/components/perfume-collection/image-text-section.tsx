@@ -14,7 +14,6 @@ export default function ImageTextSection({
   products: CollectionPerfume[];
   locale: string;
 }) {
-  console.log(products);
 
   return (
     <section className="pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">

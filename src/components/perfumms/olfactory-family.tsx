@@ -31,8 +31,6 @@ export default function OlfactoryFamily({
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  console.log(olfactoryFamily, nose, scentDescription);
-
   return (
     <div className="flex flex-col md:flex-row gap-[2rem]">
         {/* Left Column */}
