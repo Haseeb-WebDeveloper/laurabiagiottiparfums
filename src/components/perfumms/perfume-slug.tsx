@@ -1,8 +1,6 @@
 "use client";
 import PerfumeSlugHeroSection from "./perfume-slug-hero-section";
 import { Country, Perfume, SubCategory } from "@/types/perfume";
-import Image from "next/image";
-import Link from "next/link";
 import NotesAnimation from "../ui/notes-animation";
 import OlfactoryFamily from "./olfactory-family";
 import BigFileAnimation from "./big-file-animation";

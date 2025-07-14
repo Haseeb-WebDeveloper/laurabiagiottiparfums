@@ -4,6 +4,7 @@ import Rotate from "./rotate";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import NewsHorizontalScroll from "./horizontal-scroll";
 import SocialMedia from "./social-media";
+import HeroSlider from "./home-slider";
 
 export default function HomePage({
   homeData,
@@ -12,8 +13,37 @@ export default function HomePage({
   homeData: HomePageInterface;
   locale: string;
 }) {
+  const data = [
+    {
+      title: "Discover the World of Perfume",
+      description: "Explore our collection of the finest perfumes and colognes",
+      image: "/test-1.webp",
+    },
+    {
+      title: "Discover the World of Perfume",
+      description: "Explore our collection of the finest perfumes and colognes",
+      image: "/test-2.webp",
+    },
+    {
+      title: "Discover the World of Perfume",
+      description: "Explore our collection of the finest perfumes and colognes",
+      image: "/test-3.webp",
+    },
+    {
+      title: "Discover the World of Perfume",
+      description: "Explore our collection of the finest perfumes and colognes",
+      image: "/test-1.webp",
+    },
+    {
+      title: "Discover the World of Perfume",
+      description: "Explore our collection of the finest perfumes and colognes",
+      image: "/test-1.webp",
+    },
+  ];
+
   return (
     <main className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[12.2rem] mb-[15rem] min-h-screen">
+      <HeroSlider slides={data} />
       {/* Hero Section with Featured Perfumes */}
       <ThreeColumnScroll products={homeData.perfumes} />
 
