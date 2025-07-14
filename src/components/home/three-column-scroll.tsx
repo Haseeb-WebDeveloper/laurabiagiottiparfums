@@ -105,7 +105,6 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
             start: `top ${isDesktop ? "190px" : "60px"}`,
             end: "bottom bottom",
             scrub: 1,
-            markers: true,
             invalidateOnRefresh: true,
           };
 
@@ -169,7 +168,6 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
             start: "top +=190px",
             end: "bottom bottom",
             scrub: 1,
-            markers: true,
             invalidateOnRefresh: true,
           };
 

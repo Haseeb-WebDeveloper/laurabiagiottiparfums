@@ -42,17 +42,27 @@ export default function HomePage({
   ];
 
   return (
-    <main className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[12.2rem] mb-[15rem] min-h-screen">
-      <HeroSlider slides={data} />
+    <main className="">
+      <div className="mb-[4rem] lg:mt-[190px] mt-[60px] lg:h-[calc(100vh-190px)] h-[calc(100vh-60px)]">
+        <HeroSlider slides={data} />
+      </div>
       {/* Hero Section with Featured Perfumes */}
-      <ThreeColumnScroll products={homeData.perfumes} />
+      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="max-w">
+          <ThreeColumnScroll products={homeData.perfumes} />
+        </div>
+      </div>
 
       {/* Circular Ingredients Section */}
-      <Rotate images={homeData.circularIngridientsImages} />
+      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="max-w">
+          <Rotate images={homeData.circularIngridientsImages} />
+        </div>
+      </div>
 
       {/* Text Image Section */}
-      <section>
-        <div className="flex flex-col md:flex-row gap-8 items-center">
+      <section className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="max-w flex flex-col md:flex-row gap-8 items-center">
           <div className="w-full md:w-[95%]">
             <div className="relative w-full h-[400px]">
               <ParallaxImage
@@ -80,13 +90,17 @@ export default function HomePage({
       </section>
 
       {/* News Section */}
-      <div className="mt-[10rem]">
-        <NewsHorizontalScroll cards={homeData.news} locale={locale} />
+      <div className="mt-[10rem] bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="max-w">
+          <NewsHorizontalScroll cards={homeData.news} locale={locale} />
+        </div>
       </div>
 
       {/* Social Media Section */}
-      <div className="mt-[8rem]">
-        <SocialMedia socialMediaImages={homeData.socialMediaImages} />
+      <div className="mt-[8rem] bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+        <div className="max-w">
+          <SocialMedia socialMediaImages={homeData.socialMediaImages} />
+        </div>
       </div>
     </main>
   );
