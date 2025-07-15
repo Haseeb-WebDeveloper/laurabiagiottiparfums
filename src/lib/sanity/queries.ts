@@ -1094,18 +1094,26 @@ export const getHomePageQuery = (locale: string) => `
 
 
 
-export const getNotesQuery = (locale: string) => `
+export const getNotesQuery = ({locale}: {locale: string}) => `
   *[_type == "notes"] {
-    "title": title.${locale},
+    title,
     image {
       asset-> {
         url
       }
     },
     "perfumeNotes": perfumeNotes[]-> {
-      "title": title.${locale},
+      title,
       "slug": slug.current,
       category,
+      "description": description.${locale},
+      featuredImage {
+        asset -> {
+          url
+        }
+      },
+      momentOfDay,
+      sharpness
     }
   }
 `;

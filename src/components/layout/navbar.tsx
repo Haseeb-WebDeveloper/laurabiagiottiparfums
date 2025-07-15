@@ -11,6 +11,7 @@ import PerfumeDropdown from "../ui/perfume-dropdown";
 import SearchModal from "../ui/search-modal";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import WearYourPerfume from "../wear-your-perfume";
 
 export default function Navbar() {
   const { locale } = useLocale();
@@ -53,22 +54,30 @@ export default function Navbar() {
       // First step: close the gap
       .to([line1Ref.current, line2Ref.current], {
         duration: 0.2,
-        top: '50%',
-        ease: "power2.inOut"
+        top: "50%",
+        ease: "power2.inOut",
       })
       // Second step: rotate to form X
-      .to(line1Ref.current, {
-        duration: 0.3,
-        rotation: 45,
-        transformOrigin: "center",
-        ease: "power2.inOut"
-      }, "rotate")
-      .to(line2Ref.current, {
-        duration: 0.3,
-        rotation: -45,
-        transformOrigin: "center",
-        ease: "power2.inOut"
-      }, "rotate"); // Using the same label "rotate" makes them animate simultaneously
+      .to(
+        line1Ref.current,
+        {
+          duration: 0.3,
+          rotation: 45,
+          transformOrigin: "center",
+          ease: "power2.inOut",
+        },
+        "rotate"
+      )
+      .to(
+        line2Ref.current,
+        {
+          duration: 0.3,
+          rotation: -45,
+          transformOrigin: "center",
+          ease: "power2.inOut",
+        },
+        "rotate"
+      ); // Using the same label "rotate" makes them animate simultaneously
 
     // Closing animation sequence
     closeTl
@@ -77,19 +86,27 @@ export default function Navbar() {
         duration: 0.3,
         rotation: 0,
         transformOrigin: "center",
-        ease: "power2.inOut"
+        ease: "power2.inOut",
       })
       // Second step: restore the gap
-      .to(line1Ref.current, {
-        duration: 0.2,
-        top: 'calc(50% - 4px)',
-        ease: "power2.inOut"
-      }, "gap")
-      .to(line2Ref.current, {
-        duration: 0.2,
-        top: 'calc(50% + 4px)',
-        ease: "power2.inOut"
-      }, "gap"); // Using the same label "gap" makes them animate simultaneously
+      .to(
+        line1Ref.current,
+        {
+          duration: 0.2,
+          top: "calc(50% - 4px)",
+          ease: "power2.inOut",
+        },
+        "gap"
+      )
+      .to(
+        line2Ref.current,
+        {
+          duration: 0.2,
+          top: "calc(50% + 4px)",
+          ease: "power2.inOut",
+        },
+        "gap"
+      ); // Using the same label "gap" makes them animate simultaneously
 
     // Mobile menu animation
     const menuTl = gsap.timeline({ paused: true });
@@ -192,22 +209,7 @@ export default function Navbar() {
               </Link>
             </div>
             {/* Right */}
-            <div className="w-full flex justify-end">
-              <span
-                className={`w-fit h-fit cursor-pointer bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground rounded-[0.45rem] p-[0.55rem] transition-colors duration-300 flex items-center gap-[0.5rem]`}
-              >
-                <span className="text-[0.75rem] font-[400] leading-0 tracking-tight text-pretty">
-                  Wear your perfume
-                </span>
-                <Image
-                  src="/icons/loading.svg"
-                  alt="arrow-down"
-                  width={12}
-                  height={12}
-                  className="dark:invert"
-                />
-              </span>
-            </div>
+            <WearYourPerfume />
           </div>
           <div className="relative mt-[1.6rem] 2xl:mt-[1.7rem] w-full flex items-center justify-center gap-[2rem]">
             {/* Nav items */}
@@ -301,17 +303,17 @@ export default function Navbar() {
             ref={menuIconRef}
             className="cursor-pointer p-2 flex flex-col items-center justify-center relative"
             onClick={toggleMobileMenu}
-            style={{ height: '20px', width: '20px' }}
+            style={{ height: "20px", width: "20px" }}
           >
             <div
               ref={line1Ref}
               className="w-4 h-[2px] bg-foreground absolute"
-              style={{ top: 'calc(50% - 4px)' }}
+              style={{ top: "calc(50% - 4px)" }}
             />
             <div
               ref={line2Ref}
               className="w-4 h-[2px] bg-foreground absolute"
-              style={{ top: 'calc(50% + 4px)' }}
+              style={{ top: "calc(50% + 4px)" }}
             />
           </div>
         </div>

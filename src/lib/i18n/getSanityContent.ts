@@ -2,8 +2,9 @@ import { Perfume, CombinedPerfume, NavbarPerfumes, SubCategory } from '@/types/p
 import { Collection } from '@/types/collection';
 import { MainPerfume } from '@/types/main-perfume';
 import { fetchSanityData } from '../sanity/fetch';
-import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery, getProductBySlugQuery, getHomePageQuery } from '../sanity/queries';
+import { getBrandPageQuery, getMensPerfumesQuery, getNavbarPerfumesQuery, getNewsBySlugQuery, getNewsPageQuery, getPerfumeBySlugQuery, getWomensPerfumesQuery, getSearchResultsQuery, getMainPerfumeBySlugQuery, getCollectionBySlugQuery, getAllSubCategoriesQuery, getProductBySlugQuery, getHomePageQuery, getNotesQuery } from '../sanity/queries';
 import { HomePageInterface } from '@/types/home-page';
+import { Note } from '@/types/notes';
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
 
@@ -297,5 +298,20 @@ export async function getProductBySlug(slug: string, locale: string): Promise<Pr
       mainPerfume: null,
       collection: null
     };
+  }
+}
+
+
+export async function getNotes(locale: string): Promise<Note[]> {
+  try {
+    const data = await fetchSanityData(
+      getNotesQuery({locale}),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as Note[];
+  } catch (error) {
+    console.error('Error fetching notes:', error);
+    return [];
   }
 }

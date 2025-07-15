@@ -111,6 +111,27 @@ export const collections = defineType({
       description: 'References to products in the collection',
     }),
     defineField({
+      name: 'momentOfDay',
+      type: 'string',
+      title: 'Moment Of Day',
+      description: 'e.g., Morning, Afternoon, Evening, Night',
+      options: {
+        list: [
+          {title: 'Sunrise', value: 'sunrise'},
+          {title: 'Daytime', value: 'daytime'},
+          {title: 'Afternoon', value: 'afternoon'},
+          {title: 'Sunset', value: 'sunset'},
+          {title: 'Night', value: 'night'},
+        ],
+      },
+    }),
+    defineField({
+      name: 'sharpness',
+      type: 'number',
+      title: 'Sharpness',
+      description: 'How Light/Discrete or Intense/Persistent the perfume is 0 means very light and 100 means very intense',
+    }),
+    defineField({
       name: 'relatedProducts',
       type: 'array',
       of: [

@@ -26,14 +26,17 @@ export default function PerfumeDropdown({
   categoryName,
   isOpen,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
 }: PerfumeDropdownProps) {
-  const [hoveredPerfume, setHoveredPerfume] = useState<CombinedPerfume | null>(null);
+  const [hoveredPerfume, setHoveredPerfume] = useState<CombinedPerfume | null>(
+    null
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
   const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
-  const categoryPerfumes = category === "mens" ? perfumes.mens : perfumes.womens;
+  const categoryPerfumes =
+    category === "mens" ? perfumes.mens : perfumes.womens;
 
   useEffect(() => {
     if (!dropdownRef.current) return;
@@ -41,18 +44,18 @@ export default function PerfumeDropdown({
     const ctx = gsap.context(() => {
       if (isOpen) {
         // Initial state
-        gsap.set(dropdownRef.current, { 
+        gsap.set(dropdownRef.current, {
           height: 0,
           opacity: 0,
-          display: "block"
+          display: "block",
         });
-        gsap.set(titleRefs.current, { 
+        gsap.set(titleRefs.current, {
           y: 20,
-          opacity: 0
+          opacity: 0,
         });
         gsap.set(imageContainerRef.current, {
           scale: 0.8,
-          opacity: 0
+          opacity: 0,
         });
 
         // Animate dropdown container
@@ -61,23 +64,31 @@ export default function PerfumeDropdown({
           height: "auto",
           opacity: 1,
           duration: 0.3,
-          ease: "power2.inOut"
+          ease: "power2.inOut",
         })
-        // Stagger animate titles
-        .to(titleRefs.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.3,
-          stagger: 0.05,
-          ease: "power2.out"
-        }, "-=0.1")
-        // Animate image container
-        .to(imageContainerRef.current, {
-          scale: 1,
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.out"
-        }, "-=0.2");
+          // Stagger animate titles
+          .to(
+            titleRefs.current,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.3,
+              stagger: 0.05,
+              ease: "power2.out",
+            },
+            "-=0.1"
+          )
+          // Animate image container
+          .to(
+            imageContainerRef.current,
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.3,
+              ease: "power2.out",
+            },
+            "-=0.2"
+          );
       } else {
         // Animate out
         const tl = gsap.timeline();
@@ -85,17 +96,20 @@ export default function PerfumeDropdown({
           opacity: 0,
           y: 20,
           duration: 0.2,
-          ease: "power2.in"
-        })
-        .to(dropdownRef.current, {
-          height: 0,
-          opacity: 0,
-          duration: 0.2,
-          ease: "power2.inOut",
-          onComplete: () => {
-            gsap.set(dropdownRef.current, { display: "none" });
-          }
-        }, "-=0.1");
+          ease: "power2.in",
+        }).to(
+          dropdownRef.current,
+          {
+            height: 0,
+            opacity: 0,
+            duration: 0.2,
+            ease: "power2.inOut",
+            onComplete: () => {
+              gsap.set(dropdownRef.current, { display: "none" });
+            },
+          },
+          "-=0.1"
+        );
       }
     });
 
@@ -108,12 +122,12 @@ export default function PerfumeDropdown({
   const secondColumnPerfumes = categoryPerfumes.slice(midPoint);
 
   return (
-    <div 
+    <div
       className="relative"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div 
+      <div
         ref={dropdownRef}
         className="overflow-hidden border-b border-foreground/[0.08]"
         style={{ display: "none" }}
@@ -125,7 +139,7 @@ export default function PerfumeDropdown({
               {firstColumnPerfumes.map((perfume, index) => (
                 <div
                   key={perfume._id}
-                  ref={el => {
+                  ref={(el) => {
                     if (el) titleRefs.current[index] = el;
                   }}
                 >
@@ -135,9 +149,7 @@ export default function PerfumeDropdown({
                     onMouseEnter={() => setHoveredPerfume(perfume)}
                     onMouseLeave={() => setHoveredPerfume(null)}
                   >
-                    {/* <p className="text-lg font-medium">
-                      {perfume.localized?.value.title || perfume.title}
-                    </p> */}
+                    <p className="text-lg font-medium">{perfume.title}</p>
                   </Link>
                 </div>
               ))}
@@ -147,7 +159,7 @@ export default function PerfumeDropdown({
               {secondColumnPerfumes.map((perfume, index) => (
                 <div
                   key={perfume._id}
-                  ref={el => {
+                  ref={(el) => {
                     if (el) titleRefs.current[index + midPoint] = el;
                   }}
                 >
@@ -157,9 +169,7 @@ export default function PerfumeDropdown({
                     onMouseEnter={() => setHoveredPerfume(perfume)}
                     onMouseLeave={() => setHoveredPerfume(null)}
                   >
-                    {/* <p className="text-lg font-medium">
-                      {perfume.localized?.value.title || perfume.title}
-                    </p> */}
+                    <p className="text-lg font-medium">{perfume.title}</p>
                   </Link>
                 </div>
               ))}
