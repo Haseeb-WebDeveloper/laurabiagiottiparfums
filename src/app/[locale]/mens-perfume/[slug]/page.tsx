@@ -9,8 +9,9 @@ import {
 } from "@/lib/i18n/getSanityContent";
 import { Metadata } from "next";
 import { PerfumeSeoTagsInterface } from "@/types/news";
-
-
+import { getAllPerfumesSlugQuery, getProductBySlugsForSitemapQuery } from "@/lib/sanity/queries";
+import { fetchSanityData } from "@/lib/sanity/fetch";
+import { PerfumeData } from "@/app/sitemap.xml/route";
 
 export default async function PerfumePage({
   params,
@@ -61,7 +62,47 @@ export default async function PerfumePage({
 }
 
 export async function generateStaticParams() {
-  return LOCALES.map((locale) => ({ locale }));
+  try {
+    const perfumesData = await fetchSanityData<PerfumeData>(
+      getProductBySlugsForSitemapQuery("mens"),
+      { revalidate: 3600 } // Cache for 1 hour
+    );
+
+    if (!perfumesData) {
+      console.warn('No perfumes data returned from Sanity');
+      return [];
+    }
+
+    const perfumes = [
+      perfumesData.perfume, 
+      perfumesData.mainPerfume, 
+      perfumesData.collection
+    ].filter(Boolean);
+
+    if (!perfumes.length) {
+      console.warn('No valid perfumes found in data');
+      return [];
+    }
+
+    const paths: { locale: string; slug: string }[] = [];
+
+    LOCALES.forEach((locale) => {
+      perfumes.forEach((perfume: any) => {
+        if (perfume?.slug) {
+          paths.push({
+            locale,
+            slug: perfume.slug,
+          });
+        }
+      });
+    });
+
+    return paths;
+  } catch (error) {
+    // Log the error but don't fail the build
+    console.error('Error generating static params for mens perfume:', error);
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -76,7 +117,8 @@ export async function generateMetadata({
   )) as PerfumeSeoTagsInterface;
 
   // Find the first non-null product data
-  const perfume = perfumeData.perfume || perfumeData.mainPerfume || perfumeData.collection;
+  const perfume =
+    perfumeData.perfume || perfumeData.mainPerfume || perfumeData.collection;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.laurabiagiottiparfums.com";

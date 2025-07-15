@@ -9,6 +9,9 @@ import {
 } from "@/lib/i18n/getSanityContent";
 import { Metadata } from "next";
 import { PerfumeSeoTagsInterface, SeoTagsInterface } from "@/types/news";
+import { fetchSanityData } from "@/lib/sanity/fetch";
+import { PerfumeData } from "@/app/sitemap.xml/route";
+import { getProductBySlugsForSitemapQuery } from "@/lib/sanity/queries";
 
 export default async function PerfumePage({
   params,
@@ -59,7 +62,47 @@ export default async function PerfumePage({
 }
 
 export async function generateStaticParams() {
-  return LOCALES.map((locale) => ({ locale }));
+  try {
+    const perfumesData = await fetchSanityData<PerfumeData>(
+      getProductBySlugsForSitemapQuery("womens"),
+      { revalidate: 3600 } // Cache for 1 hour
+    );
+
+    if (!perfumesData) {
+      console.warn("No perfumes data returned from Sanity");
+      return [];
+    }
+
+    const perfumes = [
+      perfumesData.perfume,
+      perfumesData.mainPerfume,
+      perfumesData.collection,
+    ].filter(Boolean);
+
+    if (!perfumes.length) {
+      console.warn("No valid perfumes found in data");
+      return [];
+    }
+
+    const paths: { locale: string; slug: string }[] = [];
+
+    LOCALES.forEach((locale) => {
+      perfumes.forEach((perfume: any) => {
+        if (perfume?.slug) {
+          paths.push({
+            locale,
+            slug: perfume.slug,
+          });
+        }
+      });
+    });
+
+    return paths;
+  } catch (error) {
+    // Log the error but don't fail the build
+    console.error("Error generating static params for womens perfume:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({
