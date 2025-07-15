@@ -5,7 +5,10 @@ import { LOCALES } from "@/lib/i18n/constants";
 import {
   getProductBySlug,
   getAllSubCategories,
+  getProductBySlugForSEO,
 } from "@/lib/i18n/getSanityContent";
+import { Metadata } from "next";
+import { PerfumeSeoTagsInterface, SeoTagsInterface } from "@/types/news";
 
 export default async function PerfumePage({
   params,
@@ -20,15 +23,14 @@ export default async function PerfumePage({
     getProductBySlug(slug, locale),
   ]);
 
-
   // Render based on which type of product was found
   if (productData.perfume) {
     return (
       <div className="bg-background overflow-hidden">
-        <PerfumeSlug 
-          perfume={productData.perfume} 
-          locale={locale} 
-          subCategories={subCategories || []} 
+        <PerfumeSlug
+          perfume={productData.perfume}
+          locale={locale}
+          subCategories={subCategories || []}
         />
       </div>
     );
@@ -37,9 +39,9 @@ export default async function PerfumePage({
   if (productData.mainPerfume) {
     return (
       <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] mt-[30rem]">
-        <MainPerfumeSlug 
-          mainPerfume={productData.mainPerfume} 
-          locale={locale} 
+        <MainPerfumeSlug
+          mainPerfume={productData.mainPerfume}
+          locale={locale}
         />
       </div>
     );
@@ -48,10 +50,7 @@ export default async function PerfumePage({
   if (productData.collection) {
     return (
       <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
-        <CollectionSlug 
-          collection={productData.collection} 
-          locale={locale} 
-        />
+        <CollectionSlug collection={productData.collection} locale={locale} />
       </div>
     );
   }
@@ -61,4 +60,94 @@ export default async function PerfumePage({
 
 export async function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}): Promise<Metadata> {
+  const { slug, locale } = await params;
+  const perfumeData = (await getProductBySlugForSEO(
+    slug,
+    locale
+  )) as PerfumeSeoTagsInterface;
+
+  // Find the first non-null product data
+  const perfume =
+    perfumeData.perfume || perfumeData.mainPerfume || perfumeData.collection;
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.laurabiagiottiparfums.com";
+
+  const perfumeUrl = `${baseUrl}/${locale}/womens-perfume/${slug}`;
+
+  const metaTitle = "Womens Perfume | Laurabiagiotti";
+  const metaDescription =
+    "Discover the latest womens perfume from Laurabiagiotti.";
+  const ogTitle = "Womens Perfume | Laurabiagiotti";
+  const ogDescription =
+    "Discover the latest womens perfume from Laurabiagiotti.";
+  const twitterTitle = "Womens Perfume | Laurabiagiotti";
+  const twitterDescription =
+    "Discover the latest womens perfume from Laurabiagiotti.";
+
+  const commonMetadata = {
+    formatDetection: {
+      telephone: false,
+      date: false,
+      email: false,
+      address: false,
+    },
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: perfumeUrl,
+      languages: {
+        en: `${baseUrl}/en/womens-perfume/${slug}`,
+        it: `${baseUrl}/it/womens-perfume/${slug}`,
+        de: `${baseUrl}/de/womens-perfume/${slug}`,
+      },
+    },
+    robots: {
+      follow: false,
+      index: false,
+      nocache: false,
+      // googleBot:
+      //   "index, follow, nocache, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    },
+  };
+
+  const metadata = {
+    ...commonMetadata,
+    title: perfume?.metaTitle || metaTitle,
+    description: perfume?.metaDescription || metaDescription,
+    authors: [{ name: "Laurabiagiotti" }],
+    creator: "Laurabiagiotti",
+    publisher: "Laurabiagiotti",
+    openGraph: {
+      title: perfume?.ogTitle || ogTitle,
+      description: perfume?.ogDescription || ogDescription,
+      url: perfumeUrl,
+      siteName: "Laurabiagiotti",
+      locale: locale,
+      type: "article",
+      images: [
+        {
+          url: perfume?.ogImage?.asset?.url || `${baseUrl}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: perfume?.ogTitle || ogTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: perfume?.twitterTitle || twitterTitle,
+      description: perfume?.twitterDescription || twitterDescription,
+      creator: "@figmenta",
+      images: [perfume?.ogImage?.asset?.url || `${baseUrl}/logo.webp`],
+    },
+  };
+
+  return metadata as Metadata;
 }

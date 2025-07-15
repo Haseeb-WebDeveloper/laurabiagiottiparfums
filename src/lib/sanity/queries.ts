@@ -7,14 +7,157 @@ export const getAllNewsSlugQuery = () => `
 `;
 
 // perfumes For SITEMAP
-export const getAllPerfumesSlugQuery = () => `
-*[_type == "perfume"] {
+export const getAllPerfumesSlugQuery = (category: string) => `
+*[_type == "perfume" && category == "${category}"] {
   "slug": slug.current,
   _updatedAt
 }
 `;
 
-// SEO
+export const getProductBySlugsForSitemapQuery = (category: string) => `
+{
+  "perfume": *[_type == "perfume" && category == "${category}"][0] {
+    "slug": slug.current,
+    _updatedAt
+  },
+  
+  "mainPerfume": *[_type == "mainPerfume" && category == "${category}"][0] {
+    "slug": slug.current,
+    _updatedAt
+  },
+
+  "collection": *[_type == "collections" && category == "${category}"][0] {
+    "slug": slug.current,
+    _updatedAt
+  }
+}
+`;
+
+// SEO TAGS
+// Get a single news
+export const getNewsBySlugForSEOQuery = (slug: string, locale: string) => `
+*[_type == "news" && slug.current == "${slug}"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+// News Page for SEO
+export const getNewsPageForSEOQuery = (locale: string) => `
+*[_type == "newsPage"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+// Brand Page for SEO
+export const getBrandPageForSEOQuery = (locale: string) => `
+*[_type == "brand"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+// Home Page for SEO
+export const getHomePageForSEOQuery = (locale: string) => `
+*[_type == "homePage"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+// Product Page for SEO
+
+export const getProductBySlugForSEOQuery = (slug: string, locale: string) => `
+{
+  "perfume": *[_type == "perfume" && slug.current == "${slug}"][0] {
+    "metaTitle": metaTitle.${locale},
+    "metaDescription": metaDescription.${locale},
+    "ogTitle": ogTitle.${locale},
+    "ogDescription": ogDescription.${locale},
+    "twitterTitle": twitterTitle.${locale},
+    "twitterDescription": twitterDescription.${locale},
+    ogImage {
+      asset->{
+        url
+      }
+    }
+  },
+  
+  "mainPerfume": *[_type == "mainPerfume" && slug.current == "${slug}"][0] {
+    "metaTitle": metaTitle.${locale},
+    "metaDescription": metaDescription.${locale},
+    "ogTitle": ogTitle.${locale},
+    "ogDescription": ogDescription.${locale},
+    "twitterTitle": twitterTitle.${locale},
+    "twitterDescription": twitterDescription.${locale},
+    ogImage {
+      asset->{
+        url
+      }
+    }
+  },
+
+  "collection": *[_type == "collections" && slug.current == "${slug}"][0] {
+    "metaTitle": metaTitle.${locale},
+    "metaDescription": metaDescription.${locale},
+    "ogTitle": ogTitle.${locale},
+    "ogDescription": ogDescription.${locale},
+    "twitterTitle": twitterTitle.${locale},
+    "twitterDescription": twitterDescription.${locale},
+    ogImage {
+      asset->{
+        url
+      }
+    }
+  }
+}
+`;
+
+// Static Generation
+// News slugs for static generation
+export const getAllNewsSlugsQuery = () => `
+  *[_type == "news" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`;
+
 // Main Perfume slugs for static generation
 export const getMainPerfumeSlugsQuery = () => `
   *[_type == "mainPerfume" && defined(slug.current)] {
@@ -1091,10 +1234,7 @@ export const getHomePageQuery = (locale: string) => `
   }
 `;
 
-
-
-
-export const getNotesQuery = ({locale}: {locale: string}) => `
+export const getNotesQuery = ({ locale }: { locale: string }) => `
   *[_type == "notes"] {
     title,
     image {

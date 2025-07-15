@@ -22,7 +22,7 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
         </div>
         {/* Content */}
         <div className="w-full lg:w-[50%] space-y-[1rem] lg:px-2">
-          <h3 className="">{news.title}</h3>
+          <h3 className="text-[2.5rem] leading-[3rem] font-[700]">{news.title}</h3>
           <div
             // gsap-target="heading-1"
             className="uppercase tracking-[0.1em] text-[0.875rem] font-[700]"

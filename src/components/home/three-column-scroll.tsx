@@ -90,13 +90,6 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
           const leftSpeed = leftHeight - minColumnHeight;
           const rightSpeed = rightHeight - minColumnHeight;
 
-          console.log("Tablet - Column heights:", {
-            leftHeight,
-            rightHeight,
-            minColumnHeight,
-          });
-          console.log("Tablet - Scroll speeds:", { leftSpeed, rightSpeed });
-
           // Kill existing ScrollTriggers
           ScrollTrigger.getAll().forEach((st) => st.kill());
 
@@ -151,14 +144,6 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
           const leftSpeed = leftHeight - minColumnHeight;
           const centerSpeed = centerHeight - minColumnHeight;
           const rightSpeed = rightHeight - minColumnHeight;
-
-          console.log("Desktop - Column heights:", {
-            leftHeight,
-            centerHeight,
-            rightHeight,
-            minColumnHeight,
-          });
-          console.log("Desktop - Scroll speeds:", { leftSpeed, centerSpeed, rightSpeed });
 
           // Kill existing ScrollTriggers
           ScrollTrigger.getAll().forEach((st) => st.kill());
