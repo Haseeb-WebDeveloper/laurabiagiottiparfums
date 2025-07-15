@@ -118,11 +118,12 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground
   }
 }
 body {
   font-family: "Roboto Condensed", sans-serif;
+  overflow-x: hidden;
 }
 
 .font-primary {
@@ -281,27 +282,21 @@ input[type="range"] {
 
 /* Track */
 input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(
-    to right,
-    currentColor 0%,
-    currentColor var(--range-progress),
-    rgba(255, 255, 255, 0.2) var(--range-progress),
-    rgba(255, 255, 255, 0.2) 100%
-  );
+  background: rgba(0, 0, 0, 0.349);
   height: 2px;
   border-radius: 1px;
 }
 
 input[type="range"]::-moz-range-track {
-  background: rgba(255, 255, 255, 0.2);
-  height: 2px;
+  background: rgba(255, 255, 255, 0.103);
+  height: 1px;
   border-radius: 1px;
 }
 
 /* Progress */
 input[type="range"]::-moz-range-progress {
   background: currentColor;
-  height: 2px;
+  height: 1px;
   border-radius: 1px;
 }
 
@@ -325,10 +320,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-/* Custom thumb hover effect */
-input[type="range"]:hover + div {
-  transform: translateY(-50%) scale(1.1) !important;
-}
 
 input[type="range"]:active + div {
   transform: translateY(-50%) scale(0.95) !important;

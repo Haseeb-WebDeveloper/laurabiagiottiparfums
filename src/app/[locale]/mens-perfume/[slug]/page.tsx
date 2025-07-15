@@ -35,7 +35,7 @@ export default async function PerfumePage({
 
   if (productData.mainPerfume) {
     return (
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="">
         <MainPerfumeSlug
           mainPerfume={productData.mainPerfume}
           locale={locale}

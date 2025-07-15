@@ -301,7 +301,7 @@ export default function WearYourPerfume() {
             {/* Slider Container with SVG */}
             <div className="relative w-full h-32 flex items-center justify-center">
               {/* Animated SVG - Centered */}
-              <div className="w-fit absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="w-fit absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -332,13 +332,13 @@ export default function WearYourPerfume() {
                   />
                   {/* Thumb Icons Container */}
                   <div 
-                    className="absolute pointer-events-none"
+                    className="absolute pointer-events-none z-[90]"
                     style={{
                       left: `calc(${step4Selection.intensity}% - 24px)`,
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      width: '48px',
-                      height: '48px',
+                      width: '65px',
+                      height: '65px',
                       borderRadius: '50%',
                       backgroundColor: 'currentColor',
                       display: 'flex',
@@ -349,18 +349,18 @@ export default function WearYourPerfume() {
                     }}
                   >
                     <Image
-                      src="/icons/left.svg"
+                      src="/icons/right-arror.svg"
                       alt="Light"
-                      width={16}
-                      height={16}
-                      className="invert"
+                      width={24}
+                      height={24}
+                      className="rotate-180"
                     />
                     <Image
-                      src="/icons/right.svg"
+                      src="/icons/right-arror.svg"
                       alt="Intense"
-                      width={16}
-                      height={16}
-                      className="invert"
+                      width={24}
+                      height={24}
+                      className=""
                     />
                   </div>
                 </div>

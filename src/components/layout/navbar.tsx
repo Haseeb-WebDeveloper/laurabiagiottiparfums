@@ -171,7 +171,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="relative">
+    <div>
       {/* Desktop Navbar */}
       <div className="hidden lg:block fixed top-0 left-0 right-0 z-[100] bg-background 2xl:px-[34px] px-[38px]">
         <div className="max-w pt-[45px] 2xl:pt-[48px]">
@@ -211,7 +211,7 @@ export default function Navbar() {
             {/* Right */}
             <WearYourPerfume />
           </div>
-          <div className="relative mt-[1.6rem] 2xl:mt-[1.7rem] w-full flex items-center justify-center gap-[2rem]">
+          <div className="mt-[1.6rem] 2xl:mt-[1.7rem] w-full flex items-center justify-center gap-[2rem]">
             {/* Nav items */}
             <div className="flex items-center gap-[2rem]">
               {navItems.map((item) => (
@@ -229,28 +229,6 @@ export default function Navbar() {
                 </div>
               ))}
             </div>
-
-            {/* Dropdown */}
-            {hoveredCategory && (
-              <div
-                className="absolute left-0 top-full bg-background z-[110] w-screen"
-                onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-                onMouseLeave={() => setHoveredCategory(null)}
-              >
-                <PerfumeDropdown
-                  isOpen={hoveredCategory === hoveredCategory}
-                  onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-                  onMouseLeave={() => setHoveredCategory(null)}
-                  perfumes={perfumes}
-                  category={hoveredCategory}
-                  locale={locale}
-                  categoryName={
-                    navItems.find((item) => item.category === hoveredCategory)
-                      ?.label || ""
-                  }
-                />
-              </div>
-            )}
           </div>
         </div>
         <div className="h-[29px] w-screen border-b-[1px] border-foreground/[0.08]"></div>
@@ -372,6 +350,28 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Dropdown */}
+      {hoveredCategory && (
+        <div
+          className="absolute left-0 top-[160px] bg-background z-[110] w-full"
+          onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+          onMouseLeave={() => setHoveredCategory(null)}
+        >
+          <PerfumeDropdown
+            isOpen={hoveredCategory === hoveredCategory}
+            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+            onMouseLeave={() => setHoveredCategory(null)}
+            perfumes={perfumes}
+            category={hoveredCategory}
+            locale={locale}
+            categoryName={
+              navItems.find((item) => item.category === hoveredCategory)
+                ?.label || ""
+            }
+          />
+        </div>
+      )}
 
       {/* Search Modal */}
       <SearchModal

@@ -15,9 +15,11 @@ interface SubCategory {
 }
 
 // Hero section image type
-interface HeroSectionImage {
+export interface HeroSectionImage {
   title: string;
-  image: SanityImage;
+  image: {
+    asset: SanityImage;
+  };
 }
 
 // Fourth section content type
