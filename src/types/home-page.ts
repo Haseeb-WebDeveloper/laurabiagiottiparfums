@@ -1,4 +1,5 @@
 import { Perfume, SanityImage } from "./perfume";
+import { Note } from "./notes";
 
 export interface HomePagePerfume {
   _id: string;
@@ -39,11 +40,22 @@ export interface SocialMediaImage {
   url: string;
 }
 
+
+export interface HomePagePerfumeCarousel {
+  perfume: Perfume;
+  title: string;
+  image: {
+    asset: SanityImage;
+  };
+}
+
 export interface HomePageInterface {
+  perfumesCarousel: HomePagePerfumeCarousel[];
   perfumes: Perfume[];
   circularIngridientsImages: {
     asset: SanityImage;
   }[];
+  notes: Note[];
   textImageSection: TextImageSection;
   news: HomePageNews[];
   socialMediaImages: SocialMediaImage[];

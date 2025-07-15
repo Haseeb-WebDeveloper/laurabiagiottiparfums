@@ -12,20 +12,18 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { HomePagePerfumeCarousel } from "@/types/home-page";
 
-interface HeroSlide {
-  title: string;
-  image: string;
-}
+
 
 interface HeroSliderProps {
-  slides: HeroSlide[];
-  autoPlayInterval?: number;
+  slides: HomePagePerfumeCarousel[];
+  locale: string;
 }
 
 const HeroSlider: React.FC<HeroSliderProps> = ({
   slides,
-  autoPlayInterval = 4000,
+  locale,
 }) => {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -227,7 +225,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
         modules={[Navigation, Autoplay]}
         speed={2000}
         autoplay={{
-          delay: autoPlayInterval,
+          delay: 4000,
           disableOnInteraction: false,
         }}
         loop={true}
@@ -247,7 +245,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
             {/* Background Image */}
             <div className="absolute inset-0">
               <img
-                src={slide.image}
+                src={slide.image.asset.url}
                 alt={slide.title}
                 className="h-full w-full object-cover"
                 loading={index === 0 ? "eager" : "lazy"}
@@ -281,7 +279,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
 
                       {/* Secondary CTA */}
                       <Link
-                        href={`/it/perfume`}
+                        href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
                         className="cursor-pointer text-background tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
                       >
                         Scopri

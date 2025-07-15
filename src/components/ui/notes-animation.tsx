@@ -3,87 +3,84 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SanityImage } from "@/types/perfume";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
+import { Note } from "@/types/notes";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface Notes {
-  image: {
-    asset: SanityImage;
-  };
-  title: string;
-  notes: { name: string }[];
-}
 
 export default function NotesAnimation({
   notes,
   header,
+  locale,
 }: {
-  notes: Notes[];
-  header: string;
+  notes: Note[];
+  header?: string;
+  locale?: string;
 }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [initialX, setInitialX] = useState(2000); // Safe default value
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [isDesktop, setIsDesktop] = useState(true);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setInitialX(window.innerWidth + 300);
-      setIsDesktop(window.innerWidth >= 768); // md breakpoint
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
+  // Function to initialize the animation
+  const initAnimation = () => {
+    const container = containerRef.current;
+    const trigger = triggerRef.current;
     const cards = cardsRef.current.filter(Boolean);
+    if (!container || !trigger || !cards.length) return;
+
+    // Check if it's desktop
+    const isDesktop = window.innerWidth >= 768;
+    setIsDesktop(isDesktop);
+
+    // Kill any existing timeline
+    if (timelineRef.current) {
+      timelineRef.current.scrollTrigger?.kill();
+      timelineRef.current.kill();
+    }
 
     // Calculate positions for each card based on notes length and screen size
     let positions;
-
     if (isDesktop) {
       // Desktop: horizontal layout
       positions =
         notes?.length === 4
           ? [
-              { x: -450, y: 0 }, 
-              { x: -150, y: 0 }, 
-              { x: 150, y: 0 }, 
-              { x: 450, y: 0 }, 
+              { x: -450, y: 0 },
+              { x: -150, y: 0 },
+              { x: 150, y: 0 },
+              { x: 450, y: 0 },
             ]
           : [
-              { x: -340, y: 0 }, 
-              { x: 0, y: 0 }, 
-              { x: 340, y: 0 }, 
+              { x: -340, y: 0 },
+              { x: 0, y: 0 },
+              { x: 340, y: 0 },
             ];
     } else {
       // Mobile/Tablet: vertical layout
       positions =
         notes?.length === 4
           ? [
-              { x: 0, y: -300 }, 
-              { x: 0, y: -100 }, 
-              { x: 0, y: 100 }, 
-              { x: 0, y: 300 }, 
+              { x: 0, y: -300 },
+              { x: 0, y: -100 },
+              { x: 0, y: 100 },
+              { x: 0, y: 300 },
             ]
           : [
-              { x: 0, y: 0 }, 
-              { x: 0, y: 300 }, 
-              { x: 0, y: 600 }, 
+              { x: 0, y: 0 },
+              { x: 0, y: 300 },
+              { x: 0, y: 600 },
             ];
     }
 
-    // Timeline for initial animation (entering the screen)
+    // Create timeline
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: containerRef.current,
+        trigger: trigger,
         start: "top 120%",
         end: "bottom center",
         scrub: 1,
@@ -91,16 +88,23 @@ export default function NotesAnimation({
     });
 
     // First part: Cards come to their positions
-    tl.to(cards, {
-      x: (index) => positions[index].x,
-      y: (index) => positions[index].y,
-      stagger: {
-        amount: 0.08,
-        from: "start",
+    tl.fromTo(
+      cards,
+      {
+        x: (index) => window.innerWidth + 300,
+        y: (index) => positions[index].y,
       },
-      duration: 0.4,
-      ease: "power2.out",
-    })
+      {
+        x: (index) => positions[index].x,
+        y: (index) => positions[index].y,
+        stagger: {
+          amount: 0.08,
+          from: "start",
+        },
+        duration: 0.4,
+        ease: "power2.out",
+      }
+    )
       // Second part: Cards move off-screen to the left
       .to(cards, {
         x: -window.innerWidth - 300,
@@ -113,16 +117,62 @@ export default function NotesAnimation({
         ease: "power2.in",
       });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    // Store timeline reference
+    timelineRef.current = tl;
+  };
+
+  useEffect(() => {
+    // Handler for the columnHeightSet event
+    const handleColumnHeightSet = () => {
+      // Small delay to ensure DOM is settled
+      setTimeout(() => {
+        initAnimation();
+        ScrollTrigger.refresh();
+      }, 100);
     };
-  }, [isDesktop, notes?.length]);
+
+    // Listen for the columnHeightSet event
+    window.addEventListener("columnHeightSet", handleColumnHeightSet);
+
+    // Initialize animation immediately as well
+    initAnimation();
+
+    return () => {
+      window.removeEventListener("columnHeightSet", handleColumnHeightSet);
+      if (timelineRef.current) {
+        timelineRef.current.scrollTrigger?.kill();
+        timelineRef.current.kill();
+      }
+    };
+  }, [notes?.length]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      initAnimation();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
-    <div className="w-full">
-      <div ref={containerRef} className=" relative">
-        <h2 className="lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">{header}</h2>
-        <div className="sticky top-0 lg:h-[40rem] h-[80rem] flex items-start justify-center">
+    <section ref={sectionRef} className="relative overflow-hidden">
+      <div
+        ref={triggerRef}
+        className="relative h-[calc(100vh-20px)] flex flex-col"
+      >
+        <h2 className="lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">
+          {header}
+        </h2>
+        <div
+          ref={containerRef}
+          className={`sticky top-0 lg:h-[40rem] h-[80rem] flex items-start justify-center
+            ${notes[0].perfumeNotes ? "mt-[15rem] lg:mt-0" : ""}
+            `}
+        >
           {/* horizontal string */}
           <div className="hidden lg:block absolute top-[13%] left-0 w-full h-[1px] bg-foreground/10"></div>
 
@@ -134,8 +184,9 @@ export default function NotesAnimation({
               }}
               className="absolute"
               style={{
-                transform: `translate3d(${initialX}px, 0, ${index * 10}px)`,
                 willChange: "transform",
+                transform: "translateZ(0)",
+                backfaceVisibility: "hidden",
               }}
             >
               <div className="group md:block">
@@ -143,34 +194,79 @@ export default function NotesAnimation({
                 <div className="hidden md:block">
                   <Image
                     src={note.image.asset.url}
-                    alt={note.title}
+                    alt={note.title || note.name || ""}
                     width={500}
                     height={500}
                     className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 w-full h-full max-w-[200px] max-h-[200px] aspect-square object-cover rounded-full"
                   />
-                  <h3 className="mt-[2rem]">{note.title}</h3>
-                  <div className="mt-[1rem] flex flex-col gap-[0.5rem]">
-                    {note.notes.map((note, key) => (
-                      <p key={key}>{note.name}</p>
-                    ))}
-                  </div>
+                  {note.title && (
+                    <h3 className="mt-[2rem] text-[2rem] font-[700]">
+                      {note.title.split(" ").length > 2 ? (
+                        <>
+                          {note.title.split(" ")[0]}
+                          <br />
+                          {note.title.split(" ").slice(1).join(" ")}
+                        </>
+                      ) : (
+                        note.title
+                      )}
+                    </h3>
+                  )}
+                  {note.name && (
+                    <h3 className="mt-[2rem] text-[2rem] font-[700]">
+                      {note.name}
+                    </h3>
+                  )}
+                  {note.notes && (
+                    <div className="mt-[1rem] flex flex-col gap-[0.5rem]">
+                      {note.notes?.map((note, key) => (
+                        <p key={key}>{note.name}</p>
+                      ))}
+                    </div>
+                  )}
+                  {note.perfumeNotes && (
+                    <div className="mt-[1rem] flex flex-col gap-[0.5rem]">
+                      {note.perfumeNotes?.map((note, key) => (
+                        <Link
+                          href={`/${locale}/${note.category}-perfume/${note.slug}`}
+                          key={key}
+                        >
+                          {note.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Mobile/Tablet layout: image on left, text on right */}
                 <div className="flex md:hidden gap-[1.5rem] w-[90vw]">
                   <Image
                     src={note.image.asset.url}
-                    alt={note.title}
+                    alt={note.title || note.name || ""}
                     width={500}
                     height={500}
                     className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 lg:w-[120px] lg:h-[120px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <h3 className="mb-[1rem] text-[1.9rem] font-[700]">{note.title}</h3>
+                    <h3 className="mb-[1rem] text-[1.9rem] font-[700]">
+                      {note.title || note.name || ""}
+                    </h3>
                     <div className="flex flex-col gap-[0.5rem]">
-                      {note.notes.map((note, key) => (
-                        <p key={key}>{note.name}</p>
-                      ))}
+                      {note.notes && (
+                        <div className="flex flex-col gap-[0.5rem]">
+                          {note.notes?.map((note, key) => (
+                            <p key={key}>{note.name}</p>
+                          ))}
+                        </div>
+                      )}
+
+                      {note.perfumeNotes && (
+                        <div className="flex flex-col gap-[0.5rem]">
+                          {note.perfumeNotes?.map((note, key) => (
+                            <p key={key}>{note.title}</p>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -179,6 +275,6 @@ export default function NotesAnimation({
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

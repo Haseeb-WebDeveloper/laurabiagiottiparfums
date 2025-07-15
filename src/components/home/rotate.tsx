@@ -153,7 +153,7 @@ export default function Rotate({
 
   return (
     <div
-      className="overflow-hidden w-full h-[400px] md:h-[700px] lg:h-[700px] flex items-center justify-center touch-pan-y"
+      className="overflow-hidden w-full h-[400px] flex items-center justify-center touch-pan-y"
       style={{
         perspective: `1200px`,
       }}

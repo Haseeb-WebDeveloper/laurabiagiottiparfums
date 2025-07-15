@@ -21,10 +21,6 @@ export default async function Home({
   return (
     <div className="">
       {homeData && <HomePage homeData={homeData} locale={locale} />}
-       {/* News Section */}
-       {/* <div className="mt-[10rem]">
-        <HorizontalScroll cards={homeData?.news || []} locale={locale} />
-      </div> */}
     </div>
   );
 }

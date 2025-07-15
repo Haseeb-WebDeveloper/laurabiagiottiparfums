@@ -5,6 +5,7 @@ import { ParallaxImage } from "../ui/ParallaxImage";
 import NewsHorizontalScroll from "./horizontal-scroll";
 import SocialMedia from "./social-media";
 import HeroSlider from "./home-slider";
+import NotesAnimation from "../ui/notes-animation";
 
 export default function HomePage({
   homeData,
@@ -13,38 +14,11 @@ export default function HomePage({
   homeData: HomePageInterface;
   locale: string;
 }) {
-  const data = [
-    {
-      title: "Discover the World of Perfume",
-      description: "Explore our collection of the finest perfumes and colognes",
-      image: "/test-1.webp",
-    },
-    {
-      title: "Discover the World of Perfume",
-      description: "Explore our collection of the finest perfumes and colognes",
-      image: "/test-2.webp",
-    },
-    {
-      title: "Discover the World of Perfume",
-      description: "Explore our collection of the finest perfumes and colognes",
-      image: "/test-3.webp",
-    },
-    {
-      title: "Discover the World of Perfume",
-      description: "Explore our collection of the finest perfumes and colognes",
-      image: "/test-1.webp",
-    },
-    {
-      title: "Discover the World of Perfume",
-      description: "Explore our collection of the finest perfumes and colognes",
-      image: "/test-1.webp",
-    },
-  ];
 
   return (
     <main className="">
       <div className="mb-[4rem] lg:mt-[190px] mt-[60px] lg:h-[calc(100vh-190px)] h-[calc(100vh-60px)]">
-        <HeroSlider slides={data} />
+        <HeroSlider slides={homeData.perfumesCarousel} locale={locale} />
       </div>
       {/* Hero Section with Featured Perfumes */}
       <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
@@ -60,8 +34,15 @@ export default function HomePage({
         </div>
       </div>
 
+
+      <div className="lg:mt-[2rem]">
+        <div className="overflow-hidden">
+          <NotesAnimation notes={homeData.notes} locale={locale}/>
+        </div>
+      </div>
+
       {/* Text Image Section */}
-      <section className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <section className="lg:mt-[6rem] bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w flex flex-col md:flex-row gap-8 items-center">
           <div className="w-full md:w-[95%]">
             <div className="relative w-full h-[400px]">

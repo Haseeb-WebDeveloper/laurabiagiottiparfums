@@ -1014,6 +1014,19 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
 // Home Page Query
 export const getHomePageQuery = (locale: string) => `
   *[_type == "homePage"][0] {
+    perfumesCarousel[] {
+      perfume-> {
+        title,
+        "slug": slug.current,
+        category,
+      },
+      title,
+      image {
+        asset-> {
+          url
+        }
+      }
+    },
     perfumes[]-> {
       _id,
       _type,
@@ -1030,6 +1043,19 @@ export const getHomePageQuery = (locale: string) => `
     circularIngridientsImages[] {
       asset-> {
         url
+      }
+    },
+    notes[]-> {
+      title,
+      image {
+        asset-> {
+          url,
+        }
+      },
+      "perfumeNotes": perfumeNotes[]-> {
+        title,
+        "slug": slug.current,
+        category,
       }
     },
     textImageSection {
@@ -1061,6 +1087,25 @@ export const getHomePageQuery = (locale: string) => `
         }
       },
       url
+    }
+  }
+`;
+
+
+
+
+export const getNotesQuery = (locale: string) => `
+  *[_type == "notes"] {
+    "title": title.${locale},
+    image {
+      asset-> {
+        url
+      }
+    },
+    "perfumeNotes": perfumeNotes[]-> {
+      "title": title.${locale},
+      "slug": slug.current,
+      category,
     }
   }
 `;
