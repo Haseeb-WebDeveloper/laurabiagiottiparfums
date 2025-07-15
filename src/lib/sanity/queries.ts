@@ -48,11 +48,6 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
         url
       }
     },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title
-      }
-    }
   },
   "collections": *[_type == "collections"] {
     _id,
@@ -66,11 +61,6 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
         url
       }
     },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title
-      }
-    }
   },
   "mainPerfumes": *[_type == "mainPerfume"] {
     _id,
@@ -110,12 +100,6 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
         url
       }
     },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title,
-        description
-      }
-    }
   },
   "collections": *[
     _type == "collections" &&
@@ -139,12 +123,6 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
         url
       }
     },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title,
-        description
-      }
-    }
   },
   "news": *[
     _type == "news" &&
@@ -167,12 +145,6 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
         url
       }
     },
-    "localized": *[_type == "translation.metadata" && references(^._id) && language == "${locale}"][0] {
-      value {
-        title,
-        description
-      }
-    }
   }
 }`;
 

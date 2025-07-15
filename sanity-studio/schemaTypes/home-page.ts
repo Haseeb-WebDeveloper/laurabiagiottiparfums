@@ -28,6 +28,64 @@ export const homePage = defineType({
       ],
     }),
     defineField({
+      name: 'notes',
+      title: 'Notes',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'note',
+          title: 'Note',
+          fields: [
+            {
+              name: 'image',
+              type: 'image',
+              title: 'Note Image',
+            },
+            {
+              name: 'title',
+              title: 'Note Title',
+              type: 'object',
+              fields: [
+                {name: 'en', type: 'string', title: 'English'},
+                {name: 'it', type: 'string', title: 'Italian'},
+                {name: 'de', type: 'string', title: 'German'},
+              ],
+              description: 'e.g., Head Notes, Heart Notes, Base Notes',
+            },
+            {
+              name: 'perfumeNotes',
+              title: 'Perfume Notes',
+              type: 'array',
+              of: [
+                {
+                  type: 'reference',
+                  name: 'perfume',
+                  title: 'Perfume',
+                  to: [{type: 'perfume'}, {type: 'mainPerfume'}, {type: 'collections'}],
+                },
+              ],
+              description: 'Perfumes that have this note',
+            },
+          ],
+          preview: {
+            select: {
+              title: 'title.en',
+              media: 'image',
+            },
+            prepare(selection) {
+              const {title, media} = selection
+              return {
+                title: title || 'Note Category',
+                media,
+              }
+            },
+          },
+        },
+      ],
+      validation: (Rule) => Rule.max(3),
+    }),
+    defineField({
       name: 'textImageSection',
       title: 'Text Image Section',
       type: 'object',

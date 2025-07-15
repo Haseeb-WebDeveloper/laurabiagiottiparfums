@@ -135,9 +135,9 @@ export default function PerfumeDropdown({
                     onMouseEnter={() => setHoveredPerfume(perfume)}
                     onMouseLeave={() => setHoveredPerfume(null)}
                   >
-                    <p className="text-lg font-medium">
+                    {/* <p className="text-lg font-medium">
                       {perfume.localized?.value.title || perfume.title}
-                    </p>
+                    </p> */}
                   </Link>
                 </div>
               ))}
@@ -157,9 +157,9 @@ export default function PerfumeDropdown({
                     onMouseEnter={() => setHoveredPerfume(perfume)}
                     onMouseLeave={() => setHoveredPerfume(null)}
                   >
-                    <p className="text-lg font-medium">
+                    {/* <p className="text-lg font-medium">
                       {perfume.localized?.value.title || perfume.title}
-                    </p>
+                    </p> */}
                   </Link>
                 </div>
               ))}
@@ -170,7 +170,7 @@ export default function PerfumeDropdown({
                 <div className="relative w-[220px] h-[160px] rounded-[1rem] overflow-hidden">
                   <Image
                     src={hoveredPerfume.featuredImage.asset.url}
-                    alt={hoveredPerfume.localized?.value.title || hoveredPerfume.title}
+                    alt={hoveredPerfume.title}
                     fill
                     className="object-cover rounded-[1rem] transition-transform duration-300 hover:scale-110"
                   />
