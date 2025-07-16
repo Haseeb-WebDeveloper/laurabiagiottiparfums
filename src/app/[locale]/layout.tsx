@@ -1,6 +1,7 @@
 import AppProvider from "@/provider/app-provider";
 import "./globals.css";
 import { LOCALES } from "@/lib/i18n/constants";
+import { Metadata } from "next";
 // import { GoogleTagManager } from "@next/third-parties/google";
 
 type RootLayoutProps = {
@@ -8,6 +9,12 @@ type RootLayoutProps = {
   params: {
     locale: string;
   };
+};
+
+export const metadata: Metadata = {
+  title: "Laurabiagiotti",
+  description: "Laurabiagiotti",
+  manifest: "/site.webmanifest",
 };
 
 export default async function RootLayout({
