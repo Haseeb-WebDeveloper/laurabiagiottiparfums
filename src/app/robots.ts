@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://figmenta.com/sitemap.xml',
+    sitemap: 'https://www.laurabiagiottiparfums.com/sitemap.xml',
   }
 }

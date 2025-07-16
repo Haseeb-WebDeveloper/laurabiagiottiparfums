@@ -66,7 +66,25 @@ export async function GET() {
         lastModified: new Date().toISOString(),
         priority: 0.9,
         changefreq: "weekly",
-      }
+      },
+      {
+        url: `${BASE_URL}/${locale}/cookies-policy`,
+        lastModified: new Date().toISOString(),
+        priority: 0.9,
+        changefreq: "yearly",
+      },
+      {
+        url: `${BASE_URL}/${locale}/terms-of-use`,
+        lastModified: new Date().toISOString(),
+        priority: 0.9,
+        changefreq: "yearly",
+      },
+      {
+        url: `${BASE_URL}/${locale}/privacy-policy`,
+        lastModified: new Date().toISOString(),
+        priority: 0.9,
+        changefreq: "yearly",
+      },
     );
   }
 

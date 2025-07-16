@@ -21,7 +21,7 @@ export default function TableBlockComponent({
           {TableBlock.images?.map((image) => (
             <div
               key={image.asset.url}
-              className="h-full p-1 flex items-center justify-center"
+              className="h-full p-2 flex items-center justify-center"
             >
               <Image
                 src={image.asset.url}
