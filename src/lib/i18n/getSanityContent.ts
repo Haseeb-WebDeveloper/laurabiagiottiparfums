@@ -28,9 +28,19 @@ import {
   getBrandPageForSEOQuery,
   getHomePageForSEOQuery,
   getProductBySlugForSEOQuery,
+  getTermsOfUseQuery,
+  getTermsOfUseForSEOQuery,
+  getCookiesPolicyForSEOQuery,
+  getCookiesPolicyQuery,
+  getPrivacyPolicyQuery,
+  getPrivacyPolicyForSEOQuery,
 } from "../sanity/queries";
 import { HomePageInterface } from "@/types/home-page";
 import { Note } from "@/types/notes";
+import { TermsOfUseInterface } from "@/types/terms-of-use";
+import { CookiesPolicyInterface } from "@/types/cookies-policy";
+import { PrivacyPolicyInterface } from "@/types/privacy-policy";
+
 
 const IS_DEVELOPMENT = process.env.DEVELOPMENT;
 
@@ -358,6 +368,53 @@ export async function getNotes(locale: string): Promise<Note[]> {
   }
 }
 
+
+// Terms of Use
+export async function getTermsOfUse(locale: string): Promise<TermsOfUseInterface | null> {
+  try {
+    const data = await fetchSanityData(
+      getTermsOfUseQuery({ locale }),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as TermsOfUseInterface;
+  } catch (error) {
+    console.error("Error fetching terms of use:", error);
+    return null;
+  }
+}
+
+
+// Cookies Policy
+export async function getCookiesPolicy(locale: string): Promise<CookiesPolicyInterface | null> {
+  try {
+    const data = await fetchSanityData(
+      getCookiesPolicyQuery({ locale }),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as CookiesPolicyInterface;
+  } catch (error) {
+    console.error("Error fetching cookies policy:", error);
+    return null;
+  }
+}
+
+// Privacy Policy
+export async function getPrivacyPolicy(locale: string): Promise<PrivacyPolicyInterface | null> {
+  try {
+    const data = await fetchSanityData(
+      getPrivacyPolicyQuery({ locale }),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data as PrivacyPolicyInterface;
+  } catch (error) {
+    console.error("Error fetching privacy policy:", error);
+    return null;
+  }
+}
+
 // Static Generation
 export async function getAllNewsSlugs(): Promise<StaticSlug[]> {
   try {
@@ -442,6 +499,50 @@ export async function getProductBySlugForSEO(slug: string, locale: string) {
     return data;
   } catch (error) {
     console.error("Error fetching product by slug for SEO:", error);
+    return null;
+  }
+}
+
+
+
+export async function getTermsOfUseForSEO(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getTermsOfUseForSEOQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching terms of use for SEO:", error);
+    return null;
+  }
+}
+
+export async function getCookiesPolicyForSEO(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getCookiesPolicyForSEOQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching cookies policy for SEO:", error);
+    return null;
+  }
+}
+
+export async function getPrivacyPolicyForSEO(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getPrivacyPolicyForSEOQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching privacy policy for SEO:", error);
     return null;
   }
 }

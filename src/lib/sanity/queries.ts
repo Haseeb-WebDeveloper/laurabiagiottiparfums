@@ -102,6 +102,59 @@ export const getHomePageForSEOQuery = (locale: string) => `
 }
 `;
 
+
+// Terms of Use for SEO
+export const getTermsOfUseForSEOQuery = (locale: string) => `
+*[_type == "termsOfUse"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+// Privacy Policy for SEO
+export const getPrivacyPolicyForSEOQuery = (locale: string) => `
+*[_type == "privacyPolicy"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+
+// Cookies Policy for SEO
+export const getCookiesPolicyForSEOQuery = (locale: string) => `
+*[_type == "cookiesPolicy"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
 // Product Page for SEO
 
 export const getProductBySlugForSEOQuery = (slug: string, locale: string) => `
@@ -1233,6 +1286,87 @@ export const getHomePageQuery = (locale: string) => `
     }
   }
 `;
+
+
+
+export const getTermsOfUseQuery = ({ locale }: { locale: string }) => `
+  *[_type == "termsOfUse"][0] {
+    "name": name.${locale},
+    "content": content.${locale}[] {
+      ...,
+      _type == "tableBlock" => {
+        "tableTitle": tableTitle.${locale},
+        tableRows[] {
+          icon {
+            asset-> {
+              url
+            }
+          },
+          content[] {
+            contentType,
+            "paragraphContent": paragraphContent.${locale},
+            "bulletPoints": bulletPoints[]-> {
+              "text": text.${locale}
+            }
+          }
+        }
+      },
+    }
+  }
+`;
+
+// Cookies Policy Query
+export const getCookiesPolicyQuery = ({ locale }: { locale: string }) => `
+  *[_type == "cookiesPolicy"][0] {
+    "name": name.${locale},
+    "content": content.${locale}[] {
+      ...,
+      _type == "tableBlock" => {
+        "tableTitle": tableTitle.${locale},
+        tableRows[] {
+          icon {
+            asset-> {
+              url
+            }
+          },
+          content[] {
+            contentType,
+            "paragraphContent": paragraphContent.${locale},
+            "bulletPoints": bulletPoints[]-> {
+              "text": text.${locale}
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+// Privacy Policy Query
+export const getPrivacyPolicyQuery = ({ locale }: { locale: string }) => `
+  *[_type == "privacyPolicy"][0] {
+    "name": name.${locale},
+    "content": content.${locale}[] {
+      ...,
+      _type == "tableBlock" => {
+        "tableTitle": tableTitle.${locale},
+        tableRows[] {
+          icon {
+            asset-> {
+              url
+            }
+          },
+          content[] {
+            contentType,
+            "paragraphContent": paragraphContent.${locale},
+            "bulletPoints": bulletPoints[].${locale}
+          }
+        }
+      },
+    }
+  }
+`;
+
 
 export const getNotesQuery = ({ locale }: { locale: string }) => `
   *[_type == "notes"] {
