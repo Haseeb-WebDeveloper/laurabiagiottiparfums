@@ -7,21 +7,30 @@ export type BlockContent = {
   }[];
 };
 
-export interface TableRow {
-  icon: {
-    asset: {
-      url: string;
-    };
-  };
-  content: {
-    contentType: string;
-    paragraphContent: string;
-    bulletPoints: string[];
-  }[];
-}
-
 export interface TableBlock {
   _type: "tableBlock";
   tableTitle: string;
-  tableRows: TableRow[];
+  images: {
+    asset: {
+      url: string;
+    };
+  }[];
+  content: BlockContent[];
+}
+
+export interface TwoColumnTable {
+  _type: "twoColumnTable";
+  tableTitle: string;
+  firstColumnTitle: string;
+  secondColumnTitle: string;
+  tableRows: {
+    _key: string;
+    icon: {
+      asset: {
+        url: string;
+      };
+    };
+    firstColumnContent: BlockContent[];
+    secondColumnContent: BlockContent[];
+  }[];
 }

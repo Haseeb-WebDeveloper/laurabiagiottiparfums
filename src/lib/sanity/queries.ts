@@ -1294,23 +1294,6 @@ export const getTermsOfUseQuery = ({ locale }: { locale: string }) => `
     "name": name.${locale},
     "content": content.${locale}[] {
       ...,
-      _type == "tableBlock" => {
-        "tableTitle": tableTitle.${locale},
-        tableRows[] {
-          icon {
-            asset-> {
-              url
-            }
-          },
-          content[] {
-            contentType,
-            "paragraphContent": paragraphContent.${locale},
-            "bulletPoints": bulletPoints[]-> {
-              "text": text.${locale}
-            }
-          }
-        }
-      },
     }
   }
 `;
@@ -1321,23 +1304,6 @@ export const getCookiesPolicyQuery = ({ locale }: { locale: string }) => `
     "name": name.${locale},
     "content": content.${locale}[] {
       ...,
-      _type == "tableBlock" => {
-        "tableTitle": tableTitle.${locale},
-        tableRows[] {
-          icon {
-            asset-> {
-              url
-            }
-          },
-          content[] {
-            contentType,
-            "paragraphContent": paragraphContent.${locale},
-            "bulletPoints": bulletPoints[]-> {
-              "text": text.${locale}
-            }
-          }
-        }
-      }
     }
   }
 `;
@@ -1350,19 +1316,28 @@ export const getPrivacyPolicyQuery = ({ locale }: { locale: string }) => `
       ...,
       _type == "tableBlock" => {
         "tableTitle": tableTitle.${locale},
+        images[] {
+          asset-> {
+            url
+          }
+        },
+        "content": content.${locale}[]
+      },
+      _type == "twoColumnTable" => {
+        "tableTitle": tableTitle.${locale},
+        "firstColumnTitle": firstColumnTitle.${locale},
+        "secondColumnTitle": secondColumnTitle.${locale},
         tableRows[] {
+          _key,
           icon {
             asset-> {
               url
             }
           },
-          content[] {
-            contentType,
-            "paragraphContent": paragraphContent.${locale},
-            "bulletPoints": bulletPoints[].${locale}
-          }
+          "firstColumnContent": firstColumnContent.${locale},
+          "secondColumnContent": secondColumnContent.${locale}
         }
-      },
+      }
     }
   }
 `;

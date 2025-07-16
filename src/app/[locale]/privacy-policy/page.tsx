@@ -15,6 +15,8 @@ export default async function PrivacyPolicy({
   const { locale } = await params;
   const privacyPolicyData = await getPrivacyPolicy(locale);
 
+  console.log("privacyPolicyData", privacyPolicyData)
+
   return (
     <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
       {privacyPolicyData && (

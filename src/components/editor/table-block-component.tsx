@@ -1,28 +1,30 @@
 "use client";
 
-import { TableBlock, TableRow } from "@/types/blocks";
+import { TableBlock } from "@/types/blocks";
 import Image from "next/image";
+import RichEditor from "../rich-editor";
 
 export default function TableBlockComponent({
   TableBlock,
 }: {
   TableBlock: TableBlock;
 }) {
+
   return (
     <div className="w-full mt-[3rem] space-y-2 overflow-hidden">
-      <h2 className="text-[1rem] font-bold">
-        {TableBlock.tableTitle}
-      </h2>
+      <h2 className="text-[1rem] font-bold">{TableBlock.tableTitle}</h2>
+
+      {/* Table Structure */}
       <div className="flex border-[1px] border-foreground">
         {/* First Column - Icons */}
         <div className="border-r-[1px] border-foreground flex flex-col gap-[1rem] justify-between items-center">
-          {TableBlock.tableRows.map((row: TableRow) => (
-            <div 
-              key={row.icon.asset.url} 
+          {TableBlock.images?.map((image) => (
+            <div
+              key={image.asset.url}
               className="h-full p-1 flex items-center justify-center"
             >
               <Image
-                src={row.icon.asset.url}
+                src={image.asset.url}
                 alt="Row icon"
                 width={100}
                 height={100}
@@ -31,38 +33,44 @@ export default function TableBlockComponent({
             </div>
           ))}
         </div>
-        
+
         {/* Second Column - Content */}
-        <div className="flex-1 space-y-[0.6rem] p-3">
-          {TableBlock.tableRows.map((row: TableRow) => (
-            <div 
-              key={row.icon.asset.url}
-              className=""
-            >
-              {row.content.map((contentItem, index) => (
-                <div key={index} className="space-y-[0.5rem]">
-                  <p className="text-[1rem]"
-                   style={{
-                    wordSpacing: "-0.03em",
-                  }}
-                  >{contentItem.paragraphContent}</p>
-                  {contentItem.bulletPoints && contentItem.bulletPoints.length > 0 && (
-                    <div className="space-y-[0.02rem]">
-                      {contentItem.bulletPoints.map((point, bulletIndex) => (
-                        <div key={bulletIndex} className="pl-[1.3rem]">
-                          <li className="list-disc list-outside">
-                            <span className="text-foreground text-[1.02rem]">{point}</span>
-                          </li>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+        <div className="flex-1 p-3">
+          {/* Rich Text Content */}
+          <div className="mb-4">
+            <RichEditor content={TableBlock.content} />
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+// {TableBlock.tableRows?.map((row) => (
+//     <div
+//       key={row._key}
+//       className="space-y-2"
+//     >
+//       {row.content.map((contentItem) => (
+//         <div key={contentItem._key} className="space-y-[0.5rem]">
+//           {contentItem.contentType === "paragraph" && contentItem.paragraphContent?.en && (
+//             <RichEditor content={contentItem.paragraphContent.en} />
+//           )}
+
+//           {contentItem.contentType === "bullets" && contentItem.bulletPoints && (
+//             <div className="space-y-[0.02rem]">
+//               {contentItem.bulletPoints.map((point) => (
+//                 <div key={point._key} className="pl-[1.3rem]">
+//                   <li className="list-disc list-outside">
+//                     <span className="text-foreground text-[1.02rem]">
+//                       {point.en}
+//                     </span>
+//                   </li>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       ))}
+//     </div>
+//   ))}

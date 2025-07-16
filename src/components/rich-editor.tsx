@@ -3,6 +3,7 @@ import { TypedObject } from "@portabletext/types";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/client";
 import TableBlockComponent from "./editor/table-block-component";
+import TwoColumnTableComponent from "./editor/two-column-table-component";
 
 interface RichEditorProps {
   content: TypedObject | TypedObject[] | any;
@@ -25,6 +26,13 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
         return (
           <div className="table-block">
             <TableBlockComponent TableBlock={value} />
+          </div>
+        );
+      },
+      twoColumnTable: ({ value }: any) => {
+        return (
+          <div className="table-block">
+            <TwoColumnTableComponent TwoColumnTable={value} />
           </div>
         );
       },

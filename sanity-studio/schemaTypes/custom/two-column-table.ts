@@ -87,51 +87,51 @@ export const twoColumnTable = defineType({
             },
             {
               name: 'firstColumnContent',
-              title: 'Content (Left Column)',
+              title: 'First Column Content',
               type: 'object',
               fields: [
                 {
                   name: 'en',
                   title: 'English',
-                  type: 'text',
-                  description: 'For new line add <br>',
+                  type: 'array',
+                  of: [{type: 'block'}],
                 },
                 {
                   name: 'it',
                   title: 'Italian',
-                  type: 'text',
-                  description: 'For new line add <br>',
+                  type: 'array',
+                  of: [{type: 'block'}],
                 },
                 {
                   name: 'de',
                   title: 'German',
-                  type: 'text',
-                  description: 'For new line add <br>',
+                  type: 'array',
+                  of: [{type: 'block'}],
                 },
               ],
             },
             {
               name: 'secondColumnContent',
-              title: 'Content (Right Column)',
+              title: 'Second Column Content',
               type: 'object',
               fields: [
                 {
                   name: 'en',
                   title: 'English',
-                  type: 'text',
-                  description: 'For new line add <br>',
+                  type: 'array',
+                  of: [{type: 'block'}],
                 },
                 {
                   name: 'it',
                   title: 'Italian',
-                  type: 'text',
-                  description: 'For new line add <br>',
+                  type: 'array',
+                  of: [{type: 'block'}],
                 },
                 {
                   name: 'de',
                   title: 'German',
-                  type: 'text',
-                  description: 'For new line add <br>',
+                  type: 'array',
+                  of: [{type: 'block'}],
                 },
               ],
             },
@@ -139,20 +139,10 @@ export const twoColumnTable = defineType({
           preview: {
             select: {
               icon: 'icon',
-              firstColumnContent: 'firstColumnContent',
-              secondColumnContent: 'secondColumnContent',
             },
-            prepare({icon, firstColumnContent, secondColumnContent}) {
-              const firstColumnText = firstColumnContent?.en || ''
-              const secondColumnText = secondColumnContent?.en || ''
+            prepare({icon}) {
               return {
-                title: 'Row',
-                subtitle:
-                  firstColumnText.substring(0, 60) +
-                  (firstColumnText.length > 60 ? '...' : '') +
-                  ' ' +
-                  secondColumnText.substring(0, 60) +
-                  (secondColumnText.length > 60 ? '...' : ''),
+                title: 'Table Row',
                 media: icon,
               }
             },
@@ -162,15 +152,9 @@ export const twoColumnTable = defineType({
     },
   ],
   preview: {
-    select: {
-      title: 'tableTitle',
-      rows: 'tableRows',
-    },
-    prepare({title, rows}) {
-      const rowCount = Array.isArray(rows) ? rows.length : 0
+    prepare() {
       return {
-        title: title || 'Flexible Table',
-        subtitle: `${rowCount} row${rowCount === 1 ? '' : 's'}`,
+        title: 'Two Column Table',
       }
     },
   },
