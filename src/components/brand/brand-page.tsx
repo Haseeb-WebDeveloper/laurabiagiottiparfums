@@ -31,13 +31,13 @@ export default function BrandPageComponent({
   });
 
   return (
-    <div className=" max-w 2xl:mt-[13rem] lg:mt-[13.5rem] mt-[0.8rem] lg:mb-[15rem] mb-[8.5rem] overflow-hidden">
+    <div className=" max-w 2xl:mt-[13rem] md:mt-[13.5rem] mt-[0.8rem] lg:mb-[15rem] mb-[8.5rem] ">
       {/* First Section */}
-      <div className="min-h-[100vh]">
-        <div className="flex flex-col lg:flex-row justify-between gap-4">
+      <div className="min-h-[calc(100vh-10rem)] overflow-hidden">
+        <div className="flex flex-col md:flex-row justify-between gap-4">
           {/* left image 1 */}
-          <div className="absolute left-0 2xl:w-[47.5%] lg:w-[42%] w-full">
-            <div className="lg:h-[70vh] h-[32vh] w-full relative">
+          <div className="absolute left-0 2xl:w-[47.5%] md:w-[42%] w-full">
+            <div className="md:h-[70vh] h-[32vh] w-full relative">
               <ParallaxImage
                 className=""
                 src={
@@ -47,18 +47,21 @@ export default function BrandPageComponent({
                 fill={true}
               />
             </div>
-            <p className="mt-[1rem] text-end text-[0.875rem] tracking-[0.1em] uppercase">
+            <h6
+              gsap-target="heading-1"
+              className="mt-[1rem] text-end text-[0.875rem] tracking-[0em] text-foreground/90"
+            >
               {brandPageData.firstSection.images[0]?.alt}
-            </p>
+            </h6>
           </div>
 
           <div className="w-1/2">
-            <p>h</p>
+            <p></p>
           </div>
           {/* right content container */}
-          <div className="w-full lg:w-1/2  pt-[38vh] lg:pt-[3.4rem] 2xl:pt-[4rem] lg:px-2 px-0">
+          <div className="w-full md:w-1/2  pt-[38vh] md:pt-[3.4rem] 2xl:pt-[4rem] md:px-2 px-0">
             <h1
-              className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]"
+              className="2xl:text-[4rem] md:text-[3rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]"
               style={{
                 letterSpacing: "0.01em",
                 wordSpacing: "0.08em",
@@ -67,14 +70,14 @@ export default function BrandPageComponent({
               {brandPageData.firstSection.title}
             </h1>
             <p
-              className="lg:max-w-[66%]w-full lg:pt-[3.8rem] pt-[1rem] lg:pb-[1rem] pb-[2 rem]"
+              className="md:max-w-[66%]w-full md:pt-[3.8rem] pt-[1rem] md:pb-[1rem] pb-[2 rem]"
               dangerouslySetInnerHTML={{
                 __html: brandPageData.firstSection.description,
               }}
             />
-            <div className="lg:h-[420px] h-[460px] mt-[2rem] w-full relative">
+            <div className="md:h-[300px] lg:h-[420px] h-[460px] mt-[2rem] w-full relative">
               <ParallaxImage
-                className="max-w-[550px] rounded-[1rem] lg:rounded-none"
+                className="max-w-[550px] rounded-[1rem] md:rounded-none"
                 src={
                   brandPageData.firstSection.images[1]?.image.asset.url || ""
                 }
@@ -89,7 +92,7 @@ export default function BrandPageComponent({
         </div>
       </div>
 
-      <div className="lg:mt-[8rem] mt-[6rem] lg:mx-[2rem]  text-center lg:text-[2rem] text-[1.43rem] leading-[150%] font-Transcend">
+      <div className="font-primary lg:mt-[8rem] md:mt-[2rem] mt-[6rem] lg:mx-[2rem]  text-center lg:text-[2rem] md:text-[2.5rem] text-[1.43rem] leading-[150%] font-primary">
         {brandPageData.firstSection.bottomText}
       </div>
 
@@ -107,24 +110,27 @@ export default function BrandPageComponent({
           >
             {brandPageData.secondSection.title}
           </h1>
-          <div className="lg:h-[450px] h-[150px] w-full relative lg:mt-[6rem] mt-[4rem]">
+          <div className="md:h-[400px] lg:h-[450px] h-[150px] w-full relative lg:mt-[6rem] mt-[4rem]">
             <ParallaxImage
               className="lg:max-w-[83%] w-full mx-auto rounded-[1rem] lg:rounded-none"
               src={brandPageData.secondSection.image.image.asset.url || ""}
               alt={brandPageData.secondSection.image.alt || ""}
               fill={true}
             />
-            <p className="lg:max-w-[83%] w-full mx-auto mt-[0.8rem] text-[0.875rem] tracking-[0.1em] uppercase">
+            <h6
+              gsap-target="heading-2"
+              className="lg:max-w-[83%] w-full mx-auto mt-[0.8rem] text-[0.875rem] tracking-[0em] text-foreground/90"
+            >
               {brandPageData.secondSection.image.alt}
-            </p>
+            </h6>
           </div>
         </div>
       </div>
 
       {/* Third Section */}
-      <div className="flex flex-col lg:flex-row justify-between gap-12 lg:mt-[10rem] mt-[5rem] w-full">
-        <div className="w-full grid lg:grid-cols-2 grid-cols-1 lg:gap-4 gap-12">
-          <div className="w-full h-full flex items-center lg:max-w-[67%] max-w-full mx-auto">
+      <div className="flex flex-col lg:flex-row justify-between gap-12 md:mt-[8rem] lg:mt-[10rem] mt-[5rem] w-full">
+        <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12 items-start">
+          <div className="w-full h-full flex md:max-w-[67%] max-w-full">
             <p
               gsap-target="paragraph-1"
               className=""
@@ -133,7 +139,7 @@ export default function BrandPageComponent({
               }}
             />
           </div>
-          <div className="relative w-full h-full lg:min-h-[410px] min-h-[420px] max-w-[522px]">
+          <div className="relative w-full h-full md:min-h-[300px] lg:min-h-[410px] min-h-[400px] max-w-[522px]">
             <ParallaxImage
               className="rounded-[1rem] lg:rounded-none"
               src={brandPageData.thirdSection.image.image.asset.url || ""}
@@ -145,12 +151,12 @@ export default function BrandPageComponent({
       </div>
 
       {/* Fourth Section */}
-      <div className="flex justify-between gap-12 lg:mt-[6rem] mt-[3.5rem] w-full">
-        <div className="w-full grid lg:grid-cols-2 grid-cols-1 lg:gap-4 gap-12">
+      <div className="flex justify-between gap-12 lg:mt-[6rem] md:mt-[6rem] mt-[3.5rem] w-full">
+        <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12">
           {/* Image container - order changes between mobile and desktop */}
-          <div className="w-full h-full flex justify-center relative lg:order-1 order-2">
+          <div className="w-full h-full flex justify-center relative md:order-1 order-2">
             <ParallaxImage
-              className="relative w-full h-full min-h-[350px] lg:min-h-auto lg:max-w-[415px] max-w-full rounded-[1rem] lg:rounded-none"
+              className="relative w-full h-full min-h-[350px] md:min-h-auto md:max-w-[415px] max-w-full rounded-[1rem] lg:rounded-none"
               src={brandPageData.fourthSection.image.image.asset.url || ""}
               alt={brandPageData.fourthSection.image.alt || ""}
               fill={true}
@@ -158,7 +164,7 @@ export default function BrandPageComponent({
           </div>
           {/* Text container - order changes between mobile and desktop */}
           <div className="w-full h-full flex flex-col gap-4 lg:order-2 order-1">
-            <h2 className="lg:max-w-[75%] max-w-full">
+            <h2 className="lg:max-w-[75%] max-w-full md:text-[2.8rem] text-[2.2rem] font-[700] leading-[120%]">
               {brandPageData.fourthSection.title}
             </h2>
             <p
@@ -175,7 +181,7 @@ export default function BrandPageComponent({
       <div className="flex justify-between gap-4 w-full">
         <div className="w-full h-full flex flex-col lg:gap-4 gap-8 justify-center items-center">
           <div
-            className="lg:mt-[8rem] mt-[6rem] lg:mx-[2rem] text-center lg:text-[2rem] text-[1.4rem] leading-[150%] font-Transcend"
+            className="lg:mt-[8rem] mt-[6rem] lg:mx-[2rem] text-center lg:text-[2rem] md:text-[2.5rem] text-[1.4rem] leading-[150%] font-primary"
             dangerouslySetInnerHTML={{
               __html: brandPageData.lastSection.text,
             }}

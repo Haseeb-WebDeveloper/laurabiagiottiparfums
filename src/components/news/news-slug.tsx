@@ -6,10 +6,10 @@ import RichEditor from "../rich-editor";
 
 export default function NewsSlug({ news }: { news: NewsItem }) {
   return (
-    <div className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[10rem] mb-[13rem]">
-      <div className="flex flex-col lg:flex-row justify-between gap-8">
+    <div className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[10rem] mb-[13rem]">
+      <div className="flex flex-col md:flex-row justify-between gap-8">
         {/* Image */}
-        <div className="w-full lg:max-w-[32.5%]">
+        <div className="w-full md:max-w-[40%] lg:max-w-[32.5%] md:sticky md:top-[16.8rem] md:self-start">
           <div className="aspect-[4/5] w-full relative">
             <ParallaxImage
               className="rounded-[1rem]"
@@ -22,7 +22,9 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
         </div>
         {/* Content */}
         <div className="w-full lg:w-[50%] space-y-[1rem] lg:px-2">
-          <h3 className="text-[2.5rem] leading-[3rem] font-[700]">{news.title}</h3>
+          <h3 className="text-[1.8rem]  md:text-[2rem] font-[700] lg:tracking-wider tracking-wider leading-[120%]">
+            {news.title}
+          </h3>
           <div
             // gsap-target="heading-1"
             className="uppercase tracking-[0.1em] text-[0.875rem] font-[700]"

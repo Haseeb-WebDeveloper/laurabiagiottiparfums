@@ -49,7 +49,7 @@ export default function MainPerfumeSlug({
       </div>
 
       {/* 2nd section quote */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="flex flex-col lg:gap-[4rem] gap-[3rem] max-w">
           <div className="flex flex-col lg:gap-[1rem] gap-[1.5rem]">
             <div className="w-full flex justify-center">
@@ -82,7 +82,7 @@ export default function MainPerfumeSlug({
       </div>
 
       {/* 3rd section */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="mxa-w lg:mt-[3rem] -mt-[6rem]">
           <BigFileAnimation
             file={mainPerfume.bgFile}
@@ -91,7 +91,7 @@ export default function MainPerfumeSlug({
         </div>
       </div>
 
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w w-full mt-[75vh] lg:mt-[90vh]">
           <BigHeading
             title={mainPerfume.bigHeading}
@@ -101,7 +101,7 @@ export default function MainPerfumeSlug({
       </div>
 
       {/* 4th section */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w mt-[5rem] lg:mt-[10rem] w-full flex flex-col lg:flex-row gap-[2rem]">
           <div className="w-full space-y-[1rem]">
             <h2 className="lg:text-[3rem] text-[2.2rem] font-[600]">
@@ -136,7 +136,7 @@ export default function MainPerfumeSlug({
       </div>
 
       {/* Olfactory Family */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w lg:-mt-[6rem] -mt-[22rem]">
           <OlfactoryFamily
             olfactoryFamily={mainPerfume.olfactoryFamily}
@@ -149,14 +149,14 @@ export default function MainPerfumeSlug({
       </div>
 
       {/* Sixth Section */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="mt-[9rem] max-w">
           <SixthSection sixthSection={mainPerfume.sixthSection} />
         </div>
       </div>
 
       {/* Seventh Section */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="mt-[1rem] max-w">
           <SeventhSection seventhSection={mainPerfume.seventhSection} />
         </div>
@@ -170,7 +170,7 @@ export default function MainPerfumeSlug({
       </div>
 
       {/* Related Products */}
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <div className="max-w lg:mt-[115vh] mt-[90vh]">
           <RelatedPerfumes relatedPerfumes={mainPerfume.relatedProducts} />
         </div>

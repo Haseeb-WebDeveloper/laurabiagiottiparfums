@@ -5,13 +5,9 @@ import {
   getNewsPageForSEO,
 } from "@/lib/i18n/getSanityContent";
 import { NewsPage, SeoTagsInterface } from "@/types/news";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Metadata } from "next";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default async function Home({
+export default async function News({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -20,7 +16,7 @@ export default async function Home({
   const newsPageData = (await getNewsPageContent(locale)) as NewsPage | null;
 
   return (
-    <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
       <NewsList news={newsPageData?.news || []} />
     </div>
   );

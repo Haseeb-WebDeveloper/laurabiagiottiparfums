@@ -18,7 +18,7 @@ export default async function PrivacyPolicy({
   console.log("privacyPolicyData", privacyPolicyData)
 
   return (
-    <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
       {privacyPolicyData && (
         <PrivacyPolicyPage privacyPolicyData={privacyPolicyData} />
       )}
@@ -76,7 +76,6 @@ export async function generateMetadata({
       // googleBot:
       //   "index, follow, nocache, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
     },
-    manifest: "/site.webmanifest",
   };
 
   const metadata = {

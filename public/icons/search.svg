@@ -1,17 +1,1 @@
-  <svg className="icon-menu-tool" viewBox="0 0 15 16" fill="none" stroke="currentColor"
-                      strokeWidth="var(--border-width--main)"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      vectorEffect="non-scaling-stroke"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path d="M10.75 11.25L13.9999 14.4999" stroke="currentColor"
-                        strokeWidth="var(--border-width--main)"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        vectorEffect="non-scaling-stroke" />
-                      <path d="M1 7.07127C1 10.1482 3.49434 12.6425 6.57127 12.6425C8.11237 12.6425 9.50742 12.0168 10.516 11.0055C11.5212 9.99776 12.1425 8.60708 12.1425 7.07127C12.1425 3.99434 9.64819 1.5 6.57127 1.5C3.49434 1.5 1 3.99434 1 7.07127Z" stroke="currentColor"
-                        strokeWidth="var(--border-width--main)"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        vectorEffect="non-scaling-stroke" />
-                    </svg>
+<svg fill="#000000" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-29.3 -29.3 547.00 547.00" xml:space="preserve" stroke="#000000" stroke-width="48.839999999999996"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"></path> </g> </g> </g></svg>

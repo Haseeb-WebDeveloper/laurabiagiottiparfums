@@ -12,6 +12,7 @@ import SearchModal from "../ui/search-modal";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import WearYourPerfume from "../wear-your-perfume";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const { locale } = useLocale();
@@ -24,6 +25,7 @@ export default function Navbar() {
   >(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   // GSAP refs
   const menuIconRef = useRef<HTMLDivElement>(null);
@@ -171,9 +173,9 @@ export default function Navbar() {
   ];
 
   return (
-    <div>
+    <div className="bg-red-500 relative">
       {/* Desktop Navbar */}
-      <div className="hidden lg:block fixed top-0 left-0 right-0 z-[100] bg-background 2xl:px-[34px] px-[38px]">
+      <div className="hidden md:block fixed top-0 left-0 right-0 z-[100] bg-background 2xl:px-[34px] px-[38px]">
         <div className="max-w pt-[45px] 2xl:pt-[48px]">
           <div className="flex justify-between">
             {/* Left */}
@@ -181,18 +183,18 @@ export default function Navbar() {
               <LanguageSwitcher />
               {/* Search */}
               <div
-                className="cursor-pointer flex items-center gap-[0.3rem] border border-foreground rounded-[0.45rem] px-[0.555rem] hover:bg-foreground/5 transition-colors"
+                className="cursor-pointer group flex items-center gap-[0.3rem] border border-foreground rounded-[0.55rem] px-[0.5rem] hover:bg-foreground transition-colors"
                 onClick={() => setIsSearchOpen(true)}
               >
-                <span className="text-[.75rem] font-[400] leading-0 text-pretty">
+                <span className="text-[.75rem] font-[400] leading-0 text-pretty group-hover:text-background">
                   Search
                 </span>
                 <Image
                   src="/icons/search.svg"
                   alt="search"
-                  width={12}
-                  height={12}
-                  className="text-foreground"
+                  width={11}
+                  height={11}
+                  className="text-foreground group-hover:invert"
                 />
               </div>
             </div>
@@ -214,7 +216,7 @@ export default function Navbar() {
           <div className="mt-[1.6rem] 2xl:mt-[1.7rem] w-full flex items-center justify-center gap-[2rem]">
             {/* Nav items */}
             <div className="flex items-center gap-[2rem]">
-              {navItems.map((item) => (
+              {navItems.map((item, index) => (
                 <div
                   key={item.label}
                   onMouseEnter={() => setHoveredCategory(item.category || null)}
@@ -222,9 +224,37 @@ export default function Navbar() {
                 >
                   <Link
                     href={item.href}
-                    className="cursor-pointer text-[0.9rem] 2xl:tracking-[0.003em] font-[400] leading-0"
+                    onMouseEnter={() => {
+                      setHoveredIndex(index);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredIndex(null);
+                    }}
+                    className="relative cursor-pointer text-[0.9rem] 2xl:tracking-[0.003em] font-[400] leading-0"
                   >
                     {item.label}
+                  <motion.div
+                    initial={{ width: 0, height: 2 }}
+                    animate={
+                      hoveredIndex === index
+                        ? {
+                            width: "100%",
+                            height: 1,
+                            opacity: 1,
+                            transition: {
+                              width: { duration: 0.4, ease: "easeInOut" },
+                              height: { delay: 0.3, duration: 0.2 },
+                            },
+                          }
+                        : {
+                            width: 0,
+                            height: 2,
+                            opacity: 0,
+                            transition: { duration: 0.2 },
+                          }
+                    }
+                    className="absolute z-[200] -bottom-[4px] left-0 bg-foreground"
+                  />
                   </Link>
                 </div>
               ))}
@@ -232,10 +262,31 @@ export default function Navbar() {
           </div>
         </div>
         <div className="h-[29px] w-screen border-b-[1px] border-foreground/[0.08]"></div>
+        {/* Dropdown */}
+        {hoveredCategory && (
+          <div
+            className="absolute left-0 top-[160px] bg-background z-[110] w-full"
+            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+            onMouseLeave={() => setHoveredCategory(null)}
+          >
+            <PerfumeDropdown
+              isOpen={hoveredCategory === hoveredCategory}
+              onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+              onMouseLeave={() => setHoveredCategory(null)}
+              perfumes={perfumes}
+              category={hoveredCategory}
+              locale={locale}
+              categoryName={
+                navItems.find((item) => item.category === hoveredCategory)
+                  ?.label || ""
+              }
+            />
+          </div>
+        )}
       </div>
 
       {/* Mobile Navbar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-[100] bg-background">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-[100] bg-background">
         <div className="flex justify-between items-center px-4 py-4">
           {/* Left - Search Icon */}
           <div className="flex items-center gap-[1rem]">
@@ -244,7 +295,7 @@ export default function Navbar() {
               onClick={() => setIsSearchOpen(true)}
             >
               <Image
-                src="/icons/loading.svg"
+                src="/icons/light-loading.svg"
                 alt="search"
                 width={50}
                 height={50}
@@ -350,28 +401,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-
-      {/* Dropdown */}
-      {hoveredCategory && (
-        <div
-          className="absolute left-0 top-[160px] bg-background z-[110] w-full"
-          onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-          onMouseLeave={() => setHoveredCategory(null)}
-        >
-          <PerfumeDropdown
-            isOpen={hoveredCategory === hoveredCategory}
-            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-            onMouseLeave={() => setHoveredCategory(null)}
-            perfumes={perfumes}
-            category={hoveredCategory}
-            locale={locale}
-            categoryName={
-              navItems.find((item) => item.category === hoveredCategory)
-                ?.label || ""
-            }
-          />
-        </div>
-      )}
 
       {/* Search Modal */}
       <SearchModal

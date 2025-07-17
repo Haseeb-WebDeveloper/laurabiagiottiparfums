@@ -7,7 +7,7 @@ export default function CookiesPolicyPage({
   cookiesPolicyData: CookiesPolicyInterface;
 }) {
   return (
-    <section className="max-w 2xl:mt-[17rem] lg:mt-[16.8rem] mt-[8.2rem] mb-[15rem]">
+    <section className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[8.2rem] mb-[15rem]">
       <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem]">
         {cookiesPolicyData.name}
       </h1>

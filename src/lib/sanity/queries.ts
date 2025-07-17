@@ -349,6 +349,7 @@ export const getNewsPageQuery = (locale: string) => `
   *[_type == "newsPage"][0] {
     "news": news[]->{
       "title": title.${locale},
+      "description": description.${locale},
       "slug": slug.current,
       _createdAt,
       _updatedAt,

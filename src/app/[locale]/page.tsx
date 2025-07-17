@@ -69,7 +69,6 @@ export async function generateMetadata({
       // googleBot:
       //   "index, follow, nocache, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
     },
-    manifest: "/site.webmanifest",
   };
 
   const metadata = {

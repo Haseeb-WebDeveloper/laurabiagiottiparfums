@@ -284,7 +284,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
 
       {/* Fixed Text Content Container */}
       <div className="absolute inset-0 z-50">
-        <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] h-full flex items-center">
+        <div className="2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px] h-full flex items-center">
           <div className="relative">
             {/* All slide content rendered but hidden */}
             {slides.map((slide, index) => (
@@ -324,7 +324,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       </div>
 
       {/* Navigation Controls */}
-      <div className="2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] absolute inset-0 z-[100] pointer-events-none">
+      <div className="2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px] absolute inset-0 z-[100] pointer-events-none">
         <div className="relative max-w h-full">
           {/* Custom Navigation Controls */}
           <div className="absolute bottom-8 left-0 lg:left-0 pointer-events-auto">

@@ -13,7 +13,6 @@ const LanguageSwitcher: React.FC = () => {
 
   // Switch language and navigate to the equivalent path in the new language
   const handleLanguageChange = (newLocale: string) => {
-
     // Get the current path without any locale prefix
     const pathWithoutLocale = pathname.replace(/^\/(en|it|de)/, "") || "/";
 
@@ -22,13 +21,16 @@ const LanguageSwitcher: React.FC = () => {
       maxAge: 60 * 60 * 24 * 30, // 30 days
       path: "/",
       sameSite: "lax",
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === "production",
     });
 
     // For Italian, use root path, for others use locale prefix
-    const newPath = newLocale === DEFAULT_LOCALE 
-      ? (pathWithoutLocale === "/" ? "/" : pathWithoutLocale)
-      : `/${newLocale}${pathWithoutLocale}`;
+    const newPath =
+      newLocale === DEFAULT_LOCALE
+        ? pathWithoutLocale === "/"
+          ? "/"
+          : pathWithoutLocale
+        : `/${newLocale}${pathWithoutLocale}`;
 
     // Navigate to the new path
     router.push(newPath);
@@ -36,7 +38,7 @@ const LanguageSwitcher: React.FC = () => {
 
   const isActive = (loc: string) => {
     if (loc === DEFAULT_LOCALE) {
-      return !pathname.startsWith('/en') && !pathname.startsWith('/de');
+      return !pathname.startsWith("/en") && !pathname.startsWith("/de");
     }
     return pathname.startsWith(`/${loc}`);
   };
@@ -47,19 +49,21 @@ const LanguageSwitcher: React.FC = () => {
         <button
           key={loc}
           onClick={() => handleLanguageChange(loc)}
-          className={`navbar-button cursor-pointer p-[0.555rem] aspect-square leading-0 rounded-[0.45rem] text-[.75rem] font-[400] border hover:border-foreground border-transparent text-pretty capitalize transition-colors duration-300 ${
+          className={`navbar-button cursor-pointer flex justify-center items-center py-[0.43em] px-[0.6em] rounded-[0.55rem] border hover:border-foreground border-transparent transition-colors duration-300 ${
             isActive(loc)
               ? "bg-foreground text-background hover:bg-background hover:text-foreground"
               : "text-foreground"
           }`}
         >
-          {loc === "it"
-            ? "IT"
-            : loc === "en"
-              ? "EN"
-              : loc === "de"
-                ? "DE"
-                : loc}
+          <span className="p-0 text-[0.72rem] font-[400]  capitalize">
+            {loc === "it"
+              ? "IT"
+              : loc === "en"
+                ? "EN"
+                : loc === "de"
+                  ? "DE"
+                  : loc}
+          </span>
         </button>
       ))}
     </div>

@@ -27,7 +27,7 @@ export default async function WomensPerfumePage({
   }
 
   return (
-    <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
       <PerfumesList
         perfumes={perfumes}
         locale={locale}

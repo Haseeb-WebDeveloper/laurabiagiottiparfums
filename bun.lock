@@ -9,6 +9,7 @@
         "@gsap/react": "^2.1.2",
         "@mui/material": "^7.1.0",
         "@next/third-parties": "^15.3.4",
+        "@piwikpro/react-piwik-pro": "^2.5.0",
         "@radix-ui/react-dropdown-menu": "^2.1.12",
         "@radix-ui/react-slot": "^1.2.0",
         "@react-spring/web": "^10.0.1",
@@ -563,6 +564,10 @@
     "@open-draft/logger": ["@open-draft/logger@0.3.0", "", { "dependencies": { "is-node-process": "^1.2.0", "outvariant": "^1.4.0" } }, "sha512-X2g45fzhxH238HKO4xbSr7+wBS8Fvw6ixhTDuvLd5mqh6bJJCFAPwU9mPDxbcrRtfxv4u5IHCEH77BmxvXmmxQ=="],
 
     "@open-draft/until": ["@open-draft/until@2.1.0", "", {}, "sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg=="],
+
+    "@piwikpro/react-piwik-pro": ["@piwikpro/react-piwik-pro@2.5.0", "", { "dependencies": { "@piwikpro/tracking-base-library": "^1.6.0" }, "peerDependencies": { "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-g+Jep6pFq5QvhIOOicELVK5oMqsXH6g4F6xt6CXfoKymq21DFivz0ADNZdsbUsd/ZrtUQFib0Efk9DKo5Q8udA=="],
+
+    "@piwikpro/tracking-base-library": ["@piwikpro/tracking-base-library@1.6.0", "", {}, "sha512-jd88qqxGAtjSfdDLPuFzrk1hjnIQKCdSFynm3GE/fHB0drPsXZ/o1oXPY9YpAVX2dIkurrycRAzEhtC6KwSlfw=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 

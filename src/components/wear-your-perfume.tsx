@@ -11,10 +11,13 @@ import { getNotes } from "@/lib/i18n/getSanityContent";
 import Link from "next/link";
 import { ParallaxImage } from "./ui/ParallaxImage";
 import { circlePath, starPath } from "@/constants/data";
-import { Step1Selection, Step2Selection, Step3Selection, Step4Selection } from "@/types/steps";
+import {
+  Step1Selection,
+  Step2Selection,
+  Step3Selection,
+  Step4Selection,
+} from "@/types/steps";
 import { interpolatePath } from "@/utils/interpolate-path";
-
-
 
 export default function WearYourPerfume() {
   const { locale } = useLocale();
@@ -24,6 +27,7 @@ export default function WearYourPerfume() {
   const [matchedPerfumes, setMatchedPerfumes] = useState<NoteItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const morphingPathRef = useRef<SVGPathElement>(null);
+  const [triggerHover, setTriggerHover] = useState(false);
 
   // Step selections
   const [step1Selection, setStep1Selection] = useState<Step1Selection>({
@@ -111,6 +115,12 @@ export default function WearYourPerfume() {
     }
   };
 
+  const handlePreviousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep((prev) => prev - 1);
+    }
+  };
+
   const findMatchingPerfumes = () => {
     setIsLoading(true);
     try {
@@ -167,12 +177,18 @@ export default function WearYourPerfume() {
         <div className="w-full flex justify-end">
           <span
             className={`w-fit h-fit cursor-pointer bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground rounded-[0.45rem] p-[0.55rem] transition-colors duration-300 flex items-center gap-[0.5rem]`}
+            onMouseEnter={() => setTriggerHover(true)}
+            onMouseLeave={() => setTriggerHover(false)}
           >
             <span className="text-[0.75rem] font-[400] leading-0 tracking-tight text-pretty">
               Wear your perfume
             </span>
             <Image
-              src="/icons/loading.svg"
+              src={
+                triggerHover
+                  ? "/icons/dark-loading.svg"
+                  : "/icons/light-loading.svg"
+              }
               alt="arrow-down"
               width={12}
               height={12}
@@ -181,11 +197,11 @@ export default function WearYourPerfume() {
           </span>
         </div>
       </DialogTrigger>
-      <DialogContent className="z-[110] w-[79vw] h-[85vh] max-w overflow-y-auto flex items-center justify-center">
+      <DialogContent className="overflow-x-hidden z-[110] w-[79vw] h-[85vh] max-w overflow-y-auto flex flex-col items-center justify-center ">
         {/* Step 1: Gender Selection */}
         <div
           ref={step1Ref}
-          className={`${currentStep !== 1 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center`}
+          className={`${currentStep !== 1 ? "hidden" : "flex"} min-h-[60vh] flex-col items-center justify-center`}
         >
           <h2 className="text-[2rem] lg:text-[3rem] font-[500] mb-[.5rem]">
             Wear your perfume
@@ -219,7 +235,7 @@ export default function WearYourPerfume() {
         {/* Step 2: Notes Selection */}
         <div
           ref={step2Ref}
-          className={`${currentStep !== 2 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full`}
+          className={`${currentStep !== 2 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
             Which notes do you prefer?
@@ -255,7 +271,7 @@ export default function WearYourPerfume() {
         {/* Step 3: Time of Day */}
         <div
           ref={step3Ref}
-          className={`${currentStep !== 3 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center w-full`}
+          className={`${currentStep !== 3 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center w-full relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem]">
             Which moment of the day is your favorite?
@@ -291,7 +307,7 @@ export default function WearYourPerfume() {
         {/* Step 4: Intensity Slider */}
         <div
           ref={step4Ref}
-          className={`${currentStep !== 4 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto px-4`}
+          className={`${currentStep !== 4 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto px-4 relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
             you prefer a perfume that is:
@@ -324,28 +340,32 @@ export default function WearYourPerfume() {
                     min="0"
                     max="100"
                     value={step4Selection.intensity}
-                    onChange={(e) => setStep4Selection({ intensity: parseInt(e.target.value) })}
+                    onChange={(e) =>
+                      setStep4Selection({ intensity: parseInt(e.target.value) })
+                    }
                     className="w-full h-2 appearance-none bg-transparent cursor-pointer"
-                    style={{
-                      '--range-progress': `${step4Selection.intensity}%`,
-                    } as any}
+                    style={
+                      {
+                        "--range-progress": `${step4Selection.intensity}%`,
+                      } as any
+                    }
                   />
                   {/* Thumb Icons Container */}
-                  <div 
+                  <div
                     className="absolute pointer-events-none z-[90]"
                     style={{
                       left: `calc(${step4Selection.intensity}% - 24px)`,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '65px',
-                      height: '65px',
-                      borderRadius: '50%',
-                      backgroundColor: 'currentColor',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '4px',
-                      transition: 'transform 0.2s ease'
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: "65px",
+                      height: "65px",
+                      borderRadius: "50%",
+                      backgroundColor: "currentColor",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "4px",
+                      transition: "transform 0.2s ease",
                     }}
                   >
                     <Image
@@ -395,7 +415,7 @@ export default function WearYourPerfume() {
         {/* Results */}
         <div
           ref={resultsRef}
-          className={`${currentStep !== 5 ? "hidden" : ""} min-h-[60vh]`}
+          className={`${currentStep !== 5 ? "hidden" : ""} min-h-[60vh] relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
             Your Perfect Match
@@ -427,6 +447,25 @@ export default function WearYourPerfume() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="w-full flex flex-col gap-[1rem] mb-2">
+          {/* Back Button */}
+          {currentStep > 1 && (
+            <button
+              onClick={handlePreviousStep}
+              className="cursor-pointer w-fit"
+            >
+              Back
+            </button>
+          )}
+          {/* Progress Bar */}
+          <div
+            className="absolute bottom-0 left-0 h-[1rem] bg-foreground transition-all duration-300 ease-in-out"
+            style={{
+              width: `${(currentStep / 5) * 100}%`,
+            }}
+          />
         </div>
       </DialogContent>
     </Dialog>

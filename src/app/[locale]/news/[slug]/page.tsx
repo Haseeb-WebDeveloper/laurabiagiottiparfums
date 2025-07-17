@@ -18,7 +18,7 @@ export default async function CaseStudyPage({
   const news = (await getNewsBySlug(slug, locale)) as NewsItem;
 
   return (
-    <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
       <NewsSlug news={news} />
     </div>
   );

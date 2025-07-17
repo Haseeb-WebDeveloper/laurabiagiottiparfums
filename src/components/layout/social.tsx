@@ -8,7 +8,7 @@ const SocialIcons = () => {
       <Link
         href="https://www.facebook.com/laurabiagiottiparfums"
         target="_blank"
-        className="group aspect-square lg:border-[1px] border-foreground flex items-center justify-center rounded-full transition-all duration-300 hover:bg-foreground w-[2.5rem] h-[2.5rem]"
+        className="group aspect-square lg:border-[1px] border-foreground/10 flex items-center justify-center rounded-full transition-all duration-300 hover:bg-foreground w-[2.5rem] h-[2.5rem]"
       >
         <div className="w-[1rem] h-[1rem] flex justify-center items-center">
           <Image
@@ -23,7 +23,7 @@ const SocialIcons = () => {
       <Link
         href="https://www.instagram.com/laurabiagiottiparfums/?hl=it"
         target="_blank"
-        className="group aspect-square lg:border-[1px] border-foreground flex items-center justify-center rounded-full transition-all duration-300 hover:bg-foreground w-[2.5rem] h-[2.5rem]"
+        className="group aspect-square lg:border-[1px] border-foreground/10 flex items-center justify-center rounded-full transition-all duration-300 hover:bg-foreground w-[2.5rem] h-[2.5rem]"
       >
         <div className="w-[1rem] h-[1rem] flex justify-center items-center">
           <Image
@@ -38,7 +38,7 @@ const SocialIcons = () => {
       <Link
         href="https://www.youtube.com/channel/UCmK7kw_DHWu-2e1h_-Le6Jw"
         target="_blank"
-        className="group aspect-square lg:border-[1px] border-foreground flex items-center justify-center rounded-full transition-all duration-300 hover:bg-foreground w-[2.5rem] h-[2.5rem]"
+        className="group aspect-square lg:border-[1px] border-foreground/10 flex items-center justify-center rounded-full transition-all duration-300 hover:bg-foreground w-[2.5rem] h-[2.5rem]"
       >
         <div className="w-[1rem] h-[1rem] flex justify-center items-center">
           <Image

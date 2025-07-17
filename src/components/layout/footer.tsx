@@ -4,32 +4,36 @@ import SocialIcons from "./social";
 
 export default function Footer() {
   return (
-    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
       <div className="max-w">
         {/* Footer top */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b border-foreground pb-[6rem]">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[9rem]">
           {/* left side */}
-          <div className="w-full h-full flex items-center justify-center lg:justify-start">
+          <div className="w-full h-full flex items-center justify-center md:justify-start">
             <Image
               src="/logo/logo-icon.svg"
               alt="logo"
               width={100}
               height={100}
-              className="w-[30px] h-[30px]"
+              className="w-[32px] h-[32px]"
             />
           </div>
           {/* right side */}
-          <div className="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-4 gap-12">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-4 gap-12">
             <div className="w-full space-y-2  lg:space-y-4">
               <div
                 gsap-target="heading-1"
-                className="text-[1.6rem] lg:text-[1.5rem] font-[500]"
+                className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
               >
                 Info
               </div>
               <ul>
                 <li>
-                  <Link gsap-target="heading-1" href="/">
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
                     News
                   </Link>
                 </li>
@@ -38,19 +42,27 @@ export default function Footer() {
             <div className="w-full space-y-2  lg:space-y-4">
               <div
                 gsap-target="heading-1"
-                className="text-[1.6rem] lg:text-[1.5rem] font-[500]"
+                className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
               >
-                Fragrances
+                Product
               </div>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-[0.65rem]">
                 <li>
-                  <Link gsap-target="heading-1" href="/">
-                    Women
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
+                    Women's Perfumes
                   </Link>
                 </li>
                 <li>
-                  <Link gsap-target="heading-1" href="/">
-                    Men
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
+                    Men's Perfumes
                   </Link>
                 </li>
               </ul>
@@ -58,24 +70,39 @@ export default function Footer() {
             <div className="w-full space-y-2  lg:space-y-4">
               <div
                 gsap-target="heading-1"
-                className="text-[1.6rem] lg:text-[1.5rem] font-[500]"
+                className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
               >
                 Brand
               </div>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-[0.65rem]">
                 <li>
-                  <Link gsap-target="heading-1" href="/">
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
                     Laura Biagiotti Shop
                   </Link>
                 </li>
                 <li>
-                  <Link gsap-target="heading-1" href="/">
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
                     Laura Biagiotti World
                   </Link>
                 </li>
                 <li>
-                  <Link gsap-target="heading-1" href="/">
-                    Instructions for separate collection of packaging
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
+                    <span className="leading-[130%]">
+                      Instructions for separate
+                      <br /> collection of packaging
+                    </span>
                   </Link>
                 </li>
               </ul>
@@ -84,12 +111,15 @@ export default function Footer() {
         </div>
 
         {/* Footer bottom */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[6rem]">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[4.8rem]">
           {/* Left side */}
-          <div className="space-y-[.7rem] hidden lg:block">
+          <div className="space-y-[.5rem] hidden lg:block">
             <p
               gsap-target="paragraph-1"
-              className="flex items-center gap-[1rem]"
+              className="flex items-center gap-[1rem] text-[0.9rem] tracking-tight text-foreground"
+              style={{
+                wordSpacing: "0rem",
+              }}
             >
               <Link
                 href="/privacy-policy/"
@@ -122,7 +152,13 @@ export default function Footer() {
                 info@laurabiagiottiparfums.com
               </Link>
             </p>
-            <p gsap-target="paragraph-1">
+            <p
+              gsap-target="paragraph-1"
+              className="text-[0.9rem] tracking-tight text-foreground"
+              style={{
+                wordSpacing: "0rem",
+              }}
+            >
               Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura
               Biagiotti - All Rights Reserved .
             </p>
@@ -168,7 +204,13 @@ export default function Footer() {
                 </Link>
               </p>
             </div>
-            <p gsap-target="paragraph-1">
+            <p
+              gsap-target="paragraph-1"
+              className="text-[0.9rem] tracking-tight text-foreground"
+              style={{
+                wordSpacing: "0rem",
+              }}
+            >
               Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura
               Biagiotti - All Rights Reserved .
             </p>

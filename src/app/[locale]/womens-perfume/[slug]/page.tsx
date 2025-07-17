@@ -41,7 +41,7 @@ export default async function PerfumePage({
 
   if (productData.mainPerfume) {
     return (
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px] mt-[30rem]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px] mt-[30rem]">
         <MainPerfumeSlug
           mainPerfume={productData.mainPerfume}
           locale={locale}
@@ -52,7 +52,7 @@ export default async function PerfumePage({
 
   if (productData.collection) {
     return (
-      <div className="bg-background 2xl:px-[34px] lg:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
         <CollectionSlug collection={productData.collection} locale={locale} />
       </div>
     );

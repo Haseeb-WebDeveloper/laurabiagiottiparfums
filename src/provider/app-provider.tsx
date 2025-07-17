@@ -8,8 +8,8 @@ import Footer from "@/components/layout/footer";
 import SmoothScrolling from "@/components/smooth-scroll";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
-
+import { PageViews } from "@piwikpro/react-piwik-pro";
+import PiwikProProvider from "@/components/PiwikProProvider.tsx";
 
 const SplitHeadingsAnimation = dynamic(
   () => import("@/components/ui/split-headings-animation"),
@@ -21,7 +21,12 @@ const SplitParagraphsAnimation = dynamic(
   { ssr: false }
 );
 
-function AppProvider({ children, locale }) {
+interface AppProviderProps {
+  children: React.ReactNode;
+  locale: string;
+}
+
+function AppProvider({ children, locale }: AppProviderProps) {
   const [cmsLoaded, setCmsLoaded] = useState(false);
   const [routeChanged, setRouteChanged] = useState(false);
   const [resizeTrigger, setResizeTrigger] = useState(false);
@@ -30,17 +35,14 @@ function AppProvider({ children, locale }) {
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const router = useRouter();
 
-
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
 
-
   useEffect(() => {
     const handleRouteChange = () => {
-      flushOldScripts();
       if (!isWearPopupOpen && !isNewsletterPopupOpen && !isSearchPopupOpen) {
         window.scrollTo(0, 0);
       }
@@ -48,17 +50,8 @@ function AppProvider({ children, locale }) {
       PageViews.trackPageView();
     };
 
-    // router.events("routeChangeComplete", handleRouteChange);
-    return () => {
-      // router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [
-    router.events,
-    isWearPopupOpen,
-    isNewsletterPopupOpen,
-    isSearchPopupOpen,
-  ]);
-
+    return () => {};
+  }, [isWearPopupOpen, isNewsletterPopupOpen, isSearchPopupOpen]);
 
   const prevWidthRef = useRef(
     typeof window !== "undefined" ? window.innerWidth : 0
@@ -76,7 +69,7 @@ function AppProvider({ children, locale }) {
   }, []);
 
   useEffect(() => {
-    const preventScroll = (e) => {
+    const preventScroll = (e: WheelEvent | TouchEvent) => {
       if (isWearPopupOpen || isSearchPopupOpen) {
         e.preventDefault();
       }
@@ -92,7 +85,7 @@ function AppProvider({ children, locale }) {
   }, [isWearPopupOpen, isSearchPopupOpen]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "7") {
         e.preventDefault();
         setIsSearchPopupOpen(true);
@@ -107,28 +100,21 @@ function AppProvider({ children, locale }) {
 
   return (
     <>
-      <Script
-        src="https://angelinibeauty.piwik.pro/cookie-consent-banner.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          if (window.PiwikProConsentManager) {
-            window.PiwikProConsentManager.showBanner();
-          }
-        }}
-      />
-      <ThemeProvider attribute="class" defaultTheme="light">
-        <LocaleWrapper locale={locale}>
-          <SmoothScrolling>
-            <SplitHeadingsAnimation />
-            <SplitParagraphsAnimation
-              key={`ap-${routeChanged}-${cmsLoaded}-${resizeTrigger}`}
-            />
-            <Navbar />
-            {children}
-            <Footer />
-          </SmoothScrolling>
-        </LocaleWrapper>
-      </ThemeProvider>
+      <PiwikProProvider>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <LocaleWrapper locale={locale}>
+            <SmoothScrolling>
+              <SplitHeadingsAnimation />
+              <SplitParagraphsAnimation
+                key={`ap-${routeChanged}-${cmsLoaded}-${resizeTrigger}`}
+              />
+              <Navbar />
+              {children}
+              <Footer />
+            </SmoothScrolling>
+          </LocaleWrapper>
+        </ThemeProvider>
+      </PiwikProProvider>
     </>
   );
 }
