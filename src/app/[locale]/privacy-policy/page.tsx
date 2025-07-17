@@ -18,7 +18,7 @@ export default async function PrivacyPolicy({
   console.log("privacyPolicyData", privacyPolicyData)
 
   return (
-    <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
       {privacyPolicyData && (
         <PrivacyPolicyPage privacyPolicyData={privacyPolicyData} />
       )}

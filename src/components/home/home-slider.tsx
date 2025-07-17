@@ -255,7 +255,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
 
             {/* Content */}
             <div className="max-w h-full flex items-center">
-              <div className="2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px] z-50 flex items-center relative h-full w-full">
+              <div className="2xl:px-[34px] md:px-[38px] px-[18px] z-50 flex items-center relative h-full w-full">
                 <div className="relative z-50 h-full w-full flex items-center">
                   <div className="relative z-50">
                     {/* Title */}
@@ -293,7 +293,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
         ))}
       </Swiper>
 
-      <div className="2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+      <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="relative max-w">
           {/* Custom Navigation Controls */}
           <div className="absolute bottom-8 left-0 lg:left-0 z-[100]">

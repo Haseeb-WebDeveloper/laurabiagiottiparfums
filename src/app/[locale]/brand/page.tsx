@@ -19,7 +19,7 @@ export default async function Home({
   )) as BrandPage;
 
   return (
-    <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+    <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
       <BrandPageComponent brandPageData={brandPageData} />
     </div>
   );

@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import SocialIcons from "./social";
+import SplitText from "../ui/split-text";
 
 export default function Footer() {
   return (
-    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
       <div className="max-w">
         {/* Footer top */}
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[9rem]">
-          {/* left side */}
+          {/* Logo */}
           <div className="w-full h-full flex items-center justify-center md:justify-start">
             <Image
               src="/logo/logo-icon.svg"
@@ -18,101 +19,65 @@ export default function Footer() {
               className="w-[32px] h-[32px]"
             />
           </div>
-          {/* right side */}
+          
+          {/* Navigation Links */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-4 gap-12">
-            <div className="w-full space-y-2  lg:space-y-4">
-              <div
-                gsap-target="heading-1"
-                className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
-              >
-                Info
+            {/* Info Section */}
+            <div className="w-full space-y-2 lg:space-y-4">
+              <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
+                <SplitText text="Info" variant="heading" />
               </div>
               <ul>
                 <li>
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    News
+                  <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
+                    <SplitText text="News" variant="paragraph" />
                   </Link>
                 </li>
               </ul>
             </div>
-            <div className="w-full space-y-2  lg:space-y-4">
-              <div
-                gsap-target="heading-1"
-                className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
-              >
-                Product
+
+            {/* Product Section */}
+            <div className="w-full space-y-2 lg:space-y-4">
+              <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
+                <SplitText text="Product" variant="heading" />
               </div>
               <ul className="flex flex-col gap-[0.65rem]">
                 <li>
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    Women's Perfumes
+                  <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
+                    <SplitText text="Women's Perfumes" variant="paragraph" />
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    Men's Perfumes
+                  <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
+                    <SplitText text="Men's Perfumes" variant="paragraph" />
                   </Link>
                 </li>
               </ul>
             </div>
-            <div className="w-full space-y-2  lg:space-y-4">
-              <div
-                gsap-target="heading-1"
-                className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
-              >
-                Brand
+
+            {/* Brand Section */}
+            <div className="w-full space-y-2 lg:space-y-4">
+              <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
+                <SplitText text="Brand" variant="heading" />
               </div>
               <ul className="flex flex-col gap-[0.65rem]">
                 <li>
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    Laura Biagiotti Shop
+                  <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
+                    <SplitText text="Laura Biagiotti Shop" variant="paragraph" />
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    Laura Biagiotti World
+                  <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
+                    <SplitText text="Laura Biagiotti World" variant="paragraph" />
                   </Link>
                 </li>
-                <li className="hidden md:block">
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
+                <li>
+                  <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
                     <span className="leading-[130%]">
-                      Instructions for separate
-                      <br /> collection of packaging
-                    </span>
-                  </Link>
-                </li>
-                <li className="md:hidden block">
-                  <Link
-                    gsap-target="heading-1"
-                    href="/"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    <span className="leading-[130%]">
-                      Instructions for separate collection of packaging
+                      <SplitText 
+                        text="Instructions for separate collection of packaging" 
+                        variant="paragraph" 
+                      />
                     </span>
                   </Link>
                 </li>
@@ -123,111 +88,38 @@ export default function Footer() {
 
         {/* Footer bottom */}
         <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[4.8rem]">
-          {/* Left side */}
+          {/* Legal Links - Desktop */}
           <div className="space-y-[.5rem] hidden lg:block">
-            <p
-              gsap-target="paragraph-1"
-              className="flex items-center gap-[1rem] text-[0.9rem] tracking-tight text-foreground"
-              style={{
-                wordSpacing: "0rem",
-              }}
-            >
-              <Link
-                href="/privacy-policy/"
-                className="link"
-                rel="noopener noreferrer"
-              >
-                Privacy Policy
-              </Link>{" "}
-              |{" "}
-              <Link
-                href="/cookies-policy/"
-                className="link"
-                rel="noopener noreferrer"
-              >
-                Cookies Policy
-              </Link>{" "}
-              |{" "}
-              <Link
-                href="/terms-of-use/"
-                className="link"
-                rel="noopener noreferrer"
-              >
-                Terms of use
-              </Link>{" "}
-              |{" "}
-              <Link
-                href="mailto:info@laurabiagiottiparfums.com"
-                className="link"
-              >
-                info@laurabiagiottiparfums.com
-              </Link>
-            </p>
-            <p
-              gsap-target="paragraph-1"
-              className="text-[0.9rem] text-foreground"
-              style={{
-                wordSpacing: "0rem",
-              }}
-            >
-              Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura
-              Biagiotti - All Rights Reserved .
-            </p>
-          </div>
-
-          {/* Mobile */}
-          <div className="space-y-[.7rem] block lg:hidden  w-full">
-            <div>
-              <p
-                gsap-target="paragraph-1"
-                className="flex items-center gap-[0.3rem] mobile-link"
-              >
-                <Link
-                  href="/privacy-policy/"
-                  className="link"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </Link>{" "}
-                |{" "}
-                <Link
-                  href="/cookies-policy/"
-                  className="link"
-                  rel="noopener noreferrer"
-                >
-                  Cookies Policy
-                </Link>{" "}
-                |{" "}
-                <Link
-                  href="/terms-of-use/"
-                  className="link"
-                  rel="noopener noreferrer"
-                >
-                  Terms of use
-                </Link>
-              </p>
-              <p gsap-target="paragraph-1">
-                <Link
-                  href="mailto:info@laurabiagiottiparfums.com"
-                  className="link"
-                >
-                  info@laurabiagiottiparfums.com
-                </Link>
-              </p>
+            <div className="flex items-center gap-[1rem] text-[0.9rem] tracking-tight text-foreground">
+              <SplitText text="Privacy Policy | Cookies Policy | Terms of use | info@laurabiagiottiparfums.com" variant="paragraph" />
             </div>
-            <p
-              gsap-target="paragraph-1"
-              className="text-[0.9rem] tracking-tight text-foreground"
-              style={{
-                wordSpacing: "0rem",
-              }}
-            >
-              Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura
-              Biagiotti - All Rights Reserved .
-            </p>
+            <div className="text-[0.9rem] text-foreground">
+              <SplitText 
+                text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved." 
+                variant="paragraph" 
+              />
+            </div>
           </div>
 
-          {/* Right side (Socials)*/}
+          {/* Legal Links - Mobile */}
+          <div className="space-y-[.7rem] block lg:hidden w-full">
+            <div className="space-y-2">
+              <div className="text-[0.9rem] tracking-tight text-foreground">
+                <SplitText text="Privacy Policy | Cookies Policy | Terms of use" variant="paragraph" />
+              </div>
+              <div className="text-[0.9rem] text-foreground">
+                <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" />
+              </div>
+            </div>
+            <div className="text-[0.9rem] tracking-tight text-foreground">
+              <SplitText 
+                text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved." 
+                variant="paragraph" 
+              />
+            </div>
+          </div>
+
+          {/* Social Icons */}
           <div className="flex lg:items-center w-full lg:w-fit gap-4">
             <SocialIcons />
           </div>

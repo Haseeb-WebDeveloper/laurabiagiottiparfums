@@ -29,7 +29,7 @@
     "embla-carousel-react": "^8.6.0",
     "file-loader": "^6.2.0",
     "framer-motion": "^12.8.2",
-    "gsap": "^3.12.7",
+    "gsap": "^3.13.0",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.503.0",
     "motion": "^12.14.0",

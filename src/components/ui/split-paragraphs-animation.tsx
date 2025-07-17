@@ -5,7 +5,7 @@ import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SplitParagraphsAnimation = ({ watchKey }: { watchKey: string }) => {
+const SplitParagraphsAnimation = () => {
   const splitTextAndAnimate = () => {
     const paragraphs = document.querySelectorAll(
       '[gsap-target="paragraph-1"]'
@@ -35,7 +35,6 @@ const SplitParagraphsAnimation = ({ watchKey }: { watchKey: string }) => {
           {
             y: 0,
             opacity: 1,
-            duration: 1,
             ease: "power3.out",
             stagger: 0.1,
           }
@@ -44,33 +43,7 @@ const SplitParagraphsAnimation = ({ watchKey }: { watchKey: string }) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      splitTextAndAnimate();
-    }, 50);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [watchKey]);
-
-  useEffect(() => {
-    let resizeTimeout: NodeJS.Timeout;
-    let lastWindowWidth = window.innerWidth;
-
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        if (window.innerWidth !== lastWindowWidth) {
-          lastWindowWidth = window.innerWidth;
-          splitTextAndAnimate();
-        }
-      }, 200);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    splitTextAndAnimate();
   }, []);
 
   return null;

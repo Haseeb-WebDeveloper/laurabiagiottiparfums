@@ -105,9 +105,7 @@ function AppProvider({ children, locale }: AppProviderProps) {
           <LocaleWrapper locale={locale}>
             <SmoothScrolling>
               <SplitHeadingsAnimation />
-              <SplitParagraphsAnimation
-                watchKey={`ap-${routeChanged}-${cmsLoaded}-${resizeTrigger}`}
-              />
+              <SplitParagraphsAnimation />
               <Navbar />
               {children}
               <Footer />
