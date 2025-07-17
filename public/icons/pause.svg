@@ -1,0 +1,16 @@
+<svg class="icon_audio_off" viewBox="0 0 63 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M2 30.6667V19.0271C2 17.42 3.30282 16.1172 4.9099 16.1172H12.7585C13.333 16.1172 13.8947 15.9471 14.3727 15.6285L26.575 7.49362C28.5089 6.20441 31.099 7.59066 31.099 9.9148V39.779C31.099 42.1032 28.5089 43.4894 26.575 42.2001L14.3727 34.0651C13.8947 33.7465 13.333 33.5766 12.7585 33.5766H4.9099C3.30282 33.5766 2 32.2738 2 30.6667Z"
+    stroke="#1B1B1B"
+    stroke-width="2"
+    vector-effect="non-scaling-stroke"
+  />
+  <path
+    d="M49.0977 30.111L54.6545 24.5555M54.6545 24.5555L60.2087 19M54.6545 24.5555L49.0977 19M54.6545 24.5555L60.2087 30.111"
+    stroke="#1B1B1B"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    vector-effect="non-scaling-stroke"
+  />
+</svg>

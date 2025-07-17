@@ -65,15 +65,15 @@ export default function NotesAnimation({
       positions =
         notes?.length === 4
           ? [
-              { x: 0, y: -300 },
-              { x: 0, y: -100 },
-              { x: 0, y: 100 },
-              { x: 0, y: 300 },
+              { x: 10, y: -300 },
+              { x: 10, y: -100 },
+              { x: 10, y: 100 },
+              { x: 10, y: 300 },
             ]
           : [
-              { x: 0, y: 0 },
-              { x: 0, y: 300 },
-              { x: 0, y: 600 },
+              { x: 10, y: 0 },
+              { x: 10, y: 250 },
+              { x: 10, y: 500 },
             ];
     }
 
@@ -159,12 +159,12 @@ export default function NotesAnimation({
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden">
+    <section ref={sectionRef} className="relative">
       <div
         ref={triggerRef}
-        className="relative h-[calc(100vh-20px)] flex flex-col"
+        className="relative lg:h-[800px] md:h-[1000px] h-[1200px] flex flex-col"
       >
-        <h2 className="lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">
+        <h2 className="max-w w-full lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">
           {header}
         </h2>
         <div
@@ -174,7 +174,7 @@ export default function NotesAnimation({
             `}
         >
           {/* horizontal string */}
-          <div className="hidden lg:block absolute top-[13%] left-0 w-full h-[1px] bg-foreground/10"></div>
+          <div className="hidden md:block absolute top-[13%] left-0 w-full h-[1px] bg-foreground/10"></div>
 
           {notes?.map((note, index) => (
             <div
@@ -197,7 +197,7 @@ export default function NotesAnimation({
                     alt={note.title || note.name || ""}
                     width={500}
                     height={500}
-                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 w-full h-full max-w-[200px] max-h-[200px] aspect-square object-cover rounded-full"
+                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 w-full h-full xl:max-w-[200px] xl:max-h-[200px] max-w-[150px] max-h-[150px] aspect-square object-cover rounded-full"
                   />
                   {note.title && (
                     <h3 className="mt-[2rem] text-[2rem] font-[700]">
@@ -245,7 +245,7 @@ export default function NotesAnimation({
                     alt={note.title || note.name || ""}
                     width={500}
                     height={500}
-                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 lg:w-[120px] lg:h-[120px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
+                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 lg:w-[100px] lg:h-[100px] md:w-[10px] md:h-[10px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
                   />
                   <div className="flex-1">
                     <h3 className="mb-[1rem] text-[1.9rem] font-[700]">

@@ -35,7 +35,7 @@ export default function PerfumesList({
   return (
     <div className="max-w 2xl:mt-[17rem] lg:mt-[16.6rem] mt-[8.2rem] mb-[15rem]">
       <div className="flex flex-col lg:flex-row gap-4 justify-between items-center py-[0.3rem]">
-        <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]">
+        <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%] tracking-[0.008em]">
           {title}
         </h1>
         <div className="flex gap-4 lg:pt-[0.3rem] pt-0 h-full">
@@ -72,12 +72,12 @@ export default function PerfumesList({
                 <div className="uppercase tracking-[0.1em] text-[0.875rem] font-[800]">
                   {perfume.subCategory}
                 </div>
-                <h3 className="line-clamp-1">{perfume.title}</h3>
+                <h3 className="line-clamp-1  text-[1.25rem]  md:text-[2rem] font-[700] tracking-wider leading-[120%] ">{perfume.title}</h3>
                 <p
                   className="lg:pt-[0.9rem] pt-[0.8rem]"
                   style={{
                     display: "-webkit-box",
-                    WebkitLineClamp: 4,
+                    WebkitLineClamp: 3,
                     WebkitBoxOrient: "vertical",
                     overflow: "hidden",
                     lineHeight: "1.5em",

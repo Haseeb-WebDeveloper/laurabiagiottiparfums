@@ -1,0 +1,24 @@
+<svg class="icon_audio_on" viewBox="0 0 63 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M2 30.6667V19.0271C2 17.42 3.30282 16.1172 4.9099 16.1172H12.7585C13.333 16.1172 13.8947 15.9471 14.3727 15.6285L26.575 7.49362C28.5089 6.20441 31.099 7.59066 31.099 9.9148V39.779C31.099 42.1032 28.5089 43.4894 26.575 42.2001L14.3727 34.0651C13.8947 33.7465 13.333 33.5766 12.7585 33.5766H4.9099C3.30282 33.5766 2 32.2738 2 30.6667Z"
+    stroke="#1B1B1B"
+    stroke-width="2"
+    vector-effect="non-scaling-stroke"
+  />
+  <path
+    d="M44.1934 13C44.1934 13 48.5582 17.3648 48.5582 24.6396C48.5582 31.9143 44.1934 36.2792 44.1934 36.2792"
+    stroke="#1B1B1B"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    vector-effect="non-scaling-stroke"
+  />
+  <path
+    d="M52.9229 4C52.9229 4 60.1976 11.2747 60.1976 24.3693C60.1976 37.4638 52.9229 44.7386 52.9229 44.7386"
+    stroke="#1B1B1B"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    vector-effect="non-scaling-stroke"
+  />
+</svg>

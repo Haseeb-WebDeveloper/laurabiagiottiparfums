@@ -93,7 +93,7 @@ export default function Footer() {
                     Laura Biagiotti World
                   </Link>
                 </li>
-                <li>
+                <li className="hidden md:block">
                   <Link
                     gsap-target="heading-1"
                     href="/"
@@ -102,6 +102,17 @@ export default function Footer() {
                     <span className="leading-[130%]">
                       Instructions for separate
                       <br /> collection of packaging
+                    </span>
+                  </Link>
+                </li>
+                <li className="md:hidden block">
+                  <Link
+                    gsap-target="heading-1"
+                    href="/"
+                    className="text-[0.9rem] font-[500] text-foreground"
+                  >
+                    <span className="leading-[130%]">
+                      Instructions for separate collection of packaging
                     </span>
                   </Link>
                 </li>
@@ -154,7 +165,7 @@ export default function Footer() {
             </p>
             <p
               gsap-target="paragraph-1"
-              className="text-[0.9rem] tracking-tight text-foreground"
+              className="text-[0.9rem] text-foreground"
               style={{
                 wordSpacing: "0rem",
               }}

@@ -32,7 +32,7 @@ export default function OlfactoryFamily({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row gap-[2rem]">
+    <div className="flex flex-col lg:flex-row gap-[2rem]">
         {/* Left Column */}
         <div className="w-full flex flex-col md:flex-row lg:gap-[2rem] gap-[1.5rem]">
           <div className="w-full space-y-[0.7rem]">

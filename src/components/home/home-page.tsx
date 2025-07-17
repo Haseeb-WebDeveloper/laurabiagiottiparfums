@@ -21,14 +21,14 @@ export default function HomePage({
         <HeroSlider slides={homeData.perfumesCarousel} locale={locale} />
       </div>
       {/* Hero Section with Featured Perfumes */}
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <ThreeColumnScroll products={homeData.perfumes} />
         </div>
       </div>
 
       {/* Circular Ingredients Section */}
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <Rotate images={homeData.circularIngridientsImages} />
         </div>
@@ -42,7 +42,7 @@ export default function HomePage({
       </div>
 
       {/* Text Image Section */}
-      <section className="lg:mt-[6rem] bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+      <section className="lg:mt-[6rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w flex flex-col md:flex-row gap-8 items-center">
           <div className="w-full md:w-[95%]">
             <div className="relative w-full h-[400px]">
@@ -71,14 +71,14 @@ export default function HomePage({
       </section>
 
       {/* News Section */}
-      <div className="mt-[10rem] bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+      <div className="mt-[10rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <NewsHorizontalScroll cards={homeData.news} locale={locale} />
         </div>
       </div>
 
       {/* Social Media Section */}
-      <div className="mt-[8rem] bg-background 2xl:px-[34px] md:px-[38px] md:px-[28px] px-[18px]">
+      <div className="mt-[8rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <SocialMedia socialMediaImages={homeData.socialMediaImages} />
         </div>

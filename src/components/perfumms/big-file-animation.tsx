@@ -2,7 +2,7 @@
 
 import { SanityImage } from "@/types/perfume";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -23,9 +23,23 @@ export default function BigFileAnimation({
   const videoRef = useRef<HTMLVideoElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isVideoHover, setIsVideoHover] = useState(false);
 
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  const isVideo = file.asset.url.endsWith('.mp4') || file.asset.url.endsWith('.webm');
+  const isVideo =
+    file.asset.url.endsWith(".mp4") || file.asset.url.endsWith(".webm");
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+
+    if (isMuted) {
+      videoRef.current.muted = false;
+    } else {
+      videoRef.current.muted = true;
+    }
+    setIsMuted(!isMuted);
+  };
 
   useGSAP(() => {
     // Register ScrollTrigger plugin
@@ -86,18 +100,42 @@ export default function BigFileAnimation({
     <div className="flex justify-center items-center absolute left-0 w-full h-full">
       <div
         ref={containerRef}
-        className={`relative lg:max-h-[75vh] max-h-[55vh] ${className}`}
+        className={`relative lg:max-h-[calc(100vh-190px)] max-h-[55vh] ${className}`}
       >
         {isVideo ? (
-          <video
-            ref={videoRef}
-            src={file.asset.url}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
+          <>
+            <video
+              ref={videoRef}
+              src={file.asset.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+            <button
+              onClick={togglePlay}
+              className={`absolute cursor-pointer lg:bottom-10 lg:right-10 bottom-6 right-6 rounded-full flex items-center justify-center bg-background hover:bg-foreground p-4 aspect-square `}
+              onMouseEnter={() => setIsVideoHover(true)}
+              onMouseLeave={() => setIsVideoHover(false)}
+            >
+              {isMuted ? (
+                <Image
+                  src={isVideoHover ? "/icons/light-play.svg" : "/icons/play.svg"}
+                  alt="pause"
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <Image
+                  src={isVideoHover ? "/icons/light-pause.svg" : "/icons/pause.svg"}
+                  alt="play"
+                  width={32}
+                  height={32}
+                />
+              )}
+            </button>
+          </>
         ) : (
           <Image
             ref={imageRef}
