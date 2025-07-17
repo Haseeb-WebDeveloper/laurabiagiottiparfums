@@ -120,7 +120,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       if (fromButtons) {
         exitTl.to(fromButtons, {
           x: 300,
-          y: -30,
+          y: -40,
           opacity: 0,
           scale: 0.9,
           duration: 1,
@@ -157,8 +157,8 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
     // Prepare and animate title
     if (toTitle && splitTypes[toIndex]) {
       gsap.set(splitTypes[toIndex].words, { 
-        x: -4, 
-        y: 30, 
+        x: -6, 
+        y: 40, 
         opacity: 0
       });
 
@@ -250,7 +250,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                 className="h-full w-full object-cover"
                 loading={index === 0 ? "eager" : "lazy"}
               />
-              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-black/10" />
             </div>
 
             {/* Content */}
@@ -260,7 +260,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                   <div className="relative z-50">
                     {/* Title */}
                     <h3
-                      className="max-w-[400px] slide-title text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] font-bold text-background leading-tight mb-6"
+                      className="max-w-[500px] slide-title text-[1.5rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-background leading-tight mb-6"
                     >
                       {slide.title}
                     </h3>

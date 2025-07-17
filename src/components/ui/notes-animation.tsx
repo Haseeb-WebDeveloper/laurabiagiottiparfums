@@ -200,7 +200,7 @@ export default function NotesAnimation({
                     className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 w-full h-full xl:max-w-[200px] xl:max-h-[200px] max-w-[150px] max-h-[150px] aspect-square object-cover rounded-full"
                   />
                   {note.title && (
-                    <h3 className="mt-[2rem] text-[2rem] font-[700]">
+                    <h3 className="mt-[2rem] text-[2rem] font-[700] leading-[120%]">
                       {note.title.split(" ").length > 2 ? (
                         <>
                           {note.title.split(" ")[0]}
@@ -225,9 +225,10 @@ export default function NotesAnimation({
                     </div>
                   )}
                   {note.perfumeNotes && (
-                    <div className="mt-[1rem] flex flex-col gap-[0.5rem]">
+                    <div className="mt-[1.1rem] flex flex-col gap-[0.3rem]">
                       {note.perfumeNotes?.map((note, key) => (
                         <Link
+                          className="text-[0.9rem] font-[400]"
                           href={`/${locale}/${note.category}-perfume/${note.slug}`}
                           key={key}
                         >

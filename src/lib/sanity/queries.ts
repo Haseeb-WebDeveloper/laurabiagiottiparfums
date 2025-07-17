@@ -1231,6 +1231,7 @@ export const getHomePageQuery = (locale: string) => `
       "slug": slug.current,
       "description": description.${locale},
       category,
+      "subCategory": subCategory->name.${locale},
       featuredImage {
         asset-> {
           url

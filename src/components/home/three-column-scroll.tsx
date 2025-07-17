@@ -239,8 +239,8 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
                 {leftProductsMd.map((product, index) => (
                   <ProductCard key={index} product={product} />
                 ))}
-              </div>
-              <div className="hidden lg:block">
+              </div> 
+              <div className="hidden lg:flex flex-col gap-y-24 lg:gap-y-[5rem]">
                 {leftProducts.map((product, index) => (
                   <ProductCard key={index} product={product} />
                 ))}
@@ -281,7 +281,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
               </div>
               
               {/* Large screens: show rightProducts */}
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex flex-col gap-y-24 lg:gap-y-[5rem]">
                 {rightProducts.map((product, index) => (
                   <ProductCard key={index} product={product} />
                 ))}
