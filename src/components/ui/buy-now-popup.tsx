@@ -1,6 +1,7 @@
 import { Country } from "@/types/perfume";
 import Image from "next/image";
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n/context";
 
 interface BuyNowPopupProps {
   isOpen: boolean;
@@ -15,12 +16,14 @@ export default function BuyNowPopup({
   countries,
   locale,
 }: BuyNowPopupProps) {
+
+  const { t } = useLocale();
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(() => {
     // If locale is 'it', find Italy, if 'de', find Germany
     if (locale === "it" || locale === "de") {
       const countryName = locale === "it" ? "Italy" : "Germany";
       return (
-        countries.find((country) => country.countryName === countryName) || null
+        countries.find((country) => country.countryName.toLowerCase() === countryName.toLowerCase()) || null
       );
     }
     return null;
@@ -37,10 +40,10 @@ export default function BuyNowPopup({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-100">
-      <div className="relative bg-background px-10 py-16 max-w-[90%] h-fit max-h-[90%] overflow-y-auto w-full lg:w-fit lg:max-w-[420px]">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[210]">
+      <div className="relative z-[110] bg-background dark:bg-[#1B1B1B] px-10 py-16 max-w-[90%] h-fit max-h-[90%] overflow-y-auto w-full lg:w-fit lg:max-w-[420px]">
         <div className=" flex justify-between items-center mb-6">
-          <p className="max-w-[90%]">
+          <p className="max-w-[90%] text-foreground">
             {!selectedCountry
               ? "Select Country"
               : "Continuing you will be redirected to the website of one of our partners where you can purchase your fragrance."}
@@ -51,7 +54,7 @@ export default function BuyNowPopup({
               alt="Close"
               width={400}
               height={400}
-              className="w-full h-full max-w-[20px] opacity-90 aspect-square"
+              className="w-full h-full max-w-[20px] opacity-90 aspect-square dark:invert"
             />
           </button>
         </div>
@@ -62,7 +65,7 @@ export default function BuyNowPopup({
               <button
                 key={country.countryName}
                 onClick={() => setSelectedCountry(country)}
-                className="cursor-pointer w-full flex items-center justify-center uppercase px-[2.7rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                className="cursor-pointer w-full flex items-center justify-center uppercase px-[2.7rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
               >
                 {country.countryName}
               </button>
@@ -93,7 +96,7 @@ export default function BuyNowPopup({
                   />
                 )}
                 <span className="cursor-pointer w-fit flex items-center justify-center uppercase my-[0.8rem] px-[1.5rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-background hover:text-foreground transition-colors duration-300">
-                  Buy Now
+                  {t("shop")}
                 </span>
               </button>
             ))}

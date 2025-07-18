@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText as GSAPSplitText } from 'gsap/SplitText';
+import { SplitText as GSAPSplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
@@ -32,25 +32,38 @@ const SplitText: React.FC<SplitTextProps> = ({
     if (typeof window === "undefined" || !ref.current || !text) return;
 
     const el = ref.current;
-    
+
     animationCompletedRef.current = false;
 
     // Configuration based on variant
-    const config = variant === "paragraph" 
-      ? {
-          splitType: "lines" as const,
-          from: { opacity: 0, y: "2rem" },
-          to: { opacity: 1, y: 0 },
-          stagger: 0.1,
-          ease: "power3.out",
-        }
-      : {
-          splitType: "words" as const,
-          from: { opacity: 0, y: "2rem" },
-          to: { opacity: 1, y: "0" },
-          stagger: 0.1,
-          ease: "power3.out",
-        };
+    const config =
+      variant === "paragraph"
+        ? {
+            splitType: "lines" as const,
+            from: {
+              opacity: 0,
+              y: "2rem",
+            },
+            to: {
+              opacity: 1,
+              y: 0,
+            },
+            stagger: 0.1,
+            ease: "power3.out",
+          }
+        : {
+            splitType: "words" as const,
+            from: {
+              opacity: 0,
+              y: "2rem",
+            },
+            to: {
+              opacity: 1,
+              y: "0",
+            },
+            stagger: 0.1,
+            ease: "power3.out",
+          };
 
     const absoluteLines = config.splitType === "lines";
     if (absoluteLines) el.style.position = "relative";
@@ -131,11 +144,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         splitter.revert();
       }
     };
-  }, [
-    text,
-    variant,
-    onAnimationComplete,
-  ]);
+  }, [text, variant, onAnimationComplete]);
 
   const Component = element;
 

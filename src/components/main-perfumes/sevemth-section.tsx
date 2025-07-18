@@ -1,21 +1,28 @@
 "use client";
 
-import { SeventhSectionInterface } from "@/types/main-perfume";
+import { MainPerfume, SeventhSectionInterface } from "@/types/main-perfume";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
 import BigHeading from "../layout/big-heading";
+import BuyNowPopup from "../ui/buy-now-popup";
+import { useState } from "react";
 
 export default function SeventhSection({
   seventhSection,
+  mainPerfume,
+  locale,
 }: {
   seventhSection: SeventhSectionInterface;
+  mainPerfume: MainPerfume;
+  locale: string;
 }) {
   const isMobile = useMediaQuery({
     query: "(max-width: 767px)",
   });
-
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   useGSAP(() => {
     // Create horizontal scroll animation
     gsap.to(".horizontal-image-animation-2", {
@@ -117,6 +124,18 @@ export default function SeventhSection({
           />
         </div>
       </div>
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </div>
   );
 }

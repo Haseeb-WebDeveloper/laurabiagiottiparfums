@@ -1,10 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import { Perfume } from "@/types/perfume";
+import { useLocale } from "@/lib/i18n/context";
 
-export default function ProductCard({ product }: { product: Perfume }) {
-console.log(product)
-  
+interface ProductCardProps {
+  product: Perfume;
+  locale: string;
+  onBuyNowClick: (product: Perfume) => void;
+}
+
+export default function ProductCard({
+  product,
+  locale,
+  onBuyNowClick,
+}: ProductCardProps) {
+  const { t } = useLocale();
+
   return (
     <div key={product._id} className="group">
       <div className="space-y-[2.29rem]">
@@ -40,16 +53,16 @@ console.log(product)
           </p>
           <div className="lg:mt-[2rem] mt-[2rem] flex flex-col lg:flex-row gap-4 lg:items-center">
             <button
-              // onClick={() => handleBuyNowClick(product)}
+              onClick={() => onBuyNowClick(product)}
               className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
-              Shop Now
+              {t("shop")}
             </button>
             <Link
               href={`/$/${product.slug}`}
               className="cursor-pointer tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
             >
-              Scopri
+              {t("learnMore")}
             </Link>
           </div>
         </div>

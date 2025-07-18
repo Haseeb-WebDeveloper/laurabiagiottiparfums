@@ -1,4 +1,4 @@
-import { Perfume, SanityImage } from "./perfume";
+import { Country, Perfume, SanityImage } from "./perfume";
 import { Note } from "./notes";
 
 export interface HomePagePerfume {
@@ -47,6 +47,9 @@ export interface HomePagePerfumeCarousel {
   title: string;
   image: {
     asset: SanityImage;
+  };
+  buy?: {
+    countries: Country[];
   };
 }
 

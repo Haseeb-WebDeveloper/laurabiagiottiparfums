@@ -10,6 +10,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import BuyNowPopup from "../ui/buy-now-popup";
+import { useLocale } from "@/lib/i18n/context";
 
 export default function PerfumeSlugHeroSection({
   heroSectionImages,
@@ -38,6 +39,7 @@ export default function PerfumeSlugHeroSection({
   };
   locale: string;
 }) {
+  const { t } = useLocale();
   const [currentIndex, setCurrentIndex] = useState(0);
   const mainSwiperRef = useRef<SwiperType | null>(null);
   const thumbSwiperRef = useRef<SwiperType | null>(null);
@@ -186,7 +188,7 @@ export default function PerfumeSlugHeroSection({
               onClick={() => setIsPopupOpen(true)}
               className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
-              Shop Now
+              {t("shop")}
             </button>
           </div>
         </div>
@@ -301,7 +303,7 @@ export default function PerfumeSlugHeroSection({
                 onClick={() => setIsPopupOpen(true)}
                 className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
               >
-                Shop Now
+                {t("shop")}
               </button>
             </div>
           </div>
@@ -363,7 +365,7 @@ export default function PerfumeSlugHeroSection({
                 onClick={() => setIsPopupOpen(true)}
                 className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
               >
-                Shop Now
+                {t("shop")}
               </button>
             </div>
           </div>

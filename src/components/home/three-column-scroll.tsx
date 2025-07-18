@@ -6,20 +6,29 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Perfume } from "@/types/perfume";
 import ProductCard from "./product-card";
+import BuyNowPopup from "../ui/buy-now-popup";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 interface ThreeColumnScrollProps {
   products: Perfume[];
+  locale: string;
 }
 
-const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
+const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const centerColumnRef = useRef<HTMLDivElement>(null);
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const [minHeight, setMinHeight] = useState<number>(0);
+  const [selectedPerfume, setSelectedPerfume] = useState<Perfume | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleBuyNowClick = (product: Perfume) => {
+    setSelectedPerfume(product);
+    setIsPopupOpen(true);
+  };
 
   // Distribute products based on screen size
   const getProductDistribution = () => {
@@ -237,12 +246,22 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
               {/* Large screens: show leftProducts, Medium screens: show leftProductsMd */}
               <div className="lg:hidden">
                 {leftProductsMd.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard 
+                    key={index} 
+                    product={product} 
+                    locale={locale} 
+                    onBuyNowClick={handleBuyNowClick}
+                  />
                 ))}
               </div> 
               <div className="hidden lg:flex flex-col gap-y-24 lg:gap-y-[5rem]">
                 {leftProducts.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard 
+                    key={index} 
+                    product={product} 
+                    locale={locale} 
+                    onBuyNowClick={handleBuyNowClick}
+                  />
                 ))}
               </div>
             </div>
@@ -255,7 +274,12 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
           >
             <div className="flex flex-col gap-y-24 lg:gap-y-[5rem]">
               {centerProducts.map((product, index) => (
-                <ProductCard key={index} product={product} />
+                <ProductCard 
+                  key={index} 
+                  product={product} 
+                  locale={locale} 
+                  onBuyNowClick={handleBuyNowClick}
+                />
               ))}
             </div>
           </div>
@@ -269,27 +293,54 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products }) => {
               {/* Mobile: show all products */}
               <div className="md:hidden">
                 {products.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard 
+                    key={index} 
+                    product={product} 
+                    locale={locale} 
+                    onBuyNowClick={handleBuyNowClick}
+                  />
                 ))}
               </div>
               
               {/* Medium screens: show rightProductsMd */}
               <div className="hidden md:block lg:hidden">
                 {rightProductsMd.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard 
+                    key={index} 
+                    product={product} 
+                    locale={locale} 
+                    onBuyNowClick={handleBuyNowClick}
+                  />
                 ))}
               </div>
               
               {/* Large screens: show rightProducts */}
               <div className="hidden lg:flex flex-col gap-y-24 lg:gap-y-[5rem]">
                 {rightProducts.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard 
+                    key={index} 
+                    product={product} 
+                    locale={locale} 
+                    onBuyNowClick={handleBuyNowClick}
+                  />
                 ))}
               </div>
             </div>
           </div>
         </div>
       </div>
+      {/* Render popup outside of the columns */}
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </div>
   );
 };

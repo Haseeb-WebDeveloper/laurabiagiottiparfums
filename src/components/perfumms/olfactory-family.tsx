@@ -11,6 +11,7 @@ export default function OlfactoryFamily({
   scentDescription,
   buy,
   locale,
+  isMainPerfume = false,
 }: {
   olfactoryFamily: string;
   nose: string;
@@ -29,6 +30,7 @@ export default function OlfactoryFamily({
     }[];
   };
   locale: string;
+  isMainPerfume?: boolean;
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { t } = useLocale();
@@ -57,7 +59,9 @@ export default function OlfactoryFamily({
         <p className="mb-[0.4rem]">{scentDescription}</p>
         <button
           onClick={() => setIsPopupOpen(true)}
-          className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+          className={`cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border text-foreground  transition-colors duration-300 
+            
+            ${isMainPerfume ? "border-ring hover:bg-ring" : "border-foreground hover:bg-foreground hover:text-background"}`}
         >
           {t("shop")}
         </button>

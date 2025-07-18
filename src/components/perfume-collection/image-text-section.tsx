@@ -7,6 +7,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useLocale } from "@/lib/i18n/context";
+import { useState } from "react";
+import BuyNowPopup from "../ui/buy-now-popup";
 export default function ImageTextSection({
   products,
   locale,
@@ -15,6 +17,14 @@ export default function ImageTextSection({
   locale: string;
 }) {
   const { t } = useLocale();
+  const [selectedPerfume, setSelectedPerfume] =
+    useState<CollectionPerfume | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleBuyNowClick = (perfume: CollectionPerfume) => {
+    setSelectedPerfume(perfume);
+    setIsPopupOpen(true);
+  };
   return (
     <section className="pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
       {products.map((product, index) => (
@@ -35,7 +45,10 @@ export default function ImageTextSection({
 
                 {/* Buttons */}
                 <div className="lg:mt-[1rem] mt-[1rem] flex gap-4 items-center">
-                  <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
+                  <button
+                    onClick={() => handleBuyNowClick(product)}
+                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                  >
                     {t("shop")}
                   </button>
                   <Link
@@ -107,6 +120,18 @@ export default function ImageTextSection({
           </div>
         </div>
       ))}
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </section>
   );
 }

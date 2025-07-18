@@ -2,31 +2,47 @@
 
 import { SanityImage } from "@/types/perfume";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
+import { useLocale } from "@/lib/i18n/context";
+import { MainPerfume } from "@/types/main-perfume";
+import BuyNowPopup from "../ui/buy-now-popup";
 
 interface BigImageAnimationProps {
   file: {
     asset: SanityImage;
   };
   className?: string;
+  mainPerfume?: MainPerfume;
+  locale?: string;
 }
 
 export default function BigImageAnimation({
   file,
+  mainPerfume,
   className = "",
+  locale,
 }: BigImageAnimationProps) {
+  const { t } = useLocale();
   const videoRef = useRef<HTMLVideoElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(
+    null
+  );
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const isVideo =
     file.asset.url.endsWith(".mp4") || file.asset.url.endsWith(".webm");
+
+  const handleBuyNowClick = (perfume: MainPerfume) => {
+    setSelectedPerfume(perfume);
+    setIsPopupOpen(true);
+  };
 
   useGSAP(() => {
     // Register ScrollTrigger plugin
@@ -105,13 +121,28 @@ export default function BigImageAnimation({
               className="w-full h-full object-contain max-h-[480px]"
             />
             <div className="w-full flex justify-center">
-              <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300">
-                Shop Now
+              <button
+                onClick={() => handleBuyNowClick(mainPerfume!)}
+                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300"
+              >
+                {t("shop")}
               </button>
             </div>
           </div>
         )}
       </div>
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale!}
+        />
+      )}
     </div>
   );
 }

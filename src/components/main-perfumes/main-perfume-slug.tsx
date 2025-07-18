@@ -1,7 +1,7 @@
 "use client";
 
 import { MainPerfume } from "@/types/main-perfume";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import BigFileAnimation from "../perfumms/big-file-animation";
@@ -15,6 +15,7 @@ import SeventhSection from "./sevemth-section";
 import BigImageAnimation from "./big-image-animation";
 import { MainPerfumeSlider } from "./main-perfume-slider";
 import { useLocale } from "@/lib/i18n/context";
+import BuyNowPopup from "../ui/buy-now-popup";
 
 export default function MainPerfumeSlug({
   mainPerfume,
@@ -25,6 +26,15 @@ export default function MainPerfumeSlug({
 }) {
   const { setTheme, theme, resolvedTheme } = useTheme();
   const { t } = useLocale();
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleBuyNowClick = (perfume: MainPerfume) => {
+    setSelectedPerfume(perfume);
+    setIsPopupOpen(true);
+  };
+
+
   useEffect(() => {
     // Store original theme
     const originalTheme = resolvedTheme;
@@ -39,6 +49,7 @@ export default function MainPerfumeSlug({
       }
     };
   }, []);
+
   return (
     <section className="mb-[15rem]">
       {/* section 1 todo */}
@@ -46,6 +57,7 @@ export default function MainPerfumeSlug({
         <MainPerfumeSlider
           slides={mainPerfume.heroSectionImages}
           locale={locale}
+          mainPerfume={mainPerfume}
         />
       </div>
 
@@ -75,7 +87,10 @@ export default function MainPerfumeSlug({
             </div>
           </div>
           <div className="w-full flex justify-center">
-            <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300">
+            <button
+              onClick={() => handleBuyNowClick(mainPerfume)}
+              className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300"
+            >
               {t("shop")}
             </button>
           </div>
@@ -111,7 +126,10 @@ export default function MainPerfumeSlug({
             <p className="text-[1rem] font-[400] lg:max-w-[75%]">
               {mainPerfume.fourthSectionTextImage.text}
             </p>
-            <button className="cursor-pointer mt-[2rem] w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300">
+            <button
+              onClick={() => handleBuyNowClick(mainPerfume)}
+              className="cursor-pointer mt-[2rem] w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300"
+            >
               {t("shop")}
             </button>
           </div>
@@ -145,6 +163,7 @@ export default function MainPerfumeSlug({
             scentDescription={mainPerfume.scentDescription}
             locale={locale}
             buy={mainPerfume.buy}
+            isMainPerfume={true}
           />
         </div>
       </div>
@@ -152,14 +171,14 @@ export default function MainPerfumeSlug({
       {/* Sixth Section */}
       <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="mt-[9rem] max-w">
-          <SixthSection sixthSection={mainPerfume.sixthSection} />
+          <SixthSection sixthSection={mainPerfume.sixthSection} mainPerfume={mainPerfume} locale={locale} />
         </div>
       </div>
 
       {/* Seventh Section */}
       <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="mt-[1rem] max-w">
-          <SeventhSection seventhSection={mainPerfume.seventhSection} />
+          <SeventhSection seventhSection={mainPerfume.seventhSection} mainPerfume={mainPerfume} locale={locale} />
         </div>
       </div>
 
@@ -167,6 +186,8 @@ export default function MainPerfumeSlug({
         <BigImageAnimation
           file={mainPerfume.heroProductImage}
           className="w-full h-full "
+          locale={locale}
+          mainPerfume={mainPerfume}
         />
       </div>
 
@@ -176,6 +197,18 @@ export default function MainPerfumeSlug({
           <RelatedPerfumes relatedPerfumes={mainPerfume.relatedProducts} />
         </div>
       </div>
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </section>
   );
 }

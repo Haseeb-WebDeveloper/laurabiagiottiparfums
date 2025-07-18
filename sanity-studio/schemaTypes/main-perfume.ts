@@ -364,7 +364,7 @@ export const mainPerfume = defineType({
             name: 'momentOfDay',
             type: 'string',
             title: 'Moment Of Day',
-            description: 'e.g., Morning, Afternoon, Evening, Night',
+            description: 'e.g., Sunrise, Daytime, Sunset, Afternoon, Night',
             options: {
               list: [
                 {title: 'Sunrise', value: 'sunrise'},

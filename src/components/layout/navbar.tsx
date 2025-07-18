@@ -173,7 +173,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="bg-red-500 relative">
+    <div className="relative">
       {/* Desktop Navbar */}
       <div className="hidden md:block fixed top-0 left-0 right-0 z-[100] bg-background 2xl:px-[34px] px-[38px]">
         <div className="max-w pt-[45px] 2xl:pt-[48px]">

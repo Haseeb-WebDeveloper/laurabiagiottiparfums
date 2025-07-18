@@ -14,6 +14,7 @@ export default function CollectionSlug({
   locale: string;
 }) {
   const { t } = useLocale();
+
   return (
     <div className="mb-[15rem] lg:mt-[14.8rem] mt-[7rem] bg-background">
       {/* 1st hero section */}
@@ -70,6 +71,9 @@ export default function CollectionSlug({
           <RelatedPerfumes relatedPerfumes={collection.relatedProducts} />
         </div>
       </div>
+
+
+      
     </div>
   );
 }

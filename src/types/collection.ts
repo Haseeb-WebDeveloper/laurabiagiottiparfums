@@ -1,5 +1,5 @@
 import { SanityAssetDocument } from "next-sanity";
-import { Ingredient, RelatedProduct, SanityImage, SubCategory } from "./perfume";
+import { Country, Ingredient, RelatedProduct, SanityImage, SubCategory } from "./perfume";
 
 interface SanityFile {
   asset: SanityAssetDocument & {
@@ -19,6 +19,9 @@ export interface CollectionPerfume {
   }[];
   isPartOfCollection?: boolean;
   ingredients?: Ingredient[];
+  buy?: {
+    countries: Country[];
+  };
 }
 
 // First section content type

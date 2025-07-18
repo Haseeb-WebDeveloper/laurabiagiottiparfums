@@ -6,16 +6,27 @@ import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
 import { useLocale } from "@/lib/i18n/context";
+import { MainPerfume } from "@/types/main-perfume";
+import { useState } from "react";
+import BuyNowPopup from "../ui/buy-now-popup";
+
 export default function SixthSection({
   sixthSection,
+  mainPerfume,
+  locale,
 }: {
   sixthSection: SixthSectionInterface;
+  mainPerfume: MainPerfume;
+  locale: string;
 }) {
   const { t } = useLocale();
   const isMobile = useMediaQuery({
     query: "(max-width: 767px)",
   });
-
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(
+    null
+  );
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   useGSAP(() => {
     // Create horizontal scroll animation
     gsap.to(".horizontal-image-animation", {
@@ -29,6 +40,11 @@ export default function SixthSection({
       },
     });
   });
+
+  const handleBuyNowClick = (perfume: MainPerfume) => {
+    setSelectedPerfume(perfume);
+    setIsPopupOpen(true);
+  };
 
   return (
     <div className="w-full flex flex-col gap-[2rem]">
@@ -88,7 +104,10 @@ export default function SixthSection({
               <p className=" lg:pr-[4rem] text-[1rem] font-[400]">
                 {sixthSection.firstContent.description}
               </p>
-              <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300">
+              <button
+                onClick={() => handleBuyNowClick(mainPerfume)}
+                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300"
+              >
                 {t("shop")}
               </button>
             </div>
@@ -159,6 +178,18 @@ export default function SixthSection({
           />
         </div>
       </div>
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </div>
   );
 }

@@ -12,17 +12,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { HeroSectionImage } from "@/types/main-perfume";
+import { HeroSectionImage, MainPerfume } from "@/types/main-perfume";
 import { useLocale } from "@/lib/i18n/context";
+import BuyNowPopup from "../ui/buy-now-popup";
 
 interface MainPerfumeSliderProps {
   slides: HeroSectionImage[];
   locale: string;
+  mainPerfume: MainPerfume;
 }
 
 export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
   slides,
   locale,
+  mainPerfume,
 }) => {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -33,14 +36,20 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { t } = useLocale();
   const totalSlides = slides.length;
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const handleBuyNowClick = (perfume: MainPerfume) => {
+    setSelectedPerfume(perfume);
+    setIsPopupOpen(true);
+  };
   // Autoplay functionality
   useEffect(() => {
     const startAutoplay = () => {
       if (autoplayTimerRef.current) {
         clearInterval(autoplayTimerRef.current);
       }
-      
+
       autoplayTimerRef.current = setInterval(() => {
         if (!isTransitioning) {
           const nextIndex = (activeIndex + 1) % totalSlides;
@@ -62,7 +71,9 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
     // Initialize split text for all slides
     const newSplitTypes: { [key: number]: SplitType } = {};
     slides.forEach((_, index) => {
-      const titleElement = document.querySelector(`#slide-title-${index}`) as HTMLElement;
+      const titleElement = document.querySelector(
+        `#slide-title-${index}`
+      ) as HTMLElement;
       if (titleElement) {
         const splitTitle = new SplitType(titleElement, { types: "words" });
         newSplitTypes[index] = splitTitle;
@@ -75,8 +86,12 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
   }, [slides]);
 
   const initializeSlide = (index: number) => {
-    const titleElement = document.querySelector(`#slide-title-${index}`) as HTMLElement;
-    const buttonsElement = document.querySelector(`#slide-buttons-${index}`) as HTMLElement;
+    const titleElement = document.querySelector(
+      `#slide-title-${index}`
+    ) as HTMLElement;
+    const buttonsElement = document.querySelector(
+      `#slide-buttons-${index}`
+    ) as HTMLElement;
 
     if (titleElement && splitTypes[index]) {
       gsap.set(splitTypes[index].words, {
@@ -97,13 +112,17 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
   };
 
   const animateImageTransition = (fromIndex: number, toIndex: number) => {
-    const fromImage = document.querySelector(`#slide-image-${fromIndex}`) as HTMLElement;
-    const toImage = document.querySelector(`#slide-image-${toIndex}`) as HTMLElement;
+    const fromImage = document.querySelector(
+      `#slide-image-${fromIndex}`
+    ) as HTMLElement;
+    const toImage = document.querySelector(
+      `#slide-image-${toIndex}`
+    ) as HTMLElement;
 
     if (fromImage && toImage) {
       // Set initial state for new image (from right, scaled down)
       gsap.set(toImage, {
-        x: '100%',
+        x: "100%",
         scale: 0,
         zIndex: 10,
       });
@@ -113,7 +132,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
 
       // Animate new image in
       imageTl.to(toImage, {
-        x: '0%',
+        x: "0%",
         scale: 1,
         opacity: 1,
         duration: 1,
@@ -121,10 +140,14 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       });
 
       // Animate old image out (optional - you can remove this if you want it to stay)
-      imageTl.to(fromImage, {
-        duration: 0.3,
-        ease: "power2.out",
-      }, 0.3);
+      imageTl.to(
+        fromImage,
+        {
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        0.3
+      );
 
       // Reset z-index after animation
       imageTl.set(fromImage, {
@@ -132,18 +155,30 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       });
 
       // Update content visibility
-      const fromContent = document.querySelector(`#slide-content-${fromIndex}`) as HTMLElement;
-      const toContent = document.querySelector(`#slide-content-${toIndex}`) as HTMLElement;
-      if (fromContent) fromContent.style.opacity = '0';
-      if (toContent) toContent.style.opacity = '1';
+      const fromContent = document.querySelector(
+        `#slide-content-${fromIndex}`
+      ) as HTMLElement;
+      const toContent = document.querySelector(
+        `#slide-content-${toIndex}`
+      ) as HTMLElement;
+      if (fromContent) fromContent.style.opacity = "0";
+      if (toContent) toContent.style.opacity = "1";
     }
   };
 
   const animateTextTransition = (fromIndex: number, toIndex: number) => {
-    const fromTitle = document.querySelector(`#slide-title-${fromIndex}`) as HTMLElement;
-    const fromButtons = document.querySelector(`#slide-buttons-${fromIndex}`) as HTMLElement;
-    const toTitle = document.querySelector(`#slide-title-${toIndex}`) as HTMLElement;
-    const toButtons = document.querySelector(`#slide-buttons-${toIndex}`) as HTMLElement;
+    const fromTitle = document.querySelector(
+      `#slide-title-${fromIndex}`
+    ) as HTMLElement;
+    const fromButtons = document.querySelector(
+      `#slide-buttons-${fromIndex}`
+    ) as HTMLElement;
+    const toTitle = document.querySelector(
+      `#slide-title-${toIndex}`
+    ) as HTMLElement;
+    const toButtons = document.querySelector(
+      `#slide-buttons-${toIndex}`
+    ) as HTMLElement;
 
     // Create timeline for text transition
     const textTl = gsap.timeline();
@@ -187,16 +222,20 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
         opacity: 0,
       });
 
-      textTl.to(splitTypes[toIndex].words, {
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-        ease: "power2.out",
-        stagger: {
-          amount: 0.4,
-          from: "start",
+      textTl.to(
+        splitTypes[toIndex].words,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: {
+            amount: 0.4,
+            from: "start",
+          },
         },
-      }, 0.3);
+        0.3
+      );
     }
 
     if (toButtons) {
@@ -267,9 +306,9 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
             id={`slide-image-${index}`}
             className="absolute inset-0"
             style={{
-            //   opacity: index === activeIndex ? 1 : 0,
+              //   opacity: index === activeIndex ? 1 : 0,
               zIndex: index === activeIndex ? 2 : 1,
-              transition: 'opacity 0.5s ease-in-out'
+              transition: "opacity 0.5s ease-in-out",
             }}
           >
             <img
@@ -294,12 +333,12 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                 id={`slide-content-${index}`}
                 className="absolute top-0 left-0 transition-opacity duration-500"
                 style={{
-                //   opacity: index === activeIndex ? 1 : 0,
-                  pointerEvents: index === activeIndex ? 'auto' : 'none',
+                  //   opacity: index === activeIndex ? 1 : 0,
+                  pointerEvents: index === activeIndex ? "auto" : "none",
                 }}
               >
                 {/* Title */}
-                <h3 
+                <h3
                   id={`slide-title-${index}`}
                   className="z-50 w-[400px] text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] font-bold text-foreground leading-tight mb-6"
                 >
@@ -307,13 +346,14 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                 </h3>
 
                 {/* CTAs */}
-                <div 
+                <div
                   id={`slide-buttons-${index}`}
                   className="max-w-[500px] flex items-center gap-4"
                 >
                   {/* Primary CTA */}
                   <button
-                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground hover:bg-background hover:text-foreground transition-colors duration-300"
+                    onClick={() => handleBuyNowClick(mainPerfume)}
+                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground hover:bg-ring hover:text-background transition-colors duration-300"
                   >
                     {t("shop")}
                   </button>
@@ -392,6 +432,18 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
           </div>
         </div>
       </div>
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </section>
   );
 };

@@ -506,6 +506,20 @@ export const getMensPerfumesQuery = (locale: string) => `{
         _id,
         url
       }
+    },
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          url
+        }
+      }
     }
   },
   // "collections": *[_type == "collections" && category == "mens"] {
@@ -1192,6 +1206,19 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       },
       "description": description.${locale}
     },
+    buy {
+    countries[] {
+      countryName,
+      websites[] {
+        logo {
+          asset-> {
+            url
+          }
+        },
+        url
+      }
+    }
+  },
   },
   "relatedProducts": relatedProducts[]->{
     _id,
@@ -1216,13 +1243,26 @@ export const getHomePageQuery = (locale: string) => `
         title,
         "slug": slug.current,
         category,
+        buy {
+          countries[] {
+            countryName,
+            websites[] {
+              logo {
+                asset-> {
+                  url
+                }
+              },
+              url
+            }
+          }
+        },  
       },
       title,
       image {
         asset-> {
           url
         }
-      }
+      },
     },
     perfumes[]-> {
       _id,
@@ -1236,7 +1276,20 @@ export const getHomePageQuery = (locale: string) => `
         asset-> {
           url
         }
-      }
+      },
+      buy {
+          countries[] {
+            countryName,
+            websites[] {
+              logo {
+                asset-> {
+                  url
+                }
+              },
+              url
+           }
+         }
+      },
     },
     circularIngridientsImages[] {
       asset-> {

@@ -14,24 +14,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomePagePerfumeCarousel } from "@/types/home-page";
 import { useLocale } from "@/lib/i18n/context";
-
-
+import BuyNowPopup from "../ui/buy-now-popup";
+import { Perfume } from "@/types/perfume";
 
 interface HeroSliderProps {
   slides: HomePagePerfumeCarousel[];
   locale: string;
 }
 
-const HeroSlider: React.FC<HeroSliderProps> = ({
-  slides,
-  locale,
-}) => {
-  const {t} = useLocale();
+const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
+  const { t } = useLocale();
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [splitTypes, setSplitTypes] = useState<{ [key: number]: SplitType }>({});
-
+  const [splitTypes, setSplitTypes] = useState<{ [key: number]: SplitType }>(
+    {}
+  );
+  const [selectedPerfume, setSelectedPerfume] = useState<Perfume | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  
   const totalSlides = slides.length;
 
   useEffect(() => {
@@ -61,19 +62,19 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
     const buttons = slide.querySelector(".slide-buttons") as HTMLElement;
 
     if (title && splitTypes[index]) {
-      gsap.set(splitTypes[index].words, { 
-        x: 0, 
-        y: 0, 
+      gsap.set(splitTypes[index].words, {
+        x: 0,
+        y: 0,
         opacity: 1,
-        scale: 1
+        scale: 1,
       });
     }
     if (buttons) {
-      gsap.set(buttons, { 
-        x: 0, 
-        y: 0, 
+      gsap.set(buttons, {
+        x: 0,
+        y: 0,
         opacity: 1,
-        scale: 1
+        scale: 1,
       });
     }
   };
@@ -89,11 +90,13 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
         if (swiperRef.current) {
           swiperRef.current.slideToLoop(toIndex);
         }
-      }
+      },
     });
 
     // Animate out current slide text simultaneously
-    const fromSlide = document.querySelector(`[data-slide-index="${fromIndex}"]`);
+    const fromSlide = document.querySelector(
+      `[data-slide-index="${fromIndex}"]`
+    );
     if (fromSlide) {
       // Ensure the current slide stays visible during animation
       gsap.set(fromSlide, {
@@ -101,33 +104,43 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       });
 
       const fromTitle = fromSlide.querySelector(".slide-title") as HTMLElement;
-      const fromButtons = fromSlide.querySelector(".slide-buttons") as HTMLElement;
+      const fromButtons = fromSlide.querySelector(
+        ".slide-buttons"
+      ) as HTMLElement;
 
       // Animate out current slide text (word by word for title)
       if (fromTitle && splitTypes[fromIndex]) {
-        exitTl.to(splitTypes[fromIndex].words, {
-          x: 300,
-          y: -40,
-          opacity: 0,
-          duration: 1,
-          ease: "power2.inOut",
-          stagger: {
-            amount: 0.3,
-            from: "start"
+        exitTl.to(
+          splitTypes[fromIndex].words,
+          {
+            x: 300,
+            y: -40,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.inOut",
+            stagger: {
+              amount: 0.3,
+              from: "start",
+            },
           },
-        }, 0);
+          0
+        );
       }
 
       // Animate out current slide buttons
       if (fromButtons) {
-        exitTl.to(fromButtons, {
-          x: 300,
-          y: -40,
-          opacity: 0,
-          scale: 0.9,
-          duration: 1,
-          ease: "power2.inOut",
-        }, 0);
+        exitTl.to(
+          fromButtons,
+          {
+            x: 300,
+            y: -40,
+            opacity: 0,
+            scale: 0.9,
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          0
+        );
       }
 
       // Reset z-index after animation
@@ -153,15 +166,15 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       onComplete: () => {
         setIsTransitioning(false);
         setActiveIndex(toIndex);
-      }
+      },
     });
 
     // Prepare and animate title
     if (toTitle && splitTypes[toIndex]) {
-      gsap.set(splitTypes[toIndex].words, { 
-        x: -6, 
-        y: 40, 
-        opacity: 0
+      gsap.set(splitTypes[toIndex].words, {
+        x: -6,
+        y: 40,
+        opacity: 0,
       });
 
       enterTl.to(splitTypes[toIndex].words, {
@@ -172,26 +185,30 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
         ease: "power2.out",
         stagger: {
           amount: 0.6,
-          from: "start"
+          from: "start",
         },
       });
     }
 
     // Prepare and animate buttons
     if (toButtons) {
-      gsap.set(toButtons, { 
-        x: -5, 
-        y: 30, 
+      gsap.set(toButtons, {
+        x: -5,
+        y: 30,
         opacity: 0,
       });
-      
-      enterTl.to(toButtons, {
-        x: 0,
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-      }, ">-1");
+
+      enterTl.to(
+        toButtons,
+        {
+          x: 0,
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out",
+        },
+        ">-1"
+      );
     }
   };
 
@@ -217,6 +234,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
     if (isTransitioning) return;
     const prevIndex = activeIndex - 1 < 0 ? totalSlides - 1 : activeIndex - 1;
     animateSlideTransition(activeIndex, prevIndex);
+  };
+
+  const handleBuyNowClick = (perfume: Perfume) => {
+    setSelectedPerfume(perfume);
+    setIsPopupOpen(true);
   };
 
   if (slides.length === 0) return null;
@@ -261,22 +283,18 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                 <div className="relative z-50 h-full w-full flex items-center">
                   <div className="relative z-50">
                     {/* Title */}
-                    <h3
-                      className="max-w-[500px] slide-title text-[1.5rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-background leading-tight mb-6"
-                    >
+                    <h3 className="max-w-[500px] slide-title text-[1.5rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-background leading-tight mb-6">
                       {slide.title}
                     </h3>
 
                     {/* CTAs */}
-                    <div
-                      className="max-w-[500px] slide-buttons flex items-center gap-4"
-                    >
+                    <div className="max-w-[500px] slide-buttons flex items-center gap-4">
                       {/* Primary CTA */}
                       <button
-                        //   onClick={() => handleBuyNowClick(perfume)}
+                        onClick={() => handleBuyNowClick(slide.perfume)}
                         className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-background text-background hover:bg-background hover:text-foreground transition-colors duration-300"
                       >
-                        {t('shop')}
+                        {t("shop")}
                       </button>
 
                       {/* Secondary CTA */}
@@ -284,7 +302,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                         href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
                         className="cursor-pointer text-background tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
                       >
-                        {t('learnMore')}
+                        {t("learnMore")}
                       </Link>
                     </div>
                   </div>
@@ -308,9 +326,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                     onClick={() => goToSlide(index)}
                     disabled={isTransitioning}
                     className={`text-background/90 text-light text-[1.2rem] leading-none pb-2 px-2 transition-all duration-300 disabled:cursor-not-allowed relative z-[100] ${
-                      index === activeIndex
-                        ? ""
-                        : ""
+                      index === activeIndex ? "" : ""
                     }`}
                   >
                     {index + 1}
@@ -364,6 +380,18 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
           </div>
         </div>
       </div>
+
+      {selectedPerfume?.buy && (
+        <BuyNowPopup
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedPerfume(null);
+          }}
+          countries={selectedPerfume.buy.countries}
+          locale={locale}
+        />
+      )}
     </section>
   );
 };
