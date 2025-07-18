@@ -19,6 +19,10 @@ import {
 } from "@/types/steps";
 import { interpolatePath } from "@/utils/interpolate-path";
 
+interface WearYourPerfumeProps {
+  customTrigger?: React.ReactNode;
+}
+
 const timesOfDay = [{
   name: "sunrise",
   label: "sunrise",
@@ -33,7 +37,7 @@ const timesOfDay = [{
   label: "night",
 }];
 
-export default function WearYourPerfume() {
+export default function WearYourPerfume({ customTrigger }: WearYourPerfumeProps) {
   const { locale, t } = useLocale();
   const id = useId();
   const [currentStep, setCurrentStep] = useState(1);
@@ -188,28 +192,30 @@ export default function WearYourPerfume() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="w-full flex justify-end">
-          <span
-            className={`w-fit h-fit cursor-pointer bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground rounded-[0.45rem] p-[0.55rem] transition-colors duration-300 flex items-center gap-[0.5rem]`}
-            onMouseEnter={() => setTriggerHover(true)}
-            onMouseLeave={() => setTriggerHover(false)}
-          >
-            <span className="text-[0.75rem] font-[400] leading-0 tracking-tight text-pretty">
-              {t("wearYourPerfume")}
+        {customTrigger || (
+          <div className="w-full flex justify-end">
+            <span
+              className={`w-fit h-fit cursor-pointer bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground rounded-[0.45rem] p-[0.55rem] transition-colors duration-300 flex items-center gap-[0.5rem]`}
+              onMouseEnter={() => setTriggerHover(true)}
+              onMouseLeave={() => setTriggerHover(false)}
+            >
+              <span className="text-[0.75rem] font-[400] leading-0 tracking-tight text-pretty">
+                {t("wearYourPerfume")}
+              </span>
+              <Image
+                src={
+                  triggerHover
+                    ? "/icons/dark-loading.svg"
+                    : "/icons/light-loading.svg"
+                }
+                alt="arrow-down"
+                width={12}
+                height={12}
+                className="dark:invert"
+              />
             </span>
-            <Image
-              src={
-                triggerHover
-                  ? "/icons/dark-loading.svg"
-                  : "/icons/light-loading.svg"
-              }
-              alt="arrow-down"
-              width={12}
-              height={12}
-              className="dark:invert"
-            />
-          </span>
-        </div>
+          </div>
+        )}
       </DialogTrigger>
       <DialogContent className="overflow-x-hidden z-[110] w-[79vw] h-[85vh] max-w overflow-y-auto flex flex-col items-center justify-center ">
         {/* Step 1: Gender Selection */}

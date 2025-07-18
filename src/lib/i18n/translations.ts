@@ -14,6 +14,8 @@ export const translations = {
     relatedFragrances: "Related Fragrances",
     visitTheOfficialWebsite: "Visit the official website",
     discoverAllNews: "Discover all news",
+    subscribe: "Subscribe",
+
     // Navbar
     search: "Search",
     womensPerfume: "Women's perfume",
@@ -50,6 +52,7 @@ export const translations = {
     olfactoryNotes: "Olfactory Notes",
     olfactoryFamily: "Olfactory Family",
     nose: "Nose",
+
   },
 
   it: {
@@ -64,6 +67,7 @@ export const translations = {
     relatedFragrances: "Naviga le fragranze",
     visitTheOfficialWebsite: "Visita il sito ufficiale",
     discoverAllNews: "Scopri tutte le news",
+    subscribe: "Iscriviti",
     // Navbar
     search: "Cerca",
     wearYourPerfume: "Indossa il tuo profumo",
@@ -99,6 +103,28 @@ export const translations = {
     olfactoryNotes: "Note Olfattive",
     olfactoryFamily: "Famiglia olfattiva",
     nose: "Noso",
+
+    // Form
+    newsLatterTitle:
+      "VUOI RIMANERE AGGIORNATO SULLE NOVITÀ DI LAURA BIAGIOTTI?",
+    newsLatterDescription:
+      "Inserisci i tuoi dati per completare la registrazione e ricevere i nostri contenuti esclusivi. Cliccando su <strong>BESTÄTIGEN</strong> si dichiara di voler ricevere aggiornamenti e comunicazioni sui profumi Laura Biagiotti attraverso i canali indicati nella nostra privacy policy.",
+    newsLatterConfirm: "CONFERMA",
+    newsLatterPrivacyPolicy: "Informativa Privacy",
+    newsLatterPrivacyPolicyDescription:
+      "Ho letto e compreso l Informativa privacy",
+    newsLatterNewsletter: "Iscrizione al servizio di newsletter",
+    newsLatterNewsletterDescription:
+      "Voglio iscrivermi alla newsletter di Angelini Beauty",
+    newsLatterMarketing:
+      "Consenso al trattamento dei dati per finalità di marketing",
+    newsLatterMarketingDescription:
+      "Acconsento alla ricezione di comunicazioni commerciali relative a prodotti, promozioni e iniziative di Angelini Beauty, delle proprie affiliate e distributori",
+    newsLatterFirstName: "Inserisci il nome",
+    newsLatterLastName: "Inserisci il cognome",
+    newsLatterEmail: "tuo@indirizzo.email",
+    newsLatterPhone: "Inserisci il numero di telefono",
+    newsLatterCountry: "Seleziona il paese",
   },
 
   de: {
@@ -113,6 +139,8 @@ export const translations = {
     relatedFragrances: "Andere Düfte durchsuchen",
     visitTheOfficialWebsite: "Besuchen Sie die offizielle Website",
     discoverAllNews: "Entdecken Sie alle Neuigkeiten",
+    subscribe: "Abonnieren",
+
     // Navbar
     search: "Suchen",
     wearYourPerfume: "Tragen Sie Ihr Parfüm",
@@ -149,5 +177,25 @@ export const translations = {
     olfactoryNotes: "Duftnoten",
     olfactoryFamily: "Duftfamilie",
     nose: "Parfümeur",
+
+    // Form
+    newsLatterTitle:
+      "MÖCHTEN SIE ÜBER NEUIGKEITEN VON LAURA BIAGIOTTI INFORMIERT BLEIBEN?",
+    newsLatterDescription:
+      "Geben Sie Ihre Daten ein, um sich zu registrieren und unsere exklusiven Inhalte zu erhalten. Durch Klicken auf BESTÄTIGEN erklären Sie sich damit einverstanden, Updates und Mitteilungen über Laura Biagiotti Parfums gemäß unserer Datenschutzrichtlinie zu erhalten.",
+    newsLatterConfirm: "BESTÄTIGEN",
+    newsLatterPrivacyPolicy: "Datenschutzbestimmungen",
+    newsLatterPrivacyPolicyDescription: "Ich habe die Datenschutzbestimmungen",
+    newsLatterNewsletter: "Newsletter-Abonnement",
+    newsLatterNewsletterDescription:
+      "Ich möchte den Angelini Beauty Info-Newsletter abonnieren",
+    newsLatterMarketing: "Zustimmung zur Datenverarbeitung für Marketingzwecke",
+    newsLatterMarketingDescription:
+      "Ich bin damit einverstanden, kommerzielle Mitteilungen über Neuigkeiten zu Produkten, Promotionen und Initiativen von Angelini Beauty, sowie deren Tochtergesellschaften und Vertriebspartnern zu erhalten",
+    newsLatterFirstName: "Geben Sie Ihren Vornamen ein",
+    newsLatterLastName: "Geben Sie Ihren Nachnamen ein",
+    newsLatterEmail: "Ihre@adresse.email",
+    newsLatterPhone: "Geben Sie Ihre Telefonnummer ein",
+    newsLatterCountry: "Land auswählen",
   },
 };

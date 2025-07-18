@@ -10,6 +10,7 @@ import HeroSlider from "./home-slider";
 import NotesAnimation from "../ui/notes-animation";
 import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
+import WearYourPerfume from "../wear-your-perfume";
 
 export default function HomePage({
   homeData,
@@ -39,7 +40,7 @@ export default function HomePage({
         </div>
       </div>
 
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <div className="flex flex-col items-center justify-center w-full">
             <SplitText
@@ -61,9 +62,13 @@ export default function HomePage({
                 className="mt-[0.5rem] text-[1rem] text-foreground"
               />
             </p>
-            <button className="mt-[2rem] cursor-pointer w-fit flex items-center justify-center uppercase px-[1.5rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
-              {t("startQuiz")}
-            </button>
+            <WearYourPerfume
+              customTrigger={
+                <button className="mt-[2rem] cursor-pointer w-fit flex items-center justify-center uppercase px-[1.5rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
+                  {t("startQuiz")}
+                </button>
+              }
+            />
           </div>
         </div>
       </div>

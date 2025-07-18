@@ -13,9 +13,11 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import WearYourPerfume from "../wear-your-perfume";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const { locale, t } = useLocale();
+  const { theme } = useTheme();
   const [perfumes, setPerfumes] = useState<{
     mens: CombinedPerfume[];
     womens: CombinedPerfume[];
@@ -202,11 +204,15 @@ export default function Navbar() {
             <div className="w-full flex flex-col items-center">
               <Link href={`/${locale}`}>
                 <Image
-                  src="/logo/desktop-logo.svg"
+                  src={
+                    theme === "dark"
+                      ? "/logo/desktop-logo.svg"
+                      : "/logo/desktop-light-logo.svg"
+                  }
                   alt="logo"
                   width={200}
                   height={200}
-                  className="w-[11rem] dark:invert"
+                  className="w-[11rem]"
                 />
               </Link>
             </div>
@@ -233,28 +239,28 @@ export default function Navbar() {
                     className="relative cursor-pointer text-[0.9rem] 2xl:tracking-[0.003em] font-[400] leading-0"
                   >
                     {item.label}
-                  <motion.div
-                    initial={{ width: 0, height: 2 }}
-                    animate={
-                      hoveredIndex === index
-                        ? {
-                            width: "100%",
-                            height: 1,
-                            opacity: 1,
-                            transition: {
-                              width: { duration: 0.4, ease: "easeInOut" },
-                              height: { delay: 0.3, duration: 0.2 },
-                            },
-                          }
-                        : {
-                            width: 0,
-                            height: 2,
-                            opacity: 0,
-                            transition: { duration: 0.2 },
-                          }
-                    }
-                    className="absolute z-[200] -bottom-[4px] left-0 bg-foreground"
-                  />
+                    <motion.div
+                      initial={{ width: 0, height: 2 }}
+                      animate={
+                        hoveredIndex === index
+                          ? {
+                              width: "100%",
+                              height: 1,
+                              opacity: 1,
+                              transition: {
+                                width: { duration: 0.4, ease: "easeInOut" },
+                                height: { delay: 0.3, duration: 0.2 },
+                              },
+                            }
+                          : {
+                              width: 0,
+                              height: 2,
+                              opacity: 0,
+                              transition: { duration: 0.2 },
+                            }
+                      }
+                      className="absolute z-[200] -bottom-[4px] left-0 bg-foreground"
+                    />
                   </Link>
                 </div>
               ))}
@@ -319,7 +325,11 @@ export default function Navbar() {
           {/* Center - Mobile Logo */}
           <Link href={`/${locale}`}>
             <Image
-              src="/logo/mobile-logo.svg"
+              src={
+                theme === "dark"
+                  ? "/logo/mobile-logo.svg"
+                  : "/logo/mobile-light-logo.svg"
+              }
               alt="logo"
               width={220}
               height={220}
