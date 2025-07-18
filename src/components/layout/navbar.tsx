@@ -15,7 +15,7 @@ import WearYourPerfume from "../wear-your-perfume";
 import { motion } from "framer-motion";
 
 export default function Navbar() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const [perfumes, setPerfumes] = useState<{
     mens: CombinedPerfume[];
     womens: CombinedPerfume[];
@@ -146,12 +146,12 @@ export default function Navbar() {
 
   const navItems = [
     {
-      label: "Women's perfume",
+      label: t("womensPerfume"),
       href: `/${locale}/womens-perfume`,
       category: "womens" as const,
     },
     {
-      label: "Men's perfume",
+      label: t("mensPerfume"),
       href: `/${locale}/mens-perfume`,
       category: "mens" as const,
     },
@@ -187,7 +187,7 @@ export default function Navbar() {
                 onClick={() => setIsSearchOpen(true)}
               >
                 <span className="text-[.75rem] font-[400] leading-0 text-pretty group-hover:text-background">
-                  Search
+                  {t("search")}
                 </span>
                 <Image
                   src="/icons/search.svg"

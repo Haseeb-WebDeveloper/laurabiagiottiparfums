@@ -1,9 +1,11 @@
-import { Collection, CollectionPerfume } from "@/types/collection";
+"use client";
+
+import { Collection } from "@/types/collection";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import BigFileAnimation from "../perfumms/big-file-animation";
 import ImageTextSection from "./image-text-section";
 import RelatedPerfumes from "../perfumms/related-perfumes";
-
+import { useLocale } from "@/lib/i18n/context";
 export default function CollectionSlug({
   collection,
   locale,
@@ -11,8 +13,9 @@ export default function CollectionSlug({
   collection: Collection;
   locale: string;
 }) {
+  const { t } = useLocale();
   return (
-    <div className="mb-[15rem] lg:mt-[14.8rem] mt-[7rem]">
+    <div className="mb-[15rem] lg:mt-[14.8rem] mt-[7rem] bg-background">
       {/* 1st hero section */}
       <section className="lg:mb-[100vh] mb-[75vh]">
         <h1 className="text-center 2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide">
@@ -34,7 +37,7 @@ export default function CollectionSlug({
           {/* shop now button */}
           <div className="w-full flex justify-center -mt-[1.6rem]">
             <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
-              Shop Now
+              {t("learnMore")}
             </button>
           </div>
 

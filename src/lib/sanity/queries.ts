@@ -1244,7 +1244,7 @@ export const getHomePageQuery = (locale: string) => `
       }
     },
     notes[]-> {
-      title,
+      "title": title.${locale},
       image {
         asset-> {
           url,
@@ -1284,7 +1284,8 @@ export const getHomePageQuery = (locale: string) => `
           url
         }
       },
-      url
+      url,
+      "description": description.${locale}
     }
   }
 `;
@@ -1347,7 +1348,7 @@ export const getPrivacyPolicyQuery = ({ locale }: { locale: string }) => `
 
 export const getNotesQuery = ({ locale }: { locale: string }) => `
   *[_type == "notes"] {
-    title,
+    "title": title.${locale},
     image {
       asset-> {
         url

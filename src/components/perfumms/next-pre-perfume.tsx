@@ -26,7 +26,7 @@ export default function NextPrePerfume({
   const [hoveredElement, setHoveredElement] = useState<"prev" | "next" | null>(
     null
   );
-
+  const { t } = useLocale();
   useGSAP(() => {
     if (!navRef.current || !wrapperRef.current) return;
 
@@ -66,14 +66,12 @@ export default function NextPrePerfume({
   const handleMouseEnter = (element: "prev" | "next") => {
     setHoveredElement(element);
     const targetRef = element === "prev" ? prevImageRef : nextImageRef;
-    
-    gsap.to(targetRef.current,
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.3,
-      }
-    );
+
+    gsap.to(targetRef.current, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.3,
+    });
 
     const linkRef = targetRef.current?.parentElement?.parentElement;
     if (linkRef) {
@@ -84,7 +82,7 @@ export default function NextPrePerfume({
   const handleMouseLeave = (element: "prev" | "next") => {
     setHoveredElement(null);
     const targetRef = element === "prev" ? prevImageRef : nextImageRef;
-    
+
     gsap.to(targetRef.current, {
       scale: 1.2,
       duration: 0.3,
@@ -93,7 +91,7 @@ export default function NextPrePerfume({
         if (linkRef) {
           gsap.set(linkRef, { display: "none" });
         }
-      }
+      },
     });
   };
 
@@ -117,7 +115,7 @@ export default function NextPrePerfume({
               height={20}
               className={`${hoveredElement === "prev" ? "invert" : ""} max-h-[16px] transition-all duration-300`}
             />
-            <span className="text-[0.9rem]">Previous</span>
+            <span className="text-[0.9rem]">{t("previous")}</span>
             <Link
               href={`/${locale}/perfume/${previous.slug}`}
               className="absolute left-1/2 -translate-x-1/2 bottom-[30px] hidden overflow-hidden"
@@ -137,7 +135,7 @@ export default function NextPrePerfume({
 
           {/* Center */}
           <div className="flex gap-4 items-center">
-            <span className="text-[0.9rem]">Related fragrances</span>
+            <span className="text-[0.9rem]">{t("relatedFragrances")}</span>
           </div>
 
           {/* Next */}
@@ -146,7 +144,7 @@ export default function NextPrePerfume({
             onMouseEnter={() => handleMouseEnter("next")}
             onMouseLeave={() => handleMouseLeave("next")}
           >
-            <span className="text-[0.9rem]">Next</span>
+            <span className="text-[0.9rem]">{t("next")}</span>
             <Image
               src="/icons/right.svg"
               alt="arrow-right"

@@ -162,11 +162,13 @@ export default function NotesAnimation({
     <section ref={sectionRef} className="relative">
       <div
         ref={triggerRef}
-        className="relative lg:h-[800px] md:h-[1000px] h-[1200px] flex flex-col"
+        className="relative lg:h-[800px] md:h-[1000px] h-[1200px] flex flex-col "
       >
-        <h2 className="max-w w-full lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">
-          {header}
-        </h2>
+        <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
+          <h2 className="max-w w-full lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">
+            {header}
+          </h2>
+        </div>
         <div
           ref={containerRef}
           className={`sticky top-0 lg:h-[40rem] h-[80rem] flex items-start justify-center

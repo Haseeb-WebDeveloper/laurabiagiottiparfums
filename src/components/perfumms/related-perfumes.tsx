@@ -11,16 +11,23 @@ export default function RelatedPerfumes({
 }: {
   relatedPerfumes: RelatedProduct[];
 }) {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   return (
     <section className="lg:max-w-[83%] w-full mx-auto mt-[5rem]">
       <h3 className="mb-12 lg:text-[3rem] text-[2.5rem] font-[500]">
-        Related Perfumes
+        {locale === "en"
+          ? "Related fragrances"
+          : locale === "it"
+            ? "Altre fragranze"
+            : "Andere Düfte"}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 justify-between lg:gap-8 gap-16">
         {relatedPerfumes.map((related, index) => (
-          <div key={index} className={`w-full flex ${index == 0 ? "justify-start" : "justify-end"}`}>
+          <div
+            key={index}
+            className={`w-full flex ${index == 0 ? "justify-start" : "justify-end"}`}
+          >
             <div className="max-w-[415px] group space-y-[1.9rem]">
               <div className="lg:h-[305px] h-[420px] w-full relative">
                 <ParallaxImage
@@ -32,7 +39,9 @@ export default function RelatedPerfumes({
                 />
               </div>
               <div className="space-y-[0.3rem]">
-                <h3 className="line-clamp-2">{related.title}</h3>
+                <h3 className="line-clamp-1  text-[1.25rem]  md:text-[2rem] font-[700] tracking-wider leading-[120%] ">
+                  {related.title}
+                </h3>
                 <p
                   className="pt-[0.8rem]"
                   style={{
@@ -53,7 +62,7 @@ export default function RelatedPerfumes({
                     href={`/${locale}/perfume/${related.slug}`}
                     className="cursor-pointer uppercase px-[1.7rem] py-[0.7rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
                   >
-                    Learn more
+                    {t("learnMore")}
                   </Link>
                 </div>
               </div>

@@ -14,6 +14,7 @@ import SixthSection from "./sixth-section";
 import SeventhSection from "./sevemth-section";
 import BigImageAnimation from "./big-image-animation";
 import { MainPerfumeSlider } from "./main-perfume-slider";
+import { useLocale } from "@/lib/i18n/context";
 
 export default function MainPerfumeSlug({
   mainPerfume,
@@ -23,7 +24,7 @@ export default function MainPerfumeSlug({
   locale: string;
 }) {
   const { setTheme, theme, resolvedTheme } = useTheme();
-
+  const { t } = useLocale();
   useEffect(() => {
     // Store original theme
     const originalTheme = resolvedTheme;
@@ -39,7 +40,7 @@ export default function MainPerfumeSlug({
     };
   }, []);
   return (
-    <section>
+    <section className="mb-[15rem]">
       {/* section 1 todo */}
       <div className="mb-[4rem] lg:mt-[190px] mt-[60px] lg:h-[calc(100vh-190px)] h-[calc(100vh-60px)] ">
         <MainPerfumeSlider
@@ -75,7 +76,7 @@ export default function MainPerfumeSlug({
           </div>
           <div className="w-full flex justify-center">
             <button className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300">
-              Shop Now
+              {t("shop")}
             </button>
           </div>
         </div>
@@ -111,7 +112,7 @@ export default function MainPerfumeSlug({
               {mainPerfume.fourthSectionTextImage.text}
             </p>
             <button className="cursor-pointer mt-[2rem] w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300">
-              Shop Now
+              {t("shop")}
             </button>
           </div>
           <div className="w-full">
@@ -130,7 +131,7 @@ export default function MainPerfumeSlug({
         <div className="lg:mt-[15rem] mt-[10rem] max-w overflow-hidden">
           <NotesAnimation
             notes={mainPerfume?.olfactoryNotes || []}
-            header="Olfactory Notes"
+            header={t("olfactoryNotes")}
           />
         </div>
       </div>

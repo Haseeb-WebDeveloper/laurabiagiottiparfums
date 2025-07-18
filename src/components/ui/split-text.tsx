@@ -11,6 +11,7 @@ export interface SplitTextProps {
   text: string;
   className?: string;
   variant?: "paragraph" | "heading";
+  element?: "div" | "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   textAlign?: React.CSSProperties["textAlign"];
   onAnimationComplete?: () => void;
 }
@@ -20,6 +21,7 @@ const SplitText: React.FC<SplitTextProps> = ({
   className = "",
   variant = "paragraph",
   textAlign = "left",
+  element = "div",
   onAnimationComplete,
 }) => {
   const ref = useRef<HTMLDivElement | HTMLParagraphElement | null>(null);
@@ -135,7 +137,7 @@ const SplitText: React.FC<SplitTextProps> = ({
     onAnimationComplete,
   ]);
 
-  const Component = variant === "heading" ? "div" : "p";
+  const Component = element;
 
   return (
     <Component

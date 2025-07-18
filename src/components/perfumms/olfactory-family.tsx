@@ -3,6 +3,7 @@
 import { Perfume } from "@/types/perfume";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
+import { useLocale } from "@/lib/i18n/context";
 
 export default function OlfactoryFamily({
   olfactoryFamily,
@@ -30,19 +31,21 @@ export default function OlfactoryFamily({
   locale: string;
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const { t } = useLocale();
   return (
     <div className="flex flex-col lg:flex-row gap-[2rem]">
-        {/* Left Column */}
-        <div className="w-full flex flex-col md:flex-row lg:gap-[2rem] gap-[1.5rem]">
-          <div className="w-full space-y-[0.7rem]">
-            <h3 className="text-[2rem] lg:font-[600] font-[700]">Olfactory Family</h3>
-            <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
-              {olfactoryFamily}
-            </span>
-          </div>
+      {/* Left Column */}
+      <div className="w-full flex flex-col md:flex-row lg:gap-[2rem] gap-[1.5rem]">
         <div className="w-full space-y-[0.7rem]">
-          <h3 className="text-[2rem] lg:font-[600] font-[700]">Nose</h3>
+          <h3 className="text-[2rem] lg:font-[600] font-[700]">
+            {t("olfactoryFamily")}
+          </h3>
+          <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
+            {olfactoryFamily}
+          </span>
+        </div>
+        <div className="w-full space-y-[0.7rem]">
+          <h3 className="text-[2rem] lg:font-[600] font-[700]">{t("nose")}</h3>
           <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
             {nose}
           </span>
@@ -52,11 +55,11 @@ export default function OlfactoryFamily({
       {/* Right Column */}
       <div className="w-full flex flex-col gap-[2rem]">
         <p className="mb-[0.4rem]">{scentDescription}</p>
-        <button 
+        <button
           onClick={() => setIsPopupOpen(true)}
           className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
-          Shop Now
+          {t("shop")}
         </button>
       </div>
 

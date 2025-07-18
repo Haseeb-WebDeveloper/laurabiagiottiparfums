@@ -141,6 +141,28 @@ export const homePage = defineType({
               title: 'URL',
               type: 'url',
             }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'en',
+                  title: 'English',
+                  type: 'string',
+                }),
+                defineField({
+                  name: 'it',
+                  title: 'Italian',
+                  type: 'string',
+                }),
+                defineField({
+                  name: 'de',
+                  title: 'German',
+                  type: 'string',
+                }),
+              ],
+            }),
           ],
           preview: {
             select: {

@@ -307,7 +307,7 @@ export default function PerfumeDropdown({
                     />
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center w-[220px] h-[160px] rounded-[1rem] text-block bg-foreground text-background">
+                  <div className="flex items-center justify-center w-[220px] h-[160px] rounded-[1rem] text-block bg-foreground border-foreground border-[1px] hover:bg-background hover:text-foreground transition-colors duration-300">
                     {categoryName}
                   </div>
                 )}

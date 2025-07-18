@@ -17,9 +17,19 @@ export default function SocialMedia({
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const descriptionRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
+
+    // Animate description down
+    gsap.to(descriptionRef.current[index], {
+      y: 0,
+      opacity: 1,
+      duration: 0.3,
+      delay: 0.1,
+      ease: "power2.out",
+    });
 
     // Animate icons up
     gsap.to(iconsRef.current[index]?.children as any, {
@@ -36,6 +46,14 @@ export default function SocialMedia({
     setHoveredIndex(null);
     setHoveredIcon(null);
 
+    // Animate description up
+    gsap.to(descriptionRef.current[index], {
+      y: -20,
+      opacity: 0,
+      duration: 0.3,
+      ease: "power2.in",
+    });
+
     // Animate icons down
     gsap.to(iconsRef.current[index]?.children as any, {
       y: 20,
@@ -47,11 +65,20 @@ export default function SocialMedia({
   };
 
   useEffect(() => {
-    // Initialize icons position
+    // Initialize icons and descriptions position
     iconsRef.current.forEach((ref) => {
       if (ref) {
         gsap.set(ref.children, {
           y: 20,
+          opacity: 0,
+        });
+      }
+    });
+
+    descriptionRef.current.forEach((ref) => {
+      if (ref) {
+        gsap.set(ref, {
+          y: -20,
           opacity: 0,
         });
       }
@@ -155,7 +182,9 @@ export default function SocialMedia({
             <p className="text-[1rem]">Posts</p>
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.3rem]">
-            <h6 className="md:text-[2rem] text-[1.8rem] font-semibold">25.6K</h6>
+            <h6 className="md:text-[2rem] text-[1.8rem] font-semibold">
+              25.6K
+            </h6>
             <p className="text-[1rem]">Followers</p>
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.3rem]">
@@ -185,51 +214,65 @@ export default function SocialMedia({
                 className=""
               />
               <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 transition-colors" />
-            <div
-              ref={(el) => {
-                if (el) {
-                  iconsRef.current[index] = el;
-                }
-              }}
-              className="absolute z-[60] bottom-4 left-5 flex gap-3"
-            >
-              <div
-                className="cursor-pointer"
-                onMouseEnter={() => setHoveredIcon(`heart-${index}`)}
-                onMouseLeave={() => setHoveredIcon(null)}
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  className="transition-colors duration-200"
-                  fill={hoveredIcon === `heart-${index}` ? "white" : "none"}
-                  stroke={hoveredIcon === `heart-${index}` ? "white" : "white"}
-                >
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                </svg>
-              </div>
-              <div
-                className="cursor-pointer"
-                onMouseEnter={() => setHoveredIcon(`comment-${index}`)}
-                onMouseLeave={() => setHoveredIcon(null)}
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  className="transition-colors duration-200"
-                  fill={hoveredIcon === `comment-${index}` ? "white" : "none"}
-                  stroke={
-                    hoveredIcon === `comment-${index}` ? "white" : "white"
-                  }
-                >
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                </svg>
-              </div>
-            </div>
-            </a>
 
+              <p
+                ref={(el) => {
+                  if (el) {
+                    descriptionRef.current[index] = el;
+                  }
+                }}
+                className="absolute z-[60] top-4 left-0 px-[1rem] text-[1rem] text-white opacity-0"
+              >
+                {social.description}
+              </p>
+              <div
+                ref={(el) => {
+                  if (el) {
+                    iconsRef.current[index] = el;
+                  }
+                }}
+                className="absolute z-[60] bottom-4 left-5 flex gap-3"
+              >
+                {/* Heart Icon */}
+                <div
+                  className="cursor-pointer"
+                  onMouseEnter={() => setHoveredIcon(`heart-${index}`)}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    className="transition-colors duration-200"
+                    fill={hoveredIcon === `heart-${index}` ? "white" : "none"}
+                    stroke={
+                      hoveredIcon === `heart-${index}` ? "white" : "white"
+                    }
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </div>
+                {/* Comment Icon */}
+                <div
+                  className="cursor-pointer"
+                  onMouseEnter={() => setHoveredIcon(`comment-${index}`)}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    className="transition-colors duration-200"
+                    fill={hoveredIcon === `comment-${index}` ? "white" : "none"}
+                    stroke={
+                      hoveredIcon === `comment-${index}` ? "white" : "white"
+                    }
+                  >
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                </div>
+              </div>
+            </a>
           </div>
         ))}
       </div>

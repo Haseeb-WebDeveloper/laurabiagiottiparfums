@@ -8,7 +8,24 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'en',
+          title: 'English',
+          type: 'string',
+        }),
+        defineField({
+          name: 'it',
+          title: 'Italian',
+          type: 'string',
+        }),
+        defineField({
+          name: 'de',
+          title: 'German',
+          type: 'string',
+        }),
+      ],
     }),
     defineField({
       name: 'image',
@@ -36,7 +53,7 @@ export default defineType({
     prepare(selection) {
       const {title, media} = selection
       return {
-        title: title || 'Untitled Note',
+        title: title.en || 'Untitled Note',
         media: media || 'image',
       }
     },

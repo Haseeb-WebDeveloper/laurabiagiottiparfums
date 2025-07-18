@@ -6,12 +6,13 @@ import { ParallaxImage } from "../ui/ParallaxImage";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
-
+import { useLocale } from "@/lib/i18n/context";
 export default function BrandPageComponent({
   brandPageData,
 }: {
   brandPageData: BrandPage;
 }) {
+  const { t } = useLocale();
   const isMobile = useMediaQuery({
     query: "(max-width: 767px)",
   });
@@ -130,7 +131,7 @@ export default function BrandPageComponent({
       {/* Third Section */}
       <div className="flex flex-col lg:flex-row justify-between gap-12 md:mt-[8rem] lg:mt-[10rem] mt-[5rem] w-full">
         <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12 items-start">
-          <div className="w-full h-full flex md:max-w-[67%] max-w-full">
+          <div className="w-full h-full flex md:items-center md:max-w-[67%] max-w-full">
             <p
               gsap-target="paragraph-1"
               className=""
@@ -179,7 +180,7 @@ export default function BrandPageComponent({
 
       {/* Last Section */}
       <div className="flex justify-between gap-4 w-full">
-        <div className="w-full h-full flex flex-col lg:gap-4 gap-8 justify-center items-center">
+        <div className="w-full h-full flex flex-col  gap-8 justify-center items-center">
           <div
             className="lg:mt-[8rem] mt-[6rem] lg:mx-[2rem] text-center lg:text-[2rem] md:text-[2.5rem] text-[1.4rem] leading-[150%] font-primary"
             dangerouslySetInnerHTML={{
@@ -190,7 +191,7 @@ export default function BrandPageComponent({
             href={brandPageData.lastSection.url}
             className="cursor-pointer flex items-center justify-center uppercase px-[1.5rem] py-[0.5rem] rounded-[0.9rem] tracking-[1.1px] text-[14px]  font-[400] border-[1px] border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
           >
-            Visit the official website
+            {t("visitTheOfficialWebsite")}
           </Link>
         </div>
       </div>

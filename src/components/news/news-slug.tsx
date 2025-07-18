@@ -1,10 +1,14 @@
+"use client";
+
 import { NewsItem } from "@/types/news";
 import { formatDateOnly } from "@/utils/formet-data";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import RichEditor from "../rich-editor";
+import { useLocale } from "@/lib/i18n/context";
 
 export default function NewsSlug({ news }: { news: NewsItem }) {
+  const { t } = useLocale();
   return (
     <div className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[10rem] mb-[13rem]">
       <div className="flex flex-col md:flex-row justify-between gap-8">
@@ -43,7 +47,7 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
               href="/news"
               className="inline-block w-fit cursor-pointer uppercase px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
-              <span>Discover all news</span>
+              <span>{t("discoverAllNews")}</span>
             </Link>
           </div>
         </div>

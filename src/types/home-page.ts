@@ -38,6 +38,7 @@ export interface SocialMediaImage {
     asset: SanityImage;
   };
   url: string;
+  description: string;
 }
 
 

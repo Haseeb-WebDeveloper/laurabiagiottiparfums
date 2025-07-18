@@ -25,12 +25,12 @@ export default function Footer() {
             {/* Info Section */}
             <div className="w-full space-y-2 lg:space-y-4">
               <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Info" variant="heading" />
+                <SplitText text="Info" variant="heading" element="h2" />
               </div>
               <ul>
                 <li>
                   <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
-                    <SplitText text="News" variant="paragraph" />
+                    <SplitText text="News" variant="paragraph" element="p" />
                   </Link>
                 </li>
               </ul>
@@ -39,17 +39,17 @@ export default function Footer() {
             {/* Product Section */}
             <div className="w-full space-y-2 lg:space-y-4">
               <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Product" variant="heading" />
+                <SplitText text="Product" variant="heading" element="h2" />
               </div>
               <ul className="flex flex-col gap-[0.65rem]">
                 <li>
                   <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
-                    <SplitText text="Women's Perfumes" variant="paragraph" />
+                    <SplitText text="Women's Perfumes" variant="paragraph" element="p" />
                   </Link>
                 </li>
                 <li>
                   <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
-                    <SplitText text="Men's Perfumes" variant="paragraph" />
+                    <SplitText text="Men's Perfumes" variant="paragraph" element="p" />
                   </Link>
                 </li>
               </ul>
@@ -58,17 +58,17 @@ export default function Footer() {
             {/* Brand Section */}
             <div className="w-full space-y-2 lg:space-y-4">
               <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Brand" variant="heading" />
+                <SplitText text="Brand" variant="heading" element="h2" className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground" />
               </div>
               <ul className="flex flex-col gap-[0.65rem]">
                 <li>
                   <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
-                    <SplitText text="Laura Biagiotti Shop" variant="paragraph" />
+                    <SplitText text="Laura Biagiotti Shop" variant="paragraph" element="p" />
                   </Link>
                 </li>
                 <li>
                   <Link href="/" className="text-[0.9rem] font-[500] text-foreground">
-                    <SplitText text="Laura Biagiotti World" variant="paragraph" />
+                    <SplitText text="Laura Biagiotti World" variant="paragraph" element="p" />
                   </Link>
                 </li>
                 <li>
@@ -77,6 +77,7 @@ export default function Footer() {
                       <SplitText 
                         text="Instructions for separate collection of packaging" 
                         variant="paragraph" 
+                        element="p"
                       />
                     </span>
                   </Link>
@@ -91,12 +92,13 @@ export default function Footer() {
           {/* Legal Links - Desktop */}
           <div className="space-y-[.5rem] hidden lg:block">
             <div className="flex items-center gap-[1rem] text-[0.9rem] tracking-tight text-foreground">
-              <SplitText text="Privacy Policy | Cookies Policy | Terms of use | info@laurabiagiottiparfums.com" variant="paragraph" />
+              <SplitText text="Privacy Policy | Cookies Policy | Terms of use | info@laurabiagiottiparfums.com" variant="paragraph" element="p" />
             </div>
             <div className="text-[0.9rem] text-foreground">
               <SplitText 
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved." 
                 variant="paragraph" 
+                element="p"
               />
             </div>
           </div>
@@ -105,16 +107,17 @@ export default function Footer() {
           <div className="space-y-[.7rem] block lg:hidden w-full">
             <div className="space-y-2">
               <div className="text-[0.9rem] tracking-tight text-foreground">
-                <SplitText text="Privacy Policy | Cookies Policy | Terms of use" variant="paragraph" />
+                <SplitText text="Privacy Policy | Cookies Policy | Terms of use" variant="paragraph" element="p" />
               </div>
               <div className="text-[0.9rem] text-foreground">
-                <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" />
+                <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p" />
               </div>
             </div>
             <div className="text-[0.9rem] tracking-tight text-foreground">
               <SplitText 
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved." 
                 variant="paragraph" 
+                element="p"
               />
             </div>
           </div>

@@ -1,155 +1,153 @@
 /**
  * Application translation strings
- * Organized by locale and then by key
  */
 export const translations = {
   en: {
     // General
-    'title': 'Localization',
-    'language': 'Language',
-    'switchTo': 'Switch to',
-    'english': 'EN',
-    'italian': 'IT',
-    'spanish': 'ES',
+    shop: "Shop Now",
+    learnMore: "Learn more",
+    readMore: "Read more",
+    back: "Back",
+    close: "Esc",
+    previous: "Previous",
+    next: "Next",
+    relatedFragrances: "Related Fragrances",
+    visitTheOfficialWebsite: "Visit the official website",
+    discoverAllNews: "Discover all news",
+    // Navbar
+    search: "Search",
+    womensPerfume: "Women's perfume",
+    mensPerfume: "Men's perfume",
+    wearYourPerfume: "Wear your perfume",
+    wypstep1Title: "Wear your perfume",
+    wypstep1Description:
+      "Tell us something more about you, and we will help you to find your perfect fragrance!",
+    wypstep2Title: "Which notes do you prefer?",
+    wypstepe3Title: "Which moment of the day is your favorite?",
+    wypstepe4Title: "you prefer a perfume that is:",
+    wypResult: "Discover the perfect fragrances for you",
+    sunrise: "Sunrise",
+    dayTime: "Sunset",
+    sunset: "Sunset",
+    night: "Night",
+    forHim: "For Him",
+    forHer: "For Her",
+    light: "Light & Discrete",
+    intense: "Intense & Persistent",
+    unveil: "Unveil the results",
 
-    // Navigation
-    'home': 'Home',
-    'about': 'About Us',
-    'contact': 'Contact',
-    'divisions': 'Divisions',
-    'caseStudies': 'Case Studies',
+    // Home page
+    textImageSectionTitle: "A love story Made in Italy",
+    textImageSectionDescription:
+      "Roma and Roma Uomo, a story that continues to be enriched with new emotions since 1988.",
+    textImageSectionButton: "Discover the story",
+    startQuiz: "Start the Quiz", //3rd section
+    playWithOurNotes: "Play with our Notes",
+    playWithOurNotesDiscription:
+      "Discover the fragrance that represents you. Take our quiz to find the perfect perfume for you.",
 
-    // Contact page
-    'contactNumber': 'Call us +390280897083',
-    'contactWhatsapp': 'Message us on WhatsApp',
-    'contactSendMessage': 'Send a message',
-    'contactSendMessageWhatsapp': 'Send a message on WhatsApp',
-    'contactFormTitle': 'New project?',
-    'contactFormCTAMessage1': 'Prefer a direct conversation?',
-    'contactFormCTAMessage2': 'We\'re here ☺️',
-    'contactFormCTAMessage3': 'I\'m Chiara',
-    'contactFormCTAMessage4': 'Figmenta Partnerships Manager',
-    'faq': 'FAQ',
-
-    // Common actions
-    'readMore': 'Read more',
-    'submit': 'Submit',
-    'cancel': 'Cancel',
-    'sending': 'Sending...',
-    'send': 'Send',
-    'messageSent': 'Message sent',
-
-
-    // Solution model
-    'solutionModelStickyBarText': 'Let\'s talk about it',
-
-    // Contact form
-    'contactFormLabelName': 'Full Name',
-    'contactFormLabelEmail': 'Email',
-    'contactFormLabelAboutProject': 'About project',
-    'contactFormPlaceholderName': 'Your name',
-    'contactFormPlaceholderEmail': 'Your email',
-    'contactFormPlaceholderAboutProject': 'Tell us about your project',
-    'contactFormCheck1': 'We will respond to you within 24 hours.',
-    'contactFormCheck2': 'We’ll sign an NDA if requested.',
-    'contactFormCheck3': 'You will be in contact with a specialist in your industry.',
+    // Perfume Slug
+    olfactoryNotes: "Olfactory Notes",
+    olfactoryFamily: "Olfactory Family",
+    nose: "Nose",
   },
 
   it: {
     // General
-    'title': 'Localization',
-    'language': 'Lingua',
-    'switchTo': 'Passa a',
-    'english': 'EN',
-    'italian': 'IT',
-    'spanish': 'ES',
-    // Navigation
-    'home': 'Home',
-    'contact': 'Contatti',
-    'divisions': 'Offerta',
-    'caseStudies': 'Casi Studio',
+    shop: "Acquista ora",
+    learnMore: "Scopri",
+    readMore: "Leggi",
+    back: "Indietro",
+    close: "Esci",
+    previous: "Precedente",
+    next: "Successivo",
+    relatedFragrances: "Naviga le fragranze",
+    visitTheOfficialWebsite: "Visita il sito ufficiale",
+    discoverAllNews: "Scopri tutte le news",
+    // Navbar
+    search: "Cerca",
+    wearYourPerfume: "Indossa il tuo profumo",
+    womensPerfume: "Profumi Donne",
+    mensPerfume: "Profumi Uomo",
+    wypstep1Title: "Indossa il tuo profumo",
+    wypstep1Description:
+      "Fai il nostro test in 4 step per scoprire la fragranza perfetta per te.",
+    wypstep2Title: "Quali note ti attraggono di più?",
+    wypstepe3Title: "Quale momento della giornata ti attrae di più?",
+    wypstepe4Title: "Preferisci un profumo che sia:",
+    wypResult: "Ecco le fragranze perfette per te",
+    sunrise: "Alba",
+    dayTime: "Giorno",
+    sunset: "Tramonto",
+    night: "Notte",
+    forHim: "Per lui",
+    forHer: "Per lei",
+    light: "Leggero e discreto",
+    intense: "Intenso e persistente",
+    unveil: "Scopri i risultati",
+    // Home page
+    textImageSectionTitle: "Una storia d'amore Made in Italy",
+    textImageSectionDescription:
+      "Roma e Roma Uomo, una storia che continua ad arricchirsi di nuove emozioni dal 1988.",
+    textImageSectionButton: "Scopri la storia",
+    startQuiz: "Inizia il test", //3rd section
+    playWithOurNotes: "Gioca con le nostre note",
+    playWithOurNotesDiscription:
+      "Scopri la fragranza che ti rappresenta. Rispondi al nostro test per trovare il profumo perfetto per te.",
 
-    // Contact page
-    'contactNumber': 'Chiamaci +390280897083',
-    'contactWhatsapp': 'Scrivici su WhatsApp',
-    'contactSendMessage': 'Scrivici su WhatsApp',
-    'contactSendMessageWhatsapp': 'Invia un messaggio su WhatsApp',
-    'contactFormTitle': 'Nuovo Progetto?',
-    'contactFormCTAMessage1': 'Preferisci una conversazione diretta?',
-    'contactFormCTAMessage2': 'Siamo qui ☺️',
-    'contactFormCTAMessage3': "Sono Chiara",
-    'contactFormCTAMessage4': "Partnerships Manager in Figmenta",
-    'faq': 'FAQ',
-
-    // Common actions
-    'readMore': 'Leggi di più',
-    'submit': 'Invia',
-    'cancel': 'Annulla',
-    'sending': 'Invio in corso...',
-    'send': 'Invia',
-    'messageSent': 'Messaggio inviato',
-
-    // Solution model
-    'solutionModelStickyBarText': 'Contattaci',
-
-    // Contact form
-    'contactFormLabelName': 'Nome e Cognome',
-    'contactFormLabelEmail': 'Email',
-    'contactFormLabelAboutProject': 'Parlaci del tuo progetto',
-    'contactFormPlaceholderName': 'Il tuo nome',
-    'contactFormPlaceholderEmail': 'La tua email',
-    'contactFormPlaceholderAboutProject': 'Parlaci del tuo progetto',
-    'contactFormCheck1': 'Risponderemo entro 24 ore.',
-    'contactFormCheck2': 'Firmeremo un NDA se richiesto.',
-    'contactFormCheck3': 'Sarai in contatto con un esperto nel tuo settore.',
+    // Perfume Slug
+    olfactoryNotes: "Note Olfattive",
+    olfactoryFamily: "Famiglia olfattiva",
+    nose: "Noso",
   },
 
-  es: {
+  de: {
     // General
-    'title': 'Localization',
-    'language': 'Language',
-    'switchTo': 'Switch to',
-    'english': 'EN',
-    'italian': 'IT',
-    'spanish': 'ES',
-    // Navigation
-    'home': 'Home',
-    'contact': 'Contacto',
-    'divisions': 'Divisions',
-    'caseStudies': 'Case Studies',
+    shop: "Kaufen",
+    learnMore: "Mehr erfahren",
+    readMore: "Lesen",
+    back: "Zurück",
+    close: "Verlassen",
+    previous: "Vorherige",
+    next: "Nächste",
+    relatedFragrances: "Andere Düfte durchsuchen",
+    visitTheOfficialWebsite: "Besuchen Sie die offizielle Website",
+    discoverAllNews: "Entdecken Sie alle Neuigkeiten",
+    // Navbar
+    search: "Suchen",
+    wearYourPerfume: "Tragen Sie Ihr Parfüm",
+    womensPerfume: "Frauenparfüme",
+    mensPerfume: "Männerparfüme",
+    wypstep1Title: "Tragen Sie Ihr Parfüm",
+    wypstep1Description:
+      "Erzählen Sie uns etwas mehr über sich, und wir helfen Ihnen, Ihren perfekten Duft zu finden!",
+    wypstep2Title: "Welche Noten bevorzugen Sie?",
+    wypstepe3Title: "Welcher Moment des Tages ist Ihr Lieblingsmoment?",
+    wypstepe4Title: "Sie bevorzugen ein Parfüm, das:",
+    wypResult: "Entdecken Sie die perfekten Düfte für sich",
+    sunrise: "Sonnenaufgang",
+    dayTime: "Tagsüber",
+    sunset: "Sonnenuntergang",
+    night: "Nacht",
+    forHim: "Für ihn",
+    forHer: "Für sie",
+    light: "Leicht und diskret",
+    intense: "Intensiv und beständig",
+    unveil: "Entdecken Sie die Ergebnisse",
 
-    // Contact page
-    'contactNumber': 'Llámanos +390280897083',
-    'contactWhatsapp': 'Envíenos un mensaje por WhatsApp',
-    'contactSendMessage': 'Enviar un mensaje',
-    'contactSendMessageWhatsapp': 'Enviar un mensaje en WhatsApp',
-    'contactFormTitle': 'Nuevo proyecto?',
-    'contactFormCTAMessage1': 'Prefiere una conversación directa?',
-    'contactFormCTAMessage2': 'Ya estamos aquí ☺️',
-    'contactFormCTAMessage3': "Soy Chiara",
-    'contactFormCTAMessage4': "Partnerships Manager in Figmenta",
-    'faq': 'FAQ',
+    // Home page
+    textImageSectionTitle: "Eine Liebesgeschichte aus Italien",
+    textImageSectionDescription:
+      "Roma und Roma Uomo – eine Geschichte, die seit 1988 immer wieder neue Emotionen weckt.",
+    textImageSectionButton: "Entdecken Sie die Geschichte",
+    startQuiz: "Starten Sie den Test", //3rd section
+    playWithOurNotes: "Finden Sie Ihren perfekten Duft",
+    playWithOurNotesDiscription:
+      "Finden Sie Ihren perfekten Duft. Führen Sie unseren Test durch, um den perfekten Duft zu finden.",
 
-    // Common actions
-    'readMore': 'Seguir leyendo',
-    'submit': 'Enviar',
-    'cancel': 'Cancelar',
-    'sending': 'Enviando...',
-    'send': 'Enviar',
-    'messageSent': 'Mensaje enviado',
-
-    // Solution model
-    'solutionModelStickyBarText': 'Hablemos de ello',
-
-    // Contact form
-    'contactFormLabelName': 'Nombre y Apellido',
-    'contactFormLabelEmail': 'Email',
-    'contactFormLabelAboutProject': 'Sobre el proyecto',
-    'contactFormPlaceholderName': 'Su nombre',
-    'contactFormPlaceholderEmail': 'Tu correo electrónico',
-    'contactFormPlaceholderAboutProject': 'Háblenos de su proyecto',
-    'contactFormCheck1': 'Le responderemos en un plazo de 24 horas.',
-    'contactFormCheck2': 'Firmaremos un acuerdo de confidencialidad si se nos solicita.',
-    'contactFormCheck3': 'Estará en contacto con un especialista de su sector.',
+    // Perfume Slug
+    olfactoryNotes: "Duftnoten",
+    olfactoryFamily: "Duftfamilie",
+    nose: "Parfümeur",
   },
-}; 
+};

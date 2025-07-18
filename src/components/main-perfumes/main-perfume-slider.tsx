@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { HeroSectionImage } from "@/types/main-perfume";
+import { useLocale } from "@/lib/i18n/context";
 
 interface MainPerfumeSliderProps {
   slides: HeroSectionImage[];
@@ -30,7 +31,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
     {}
   );
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
-
+  const { t } = useLocale();
   const totalSlides = slides.length;
 
   // Autoplay functionality
@@ -314,7 +315,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                   <button
                     className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground hover:bg-background hover:text-foreground transition-colors duration-300"
                   >
-                    Shop Now
+                    {t("shop")}
                   </button>
                 </div>
               </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
+import { useLocale } from "@/lib/i18n/context";
 
 export default function PerfumesList({
   perfumes,
@@ -22,6 +23,7 @@ export default function PerfumesList({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedPerfume, setSelectedPerfume] = useState<Perfume | null>(null);
+  const { t } = useLocale();
 
   const filteredPerfumes = selectedCategory
     ? perfumes.filter((perfume) => perfume.subCategory === selectedCategory)
@@ -72,7 +74,9 @@ export default function PerfumesList({
                 <div className="uppercase tracking-[0.1em] text-[0.875rem] font-[800]">
                   {perfume.subCategory}
                 </div>
-                <h3 className="line-clamp-1  text-[1.25rem]  md:text-[2rem] font-[700] tracking-wider leading-[120%] ">{perfume.title}</h3>
+                <h3 className="line-clamp-1  text-[1.25rem]  md:text-[2rem] font-[700] tracking-wider leading-[120%] ">
+                  {perfume.title}
+                </h3>
                 <p
                   className="lg:pt-[0.9rem] pt-[0.8rem]"
                   style={{
@@ -93,13 +97,13 @@ export default function PerfumesList({
                     onClick={() => handleBuyNowClick(perfume)}
                     className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
                   >
-                    Shop Now
+                    {t("shop")}
                   </button>
                   <Link
                     href={`/${locale}/${slugPrefix}/${perfume.slug}`}
                     className="cursor-pointer tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
                   >
-                    Scopri
+                    {t("learnMore")}
                   </Link>
                 </div>
               </div>

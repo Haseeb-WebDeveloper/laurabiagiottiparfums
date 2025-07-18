@@ -16,7 +16,7 @@ const SocialIcons = () => {
             alt="Facebook"
             width={16}
             height={16}
-            className="group-hover:invert"
+            className="group-hover:invert dark:invert dark:group-hover:invert-0"
           />
         </div>
       </Link>
@@ -31,7 +31,7 @@ const SocialIcons = () => {
             alt="Instagram"
             width={16}
             height={16}
-            className="group-hover:invert"
+            className="group-hover:invert dark:invert dark:group-hover:invert-0"
           />
         </div>
       </Link>
@@ -46,7 +46,7 @@ const SocialIcons = () => {
             alt="Youtube"
             width={16}
             height={16}
-            className="group-hover:invert"
+            className="group-hover:invert dark:invert dark:group-hover:invert-0"
           />
         </div>
       </Link>

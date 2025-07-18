@@ -9,6 +9,7 @@ import MainProductImage from "./main-product-image";
 import RelatedPerfumes from "./related-perfumes";
 import { useState } from "react";
 import NextPrePerfume from "./next-pre-perfume";
+import { useLocale } from "@/lib/i18n/context";
 
 export default function PerfumeSlug({
   perfume,
@@ -23,7 +24,7 @@ export default function PerfumeSlug({
     null
   );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const { t } = useLocale();
   const handleBuyNowClick = (country: Country[]) => {
     setSelectedCountry(country);
     setIsPopupOpen(true);
@@ -72,7 +73,7 @@ export default function PerfumeSlug({
         <div className="mt-[3rem]">
           <NotesAnimation
             notes={perfume?.olfactoryNotes || []}
-            header="Olfactory Notes"
+            header={t("olfactoryNotes")}
           />
         </div>
       </div>

@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { HomePagePerfumeCarousel } from "@/types/home-page";
+import { useLocale } from "@/lib/i18n/context";
 
 
 
@@ -25,6 +26,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
   slides,
   locale,
 }) => {
+  const {t} = useLocale();
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -274,7 +276,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                         //   onClick={() => handleBuyNowClick(perfume)}
                         className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-background text-background hover:bg-background hover:text-foreground transition-colors duration-300"
                       >
-                        Shop Now
+                        {t('shop')}
                       </button>
 
                       {/* Secondary CTA */}
@@ -282,7 +284,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                         href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
                         className="cursor-pointer text-background tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
                       >
-                        Scopri
+                        {t('learnMore')}
                       </Link>
                     </div>
                   </div>

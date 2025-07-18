@@ -19,8 +19,22 @@ import {
 } from "@/types/steps";
 import { interpolatePath } from "@/utils/interpolate-path";
 
+const timesOfDay = [{
+  name: "sunrise",
+  label: "sunrise",
+}, {
+  name: "dayTime",
+  label: "dayTime",
+}, {
+  name: "sunset",
+  label: "sunset",
+}, {
+  name: "night",
+  label: "night",
+}];
+
 export default function WearYourPerfume() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const id = useId();
   const [currentStep, setCurrentStep] = useState(1);
   const [notes, setNotes] = useState<Note[]>([]);
@@ -181,7 +195,7 @@ export default function WearYourPerfume() {
             onMouseLeave={() => setTriggerHover(false)}
           >
             <span className="text-[0.75rem] font-[400] leading-0 tracking-tight text-pretty">
-              Wear your perfume
+              {t("wearYourPerfume")}
             </span>
             <Image
               src={
@@ -204,11 +218,10 @@ export default function WearYourPerfume() {
           className={`${currentStep !== 1 ? "hidden" : "flex"} min-h-[60vh] flex-col items-center justify-center`}
         >
           <h2 className="text-[2rem] lg:text-[3rem] font-[500] mb-[.5rem]">
-            Wear your perfume
+            {t("wypstep1Title")}
           </h2>
           <p className="text-[1rem] font-[400] mb-[2rem] text-center ">
-            Tell us something more about you, and we will help you to find your
-            perfect fragrance!
+            {t("wypstep1Description")}
           </p>
           <div className="flex gap-8 w-full max-w-[600px] justify-center items-center">
             <button
@@ -218,7 +231,7 @@ export default function WearYourPerfume() {
               }}
               className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
-              For Him
+              {t("forHim")}
             </button>
             <button
               onClick={() => {
@@ -227,7 +240,7 @@ export default function WearYourPerfume() {
               }}
               className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
-              For Her
+              {t("forHer")}
             </button>
           </div>
         </div>
@@ -238,7 +251,7 @@ export default function WearYourPerfume() {
           className={`${currentStep !== 2 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
-            Which notes do you prefer?
+            {t("wypstep2Title")}
           </h2>
           <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full justify-between gap-8">
             {notes.map((note, index) => (
@@ -274,30 +287,30 @@ export default function WearYourPerfume() {
           className={`${currentStep !== 3 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center w-full relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem]">
-            Which moment of the day is your favorite?
+            {t("wypstepe3Title")}
           </h2>
           <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full justify-between">
-            {["sunrise", "daytime", "sunset", "night"].map((time) => (
+            {timesOfDay.map((time: { name: string; label: string }) => (
               <button
-                key={time}
+                key={time.name}
                 onClick={() => {
-                  setStep3Selection({ timeOfDay: time as any });
+                  setStep3Selection({ timeOfDay: time.name as any });
                   handleNextStep();
                 }}
                 className={`cursor-pointer flex flex-col items-center gap-4
-                  ${step3Selection.timeOfDay === time ? "" : ""}`}
+                  ${step3Selection.timeOfDay === time.name ? "" : ""}`}
               >
                 <div className="w-[190px] h-[190px] rounded-full overflow-hidden">
                   <Image
-                    src={`/${time}.png`}
-                    alt={time}
+                    src={`/${time.name}.png`}
+                    alt={time.label}
                     width={190}
                     height={190}
                     className="w-full h-full object-contain"
                   />
                 </div>
                 <span className="capitalize text-[1.1rem] font-[400]">
-                  {time}
+                  {t(time.label)}
                 </span>
               </button>
             ))}
@@ -310,7 +323,7 @@ export default function WearYourPerfume() {
           className={`${currentStep !== 4 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto px-4 relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
-            you prefer a perfume that is:
+            {t("wypstepe4Title")}
           </h2>
 
           <div className="flex flex-col items-center gap-12 w-full mt-[4rem]">
@@ -388,10 +401,10 @@ export default function WearYourPerfume() {
 
               {/* Labels */}
               <div className="absolute left-10 -bottom-8 text-[1.1rem] font-[400]">
-                Light & Discrete
+                {t("light")}
               </div>
               <div className="absolute right-10 -bottom-8 text-[1.1rem] font-[400]">
-                Intense & Persistent
+                {t("intense")}
               </div>
             </div>
 
@@ -407,7 +420,7 @@ export default function WearYourPerfume() {
               disabled={isLoading}
               className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300 mt-4"
             >
-              {isLoading ? "Finding matches..." : "Unveil Results"}
+              {isLoading ? "Finding matches..." : t("unveil")}
             </button>
           </div>
         </div>
@@ -418,7 +431,7 @@ export default function WearYourPerfume() {
           className={`${currentStep !== 5 ? "hidden" : ""} min-h-[60vh] relative`}
         >
           <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
-            Your Perfect Match
+            {t("wypResult")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {matchedPerfumes.map((perfume) => (
@@ -440,7 +453,7 @@ export default function WearYourPerfume() {
                       href={`/${locale}/${perfume.category}-perfume/${perfume.slug}`}
                       className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
                     >
-                      Scopri
+                      {t("learnMore")}
                     </Link>
                   </div>
                 </div>
@@ -456,7 +469,7 @@ export default function WearYourPerfume() {
               onClick={handlePreviousStep}
               className="cursor-pointer w-fit"
             >
-              Back
+              {t("back")}
             </button>
           )}
           {/* Progress Bar */}

@@ -1,11 +1,12 @@
+"use client";
+
 import { NewsListItem } from "@/types/news";
 import { formatDate } from "@/utils/formet-data";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
-
+import { useLocale } from "@/lib/i18n/context";
 export default function NewsList({ news }: { news: NewsListItem[] }) {
-  console.log(news);
-
+  const { t } = useLocale();
   return (
     <div className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[8.2rem] mb-[15rem]">
       <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] tracking-[0.01em]">
@@ -54,7 +55,7 @@ export default function NewsList({ news }: { news: NewsListItem[] }) {
                   href={`/news/${item.slug}`}
                   className="cursor-pointer uppercase px-[1.6rem] py-[0.65rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
                 >
-                  Read More
+                  {t("readMore")}
                 </Link>
               </div>
             </div>

@@ -6,6 +6,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
+import { useLocale } from "@/lib/i18n/context";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function MainProductImage({
@@ -60,7 +61,7 @@ export default function MainProductImage({
   }, []);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const { t } = useLocale();
   return (
     <div className="w-full lg:min-h-[80vh] pb-[5rem] flex flex-col items-center justify-center">
       <div className="h-full lg:max-w-[600px]">
@@ -87,7 +88,7 @@ export default function MainProductImage({
           onClick={() => setIsPopupOpen(true)}
           className="cursor-pointer flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
-          Shop Now
+          {t("shop")}
         </button>
       </div>
 
