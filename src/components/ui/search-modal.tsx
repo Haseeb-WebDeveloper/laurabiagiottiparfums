@@ -44,17 +44,62 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   } | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Handle scroll lock
+  // Separate perfumes and collections
+  const separateResults = (results: SearchResult[] | undefined) => {
+    if (!results) return { perfumes: [], collections: [] };
+    return {
+      perfumes: results.filter(
+        (item) => item._type === "perfume" || item._type === "mainPerfume"
+      ),
+      collections: results.filter((item) => item._type === "collections"),
+    };
+  };
+
+  // Enhanced scroll lock with wheel event prevention
   useEffect(() => {
     if (isOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+
+      // Lock body scroll
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      // Prevent wheel events on body
+      const preventScroll = (e: WheelEvent | TouchEvent) => {
+        // Only prevent if the scroll is not within our dialog
+        if (
+          scrollContainerRef.current &&
+          !scrollContainerRef.current.contains(e.target as Node)
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      };
+
+      document.addEventListener("wheel", preventScroll, { passive: false });
+      document.addEventListener("touchmove", preventScroll, { passive: false });
+
+      return () => {
+        // Restore scroll
+        const scrollY = document.body.style.top;
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+
+        if (scrollY) {
+          window.scrollTo(0, parseInt(scrollY || "0") * -1);
+        }
+
+        document.removeEventListener("wheel", preventScroll);
+        document.removeEventListener("touchmove", preventScroll);
+      };
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -91,27 +136,35 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     fetchResults();
   }, [debouncedSearchTerm, locale]);
 
+  // Handle scroll events within the dialog
+  const handleDialogScroll = (e: React.WheelEvent) => {
+    // Stop propagation to prevent body scroll
+    e.stopPropagation();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[640px] w-[95%] p-0 gap-0 z-[110] overflow-hidden flex flex-col max-h-[85vh] rounded">
-        <DialogClose className="hidden" />
-
+      <DialogContent
+        className="!max-w-[640px] lg:w-[95%] w-[91%] p-0 gap-0 z-[110] overflow-hidden flex flex-col lg:max-h-[99vh] max-h-[45vh] rounded-md"
+        hideDefaultCloseIcon={true}
+        onWheel={handleDialogScroll}
+      >
         <button
           onClick={onClose}
-          className="cursor-pointer z-[110] group absolute top-3 right-3 flex size-7 items-center justify-center  "
+          className="cursor-pointer z-[110] group absolute top-4 right-3 flex size-7 items-center justify-center"
         >
           <Image
             src="/icons/close-thin-dark.svg"
             alt="Close"
-            width={16}
-            height={16}
+            width={20}
+            height={20}
             className="dark:invert"
           />
           <span className="sr-only">Close</span>
         </button>
 
         {/* Search Input */}
-        <div className="p-[1rem] flex justify-between items-center text-[1rem]">
+        <div className="p-[1.2rem] flex justify-between items-center text-[1rem]">
           <input
             ref={inputRef}
             type="text"
@@ -122,8 +175,16 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           />
         </div>
 
-        {/* Results */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain">
+        {/* Results - This is the scrollable container */}
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain"
+          style={{
+            // Ensure this container handles its own scrolling
+            overscrollBehavior: "contain",
+          }}
+          onWheel={handleDialogScroll}
+        >
           {isLoading ? (
             <h6 className="border border-t-[1px] font-bold text-[1rem] px-[1rem] py-[0.5rem]">
               Loading...
@@ -131,33 +192,143 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           ) : (
             results && (
               <>
-                <div className="">
-                  {/* Perfumes & Collections */}
-                  {results.perfumes.length > 0 && (
+                <div className="border-t-[1px] border-foreground/10">
+                  {/* Perfumes */}
+                  {separateResults(results.perfumes).perfumes.length > 0 && (
                     <div>
-                      <h6 className="px-[1rem] py-[0.5rem] border-t-[1px]  text-lg font-medium mb-[0.5rem]">
-                        Perfumes & Collections
+                      <h6 className="sticky top-0 bg-background z-10 px-[1rem] pt-[1rem] pb-[0.5rem] text-[1rem] font-medium border-b border-foreground/10">
+                        Perfumes
                       </h6>
-                      <div className="flex flex-col gap-4">
-                        {results.perfumes.map((item) => (
+                      <div className="flex flex-col">
+                        {separateResults(results.perfumes).perfumes.map(
+                          (item) => (
+                            <Link
+                              key={item._id}
+                              href={`/${locale}/${
+                                item.category === "mens" ? "mens" : "womens"
+                              }-perfume/${item.slug}`}
+                              className="group flex items-center lg:items-start gap-[1rem] hover:bg-foreground/10 px-[1rem] py-[1.5rem]"
+                              onClick={onClose}
+                            >
+                              <div className="relative overflow-hidden rounded-xl">
+                                {item.featuredImage ? (
+                                  <Image
+                                    src={item.featuredImage.asset.url}
+                                    alt={
+                                      item.localized?.value.title || item.title
+                                    }
+                                    width={90}
+                                    height={90}
+                                    className="object-cover rounded-xl"
+                                  />
+                                ) : (
+                                  <div className="w-[100px] h-[100px] bg-foreground/5 flex items-center justify-center">
+                                    No image
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <p className="line-clamp-1 lg:text-[1rem] text-[1.1rem] font-bold">
+                                  {item.title}
+                                </p>
+                                <p
+                                  className="lg:text-[0.8rem] text-[1rem] leading-[110%] mt-1 line-clamp-2"
+                                  style={{
+                                    wordSpacing: "0em",
+                                  }}
+                                >
+                                  {item.description}
+                                </p>
+                                <p className="text-[0.9rem] pt-[1rem] ">
+                                  {t("learnMore")}
+                                </p>
+                              </div>
+                            </Link>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Collections */}
+                  {separateResults(results.perfumes).collections.length > 0 && (
+                    <div>
+                      <h6 className="sticky top-0 bg-background z-10 px-[1rem] pt-[1rem] pb-[0.5rem] text-[1rem] font-medium border-b border-foreground/10">
+                        Collections
+                      </h6>
+                      <div className="flex flex-col">
+                        {separateResults(results.perfumes).collections.map(
+                          (item) => (
+                            <Link
+                              key={item._id}
+                              href={`/${locale}/${
+                                item.category === "mens" ? "mens" : "womens"
+                              }-perfume/${item.slug}`}
+                              className="group flex items-center lg:items-start gap-[1rem] hover:bg-foreground/10 px-[1rem] py-[1.5rem]"
+                              onClick={onClose}
+                            >
+                              <div className="relative overflow-hidden rounded-xl">
+                                {item.featuredImage ? (
+                                  <Image
+                                    src={item.featuredImage.asset.url}
+                                    alt={item.title}
+                                    width={90}
+                                    height={90}
+                                    className="object-cover rounded-xl"
+                                  />
+                                ) : (
+                                  <div className="w-[100px] h-[100px] bg-foreground/5 flex items-center justify-center">
+                                    No image
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <p className="line-clamp-1 lg:text-[1rem] text-[1.1rem] font-bold">
+                                  {item.title}
+                                </p>
+                                <p
+                                  className="lg:text-[0.8rem] text-[1rem] leading-[110%] mt-1 line-clamp-2"
+                                  style={{
+                                    wordSpacing: "0em",
+                                  }}
+                                >
+                                  {item.description}
+                                </p>
+                                <p className="text-[0.9rem] pt-[1rem] ">
+                                  {t("learnMore")}
+                                </p>
+                              </div>
+                            </Link>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* News */}
+                  {results.news.length > 0 && (
+                    <div>
+                      <h3 className="sticky top-0 bg-background z-10 px-[1rem] pt-[1rem] pb-[0.5rem] text-[1rem] font-medium border-b border-foreground/10">
+                        News
+                      </h3>
+                      <div className="flex flex-col">
+                        {results.news.map((item) => (
                           <Link
                             key={item._id}
-                            href={`/${locale}/${
-                              item.category === "mens" ? "mens" : "womens"
-                            }-perfume/${item.slug}`}
-                            className="group flex gap-[1rem] hover:bg-foreground/5 p-[1rem] rounded-[0.8rem]"
+                            href={`/${locale}/news/${item.slug}`}
+                            className="group flex items-center lg:items-start gap-[1rem] hover:bg-foreground/10 px-[1rem] py-[1.5rem]"
                             onClick={onClose}
                           >
-                            <div className="relative overflow-hidden rounded-lg">
+                            <div className="relative overflow-hidden rounded-xl aspect-square">
                               {item.featuredImage ? (
                                 <Image
                                   src={item.featuredImage.asset.url}
                                   alt={
                                     item.localized?.value.title || item.title
                                   }
-                                  width={100}
-                                  height={100}
-                                  className="object-cover transition-transform duration-300 group-hover:scale-110"
+                                  width={90}
+                                  height={90}
+                                  className="object-cover rounded-xl"
                                 />
                               ) : (
                                 <div className="w-[100px] h-[100px] bg-foreground/5 flex items-center justify-center">
@@ -166,73 +337,26 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className="font-medium group-hover:text-primary transition-colors">
-                                {item.localized?.value.title ||
-                                  item.title ||
-                                  "No title"}
+                              <p className="line-clamp-1 lg:text-[1rem] text-[1.1rem] font-bold">
+                                {item.title}
                               </p>
-                              {item.localized?.value.description && (
-                                <p className="text-sm text-foreground/60 mt-1 line-clamp-2">
-                                  {item.localized.value.description ||
-                                    "No description"}
-                                </p>
-                              )}
+                              <p
+                                className="lg:text-[0.8rem] text-[1rem] leading-[110%] mt-1 line-clamp-2"
+                                style={{
+                                  wordSpacing: "0em",
+                                }}
+                              >
+                                {item.description}
+                              </p>
+                              <p className="text-[0.9rem] pt-[1rem] ">
+                                {t("learnMore")}
+                              </p>
                             </div>
                           </Link>
                         ))}
                       </div>
                     </div>
                   )}
-
-                  {/* News */}
-                  {results.news.length > 0 && (
-                    <div>
-                      <h3 className="text-lg font-medium mb-4">News</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                        {results.news.map((item) => (
-                          <Link
-                            key={item._id}
-                            href={`/${locale}/news/${item.slug}`}
-                            className="group"
-                            onClick={onClose}
-                          >
-                            <div className="aspect-[3/4] relative mb-3 overflow-hidden rounded-lg">
-                              {item.featuredImage ? (
-                                <Image
-                                  src={item.featuredImage.asset.url}
-                                  alt={
-                                    item.localized?.value.title || item.title
-                                  }
-                                  fill
-                                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-foreground/5 flex items-center justify-center">
-                                  No image
-                                </div>
-                              )}
-                            </div>
-                            <h4 className="font-medium group-hover:text-primary transition-colors">
-                              {item.localized?.value.title || item.title}
-                            </h4>
-                            {item.localized?.value.description && (
-                              <p className="text-sm text-foreground/60 mt-1 line-clamp-2">
-                                {item.localized.value.description}
-                              </p>
-                            )}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* No Results */}
-                  {/* {results.perfumes.length === 0 &&
-                    results.news.length === 0 && (
-                      <div className="text-center py-12 text-foreground/60">
-                        No results found for "{searchTerm}"
-                      </div>
-                    )} */}
                 </div>
               </>
             )

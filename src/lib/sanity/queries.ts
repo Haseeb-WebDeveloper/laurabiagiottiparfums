@@ -278,7 +278,7 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     _type in ["perfume", "mainPerfume"] &&
     (
       title match "*${searchTerm}*" ||
-      description match "*${searchTerm}*" ||
+      description.${locale} match "*${searchTerm}*" ||
       coalesce(
         *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
         false
@@ -289,7 +289,7 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     _type,
     title,
     "slug": slug.current,
-    description,
+    "description": description.${locale},
     category,
     featuredImage {
       asset-> {
@@ -301,7 +301,7 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     _type == "collections" &&
     (
       title match "*${searchTerm}*" ||
-      description match "*${searchTerm}*" ||
+      firstSection.tagLine.${locale} match "*${searchTerm}*" ||
       coalesce(
         *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
         false
@@ -312,7 +312,7 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     _type,
     title,
     "slug": slug.current,
-    description,
+    "description": firstSection.description.${locale},
     category,
     featuredImage {
       asset-> {
@@ -323,8 +323,8 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
   "news": *[
     _type == "news" &&
     (
-      title match "*${searchTerm}*" ||
-      description match "*${searchTerm}*" ||
+      title.${locale} match "*${searchTerm}*" ||
+      description.${locale} match "*${searchTerm}*" ||
       coalesce(
         *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
         false
@@ -333,9 +333,9 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
   ] {
     _id,
     _type,
-    title,
+    "title": title.${locale},
     "slug": slug.current,
-    description,
+    "description": description.${locale},
     featuredImage {
       asset-> {
         url
