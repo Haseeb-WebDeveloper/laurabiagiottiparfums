@@ -20,11 +20,11 @@ export default function BrandPageComponent({
   useGSAP(() => {
     // Create horizontal scroll animation
     gsap.to(".horizontal-text-animation", {
-      x: "-100%", // Move text completely off screen to the left
+      x: "-105%", // Move text completely off screen to the left
       ease: "none",
       scrollTrigger: {
         trigger: ".horizontal-text-animation",
-        start: isMobile ? "top 150%" : "top bottom",
+        start: isMobile ? "top 110%" : "top bottom",
         end: isMobile ? "bottom 50%" : "bottom 20%",
         scrub: 1, // Smooth scrolling animation
       },
@@ -50,7 +50,7 @@ export default function BrandPageComponent({
             </div>
             <h6
               gsap-target="heading-1"
-              className="mt-[1rem] text-end text-[0.875rem] tracking-[0em] text-foreground/90"
+              className="hidden md:block mt-[1rem] text-end text-[0.875rem] tracking-[0em] text-foreground/90"
             >
               {brandPageData.firstSection.images[0]?.alt}
             </h6>
@@ -85,7 +85,7 @@ export default function BrandPageComponent({
                 alt={brandPageData.firstSection.images[1]?.alt || ""}
                 fill={true}
               />
-              <p className="mt-[0.8rem] text-start text-[0.875rem] tracking-[0.1em] uppercase">
+              <p className=" mt-[0.8rem] text-start text-[0.875rem] tracking-[0.1em] uppercase">
                 {brandPageData.firstSection.images[1]?.alt}
               </p>
             </div>
@@ -98,7 +98,7 @@ export default function BrandPageComponent({
       </div>
 
       {/* Second Section */}
-      <div className="flex justify-between gap-4 w-full">
+      <div className="flex justify-between gap-4 w-full ">
         <div className="w-full">
           <h1
             className="horizontal-text-animation lg:mt-[7rem] mt-[4rem] lg:text-[10rem] text-[8rem] text-nowrap whitespace-nowrap"
