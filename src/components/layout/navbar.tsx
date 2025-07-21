@@ -168,9 +168,8 @@ export default function Navbar() {
   ];
 
   const socialIcons = [
-    { name: "Instagram", icon: "/icons/instagram.svg", href: "#" },
     { name: "Facebook", icon: "/icons/facebook.svg", href: "#" },
-    { name: "Twitter", icon: "/icons/twitter.svg", href: "#" },
+    { name: "Instagram", icon: "/icons/instagram.svg", href: "#" },
     { name: "YouTube", icon: "/icons/youtube.svg", href: "#" },
   ];
 
@@ -367,7 +366,7 @@ export default function Navbar() {
         }`}
         style={{ height: 0, opacity: 0 }}
       >
-        <div className="pt-20 px-6 flex flex-col h-full">
+        <div className="pt-28 px-6 flex flex-col h-full">
           {/* Language Switcher */}
           <div className="mb-8">
             <LanguageSwitcher />
@@ -379,20 +378,20 @@ export default function Navbar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-2xl font-light border-b border-foreground/10 pb-4"
+                className="text-[2rem] font-bold font-primary max-w-[50%] leading-[110%]"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
-            <div className="border-b border-foreground/10 pb-4">
+            {/* <div className="border-b border-foreground/10 pb-4">
               <span className="text-2xl font-light">Wear your perfume</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Social Icons */}
-          <div className="mt-auto mb-8">
-            <div ref={socialIconsRef} className="flex gap-6">
+          <div className="mt-auto mb-8 ">
+            <div ref={socialIconsRef} className="flex gap-6 justify-center">
               {socialIcons.map((social) => (
                 <Link
                   key={social.name}
