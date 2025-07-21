@@ -8,6 +8,7 @@ import { HomePageNews } from "@/types/home-page";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import Link from "next/link";
 import { formatDate } from "@/utils/formet-data";
+import { useLocale } from "@/lib/i18n/context";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ const NewsHorizontalScroll = ({
   cards: HomePageNews[];
   locale: string;
 }) => {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -116,7 +118,7 @@ const NewsHorizontalScroll = ({
         ref={triggerRef}
         className="relative hidden lg:flex h-[calc(100vh-20px)] flex-col justify-between"
       >
-        <h2 className="text-[3rem] font-bold">News</h2>
+        <h2 className="md:text-[3rem] text-[3.5rem] font-bold">News</h2>
         {/* Container that moves horizontally */}
         <div
           ref={containerRef}
@@ -160,7 +162,7 @@ const NewsHorizontalScroll = ({
                     </p>
                   </div>
                   <button className="mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300">
-                    Read More
+                    {t("readMore")}
                   </button>
                 </div>
               </div>
@@ -178,7 +180,7 @@ const NewsHorizontalScroll = ({
           >
             <div className="flex items-center justify-center w-[190px] h-[190px] rounded-full border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
               <span className="uppercase text-[13px] tracking-wide font-[400] text-back">
-                Discover all news
+                {t("discoverAllNews")}
               </span>
             </div>
           </Link>
@@ -187,7 +189,7 @@ const NewsHorizontalScroll = ({
           href={`/news`}
           className="cursor-pointer uppercase w-fit px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
-          Discover all news
+          {t("discoverAllNews")}
         </Link>
       </div>
 
@@ -223,7 +225,7 @@ const NewsHorizontalScroll = ({
                     </p>
                   </div>
                   <button className="mt-[2rem] md:mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300">
-                    Read More
+                   {t("readMore")}
                   </button>
                 </div>
               </div>
@@ -232,12 +234,12 @@ const NewsHorizontalScroll = ({
         </div>
 
         {/* Bottom button */}
-        <div className="flex justify-center mt-12">
+        <div className="flex mt-12">
           <Link
             href={`/news`}
             className="cursor-pointer uppercase w-fit px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
           >
-            Discover all news
+            {t("discoverAllNews")}
           </Link>
         </div>
       </div>

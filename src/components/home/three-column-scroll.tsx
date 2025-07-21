@@ -291,7 +291,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           >
             <div className="flex flex-col gap-y-24 lg:gap-y-[5rem]">
               {/* Mobile: show all products */}
-              <div className="md:hidden">
+              <div className="md:hidden flex flex-col gap-y-20">
                 {products.map((product, index) => (
                   <ProductCard 
                     key={index} 

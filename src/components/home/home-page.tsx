@@ -40,14 +40,14 @@ export default function HomePage({
         </div>
       </div>
 
-      <div className="mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="lg:mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <div className="flex flex-col items-center justify-center w-full">
             <SplitText
               text={t("playWithOurNotes")}
               variant="heading"
               element="h4"
-              className="text-[2.9rem] font-[700] tracking-tight"
+              className="md:text-[2.9rem] text-[2.4rem] font-[700] tracking-tight"
             />
             <p
               className="mt-[0.5rem] text-[1rem] text-foreground"
@@ -73,16 +73,16 @@ export default function HomePage({
         </div>
       </div>
 
-      <div className="lg:mt-[2rem]">
+      <div className="lg:mt-[2rem] mt-[8rem]">
         <div className="overflow-hidden">
           <NotesAnimation notes={homeData.notes} locale={locale} />
         </div>
       </div>
 
       {/* Text Image Section */}
-      <section className="-mt-[6rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-        <div className="max-w flex flex-col md:flex-row gap-28 items-center">
-          <div className="w-[60%]">
+      <section className="-mt-[14rem] md:mt-[6rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+        <div className="max-w flex flex-col md:flex-row md:gap-28 gap-10 items-center">
+          <div className="md:w-[60%] w-full">
             <div className=" w-full h-[500px]">
               <ParallaxImage
                 src={homeData.textImageSection.image.asset.url}
@@ -91,11 +91,11 @@ export default function HomePage({
               />
             </div>
           </div>
-          <div className="w-[40%] space-y-6">
+          <div className="md:w-[40%] w-full md:space-y-6 space-y-4">
             <SplitText
               text={homeData.textImageSection.heading}
               variant="heading"
-              className="text-5xl font-[500] leading-[120%]"
+              className="md:text-5xl text-[2.3rem] font-[500] leading-[120%]"
               element="h2"
             />
             <SplitText
@@ -115,7 +115,7 @@ export default function HomePage({
       </section>
 
       {/* News Section */}
-      <div className="mt-[10rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="lg:mt-[10rem] mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <NewsHorizontalScroll cards={homeData.news} locale={locale} />
         </div>

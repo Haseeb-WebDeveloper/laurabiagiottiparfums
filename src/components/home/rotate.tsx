@@ -153,7 +153,7 @@ export default function Rotate({
 
   return (
     <div
-      className="overflow-hidden w-full h-[400px] flex items-center justify-center touch-pan-y"
+      className="w-full md:h-[400px] h-[150px] mt-[6rem] md:mt-0 flex items-center justify-center touch-pan-y"
       style={{
         perspective: `1200px`,
       }}
@@ -166,7 +166,7 @@ export default function Rotate({
         }}
       >
         {images.map((item, index) => {
-          const radius = isMobile ? 100 : isTablet ? 200 : 350;
+          const radius = isMobile ? 130 : isTablet ? 200 : 350;
           const angle = (index * 2 * Math.PI) / totalSlides;
           const x = radius * Math.sin(angle);
           const z = radius * Math.cos(angle);
@@ -174,12 +174,12 @@ export default function Rotate({
           return (
             <div
               key={index}
-              className="absolute pointer-events-none w-[90px] md:w-[200px] lg:w-[300px]"
+              className="absolute pointer-events-none w-[150px] md:w-[200px] lg:w-[300px]"
               style={{
                 transform: `translateX(${x}px) translateZ(${z}px) rotateY(${-rotationRef.current}deg)`,
               }}
             >
-              <div className="w-full h-full overflow-hidden rounded-lg md:rounded-xl">
+              <div className="w-full h-full  rounded-lg md:rounded-xl">
                 <img
                   src={item.asset.url}
                   alt={`Ingredient ${index + 1}`}
