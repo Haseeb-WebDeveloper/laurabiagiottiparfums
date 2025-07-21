@@ -59,7 +59,7 @@ export default function ProductCard({
               {t("shop")}
             </button>
             <Link
-              href={`/$/${product.slug}`}
+              href={`/${locale}/${product.category}-perfume/${product.slug}`}
               className="cursor-pointer tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
             >
               {t("learnMore")}

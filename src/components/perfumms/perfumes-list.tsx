@@ -63,12 +63,14 @@ export default function PerfumesList({
           <div key={perfume._id} className="group">
             <div className="space-y-[2.29rem]">
               <div className="lg:h-[19.1rem] h-[22rem] w-full relative">
-                <ParallaxImage
-                  src={perfume.featuredImage?.asset.url || ""}
-                  alt={perfume.title}
-                  className="rounded-[1rem] border-[1px] border-transparent hover:border-foreground transition-colors duration-300"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                />
+                <Link href={`/${locale}/${slugPrefix}/${perfume.slug}`}>
+                  <ParallaxImage
+                    src={perfume.featuredImage?.asset.url || ""}
+                    alt={perfume.title}
+                    className="rounded-[1rem] border-[1px] border-transparent hover:border-foreground transition-colors duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  />
+                </Link>
               </div>
               <div>
                 <div className="uppercase tracking-[0.1em] text-[0.875rem] font-[800]">

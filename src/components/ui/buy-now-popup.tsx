@@ -65,7 +65,7 @@ export default function BuyNowPopup({
               <button
                 key={country.countryName}
                 onClick={() => setSelectedCountry(country)}
-                className="cursor-pointer w-full flex items-center justify-center uppercase px-[2.7rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                className="text-nowrap cursor-pointer w-full flex items-center justify-center uppercase px-[2.7rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
               >
                 {country.countryName}
               </button>
@@ -84,18 +84,18 @@ export default function BuyNowPopup({
               <button
                 key={index}
                 onClick={() => handleWebsiteClick(website.url)}
-                className="w-full flex items-center justify-between gap-4 px-[0.7rem]  rounded-[0.5rem] border border-foreground"
+                className="w-full flex flex-col md:flex-row items-center justify-between gap-x-4 gap-y-2 px-[0.7rem]  rounded-[0.5rem] border border-foreground"
               >
                 {website.logo && (
                   <Image
                     src={website.logo.asset.url}
                     alt="Retailer logo"
-                    className=" w-auto h-auto max-h-[60px] "
+                    className=" md:w-auto w-full md:h-auto h-full max-h-[60px] object-contain"
                     width={400}
                     height={400}
                   />
                 )}
-                <span className="cursor-pointer w-fit flex items-center justify-center uppercase my-[0.8rem] px-[1.5rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-background hover:text-foreground transition-colors duration-300">
+                <span className="text-nowrap cursor-pointer w-fit flex items-center justify-center uppercase my-[0.8rem] px-[1.5rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-background hover:text-foreground transition-colors duration-300">
                   {t("shop")}
                 </span>
               </button>

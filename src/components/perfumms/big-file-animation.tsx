@@ -121,14 +121,14 @@ export default function BigFileAnimation({
             >
               {isMuted ? (
                 <Image
-                  src={isVideoHover ? "/icons/light-play.svg" : "/icons/play.svg"}
+                  src={isVideoHover ? "/icons/play.svg" : "/icons/light-play.svg"}
                   alt="pause"
                   width={32}
                   height={32}
                 />
               ) : (
                 <Image
-                  src={isVideoHover ? "/icons/light-pause.svg" : "/icons/pause.svg"}
+                  src={isVideoHover ? "/icons/pause.svg" : "/icons/light-pause.svg"}
                   alt="play"
                   width={32}
                   height={32}

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Navigation, Thumbs } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -44,10 +44,11 @@ export default function PerfumeSlugHeroSection({
   const mainSwiperRef = useRef<SwiperType | null>(null);
   const thumbSwiperRef = useRef<SwiperType | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [autoplayEnabled, setAutoplayEnabled] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (mainSwiperRef.current && thumbSwiperRef.current) {
+      if (autoplayEnabled && mainSwiperRef.current && thumbSwiperRef.current) {
         const nextIndex = (currentIndex + 1) % heroSectionImages.length;
         setCurrentIndex(nextIndex);
 
@@ -61,7 +62,7 @@ export default function PerfumeSlugHeroSection({
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [currentIndex, heroSectionImages.length]);
+  }, [currentIndex, heroSectionImages.length, autoplayEnabled]);
 
   if (!heroSectionImages || heroSectionImages.length === 0) {
     return null;
@@ -76,6 +77,26 @@ export default function PerfumeSlugHeroSection({
       const groupIndex = Math.floor(newIndex / 3) * 3;
       thumbSwiperRef.current.slideTo(groupIndex);
     }
+  };
+
+  const handleThumbClick = (index: number) => {
+    setCurrentIndex(index);
+    if (mainSwiperRef.current) {
+      mainSwiperRef.current.slideTo(index);
+    }
+    if (thumbSwiperRef.current) {
+      const groupIndex = Math.floor(index / 3) * 3;
+      thumbSwiperRef.current.slideTo(groupIndex);
+    }
+    // Pause autoplay temporarily when user interacts
+    setAutoplayEnabled(false);
+    setTimeout(() => setAutoplayEnabled(true), 8000); // Resume after 8 seconds
+  };
+
+  const handleMainTouchStart = () => {
+    // Pause autoplay when user starts interacting
+    setAutoplayEnabled(false);
+    setTimeout(() => setAutoplayEnabled(true), 8000); // Resume after 8 seconds
   };
 
   return (
@@ -99,8 +120,9 @@ export default function PerfumeSlugHeroSection({
                     mainSwiperRef.current = swiper;
                   }}
                   onSlideChange={handleMainSlideChange}
+                  onTouchStart={handleMainTouchStart}
                   className="w-full h-full overflow-hidden"
-                  allowTouchMove={false}
+                  allowTouchMove={true} // Enable touch/swipe
                   allowSlideNext={true}
                   allowSlidePrev={true}
                 >
@@ -113,7 +135,7 @@ export default function PerfumeSlugHeroSection({
                             alt={`Product image ${index + 1}`}
                             fill
                             sizes="(max-width: 768px) 70vw"
-                            className="object-cover rounded-[1rem]"
+                            className="object-cover rounded-none"
                             priority={index === 0}
                             loading={index === 0 ? "eager" : "lazy"}
                             quality={90}
@@ -126,7 +148,7 @@ export default function PerfumeSlugHeroSection({
               </div>
             </div>
 
-            {/* Mini Vertical Carousel */}
+            {/* Mini Vertical Carousel - Now Clickable */}
             <div className="w-[4rem]">
               <Swiper
                 spaceBetween={16}
@@ -136,7 +158,7 @@ export default function PerfumeSlugHeroSection({
                 onSwiper={(swiper) => {
                   thumbSwiperRef.current = swiper;
                 }}
-                allowTouchMove={false}
+                allowTouchMove={true} // Enable scrolling
                 modules={[]}
               >
                 {heroSectionImages.map((image, index) => {
@@ -160,8 +182,9 @@ export default function PerfumeSlugHeroSection({
                       className="!h-[4rem] !w-[4rem] rounded-[1rem]"
                     >
                       <div
-                        className="relative w-[4rem] h-[4rem] rounded-lg overflow-hidden transition-all duration-500"
+                        className="relative w-[4rem] h-[4rem] rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105"
                         style={{ opacity }}
+                        onClick={() => handleThumbClick(index)}
                       >
                         <Image
                           src={image.asset.url}
@@ -197,7 +220,7 @@ export default function PerfumeSlugHeroSection({
       {/* Tablet Layout */}
       <div className="hidden md:block lg:hidden">
         <div className="grid grid-cols-2 gap-8 items-start">
-          {/* Left Column - Main Carousel and Mini Vertical Carousel */}
+          {/* Left Column - Main Carousel and Mini Horizontal Carousel */}
           <div className="space-y-4 pr-[3rem]">
             {/* Main Carousel */}
             <div className="relative w-full aspect-square">
@@ -212,8 +235,9 @@ export default function PerfumeSlugHeroSection({
                   mainSwiperRef.current = swiper;
                 }}
                 onSlideChange={handleMainSlideChange}
+                onTouchStart={handleMainTouchStart}
                 className="w-full h-full overflow-hidden"
-                allowTouchMove={false}
+                allowTouchMove={true} // Enable touch/swipe
                 allowSlideNext={true}
                 allowSlidePrev={true}
               >
@@ -226,7 +250,7 @@ export default function PerfumeSlugHeroSection({
                           alt={`Product image ${index + 1}`}
                           fill
                           sizes="(max-width: 1024px) 50vw"
-                          className="object-cover rounded-[1rem]"
+                          className="object-cover rounded-none"
                           priority={index === 0}
                           loading={index === 0 ? "eager" : "lazy"}
                           quality={90}
@@ -238,7 +262,7 @@ export default function PerfumeSlugHeroSection({
               </Swiper>
             </div>
 
-            {/* Mini Horizontal Carousel */}
+            {/* Mini Horizontal Carousel - Now Clickable */}
             <div className="flex justify-center">
               <div className="w-full">
                 <Swiper
@@ -249,7 +273,7 @@ export default function PerfumeSlugHeroSection({
                   onSwiper={(swiper) => {
                     thumbSwiperRef.current = swiper;
                   }}
-                  allowTouchMove={false}
+                  allowTouchMove={true} // Enable scrolling
                   modules={[]}
                 >
                   {heroSectionImages.map((image, index) => {
@@ -273,8 +297,9 @@ export default function PerfumeSlugHeroSection({
                         className="!h-[45px] !w-[45px] rounded-[1rem]"
                       >
                         <div
-                          className="relative w-[45px] h-[45px] rounded-lg overflow-hidden transition-all duration-500"
+                          className="relative w-[45px] h-[45px] rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105"
                           style={{ opacity }}
+                          onClick={() => handleThumbClick(index)}
                         >
                           <Image
                             src={image.asset.url}
@@ -327,8 +352,9 @@ export default function PerfumeSlugHeroSection({
                   mainSwiperRef.current = swiper;
                 }}
                 onSlideChange={handleMainSlideChange}
+                onTouchStart={handleMainTouchStart}
                 className="w-full h-full overflow-hidden"
-                allowTouchMove={false}
+                allowTouchMove={true} // Enable touch/swipe
                 allowSlideNext={true}
                 allowSlidePrev={true}
               >
@@ -341,7 +367,7 @@ export default function PerfumeSlugHeroSection({
                           alt={`Product image ${index + 1}`}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px"
-                          className="object-cover rounded-[1rem]"
+                          className="object-cover rounded-none"
                           priority={index === 0}
                           loading={index === 0 ? "eager" : "lazy"}
                           quality={90}
@@ -370,7 +396,7 @@ export default function PerfumeSlugHeroSection({
             </div>
           </div>
 
-          {/* Mini Vertical Carousel */}
+          {/* Mini Vertical Carousel - Now Clickable and Scrollable */}
           <div className="w-full lg:w-[15%] mx-auto lg:mx-0 flex justify-end">
             <div className="w-[90px]">
               <Swiper
@@ -381,7 +407,7 @@ export default function PerfumeSlugHeroSection({
                 onSwiper={(swiper) => {
                   thumbSwiperRef.current = swiper;
                 }}
-                allowTouchMove={false}
+                allowTouchMove={true} // Enable scrolling
                 modules={[]}
               >
                 {heroSectionImages.map((image, index) => {
@@ -405,8 +431,9 @@ export default function PerfumeSlugHeroSection({
                       className="!h-[90px] !w-[90px] rounded-[1rem]"
                     >
                       <div
-                        className="relative w-[90px] h-[90px] rounded-lg overflow-hidden transition-all duration-500"
+                        className="relative w-[90px] h-[90px] rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105 hover:opacity-100"
                         style={{ opacity }}
+                        onClick={() => handleThumbClick(index)}
                       >
                         <Image
                           src={image.asset.url}

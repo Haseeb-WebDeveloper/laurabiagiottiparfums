@@ -719,6 +719,7 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
     "previousProduct": previousProduct->{
       title,
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -729,6 +730,8 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
     "nextProduct": nextProduct->{
       title,
       "slug": slug.current,
+      category,
+      "subCategory": subCategory->name.${locale},
       featuredImage {
         asset -> {
           _id,
@@ -741,6 +744,7 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
       title,
       "description": description.${locale},
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -865,6 +869,7 @@ export const getMainPerfumeBySlugQuery = (
       title,
       "description": description.${locale},
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -1007,6 +1012,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     "previousProduct": previousProduct->{
       title,
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -1017,6 +1023,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     "nextProduct": nextProduct->{
       title,
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -1029,6 +1036,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       title,
       "description": description.${locale},
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -1147,6 +1155,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       title,
       "description": description.${locale},
       "slug": slug.current,
+      category,
       featuredImage {
         asset -> {
           _id,
@@ -1225,6 +1234,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     title,
     "description": description.${locale},
     "slug": slug.current,
+    category,
     featuredImage {
       asset -> {
         _id,

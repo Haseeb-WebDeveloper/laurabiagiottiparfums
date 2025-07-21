@@ -71,9 +71,6 @@ export default function CollectionSlug({
           <RelatedPerfumes relatedPerfumes={collection.relatedProducts} />
         </div>
       </div>
-
-
-      
     </div>
   );
 }

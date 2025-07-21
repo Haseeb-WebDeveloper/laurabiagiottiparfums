@@ -36,6 +36,7 @@ export interface RelatedProduct {
   title: string;
   description: string;
   slug: string;
+  category: 'mens' | 'womens';
   featuredImage: {
     asset: SanityImage;
   };

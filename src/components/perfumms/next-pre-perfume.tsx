@@ -117,7 +117,7 @@ export default function NextPrePerfume({
             />
             <span className="text-[0.9rem]">{t("previous")}</span>
             <Link
-              href={`/${locale}/perfume/${previous.slug}`}
+              href={`/${locale}/${previous.category}-perfume/${previous.slug}`}
               className="absolute left-1/2 -translate-x-1/2 bottom-[30px] hidden overflow-hidden"
             >
               <div className="relative w-[210px] h-[210px] rounded-2xl px-[8px] pb-[45px]">
@@ -153,7 +153,7 @@ export default function NextPrePerfume({
               className={`${hoveredElement === "next" ? "invert" : ""} max-h-[16px] transition-all duration-300`}
             />
             <Link
-              href={`/${locale}/perfume/${next.slug}`}
+              href={`/${locale}/${next.category}-perfume/${next.slug}`}
               className="absolute left-1/2 -translate-x-1/2 bottom-[30px] hidden overflow-hidden"
             >
               <div className="relative w-[210px] h-[210px] rounded-2xl px-[8px] pb-[45px]">

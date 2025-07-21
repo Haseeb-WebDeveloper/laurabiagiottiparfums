@@ -18,13 +18,15 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[9rem]">
           {/* Logo */}
           <div className="w-full h-full flex flex-col gap-20">
-            <Image
-              src="/logo/logo-icon.svg"
-              alt="logo"
-              width={100}
-              height={100}
-              className="w-[32px] h-[32px]"
-            />
+            <Link href={`/${locale}`} className="w-fit h-fit">
+              <Image
+                src="/logo/logo-icon.svg"
+                alt="logo"
+                width={100}
+                height={100}
+                className="w-[32px] h-[32px]"
+              />
+            </Link>
 
             {/* Newsletter Section */}
             {locale === "it" ||
@@ -67,7 +69,7 @@ export default function Footer() {
               <ul>
                 <li>
                   <Link
-                    href="/"
+                    href={`/${locale}/news`}
                     className="text-[0.9rem] font-[500] text-foreground"
                   >
                     <SplitText text="News" variant="paragraph" element="p" />
@@ -84,7 +86,7 @@ export default function Footer() {
               <ul className="flex flex-col gap-[0.65rem]">
                 <li>
                   <Link
-                    href="/"
+                    href={`/${locale}/women-perfume`}
                     className="text-[0.9rem] font-[500] text-foreground"
                   >
                     <SplitText
@@ -96,7 +98,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/"
+                    href={`/${locale}/men-perfume`}
                     className="text-[0.9rem] font-[500] text-foreground"
                   >
                     <SplitText
@@ -122,7 +124,9 @@ export default function Footer() {
               <ul className="flex flex-col gap-[0.65rem]">
                 <li>
                   <Link
-                    href="/"
+                    href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-[0.9rem] font-[500] text-foreground"
                   >
                     <SplitText
@@ -134,7 +138,9 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/"
+                    href={`https://www.laurabiagiotti.it/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-[0.9rem] font-[500] text-foreground"
                   >
                     <SplitText
@@ -146,7 +152,9 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/"
+                    href={`https://abparfums.com/recycling/italian/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-[0.9rem] font-[500] text-foreground"
                   >
                     <span className="leading-[130%]">

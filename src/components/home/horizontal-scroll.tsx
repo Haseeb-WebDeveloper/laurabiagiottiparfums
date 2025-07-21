@@ -161,16 +161,19 @@ const NewsHorizontalScroll = ({
                       {card.description}
                     </p>
                   </div>
-                  <button className="mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300">
+                  <Link
+                    href={`/${locale}/news/${card.slug}`}
+                    className="mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
+                  >
                     {t("readMore")}
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
           ))}
           {/* View all circle button*/}
           <Link
-            href={`/news`}
+            href={`/${locale}/news`}
             className="relative flex-none overflow-hidden group min-w-[600px] h-full"
             style={{
               willChange: "transform",
@@ -186,7 +189,7 @@ const NewsHorizontalScroll = ({
           </Link>
         </div>
         <Link
-          href={`/news`}
+          href={`/${locale}/news`}
           className="cursor-pointer uppercase w-fit px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
           {t("discoverAllNews")}
@@ -196,14 +199,11 @@ const NewsHorizontalScroll = ({
       {/* Tablet & Mobile Layout - Single Column */}
       <div className="block lg:hidden py-8">
         <h2 className="text-[2rem] md:text-[3rem] font-bold mb-8">News</h2>
-        
+
         {/* Single column layout */}
         <div className="flex flex-col gap-8 md:gap-12">
           {cards.map((card, index) => (
-            <div
-              key={index}
-              className="relative overflow-hidden group"
-            >
+            <div key={index} className="relative overflow-hidden group">
               <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-start">
                 <div className="aspect-[4/3] relative w-full md:w-[300px] md:min-h-[300px]">
                   <ParallaxImage
@@ -224,9 +224,12 @@ const NewsHorizontalScroll = ({
                       {card.description}
                     </p>
                   </div>
-                  <button className="mt-[2rem] md:mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300">
-                   {t("readMore")}
-                  </button>
+                  <Link
+                    href={`/${locale}/news/${card.slug}`}
+                    className="mt-[2rem] md:mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
+                  >
+                    {t("readMore")}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -236,7 +239,7 @@ const NewsHorizontalScroll = ({
         {/* Bottom button */}
         <div className="flex mt-12">
           <Link
-            href={`/news`}
+            href={`/${locale}/news`}
             className="cursor-pointer uppercase w-fit px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
           >
             {t("discoverAllNews")}

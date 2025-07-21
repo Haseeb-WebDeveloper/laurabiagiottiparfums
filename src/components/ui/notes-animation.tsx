@@ -266,7 +266,13 @@ export default function NotesAnimation({
                       {note.perfumeNotes && (
                         <div className="flex flex-col gap-[0.5rem]">
                           {note.perfumeNotes?.map((note, key) => (
-                            <p key={key}>{note.title}</p>
+                            <Link
+                              className="text-[0.9rem] font-[400]"
+                              href={`/${locale}/${note.category}-perfume/${note.slug}`}
+                              key={key}
+                            >
+                              {note.title}
+                            </Link>
                           ))}
                         </div>
                       )}

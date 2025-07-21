@@ -11,6 +11,7 @@ import NotesAnimation from "../ui/notes-animation";
 import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
 import WearYourPerfume from "../wear-your-perfume";
+import Link from "next/link";
 
 export default function HomePage({
   homeData,
@@ -40,7 +41,7 @@ export default function HomePage({
         </div>
       </div>
 
-      <div className="lg:mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <div className="flex flex-col items-center justify-center w-full">
             <SplitText
@@ -73,14 +74,14 @@ export default function HomePage({
         </div>
       </div>
 
-      <div className="lg:mt-[2rem] mt-[8rem]">
+      <div className="lg:mt-[2rem] ">
         <div className="overflow-hidden">
           <NotesAnimation notes={homeData.notes} locale={locale} />
         </div>
       </div>
 
       {/* Text Image Section */}
-      <section className="-mt-[14rem] md:mt-[6rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <section className="-mt-[14rem] lg:-mt-[12rem]  bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w flex flex-col md:flex-row md:gap-28 gap-10 items-center">
           <div className="md:w-[60%] w-full">
             <div className=" w-full h-[500px]">
@@ -104,12 +105,12 @@ export default function HomePage({
               element="p"
               className="text-[1rem]"
             />
-            <button
-              // onClick={() => handleBuyNowClick(product)}
+            <Link
+              href={`/${locale}/brand`}
               className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               {t("textImageSectionButton")}
-            </button>
+            </Link>
           </div>
         </div>
       </section>
