@@ -36,7 +36,9 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { t } = useLocale();
   const totalSlides = slides.length;
-  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(null);
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(
+    null
+  );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleBuyNowClick = (perfume: MainPerfume) => {
@@ -89,20 +91,9 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
     const titleElement = document.querySelector(
       `#slide-title-${index}`
     ) as HTMLElement;
-    const buttonsElement = document.querySelector(
-      `#slide-buttons-${index}`
-    ) as HTMLElement;
 
     if (titleElement && splitTypes[index]) {
       gsap.set(splitTypes[index].words, {
-        x: 0,
-        y: 0,
-        opacity: 1,
-        scale: 1,
-      });
-    }
-    if (buttonsElement) {
-      gsap.set(buttonsElement, {
         x: 0,
         y: 0,
         opacity: 1,
@@ -170,14 +161,9 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
     const fromTitle = document.querySelector(
       `#slide-title-${fromIndex}`
     ) as HTMLElement;
-    const fromButtons = document.querySelector(
-      `#slide-buttons-${fromIndex}`
-    ) as HTMLElement;
+
     const toTitle = document.querySelector(
       `#slide-title-${toIndex}`
-    ) as HTMLElement;
-    const toButtons = document.querySelector(
-      `#slide-buttons-${toIndex}`
     ) as HTMLElement;
 
     // Create timeline for text transition
@@ -188,7 +174,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       textTl.to(
         splitTypes[fromIndex].words,
         {
-          y: -40,
+          y: 20,
           opacity: 0,
           duration: 0.5,
           ease: "power2.inOut",
@@ -196,20 +182,6 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
             amount: 0.2,
             from: "start",
           },
-        },
-        0
-      );
-    }
-
-    if (fromButtons) {
-      textTl.to(
-        fromButtons,
-        {
-          y: -30,
-          opacity: 0,
-          scale: 0.9,
-          duration: 0.8,
-          ease: "power2.inOut",
         },
         0
       );
@@ -235,24 +207,6 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
           },
         },
         0.3
-      );
-    }
-
-    if (toButtons) {
-      gsap.set(toButtons, {
-        y: 30,
-        opacity: 0,
-      });
-
-      textTl.to(
-        toButtons,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        0.5
       );
     }
   };
@@ -346,14 +300,11 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                 </h3>
 
                 {/* CTAs */}
-                <div
-                  id={`slide-buttons-${index}`}
-                  className="max-w-[500px] flex items-center gap-4"
-                >
+                <div className="max-w-[500px] flex items-center gap-4">
                   {/* Primary CTA */}
                   <button
                     onClick={() => handleBuyNowClick(mainPerfume)}
-                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground hover:bg-ring hover:text-background transition-colors duration-300"
+                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground bg-transparent"
                   >
                     {t("shop")}
                   </button>
@@ -404,7 +355,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
             <button
               onClick={goPrev}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center transition-colors duration-300 hover:scale-110 disabled:opacity-50"
+              className="w-12 h-12 flex items-center justify-center disabled:opacity-50"
               aria-label="Previous slide"
             >
               <Image
@@ -419,7 +370,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
             <button
               onClick={goNext}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-12 h-12 flex items-center justify-center text-white/80 disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Next slide"
             >
               <Image
