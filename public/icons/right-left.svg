@@ -1,0 +1,20 @@
+<svg viewBox="-10 -10 300 162" fill="none" xmlns="http://www.w3.org/2000/svg" vector-effect="non-scaling-stroke" style="touch-action: pan-y;">
+  <path 
+    d="M128.846 66.0059H8M8 66.0059L66.0059 8M8 66.0059L66.0059 124.012" 
+    stroke="white" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    vector-effect="non-scaling-stroke" 
+    style="touch-action: pan-y;">
+  </path>
+  <path 
+    d="M165 66.0059H285.846M285.846 66.0059L227.84 8M285.846 66.0059L227.84 124.012" 
+    stroke="white" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    vector-effect="non-scaling-stroke" 
+    style="touch-action: pan-y;">
+  </path>
+</svg>

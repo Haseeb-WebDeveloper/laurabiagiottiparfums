@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { PageViews } from "@piwikpro/react-piwik-pro";
 import PiwikProProvider from "@/components/PiwikProProvider.tsx";
+import { ModeToggle } from "@/components/theme-toggle";
 
 const SplitHeadingsAnimation = dynamic(
   () => import("@/components/ui/split-headings-animation"),
@@ -101,12 +102,15 @@ function AppProvider({ children, locale }: AppProviderProps) {
   return (
     <>
       <PiwikProProvider>
-        <ThemeProvider attribute="class" defaultTheme="light">
+        <ThemeProvider attribute="class" defaultTheme="system">
           <LocaleWrapper locale={locale}>
             <SmoothScrolling>
               <SplitHeadingsAnimation />
               <SplitParagraphsAnimation />
               <Navbar />
+              <div className="fixed bottom-4 right-4 z-[100]">
+                <ModeToggle />
+              </div>
               {children}
               <Footer />
             </SmoothScrolling>

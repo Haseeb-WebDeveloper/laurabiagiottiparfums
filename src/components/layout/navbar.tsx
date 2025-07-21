@@ -206,8 +206,8 @@ export default function Navbar() {
                 <Image
                   src={
                     theme === "dark"
-                      ? "/logo/desktop-logo.svg"
-                      : "/logo/desktop-light-logo.svg"
+                      ? "/logo/desktop-light-logo.svg"
+                      : "/logo/desktop-logo.svg"
                   }
                   alt="logo"
                   width={200}
@@ -217,7 +217,7 @@ export default function Navbar() {
               </Link>
             </div>
             {/* Right */}
-            <WearYourPerfume />
+            <WearYourPerfume showCustomCloseIcon={true} />
           </div>
           <div className="mt-[1.6rem] 2xl:mt-[1.7rem] w-full flex items-center justify-center gap-[2rem]">
             {/* Nav items */}

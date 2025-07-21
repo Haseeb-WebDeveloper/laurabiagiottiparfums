@@ -6,10 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useDebounce } from "@/hooks/use-debounce";
-import {
-  Dialog,
-  DialogContent,
-} from "./dialog";
+import { Dialog, DialogClose, DialogContent } from "./dialog";
 
 interface SearchResult {
   _id: string;
@@ -37,7 +34,7 @@ interface SearchModalProps {
 }
 
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,12 +48,12 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   // Handle scroll lock
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -96,31 +93,49 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[700px] w-[95%] p-0 gap-0 z-[110] overflow-hidden flex flex-col max-h-[85vh]">
+      <DialogContent className="!max-w-[640px] w-[95%] p-0 gap-0 z-[110] overflow-hidden flex flex-col max-h-[85vh] rounded">
+        <DialogClose className="hidden" />
+
+        <button
+          onClick={onClose}
+          className="cursor-pointer z-[110] group absolute top-3 right-3 flex size-7 items-center justify-center  "
+        >
+          <Image
+            src="/icons/close-thin-dark.svg"
+            alt="Close"
+            width={16}
+            height={16}
+            className="dark:invert"
+          />
+          <span className="sr-only">Close</span>
+        </button>
+
         {/* Search Input */}
-        <div className="p-[1rem] flex justify-between items-center border-b border-foreground/10 flex-shrink-0">
+        <div className="p-[1rem] flex justify-between items-center text-[1rem]">
           <input
             ref={inputRef}
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for perfumes, collections, or news..."
-            className="w-full bg-transparent py-4 pr-10 text-lg focus:outline-none"
+            placeholder={t("search")}
+            className="w-full text-[1rem] pr-10 text-lg focus:outline-none"
           />
         </div>
 
         {/* Results */}
         <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain">
-          <div className="space-y-8 p-[1rem]">
-            {isLoading ? (
-              <h6 className="p-[1rem] border border-foreground/20 rounded-lg">Loading...</h6>
-            ) : (
-              results && (
-                <>
+          {isLoading ? (
+            <h6 className="border border-t-[1px] font-bold text-[1rem] px-[1rem] py-[0.5rem]">
+              Loading...
+            </h6>
+          ) : (
+            results && (
+              <>
+                <div className="">
                   {/* Perfumes & Collections */}
                   {results.perfumes.length > 0 && (
                     <div>
-                      <h6 className="text-lg font-medium mb-[1rem]">
+                      <h6 className="px-[1rem] py-[0.5rem] border-t-[1px]  text-lg font-medium mb-[0.5rem]">
                         Perfumes & Collections
                       </h6>
                       <div className="flex flex-col gap-4">
@@ -128,9 +143,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           <Link
                             key={item._id}
                             href={`/${locale}/${
-                              item.category === "mens"
-                                ? "mens"
-                                : "womens"
+                              item.category === "mens" ? "mens" : "womens"
                             }-perfume/${item.slug}`}
                             className="group flex gap-[1rem] hover:bg-foreground/5 p-[1rem] rounded-[0.8rem]"
                             onClick={onClose}
@@ -154,11 +167,14 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             </div>
                             <div className="flex-1">
                               <p className="font-medium group-hover:text-primary transition-colors">
-                                {item.localized?.value.title || item.title || "No title"}
+                                {item.localized?.value.title ||
+                                  item.title ||
+                                  "No title"}
                               </p>
                               {item.localized?.value.description && (
                                 <p className="text-sm text-foreground/60 mt-1 line-clamp-2">
-                                  {item.localized.value.description || "No description"}
+                                  {item.localized.value.description ||
+                                    "No description"}
                                 </p>
                               )}
                             </div>
@@ -211,18 +227,18 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   )}
 
                   {/* No Results */}
-                  {results.perfumes.length === 0 &&
+                  {/* {results.perfumes.length === 0 &&
                     results.news.length === 0 && (
                       <div className="text-center py-12 text-foreground/60">
                         No results found for "{searchTerm}"
                       </div>
-                    )}
-                </>
-              )
-            )}
-          </div>
+                    )} */}
+                </div>
+              </>
+            )
+          )}
         </div>
       </DialogContent>
     </Dialog>
   );
-} 
+}

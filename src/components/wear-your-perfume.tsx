@@ -1,12 +1,15 @@
 "use client";
 
 import { useId, useRef, useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import Image from "next/image";
 import { useLocale } from "@/lib/i18n/context";
 import { Note, NoteItem } from "@/types/notes";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { getNotes } from "@/lib/i18n/getSanityContent";
 import Link from "next/link";
 import { ParallaxImage } from "./ui/ParallaxImage";
@@ -18,34 +21,49 @@ import {
   Step4Selection,
 } from "@/types/steps";
 import { interpolatePath } from "@/utils/interpolate-path";
+import { useMediaQuery } from "react-responsive";
 
 interface WearYourPerfumeProps {
   customTrigger?: React.ReactNode;
+  showCustomCloseIcon?: boolean;
 }
 
-const timesOfDay = [{
-  name: "sunrise",
-  label: "sunrise",
-}, {
-  name: "dayTime",
-  label: "dayTime",
-}, {
-  name: "sunset",
-  label: "sunset",
-}, {
-  name: "night",
-  label: "night",
-}];
+const timesOfDay = [
+  {
+    name: "sunrise",
+    label: "sunrise",
+  },
+  {
+    name: "dayTime",
+    label: "dayTime",
+  },
+  {
+    name: "sunset",
+    label: "sunset",
+  },
+  {
+    name: "night",
+    label: "night",
+  },
+];
 
-export default function WearYourPerfume({ customTrigger }: WearYourPerfumeProps) {
+export default function WearYourPerfume({
+  customTrigger,
+  showCustomCloseIcon = false,
+}: WearYourPerfumeProps) {
   const { locale, t } = useLocale();
   const id = useId();
+  const closeRef = useRef<HTMLButtonElement>(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [previousStep, setPreviousStep] = useState(1);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [notes, setNotes] = useState<Note[]>([]);
   const [matchedPerfumes, setMatchedPerfumes] = useState<NoteItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const morphingPathRef = useRef<SVGPathElement>(null);
   const [triggerHover, setTriggerHover] = useState(false);
+
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   // Step selections
   const [step1Selection, setStep1Selection] = useState<Step1Selection>({
@@ -61,13 +79,6 @@ export default function WearYourPerfume({ customTrigger }: WearYourPerfumeProps)
     intensity: 50,
   });
 
-  // Refs for GSAP animations
-  const step1Ref = useRef<HTMLDivElement>(null);
-  const step2Ref = useRef<HTMLDivElement>(null);
-  const step3Ref = useRef<HTMLDivElement>(null);
-  const step4Ref = useRef<HTMLDivElement>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
-
   // Fetch notes on component mount
   useEffect(() => {
     const fetchNotes = async () => {
@@ -81,61 +92,25 @@ export default function WearYourPerfume({ customTrigger }: WearYourPerfumeProps)
     fetchNotes();
   }, [locale]);
 
-  // GSAP animations for step transitions
-  useGSAP(() => {
-    const steps = [step1Ref, step2Ref, step3Ref, step4Ref, resultsRef];
-
-    // Initially hide all steps except first
-    steps.slice(1).forEach((ref) => {
-      if (ref.current) {
-        gsap.set(ref.current, {
-          autoAlpha: 0,
-          xPercent: 100,
-        });
-      }
-    });
-
-    // Function to animate step transition
-    const animateStepTransition = (fromStep: number, toStep: number) => {
-      const fromRef = steps[fromStep - 1].current;
-      const toRef = steps[toStep - 1].current;
-
-      if (!fromRef || !toRef) return;
-
-      const timeline = gsap.timeline();
-
-      // Animate current step out to left
-      timeline.to(fromRef, {
-        xPercent: -100,
-        autoAlpha: 0,
-        duration: 0.5,
-        ease: "power2.inOut",
-      });
-
-      // Animate next step in from right
-      timeline.fromTo(
-        toRef,
-        { xPercent: 100, autoAlpha: 0 },
-        { xPercent: 0, autoAlpha: 1, duration: 0.5, ease: "power2.inOut" },
-        "-=0.3"
-      );
-    };
-
-    // Watch for step changes
-    if (currentStep > 1) {
-      animateStepTransition(currentStep - 1, currentStep);
-    }
-  }, [currentStep]);
-
   const handleNextStep = () => {
-    if (currentStep < 5) {
-      setCurrentStep((prev) => prev + 1);
+    if (currentStep < 5 && !isAnimating) {
+      setIsAnimating(true);
+      setPreviousStep(currentStep);
+      setTimeout(() => {
+        setCurrentStep((prev) => prev + 1);
+        setTimeout(() => setIsAnimating(false), 500);
+      }, 50);
     }
   };
 
   const handlePreviousStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+    if (currentStep > 1 && !isAnimating) {
+      setIsAnimating(true);
+      setPreviousStep(currentStep);
+      setTimeout(() => {
+        setCurrentStep((prev) => prev - 1);
+        setTimeout(() => setIsAnimating(false), 500);
+      }, 50);
     }
   };
 
@@ -189,6 +164,52 @@ export default function WearYourPerfume({ customTrigger }: WearYourPerfumeProps)
     }
   }, [step4Selection.intensity, currentStep]);
 
+  // Determine animation classes based on step transition
+  const getStepClasses = (stepNumber: number) => {
+    const isCurrentStep = currentStep === stepNumber;
+    const wasPreviousStep = previousStep === stepNumber;
+
+    if (!isAnimating && isCurrentStep) {
+      return "translate-x-0 opacity-100";
+    }
+
+    if (isAnimating) {
+      if (wasPreviousStep) {
+        // Exiting step
+        const isMovingForward = currentStep > previousStep;
+        return isMovingForward
+          ? "-translate-x-full opacity-0"
+          : "translate-x-full opacity-0";
+      } else if (isCurrentStep) {
+        // Entering step
+        const isMovingForward = currentStep > previousStep;
+        return isMovingForward
+          ? "translate-x-0 opacity-100"
+          : "translate-x-0 opacity-100";
+      }
+    }
+
+    // Hidden steps
+    const isMovingForward = currentStep > previousStep;
+    if (stepNumber > currentStep) {
+      return "translate-x-full opacity-0";
+    } else if (stepNumber < currentStep) {
+      return "-translate-x-full opacity-0";
+    }
+
+    return "translate-x-full opacity-0";
+  };
+
+  // Handle close popup
+  const closeDialog = () => {
+    setCurrentStep(1);
+    setStep1Selection({ gender: null });
+    setStep2Selection({ selectedNote: null });
+    setStep3Selection({ timeOfDay: null });
+    setStep4Selection({ intensity: 50 });
+    setMatchedPerfumes([]);
+    closeRef.current?.click();
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -217,270 +238,301 @@ export default function WearYourPerfume({ customTrigger }: WearYourPerfumeProps)
           </div>
         )}
       </DialogTrigger>
-      <DialogContent className="overflow-x-hidden z-[110] w-[79vw] h-[85vh] max-w overflow-y-auto flex flex-col items-center justify-center ">
-        {/* Step 1: Gender Selection */}
-        <div
-          ref={step1Ref}
-          className={`${currentStep !== 1 ? "hidden" : "flex"} min-h-[60vh] flex-col items-center justify-center`}
-        >
-          <h2 className="text-[2rem] lg:text-[3rem] font-[500] mb-[.5rem]">
-            {t("wypstep1Title")}
-          </h2>
-          <p className="text-[1rem] font-[400] mb-[2rem] text-center ">
-            {t("wypstep1Description")}
-          </p>
-          <div className="flex gap-8 w-full max-w-[600px] justify-center items-center">
-            <button
-              onClick={() => {
-                setStep1Selection({ gender: "mens" });
-                handleNextStep();
-              }}
-              className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-            >
-              {t("forHim")}
-            </button>
-            <button
-              onClick={() => {
-                setStep1Selection({ gender: "womens" });
-                handleNextStep();
-              }}
-              className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-            >
-              {t("forHer")}
-            </button>
-          </div>
-        </div>
-
-        {/* Step 2: Notes Selection */}
-        <div
-          ref={step2Ref}
-          className={`${currentStep !== 2 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full relative`}
-        >
-          <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
-            {t("wypstep2Title")}
-          </h2>
-          <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full justify-between gap-8">
-            {notes.map((note, index) => (
-              <button
-                key={index}
+      <DialogContent
+        onClose={closeDialog}
+        className="overflow-x-hidden z-[110] w-[95vw] h-[92vh] max-w overflow-y-auto flex flex-col items-center justify-center p-0"
+        hideDefaultCloseIcon={showCustomCloseIcon}
+      >
+        <DialogClose ref={closeRef} onClick={closeDialog} className="hidden" />
+        {showCustomCloseIcon && (
+          <button
+            onClick={closeDialog}
+            className="cursor-pointer z-[110] group absolute top-3 right-3 flex size-7 items-center justify-center  "
+          >
+            <Image
+              src="/icons/close-thin-dark.svg"
+              alt="Close"
+              width={16}
+              height={16}
+              className="dark:invert"
+            />
+            <span className="sr-only">Close</span>
+          </button>
+        )}
+        {/* Container for animated steps */}
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden ">
+          {/* Step 1: Gender Selection */}
+          <div
+            className={`absolute inset-0 min-h-[60vh] px-[2rem] flex flex-col items-center justify-center transition-all duration-500 ease-in-out ${getStepClasses(1)}`}
+          >
+            <h2 className="text-[2rem] lg:text-[3rem] font-[500] mb-[.5rem]">
+              {t("wypstep1Title")}
+            </h2>
+            <p className="text-[1rem] font-[400] mb-[2rem] text-center ">
+              {t("wypstep1Description")}
+            </p>
+            <div className="flex lg:gap-8 gap-4 w-full max-w-[600px] justify-center items-center">
+              <div
                 onClick={() => {
-                  setStep2Selection({ selectedNote: note });
+                  setStep1Selection({ gender: "mens" });
                   handleNextStep();
                 }}
-                className={`cursor-pointer flex flex-col items-center gap-4
-                  ${step2Selection.selectedNote?.title === note.title ? "" : ""}`}
+                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
               >
-                <div className="w-[190px] h-[190px] rounded-full overflow-hidden">
-                  <Image
-                    src={note.image.asset.url}
-                    alt={note.title || ""}
-                    width={190}
-                    height={190}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span className="text-center text-[1.1rem] font-[400]">
-                  {note.title}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Step 3: Time of Day */}
-        <div
-          ref={step3Ref}
-          className={`${currentStep !== 3 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center w-full relative`}
-        >
-          <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem]">
-            {t("wypstepe3Title")}
-          </h2>
-          <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full justify-between">
-            {timesOfDay.map((time: { name: string; label: string }) => (
-              <button
-                key={time.name}
+                {t("forHim")}
+              </div>
+              <div
                 onClick={() => {
-                  setStep3Selection({ timeOfDay: time.name as any });
+                  setStep1Selection({ gender: "womens" });
                   handleNextStep();
                 }}
-                className={`cursor-pointer flex flex-col items-center gap-4
-                  ${step3Selection.timeOfDay === time.name ? "" : ""}`}
+                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
               >
-                <div className="w-[190px] h-[190px] rounded-full overflow-hidden">
-                  <Image
-                    src={`/${time.name}.png`}
-                    alt={time.label}
-                    width={190}
-                    height={190}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="capitalize text-[1.1rem] font-[400]">
-                  {t(time.label)}
-                </span>
-              </button>
-            ))}
+                {t("forHer")}
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Step 4: Intensity Slider */}
-        <div
-          ref={step4Ref}
-          className={`${currentStep !== 4 ? "hidden" : ""} min-h-[60vh] flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto px-4 relative`}
-        >
-          <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
-            {t("wypstepe4Title")}
-          </h2>
-
-          <div className="flex flex-col items-center gap-12 w-full mt-[4rem]">
-            {/* Slider Container with SVG */}
-            <div className="relative w-full h-32 flex items-center justify-center">
-              {/* Animated SVG - Centered */}
-              <div className="w-fit absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="-150 -150 300 300"
-                  className="w-52 h-52 text-foreground"
+          {/* Step 2: Notes Selection */}
+          <div
+            className={`absolute inset-0 min-h-[60vh] px-[3rem] flex flex-col items-center justify-center w-full transition-all duration-500 ease-in-out ${getStepClasses(2)}`}
+          >
+            <h2 className="text-[2.2rem] lg:text-[2.5rem] font-[500] mb-[1rem] text-center">
+              {t("wypstep2Title")}
+            </h2>
+            <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full justify-between gap-x-8 gap-y-10">
+              {notes.map((note, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setStep2Selection({ selectedNote: note });
+                    handleNextStep();
+                  }}
+                  className={`group cursor-pointer flex flex-col items-center gap-4
+                    ${step2Selection.selectedNote?.title === note.title ? "" : ""}`}
                 >
-                  <path
-                    ref={morphingPathRef}
-                    d={circlePath}
-                    className="transition-all duration-75"
-                  />
-                </svg>
-              </div>
+                  <div className="lg:w-[190px] lg:h-[190px] w-[110px] h-[110px] rounded-full group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300">
+                    <Image
+                      src={note.image.asset.url}
+                      alt={note.title || ""}
+                      width={190}
+                      height={190}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                  <span className="text-center text-[1rem] tracking-tight font-[500] group-hover:underline transition-all duration-300">
+                    {note.title}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-              {/* Custom Range Input */}
-              <div className="w-full px-12">
-                <div className="relative">
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={step4Selection.intensity}
-                    onChange={(e) =>
-                      setStep4Selection({ intensity: parseInt(e.target.value) })
-                    }
-                    className="w-full h-2 appearance-none bg-transparent cursor-pointer"
-                    style={
-                      {
-                        "--range-progress": `${step4Selection.intensity}%`,
-                      } as any
-                    }
-                  />
-                  {/* Thumb Icons Container */}
-                  <div
-                    className="absolute pointer-events-none z-[90]"
-                    style={{
-                      left: `calc(${step4Selection.intensity}% - 24px)`,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      width: "65px",
-                      height: "65px",
-                      borderRadius: "50%",
-                      backgroundColor: "currentColor",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "4px",
-                      transition: "transform 0.2s ease",
-                    }}
+          {/* Step 3: Time of Day */}
+          <div
+            className={`absolute inset-0 min-h-[60vh] px-[3rem] flex flex-col items-center justify-center w-full transition-all duration-500 ease-in-out ${getStepClasses(3)}`}
+          >
+            <h2 className="text-[2.2rem] lg:text-[2.5rem] font-[500] mb-[1rem] text-center">
+              {t("wypstepe3Title")}
+            </h2>
+            <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10 w-full justify-between">
+              {timesOfDay.map((time: { name: string; label: string }) => (
+                <button
+                  key={time.name}
+                  onClick={() => {
+                    setStep3Selection({ timeOfDay: time.name as any });
+                    handleNextStep();
+                  }}
+                  className={`group cursor-pointer flex flex-col items-center gap-4
+                    ${step3Selection.timeOfDay === time.name ? "" : ""}`}
+                >
+                  <div className="lg:w-[190px] lg:h-[190px] w-[110px] h-[110px] rounded-full overflow-hidden">
+                    <Image
+                      src={`/${time.name}.png`}
+                      alt={time.label}
+                      width={190}
+                      height={190}
+                      className="w-full h-full object-contain rounded-full group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300"
+                    />
+                  </div>
+                  <span className="capitalize text-[1rem] font-[500] group-hover:underline transition-all duration-300">
+                    {t(time.label)}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 4: Intensity Slider */}
+          <div
+            className={`absolute inset-0 min-h-[60vh]  pb-[6rem] flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto transition-all duration-500 ease-in-out ${getStepClasses(4)}`}
+          >
+            <h2 className="text-[2.2rem] lg:text-[2.5rem] font-[500] mb-[1rem] text-center">
+              {t("wypstepe4Title")}
+            </h2>
+
+            <div className="flex flex-col items-center gap-12 w-full mt-[4rem] px-[2rem]">
+              {/* Slider Container with SVG */}
+              <div className="relative w-full h-32 flex items-center justify-center">
+                {/* Animated SVG - Centered */}
+                <div className="w-fit absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="-150 -150 300 300"
+                    className="w-52 h-52 text-foreground"
                   >
-                    <Image
-                      src="/icons/right-arror.svg"
-                      alt="Light"
-                      width={24}
-                      height={24}
-                      className="rotate-180"
+                    <path
+                      ref={morphingPathRef}
+                      d={circlePath}
+                      className="transition-all duration-75"
                     />
-                    <Image
-                      src="/icons/right-arror.svg"
-                      alt="Intense"
-                      width={24}
-                      height={24}
-                      className=""
-                    />
-                  </div>
+                  </svg>
                 </div>
-              </div>
 
-              {/* Labels */}
-              <div className="absolute left-10 -bottom-8 text-[1.1rem] font-[400]">
-                {t("light")}
-              </div>
-              <div className="absolute right-10 -bottom-8 text-[1.1rem] font-[400]">
-                {t("intense")}
-              </div>
-            </div>
-
-            {/* Value Display */}
-            <div className="text-center mt-8">
-              <span className="text-[1.2rem] font-[500]">
-                Intensity: {step4Selection.intensity}%
-              </span>
-            </div>
-
-            <button
-              onClick={findMatchingPerfumes}
-              disabled={isLoading}
-              className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300 mt-4"
-            >
-              {isLoading ? "Finding matches..." : t("unveil")}
-            </button>
-          </div>
-        </div>
-
-        {/* Results */}
-        <div
-          ref={resultsRef}
-          className={`${currentStep !== 5 ? "hidden" : ""} min-h-[60vh] relative`}
-        >
-          <h2 className="text-[2rem] lg:text-[2.5rem] font-[500] mb-[.5rem] text-center">
-            {t("wypResult")}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {matchedPerfumes.map((perfume) => (
-              <div key={perfume._id} className="group w-full -[340px] ">
-                <div className="space-y-[1rem]">
-                  <div className="lg:h-[14rem] h-[16rem] w-full relative">
-                    <ParallaxImage
-                      src={perfume.featuredImage?.asset.url || ""}
-                      alt={perfume.title}
-                      className="rounded-[1rem] border-[1px] border-transparent hover:border-foreground transition-colors duration-300"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                {/* Custom Range Input */}
+                <div className="w-full">
+                  <div className="relative w-full">
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={step4Selection.intensity}
+                      onChange={(e) =>
+                        setStep4Selection({
+                          intensity: parseInt(e.target.value),
+                        })
+                      }
+                      className="w-full h-1 appearance-none bg-transparent cursor-pointer"
+                      style={
+                        {
+                          "--range-progress": `${step4Selection.intensity}%`,
+                        } as any
+                      }
                     />
-                  </div>
-                  <h3 className="line-clamp-1 text-[1.5rem] font-[400]">
-                    {perfume.title}
-                  </h3>
-                  <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
-                    <Link
-                      href={`/${locale}/${perfume.category}-perfume/${perfume.slug}`}
-                      className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                    {/* Thumb Icons Container */}
+                    <div
+                      className="absolute pointer-events-none z-[90]"
+                      style={{
+                        // This ensures left edge hits left end at 0% and right edge hits right end at 100%
+                        left: `${step4Selection.intensity * (isMobile ? 0.86 : 0.945)}%`,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: "65px",
+                        height: "65px",
+                        borderRadius: "50%",
+                        backgroundColor: "currentColor",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "4px",
+                        transition: "left 0.15s ease",
+                      }}
                     >
-                      {t("learnMore")}
-                    </Link>
+                      <Image
+                        src="/icons/right-left.svg"
+                        alt="Light"
+                        width={50}
+                        height={50}
+                        className=""
+                      />
+                    </div>
                   </div>
                 </div>
+
+                {/* Labels */}
+                <div className="absolute lg:left-8 left-2 lg:-bottom-6 -bottom-8 text-[1rem] font-[500]">
+                  {t("light")}
+                </div>
+                <div className="absolute lg:right-8 right-2 lg:-bottom-6 -bottom-8 text-[1rem] font-[500]">
+                  {t("intense")}
+                </div>
               </div>
-            ))}
+
+              {/* Value Display */}
+              {/* <div className="text-center mt-8">
+                <span className="text-[1.2rem] font-[500]">
+                  Intensity: {step4Selection.intensity}%
+                </span>
+              </div> */}
+            </div>
+          </div>
+
+          {/* Results */}
+          <div
+            className={`absolute inset-0 min-h-[60vh] px-[2rem] flex justify-center items-center transition-all duration-500 ease-in-out ${getStepClasses(5)}`}
+          >
+            <h2 className="text-[2.2rem] lg:text-[2.5rem] font-[500] mb-[1rem] text-center">
+              {t("wypResult")}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {matchedPerfumes.map((perfume) => (
+                <div key={perfume._id} className="group w-full -[340px] ">
+                  <div className="space-y-[1rem]">
+                    <div className="lg:h-[14rem] h-[16rem] w-full relative">
+                      <ParallaxImage
+                        src={perfume.featuredImage?.asset.url || ""}
+                        alt={perfume.title}
+                        className="rounded-[1rem] border-[1px] border-transparent hover:border-foreground transition-colors duration-300"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      />
+                    </div>
+                    <h3 className="line-clamp-1 text-[1.5rem] font-[400]">
+                      {perfume.title}
+                    </h3>
+                    <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
+                      <Link
+                        href={`/${locale}/${perfume.category}-perfume/${perfume.slug}`}
+                        className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                      >
+                        {t("learnMore")}
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-[1rem] mb-2">
+        <div className="w-full flex flex-col gap-[2rem] absolute bottom-0 left-0 z-[100]">
           {/* Back Button */}
           {currentStep > 1 && (
-            <button
-              onClick={handlePreviousStep}
-              className="cursor-pointer w-fit"
-            >
-              {t("back")}
-            </button>
+            <div className="px-[3rem] w-full flex justify-between ">
+              <button
+                onClick={handlePreviousStep}
+                disabled={isAnimating}
+                className="cursor-pointer w-fit"
+              >
+                {t("back")}
+              </button>
+
+              {/* Only for step 4 Intensity Slider  */}
+              {currentStep === 4 && (
+                <button
+                  onClick={findMatchingPerfumes}
+                  disabled={isLoading}
+                  className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                >
+                  {isLoading ? "Finding matches..." : t("unveil")}
+                </button>
+              )}
+
+              {/* For step 5 Results (close ESE) */}
+              {currentStep === 5 && (
+                <button
+                  onClick={closeDialog}
+                  disabled={isLoading}
+                  className="cursor-pointer w-fit"
+                >
+                  {t("close")}
+                </button>
+              )}
+            </div>
           )}
           {/* Progress Bar */}
           <div
-            className="absolute bottom-0 left-0 h-[1rem] bg-foreground transition-all duration-300 ease-in-out"
+            className="h-[1.1rem] bg-foreground transition-all duration-300 ease-in-out"
             style={{
               width: `${(currentStep / 5) * 100}%`,
             }}
