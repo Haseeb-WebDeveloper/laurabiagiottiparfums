@@ -44,7 +44,7 @@ export default function PerfumesList({
           {subCategories.map((subCategory, index: number) => (
             <div
               key={index}
-              className={`cursor-pointer flex items-center justify-center uppercase lg:px-[1.94rem] lg:py-[0.24rem] w-full text-nowrape py-[0.3rem] rounded-[0.5rem] text-[0.75rem] font-[400] border-[1px] border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300`}
+              className={`cursor-pointer flex items-center justify-center uppercase lg:px-[1.94rem] lg:py-[0.24rem] w-full text-nowrap py-[0.3rem] rounded-[0.5rem] text-[0.75rem] font-[400] border-[1px] border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300`}
               onClick={() =>
                 setSelectedCategory(
                   selectedCategory === subCategory.name
