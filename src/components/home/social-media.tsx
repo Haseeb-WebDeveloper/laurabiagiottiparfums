@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
+import SplitText from "../ui/split-text";
 
 export default function SocialMedia({
   socialMediaImages,
@@ -87,16 +88,25 @@ export default function SocialMedia({
 
   return (
     <section className="">
-      <h2
-        className="md:text-[3rem] text-[2.4rem] font-bold"
+      <div
         style={{
           letterSpacing: "-0.04em",
           marginBottom: "0.5rem",
         }}
       >
-        Follow us on Instagram
-      </h2>
-      <p className="text-[1rem]">Become a #LBlover!</p>
+        <SplitText
+          text="Follow us on Instagram"
+          variant="heading"
+          element="h2"
+          className="md:text-[3rem] text-[2.2rem] font-bold"
+        />
+      </div>
+      <SplitText
+        text="Become a #LBlover!"
+        variant="paragraph"
+        element="p"
+        className="text-[1rem]"
+      />
       <div className="mt-[2rem] w-full flex flex-col gap-y-[1.5rem] md:flex-row justify-between">
         <div className="flex gap-[1rem] items-center">
           <div className="h-full flex items-center">
@@ -114,12 +124,17 @@ export default function SocialMedia({
               onMouseLeave={() => setHoveredLink(null)}
               href="https://www.instagram.com/laurabiagiottiparfums/"
               target="_blank"
-              className="md:text-[2rem] text-[1.7rem] font-bold tracking-wider relative"
+              className="md:text-[2rem] text-[1.5rem] font-bold tracking-wider relative"
               style={{
                 wordSpacing: "0.15em",
               }}
             >
-              Laura Biagiotti Parfums
+              <SplitText
+                text="Laura Biagiotti Parfums"
+                variant="heading"
+                element="p"
+              />
+
               <motion.div
                 initial={{ width: 0, height: 2 }}
                 animate={
@@ -150,7 +165,11 @@ export default function SocialMedia({
               target="_blank"
               className="text-[1rem] w-fit relative"
             >
-              @laurabiagiottiparfums
+              <SplitText
+                text="@laurabiagiottiparfums"
+                variant="paragraph"
+                element="p"
+              />
               <motion.div
                 initial={{ width: 0, height: 2 }}
                 animate={
@@ -177,19 +196,47 @@ export default function SocialMedia({
           </div>
         </div>
         <div className="flex gap-[3rem] px-[0.5rem]">
-          <div className="flex flex-col md:gap-[0.2rem] gap-[0.3rem]">
-            <h6 className="md:text-[2rem] text-[1.8rem] font-semibold">976</h6>
-            <p className="text-[1rem]">Posts</p>
+          <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
+            <SplitText
+              text="976"
+              variant="paragraph"
+              element="h3"
+              className="md:text-[2rem] text-[1.8rem] font-semibold"
+            />
+            <SplitText
+              text="Posts"
+              variant="paragraph"
+              element="p"
+              className="text-[1rem]"
+            />
           </div>
-          <div className="flex flex-col md:gap-[0.2rem] gap-[0.3rem]">
-            <h6 className="md:text-[2rem] text-[1.8rem] font-semibold">
-              25.6K
-            </h6>
-            <p className="text-[1rem]">Followers</p>
+          <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
+            <SplitText
+              text="25.6K"
+              variant="paragraph"
+              element="h3"
+              className="md:text-[2rem] text-[1.8rem] font-semibold"
+            />
+            <SplitText
+              text="Followers"
+              variant="paragraph"
+              element="p"
+              className="text-[1rem]"
+            />
           </div>
-          <div className="flex flex-col md:gap-[0.2rem] gap-[0.3rem]">
-            <h6 className="md:text-[2rem] text-[1.8rem] font-semibold">251</h6>
-            <p className="text-[1rem]">Following</p>
+          <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
+            <SplitText
+              text="251"
+              variant="paragraph"
+              element="h3"
+              className="md:text-[2rem] text-[1.8rem] font-semibold"
+            />
+            <SplitText
+              text="Following"
+              variant="paragraph"
+              element="p"
+              className="text-[1rem]"
+            />
           </div>
         </div>
       </div>

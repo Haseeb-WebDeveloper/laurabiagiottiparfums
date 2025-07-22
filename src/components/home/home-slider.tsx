@@ -89,8 +89,20 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
 
   const animateImageTransition = (fromIndex: number, toIndex: number) => {
     // Trigger Swiper slide change
-    if (swiperRef.current) {
-      swiperRef.current.slideToLoop(toIndex);
+    if (swiperRef.current?.el) {
+      gsap.to(swiperRef.current.el, {
+        duration: 0.6,
+        ease: "power2.inOut",
+        onComplete: () => {
+          if (swiperRef.current) {
+            swiperRef.current.slideToLoop(toIndex);
+            gsap.to(swiperRef.current.el, {
+              duration: 0.6,
+              ease: "power2.inOut"
+            });
+          }
+        }
+      });
     }
   };
 
@@ -159,10 +171,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         {
           y: -40,
           x: -700,
-          duration: 1,
+          opacity: 0,
+          duration: 1.2,
           ease: "power2.inOut",
           stagger: {
-            amount: 0.3,
+            amount: 0.2,
             from: "start",
           },
         },
@@ -176,10 +189,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         {
           y: -40,
           x: -700,
+          opacity: 0,
           duration: 1,
           ease: "power2.inOut",
         },
-        0.2
+        0.2  // This is the delay for the buttons to exit
       );
     }
 
@@ -198,7 +212,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
             from: "start",
           },
         },
-        0.8 // Increased delay to let exit animation complete more
+        1 // Increased delay to let exit animation complete more
       );
     }
 
@@ -212,7 +226,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
           duration: 1.3,
           ease: "power2.out",
         },
-        1 // Slightly after text starts entering
+        1.2 // Slightly after text starts entering
       );
     }
   };
@@ -244,7 +258,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
 
     // Create a timeline for entrance animations
     const enterTl = gsap.timeline({
-      delay: 1  , // Increased delay to wait for slide transition
+      delay: 1.3  , // Increased delay to wait for slide transition
       onComplete: () => {
         setIsTransitioning(false);
         setActiveIndex(toIndex);
@@ -330,9 +344,9 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       {/* Background Slider */}
       <Swiper
         modules={[Navigation, Autoplay]}
-        speed={2000}
+        speed={1500}
         autoplay={{
-          delay: 5000,
+          delay: 4000,
           disableOnInteraction: false,
         }}
         loop={true}
@@ -342,6 +356,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         }}
         onSlideChangeTransitionStart={handleSlideChange}
         className="h-full w-full"
+        cssMode={false}
+        effect="fade"
+        fadeEffect={{
+          crossFade: true
+        }}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index} className="relative">
@@ -362,12 +381,12 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       {/* Fixed Content Layer */}
       <div className="absolute inset-0 z-50">
         <div className="2xl:px-[34px] md:px-[38px] px-[18px] h-full flex items-center">
-          <div className="relative">
+          <div className="relative w-full max-w">
             {slides.map((slide, index) => (
               <div
                 key={index}
                 id={`slide-content-${index}`}
-                className="absolute top-1/2 -translate-y-1/2 left-0"
+                className="absolute md:-bottom-20 md:top-auto top-32 left-0 right-0 w-full"
                 style={{
                   pointerEvents: index === activeIndex ? "auto" : "none",
                   zIndex: index === activeIndex ? 2 : 1,
@@ -378,7 +397,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                 {/* Title */}
                 <h3
                   id={`slide-title-${index}`}
-                  className="w-[500px] text-[1.5rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-background leading-tight mb-6"
+                  className="lg:w-[500px] w-full text-[2rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-background leading-tight mb-6"
                 >
                   {slide.title}
                 </h3>
@@ -386,7 +405,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                 {/* CTAs */}
                 <div
                   id={`slide-buttons-${index}`}
-                  className="max-w-[500px] flex items-center gap-4"
+                  className="max-w-[500px] flex flex-col md:flex-row md:items-center gap-4"
                 >
                   {/* Primary CTA */}
                   <button
@@ -412,31 +431,37 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
 
       {/* Navigation Controls */}
       <div className="2xl:px-[34px] md:px-[38px] px-[18px] absolute inset-0 z-[100] pointer-events-none">
-        <div className="relative h-full">
+        <div className="relative h-full max-w">
           {/* Custom Navigation Controls */}
-          <div className="absolute bottom-8 left-0 lg:left-0 pointer-events-auto">
+          <div className="absolute md:bottom-[4rem] md:top-auto top-8 left-0 pointer-events-auto">
             <div className="flex items-center gap-8">
               {/* Slide Numbers with Progress Line */}
-              <div className="flex items-end gap-1 relative">
+              <div className="relative w-[200px]">
+                {/* Numbers */}
                 {slides.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
                     disabled={isTransitioning}
-                    className={`text-background/90 text-light text-[1.2rem] leading-none pb-2 px-2 transition-all duration-300 disabled:cursor-not-allowed relative ${
+                    className={`absolute text-background/90 text-light text-[1rem] leading-none pb-2 transition-all duration-300 disabled:cursor-not-allowed ${
                       index === activeIndex ? "opacity-100" : "opacity-50"
                     }`}
+                    style={{
+                      left: `${(100 / (slides.length - 1)) * index + 3}%`,
+                      transform: 'translateX(-50%)'
+                    }}
                   >
-                    {index + 1}
+                    0{index + 1}
                   </button>
                 ))}
 
                 {/* Progress Line */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/20">
+                <div className="absolute -bottom-[1.7rem] left-0 right-0 h-[1px] bg-white/20"
+                >
                   <div
                     className="h-full bg-white transition-all duration-500 ease-out"
                     style={{
-                      width: `${((activeIndex + 1) / totalSlides) * 100}%`,
+                      width: `${(100 / (slides.length - 1)) * (activeIndex + 1)}%`,
                       transformOrigin: "left",
                     }}
                   />
@@ -446,33 +471,34 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
           </div>
 
           {/* Arrow Controls */}
-          <div className="flex items-center gap-4 absolute bottom-8 right-0 lg:right-0 pointer-events-auto">
+          <div className="flex items-center gap-2 absolute bottom-[1.5rem] h-fit right-0 lg:right-0 pointer-events-auto">
             <button
               onClick={goPrev}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Previous slide"
             >
               <Image
-                src="/icons/arrow-right.svg"
+                src="/logo/left.svg"
                 alt="Previous slide"
                 width={24}
                 height={24}
-                className="rotate-180"
+                className="hover:invert"
               />
             </button>
 
             <button
               onClick={goNext}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Next slide"
             >
               <Image
-                src="/icons/arrow-right.svg"
+                src="/logo/right.svg"
                 alt="Next slide"
                 width={24}
                 height={24}
+                className="hover:invert"
               />
             </button>
           </div>

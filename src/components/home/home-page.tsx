@@ -24,7 +24,7 @@ export default function HomePage({
 
   return (
     <main className="">
-      <div className="mb-[4rem] lg:mt-[190px] mt-[60px] lg:h-[calc(100vh-190px)] h-[calc(100vh-60px)]">
+      <div className="mb-[4rem] lg:mt-[190px] mt-[65px] lg:h-[calc(100vh-190px)] h-[calc(100vh-65px)]">
         <HeroSlider slides={homeData.perfumesCarousel} locale={locale} />
       </div>
       {/* Hero Section with Featured Perfumes */}

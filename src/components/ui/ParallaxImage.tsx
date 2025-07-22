@@ -18,6 +18,7 @@ interface ParallaxImageProps {
   sizes?: string;
   objectPosition?: string;
   objectFit?: string;
+  direction?: "vertical" | "horizontal";
 }
 
 export function ParallaxImage({
@@ -30,6 +31,7 @@ export function ParallaxImage({
   sizes,
   objectPosition = "center",
   objectFit = "cover",
+  direction = "vertical",
 }: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -50,19 +52,34 @@ export function ParallaxImage({
       },
     });
 
-    // Add animation to timeline
-    tl.fromTo(
-      element,
-      {
-        y: "-10%",
-        scale: 1.2, // Start slightly scaled up to prevent white edges during parallax
-      },
-      {
-        y: "10%",
-        scale: 1.2, // Maintain scale throughout animation
-        ease: "none",
-      }
-    );
+    // Add animation based on direction
+    if (direction === "vertical") {
+      tl.fromTo(
+        element,
+        {
+          y: "-10%",
+          scale: 1.2,
+        },
+        {
+          y: "10%",
+          scale: 1.2,
+          ease: "none",
+        }
+      );
+    } else {
+      tl.fromTo(
+        element,
+        {
+          x: "-10%",
+          scale: 1.2,
+        },
+        {
+          x: "10%",
+          scale: 1.2,
+          ease: "none",
+        }
+      );
+    }
 
     // Cleanup function
     return () => {
@@ -71,7 +88,7 @@ export function ParallaxImage({
       }
       tl.kill();
     };
-  }, []);
+  }, [direction]);
 
   // Check if source is a video
   const isVideo = src.endsWith('.mp4') || src.endsWith('.webm');

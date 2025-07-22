@@ -201,7 +201,7 @@ export default function Navbar() {
             </div>
             {/* Center */}
             <div className="w-full flex flex-col items-center">
-              <Link href={`/${locale}`}>
+              <Link href={`/${locale}`} className="h-fit">
                 <Image
                   src={
                     theme === "dark"
@@ -211,7 +211,7 @@ export default function Navbar() {
                   alt="logo"
                   width={200}
                   height={200}
-                  className="w-[11rem]"
+                  className="w-[11rem] h-fit"
                 />
               </Link>
             </div>
@@ -326,8 +326,8 @@ export default function Navbar() {
             <Image
               src={
                 theme === "dark"
-                  ? "/logo/mobile-logo.svg"
-                  : "/logo/mobile-light-logo.svg"
+                  ? "/logo/mobile-light-logo.svg"
+                  : "/logo/mobile-logo.svg"
               }
               alt="logo"
               width={220}

@@ -147,6 +147,7 @@ const NewsHorizontalScroll = ({
                     src={card.featuredImage?.asset.url || ""}
                     alt={card.title}
                     className="rounded-[1rem] w-full h-full object-cover"
+                    direction="horizontal"
                   />
                 </div>
                 <div className="w-fit h-full min-h-[400px] flex flex-col justify-between">

@@ -53,7 +53,7 @@ export default function MainPerfumeSlug({
   return (
     <section className="mb-[15rem]">
       {/* section 1 todo */}
-      <div className="mb-[4rem] lg:mt-[190px] mt-[60px] lg:h-[calc(100vh-190px)] h-[calc(100vh-60px)] ">
+      <div className="mb-[4rem] lg:mt-[190px] mt-[65px] lg:h-[calc(100vh-190px)] h-[calc(100vh-65px)] ">
         <MainPerfumeSlider
           slides={mainPerfume.heroSectionImages}
           locale={locale}

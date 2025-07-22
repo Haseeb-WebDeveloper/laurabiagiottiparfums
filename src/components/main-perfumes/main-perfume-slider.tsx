@@ -319,8 +319,8 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       <div className="2xl:px-[34px] md:px-[38px] px-[18px] absolute inset-0 z-[100] pointer-events-none">
         <div className="relative max-w h-full">
           {/* Custom Navigation Controls */}
-          <div className="absolute bottom-8 left-0 lg:left-0 pointer-events-auto">
-            <div className="flex items-center gap-8">
+          <div className="absolute md:bottom-0 bottom-8 left-0  pointer-events-auto">
+            <div className="flex items-center md:gap-8 gap-6">
               {/* Slide Numbers with Progress Line */}
               <div className="flex items-end gap-1 relative">
                 {slides.map((_, index) => (
@@ -328,7 +328,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                     key={index}
                     onClick={() => goToSlide(index)}
                     disabled={isTransitioning}
-                    className={`text-foreground/90 text-light text-[1.2rem] leading-none pb-2 px-2 transition-all duration-300 disabled:cursor-not-allowed relative ${
+                    className={`text-foreground/90 text-light text-[1rem] leading-none pb-2 px-2 transition-all duration-300 disabled:cursor-not-allowed relative ${
                       index === activeIndex ? "opacity-100" : "opacity-50"
                     }`}
                   >
@@ -337,7 +337,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                 ))}
 
                 {/* Progress Line */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/20">
+                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/20">
                   <div
                     className="h-full bg-white transition-all duration-500 ease-out"
                     style={{
