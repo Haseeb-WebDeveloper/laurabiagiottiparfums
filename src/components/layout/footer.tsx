@@ -9,7 +9,6 @@ import { useLocale } from "@/lib/i18n/context";
 
 export default function Footer() {
   const { locale } = useLocale();
-  console.log(locale);
 
   return (
     <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] md:px-[38px] px-[18px]">

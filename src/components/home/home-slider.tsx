@@ -94,8 +94,8 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         duration: 0.6,
         ease: "power2.inOut",
         onComplete: () => {
-          if (swiperRef.current) {
-            swiperRef.current.slideToLoop(toIndex);
+    if (swiperRef.current) {
+      swiperRef.current.slideToLoop(toIndex);
             gsap.to(swiperRef.current.el, {
               duration: 0.6,
               ease: "power2.inOut"
@@ -366,14 +366,14 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
           <SwiperSlide key={index} className="relative">
             {/* Background Image */}
             <div className="absolute inset-0">
-              <img
-                src={slide.image.asset.url}
-                alt={slide.title}
-                className="h-full w-full object-cover"
-                loading={index === 0 ? "eager" : "lazy"}
-              />
-              <div className="absolute inset-0 bg-black/10" />
-            </div>
+            <img
+              src={slide.image.asset.url}
+              alt={slide.title}
+              className="h-full w-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+            <div className="absolute inset-0 bg-black/10" />
+          </div>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -430,7 +430,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       </div>
 
       {/* Navigation Controls */}
-      <div className="2xl:px-[34px] md:px-[38px] px-[18px] absolute inset-0 z-[100] pointer-events-none">
+      <div className="2xl:px-[34px] md:px-[38px] px-[18px] absolute inset-0 z-[50] pointer-events-none">
         <div className="relative h-full max-w">
           {/* Custom Navigation Controls */}
           <div className="absolute md:bottom-[4rem] md:top-auto top-8 left-0 pointer-events-auto">

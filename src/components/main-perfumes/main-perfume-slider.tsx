@@ -279,13 +279,13 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       {/* Fixed Text Content Container */}
       <div className="absolute inset-0 z-50">
         <div className="2xl:px-[34px] md:px-[38px] px-[18px] h-full flex items-center">
-          <div className="relative">
+          <div className="relative w-full">
             {/* All slide content rendered but hidden */}
             {slides.map((slide, index) => (
               <div
                 key={index}
                 id={`slide-content-${index}`}
-                className="absolute top-0 left-0 transition-opacity duration-500"
+                className="absolute md:-bottom-30 md:top-auto top-32 left-0 right-0 w-full"
                 style={{
                   //   opacity: index === activeIndex ? 1 : 0,
                   pointerEvents: index === activeIndex ? "auto" : "none",
@@ -294,17 +294,20 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                 {/* Title */}
                 <h3
                   id={`slide-title-${index}`}
-                  className="z-50 w-[400px] text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] font-bold text-foreground leading-tight mb-6"
+                  className="lg:w-[500px] w-full text-[2rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-foreground leading-tight mb-6"
                 >
                   {slide.title}
                 </h3>
 
                 {/* CTAs */}
-                <div className="max-w-[500px] flex items-center gap-4">
+                <div
+                  id={`slide-buttons-${index}`}
+                  className="max-w-[500px] flex items-center gap-4"
+                >
                   {/* Primary CTA */}
                   <button
                     onClick={() => handleBuyNowClick(mainPerfume)}
-                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground bg-transparent"
+                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring text-foreground hover:bg-ring hover:text-background transition-colors duration-300"
                   >
                     {t("shop")}
                   </button>
@@ -316,32 +319,37 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
       </div>
 
       {/* Navigation Controls */}
-      <div className="2xl:px-[34px] md:px-[38px] px-[18px] absolute inset-0 z-[100] pointer-events-none">
-        <div className="relative max-w h-full">
+      <div className="2xl:px-[34px] md:px-[38px] px-[18px] absolute inset-0 z-[50] pointer-events-none">
+        <div className="relative h-full max-w">
           {/* Custom Navigation Controls */}
-          <div className="absolute md:bottom-0 bottom-8 left-0  pointer-events-auto">
-            <div className="flex items-center md:gap-8 gap-6">
+          <div className="absolute md:bottom-[4rem] md:top-auto top-8 left-0 pointer-events-auto">
+            <div className="flex items-center gap-8">
               {/* Slide Numbers with Progress Line */}
-              <div className="flex items-end gap-1 relative">
+              <div className="relative w-[120px]">
+                {/* Numbers */}
                 {slides.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
                     disabled={isTransitioning}
-                    className={`text-foreground/90 text-light text-[1rem] leading-none pb-2 px-2 transition-all duration-300 disabled:cursor-not-allowed relative ${
+                    className={`absolute text-foreground/90 text-light text-[1rem] leading-none pb-2 transition-all duration-300 disabled:cursor-not-allowed ${
                       index === activeIndex ? "opacity-100" : "opacity-50"
                     }`}
+                    style={{
+                      left: `${(100 / (slides.length - 1)) * index + 3}%`,
+                      transform: "translateX(-50%)",
+                    }}
                   >
-                    {index + 1}
+                    0{index + 1}
                   </button>
                 ))}
 
                 {/* Progress Line */}
-                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/20">
+                <div className="absolute -bottom-[1.7rem] left-0 right-0 h-[1px] bg-white/20">
                   <div
                     className="h-full bg-white transition-all duration-500 ease-out"
                     style={{
-                      width: `${((activeIndex + 1) / totalSlides) * 100}%`,
+                      width: `${(100 / (slides.length - 1)) * (activeIndex + 1)}%`,
                       transformOrigin: "left",
                     }}
                   />
@@ -351,33 +359,34 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
           </div>
 
           {/* Arrow Controls */}
-          <div className="flex items-center gap-4 absolute bottom-8 right-0 lg:right-0 pointer-events-auto">
+          <div className="flex items-center gap-2 absolute bottom-[1.5rem] h-fit right-0 lg:right-0 pointer-events-auto">
             <button
               onClick={goPrev}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center disabled:opacity-50"
+              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Previous slide"
             >
               <Image
-                src="/icons/arrow-right.svg"
+                src="/logo/left.svg"
                 alt="Previous slide"
                 width={24}
                 height={24}
-                className="rotate-180"
+                className="hover:invert"
               />
             </button>
 
             <button
               onClick={goNext}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center text-white/80 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Next slide"
             >
               <Image
-                src="/icons/arrow-right.svg"
+                src="/logo/right.svg"
                 alt="Next slide"
                 width={24}
                 height={24}
+                className="hover:invert"
               />
             </button>
           </div>

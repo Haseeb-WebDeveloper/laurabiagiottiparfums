@@ -273,8 +273,6 @@ export async function getSearchResults(searchTerm: string, locale: string) {
 
     if (!data) return null;
 
-    console.log("data", data);
-
     return {
       perfumes: [...(data.perfumes || []), ...(data.collections || [])].sort(
         (a, b) => {

@@ -40,11 +40,11 @@ export default function PerfumesList({
         <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%] tracking-[0.008em]">
           {title}
         </h1>
-        <div className="flex gap-4 lg:pt-[0.3rem] pt-0 h-full">
+        <div className="flex gap-4 lg:pt-[0.3rem] pt-0 h-full w-full md:w-auto">
           {subCategories.map((subCategory, index: number) => (
             <div
               key={index}
-              className={`cursor-pointer flex items-center justify-center uppercase lg:px-[1.94rem] lg:py-[0.24rem] px-[2.6rem] py-[0.3rem] rounded-[0.5rem] text-[0.75rem] font-[400] border-[1px] border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300`}
+              className={`cursor-pointer flex items-center justify-center uppercase lg:px-[1.94rem] lg:py-[0.24rem] w-full text-nowrape py-[0.3rem] rounded-[0.5rem] text-[0.75rem] font-[400] border-[1px] border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300`}
               onClick={() =>
                 setSelectedCategory(
                   selectedCategory === subCategory.name
