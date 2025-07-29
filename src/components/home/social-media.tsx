@@ -118,7 +118,7 @@ export default function SocialMedia({
               className="md:w-[65px] md:h-[65px] w-[45px] h-[45px] object-cover rounded-full aspect-square"
             />
           </div>
-          <div className="flex flex-col md:gap-[0.19rem] gap-[0rem]">
+          <div className="flex flex-col">
             <Link
               onMouseEnter={() => setHoveredLink(0)}
               onMouseLeave={() => setHoveredLink(null)}
@@ -127,6 +127,7 @@ export default function SocialMedia({
               className="md:text-[2rem] text-[1.5rem] font-bold tracking-wider relative"
               style={{
                 wordSpacing: "0.15em",
+                lineHeight: "1em",
               }}
             >
               <SplitText
@@ -155,7 +156,7 @@ export default function SocialMedia({
                         transition: { duration: 0.2 },
                       }
                 }
-                className="absolute z-[200] -bottom-[1px] left-0 bg-foreground"
+                className="absolute z-[200] bottom-[8px] left-0 bg-foreground"
               />
             </Link>
             <Link
@@ -169,6 +170,7 @@ export default function SocialMedia({
                 text="@laurabiagiottiparfums"
                 variant="paragraph"
                 element="p"
+          
               />
               <motion.div
                 initial={{ width: 0, height: 2 }}
@@ -190,7 +192,7 @@ export default function SocialMedia({
                         transition: { duration: 0.2 },
                       }
                 }
-                className="absolute z-[200] -bottom-[2px] left-0 bg-foreground"
+                className="absolute z-[200] bottom-[4px] left-0 bg-foreground"
               />
             </Link>
           </div>

@@ -14,6 +14,7 @@ export interface SplitTextProps {
   element?: "div" | "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   textAlign?: React.CSSProperties["textAlign"];
   onAnimationComplete?: () => void;
+  style?: React.CSSProperties;
 }
 
 const SplitText: React.FC<SplitTextProps> = ({
@@ -22,6 +23,7 @@ const SplitText: React.FC<SplitTextProps> = ({
   variant = "paragraph",
   textAlign = "left",
   element = "div",
+  style,
   onAnimationComplete,
 }) => {
   const ref = useRef<HTMLDivElement | HTMLParagraphElement | null>(null);
@@ -158,6 +160,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         display: "inline-block",
         whiteSpace: "normal",
         wordWrap: "break-word",
+        ...style,
       }}
     >
       {text}

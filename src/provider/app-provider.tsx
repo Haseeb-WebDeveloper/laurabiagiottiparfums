@@ -109,7 +109,6 @@ function AppProvider({ children, locale }: AppProviderProps) {
               <SplitParagraphsAnimation />
               <Navbar />
               <div className="fixed bottom-4 right-4 z-[100]">
-                <ModeToggle />
               </div>
               {children}
               <Footer />
