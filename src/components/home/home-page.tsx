@@ -50,7 +50,7 @@ export default function HomePage({
               element="h4"
               className="md:text-[2.9rem] text-[2.4rem] font-[700] tracking-tight"
             />
-            <p
+            <div
               className="mt-[0.5rem] text-[1rem] text-foreground"
               style={{
                 wordSpacing: "0em",
@@ -62,7 +62,7 @@ export default function HomePage({
                 element="p"
                 className="mt-[0.5rem] text-[1rem] text-foreground"
               />
-            </p>
+            </div>
             <WearYourPerfume
               customTrigger={
                 <button className="mt-[2rem] cursor-pointer w-fit flex items-center justify-center uppercase px-[1.5rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
@@ -125,7 +125,7 @@ export default function HomePage({
       {/* Social Media Section */}
       <div className="mt-[8rem] mb-[14rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
-          <SocialMedia socialMediaImages={homeData.socialMediaImages} />
+          <SocialMedia />
         </div>
       </div>
     </main>

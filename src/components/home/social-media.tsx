@@ -1,6 +1,5 @@
 "use client";
 
-import { SocialMediaImage } from "@/types/home-page";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,17 +7,28 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import SplitText from "../ui/split-text";
+import { useInstagram } from "@/hooks/useInstagram";
+import { useInstagramStats } from "@/hooks/useInstagramStats";
+import { InstagramPost } from "@/types/insta-post";
 
-export default function SocialMedia({
-  socialMediaImages,
-}: {
-  socialMediaImages: SocialMediaImage[];
-}) {
+interface SocialMediaProps {
+  refreshInterval?: number;
+  limit?: number;
+}
+
+export default function SocialMedia({ 
+  refreshInterval = 300000, // 5 minutes
+  limit = 4 
+}: SocialMediaProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
   const descriptionRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Fetch Instagram data
+  const { posts, isLoading, error, refresh } = useInstagram(limit, refreshInterval);
+  const { stats } = useInstagramStats();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -84,7 +94,81 @@ export default function SocialMedia({
         });
       }
     });
-  }, []);
+  }, [posts]); // Re-run when posts change
+
+  const truncateCaption = (caption: string, maxLength: number = 100): string => {
+    if (!caption) return '';
+    return caption.length > maxLength 
+      ? caption.substring(0, maxLength) + '...' 
+      : caption;
+  };
+
+  // Loading state
+  if (isLoading && posts.length === 0) {
+    return (
+      <section className="">
+        <div
+          style={{
+            letterSpacing: "-0.04em",
+            marginBottom: "0.5rem",
+          }}
+        >
+          <SplitText
+            text="Follow us on Instagram"
+            variant="heading"
+            element="h2"
+            className="md:text-[3rem] text-[2.2rem] font-bold"
+          />
+        </div>
+        <SplitText
+          text="Become a #LBlover!"
+          variant="paragraph"
+          element="p"
+          className="text-[1rem]"
+        />
+        
+        {/* Loading grid */}
+        <div className="mt-[2.5rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(limit)].map((_, index) => (
+            <div
+              key={index}
+              className="aspect-square relative overflow-hidden bg-gray-200 animate-pulse rounded-lg"
+            />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error && posts.length === 0) {
+    return (
+      <section className="">
+        <div
+          style={{
+            letterSpacing: "-0.04em",
+            marginBottom: "0.5rem",
+          }}
+        >
+          <SplitText
+            text="Follow us on Instagram"
+            variant="heading"
+            element="h2"
+            className="md:text-[3rem] text-[2.2rem] font-bold"
+          />
+        </div>
+        <div className="text-center py-8">
+          <p className="text-gray-500 mb-4">Unable to load Instagram posts</p>
+          <button 
+            onClick={() => refresh()} 
+            className="text-blue-500 hover:text-blue-600 underline"
+          >
+            Try again
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="">
@@ -107,6 +191,7 @@ export default function SocialMedia({
         element="p"
         className="text-[1rem]"
       />
+      
       <div className="mt-[2rem] w-full flex flex-col gap-y-[1.5rem] md:flex-row justify-between">
         <div className="flex gap-[1rem] items-center">
           <div className="h-full flex items-center">
@@ -170,7 +255,6 @@ export default function SocialMedia({
                 text="@laurabiagiottiparfums"
                 variant="paragraph"
                 element="p"
-          
               />
               <motion.div
                 initial={{ width: 0, height: 2 }}
@@ -197,10 +281,12 @@ export default function SocialMedia({
             </Link>
           </div>
         </div>
+        
+        {/* Dynamic Stats */}
         <div className="flex gap-[3rem] px-[0.5rem]">
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text="976"
+              text={stats.posts}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -214,7 +300,7 @@ export default function SocialMedia({
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text="25.6K"
+              text={stats.followers}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -228,7 +314,7 @@ export default function SocialMedia({
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text="251"
+              text={stats.following}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -242,27 +328,38 @@ export default function SocialMedia({
           </div>
         </div>
       </div>
+      
+      {/* Instagram Posts Grid */}
       <div className="mt-[2.5rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {socialMediaImages.map((social, index) => (
+        {posts.map((post: InstagramPost, index: number) => (
           <div
-            key={index}
+            key={post.id}
             className="aspect-square relative overflow-hidden group"
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={() => handleMouseLeave(index)}
           >
             <a
-              href={social.url}
+              href={post.permalink}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full h-full"
             >
               <ParallaxImage
-                src={social.image.asset.url}
-                alt="Social Media"
+                src={post.media_type === 'VIDEO' ? (post.thumbnail_url || post.media_url) : post.media_url}
+                alt={post.caption || 'Instagram post'}
                 fill
                 className=""
               />
               <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 transition-colors" />
+
+              {/* Video indicator */}
+              {post.media_type === 'VIDEO' && (
+                <div className="absolute top-4 right-4 z-50">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              )}
 
               <p
                 ref={(el) => {
@@ -272,8 +369,9 @@ export default function SocialMedia({
                 }}
                 className="absolute z-[60] top-4 left-0 px-[1rem] text-[1rem] text-white opacity-0"
               >
-                {social.description}
+                {truncateCaption(post.caption)}
               </p>
+              
               <div
                 ref={(el) => {
                   if (el) {
@@ -325,6 +423,7 @@ export default function SocialMedia({
           </div>
         ))}
       </div>
+      
       <div className="mt-[2.5rem]">
         <Link
           href="https://www.instagram.com/laurabiagiottiparfums/"

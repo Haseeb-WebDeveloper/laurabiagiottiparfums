@@ -35,12 +35,13 @@ export interface TextImageSection {
 
 export interface SocialMediaImage {
   image: {
-    asset: SanityImage;
+    asset: {
+      url: string;
+    };
   };
-  url: string;
   description: string;
+  url: string;
 }
-
 
 export interface HomePagePerfumeCarousel {
   perfume: Perfume;
