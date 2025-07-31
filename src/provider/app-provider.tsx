@@ -108,8 +108,9 @@ function AppProvider({ children, locale }: AppProviderProps) {
               <SplitHeadingsAnimation />
               <SplitParagraphsAnimation />
               <Navbar />
-              <div className="fixed bottom-4 right-4 z-[100]">
-              </div>
+              {/* <div className="fixed bottom-4 right-4 z-[100]">
+                <ModeToggle />
+              </div> */}
               {children}
               <Footer />
             </SmoothScrolling>
