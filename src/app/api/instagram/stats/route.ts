@@ -18,8 +18,6 @@ export async function GET() {
       return NextResponse.json({ error: data.error.message }, { status: 400 });
     }
 
-    console.log("data", data);
-
     // Format numbers for display
     const formatNumber = (num: number): string => {
       if (num >= 1000000) {
