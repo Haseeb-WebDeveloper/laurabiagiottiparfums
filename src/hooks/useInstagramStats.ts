@@ -15,7 +15,7 @@ export function useInstagramStats(refreshInterval: number = 3600000) { // 1 hour
   );
 
   return {
-    stats: data || { posts: '976', followers: '25.6K', following: '251' },
+    stats: data,
     isLoading,
     error,
   };
