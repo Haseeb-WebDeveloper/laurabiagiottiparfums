@@ -15,6 +15,11 @@ export interface InstagramPost {
   }
   
   export interface InstagramStats {
+    id: string;
+    name: string;
+    username: string;
+    profilePicture: string;
+    accountType: string;
     posts: string;
     followers: string;
     following: string;
