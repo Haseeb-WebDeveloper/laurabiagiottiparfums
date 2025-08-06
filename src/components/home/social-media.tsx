@@ -194,20 +194,28 @@ export default function SocialMedia({
       
       <div className="mt-[2rem] w-full flex flex-col gap-y-[1.5rem] md:flex-row justify-between">
         <div className="flex gap-[1rem] items-center">
-          <div className="h-full flex items-center">
+          <div className="flex items-center rounded-full relative bg-red-500 md:w-[67px] md:h-[67px] w-[45px] h-[45px]">
             <Image
-              src="/logo/insta-logo.png"
+              src={stats?.profilePicture || ''}
               alt="Social Media"
               width={100}
               height={100}
-              className="md:w-[65px] md:h-[65px] w-[45px] h-[45px] object-cover rounded-full aspect-square"
+              className="z-10 absolute top-0 left-0 scale-[96%] w-full h-feull object-cover rounded-full aspect-square"
             />
+            <Image
+              src="/logo/insta-bg.jpg"
+              alt="Social Media"
+              width={100}
+              height={100}
+              className="absolute top-0 left-0 w-full h-feull object-cover rounded-full aspect-square"
+            />
+            
           </div>
           <div className="flex flex-col">
             <Link
               onMouseEnter={() => setHoveredLink(0)}
               onMouseLeave={() => setHoveredLink(null)}
-              href="https://www.instagram.com/laurabiagiottiparfums/"
+              href={`https://www.instagram.com/${stats?.username || ''}`}
               target="_blank"
               className="md:text-[2rem] text-[1.5rem] font-bold tracking-wider relative"
               style={{
@@ -216,7 +224,7 @@ export default function SocialMedia({
               }}
             >
               <SplitText
-                text="Laura Biagiotti Parfums"
+                text={stats?.name || ''}
                 variant="heading"
                 element="p"
               />
@@ -247,12 +255,12 @@ export default function SocialMedia({
             <Link
               onMouseEnter={() => setHoveredLink(1)}
               onMouseLeave={() => setHoveredLink(null)}
-              href="https://www.instagram.com/laurabiagiottiparfums/"
+              href={`https://www.instagram.com/${stats?.username || ''}`}
               target="_blank"
               className="text-[1rem] w-fit relative"
             >
               <SplitText
-                text="@laurabiagiottiparfums"
+                text={`@${stats?.username || ''}`}
                 variant="paragraph"
                 element="p"
               />
@@ -426,7 +434,7 @@ export default function SocialMedia({
       
       <div className="mt-[2.5rem]">
         <Link
-          href="https://www.instagram.com/laurabiagiottiparfums/"
+          href={`https://www.instagram.com/${stats?.username || ''}`}
           target="_blank"
           className="cursor-pointer uppercase px-[1.7rem] py-[0.7rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
