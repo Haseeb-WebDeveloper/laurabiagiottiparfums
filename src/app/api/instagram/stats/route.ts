@@ -4,7 +4,7 @@ export async function GET() {
   try {
     // Get user profile info
     const response = await fetch(
-      `https://graph.instagram.com/me?fields=account_type,media_count&access_token=${process.env.INSTAGRAM_ACCESS_TOKEN}`
+      `https://graph.instagram.com/me?fields=account_type,media_count,followers_count,follows_count&access_token=${process.env.INSTAGRAM_ACCESS_TOKEN}`
     );
 
     if (!response.ok) {
@@ -18,6 +18,8 @@ export async function GET() {
       return NextResponse.json({ error: data.error.message }, { status: 400 });
     }
 
+    console.log("data", data);
+
     // Format numbers for display
     const formatNumber = (num: number): string => {
       if (num >= 1000000) {
@@ -30,9 +32,9 @@ export async function GET() {
     };
 
     const stats = {
-      posts: formatNumber(data.media_count || 976),
-      followers: '25.6K', // Instagram Basic Display doesn't provide follower count
-      following: '251',   // Instagram Basic Display doesn't provide following count
+      posts: formatNumber(data.media_count || 0),
+      followers: formatNumber(data.followers_count || 0),
+      following: formatNumber(data.follows_count || 0),
     };
 
     // Cache for 1 hour
@@ -46,9 +48,9 @@ export async function GET() {
     
     // Return fallback data
     return NextResponse.json({
-      posts: '976',
-      followers: '25.6K', 
-      following: '251'
+      posts: '0',
+      followers: '0', 
+      following: '0'
     });
   }
 }

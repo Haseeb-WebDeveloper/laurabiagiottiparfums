@@ -28,7 +28,7 @@ export default function SocialMedia({
 
   // Fetch Instagram data
   const { posts, isLoading, error, refresh } = useInstagram(limit, refreshInterval);
-  const { stats } = useInstagramStats();
+  const { stats, isLoading: statsLoading } = useInstagramStats();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -104,7 +104,7 @@ export default function SocialMedia({
   };
 
   // Loading state
-  if (isLoading && posts.length === 0) {
+  if (isLoading && posts.length === 0 && statsLoading) {
     return (
       <section className="">
         <div
@@ -141,7 +141,7 @@ export default function SocialMedia({
   }
 
   // Error state
-  if (error && posts.length === 0) {
+  if (error && posts.length === 0 && statsLoading) {
     return (
       <section className="">
         <div
@@ -286,7 +286,7 @@ export default function SocialMedia({
         <div className="flex gap-[3rem] px-[0.5rem]">
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text={stats.posts}
+              text={stats?.posts || ''}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -300,7 +300,7 @@ export default function SocialMedia({
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text={stats.followers}
+              text={stats?.followers || ''}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -314,7 +314,7 @@ export default function SocialMedia({
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text={stats.following}
+              text={stats?.following || ''}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
