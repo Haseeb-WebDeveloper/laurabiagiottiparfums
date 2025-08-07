@@ -196,7 +196,7 @@ export default function SocialMedia({
         <div className="flex gap-[1rem] items-center">
           <div className="flex items-center rounded-full relative bg-red-500 md:w-[67px] md:h-[67px] w-[45px] h-[45px]">
             <Image
-              src={stats?.profilePicture || ''}
+              src={stats?.profilePicture || '/logo/insta-bg.jpg'}
               alt="Social Media"
               width={100}
               height={100}
@@ -215,7 +215,7 @@ export default function SocialMedia({
             <Link
               onMouseEnter={() => setHoveredLink(0)}
               onMouseLeave={() => setHoveredLink(null)}
-              href={`https://www.instagram.com/${stats?.username || ''}`}
+              href={`https://www.instagram.com/${stats?.username || 'laurabiagiottiparfums'}`}
               target="_blank"
               className="md:text-[2rem] text-[1.5rem] font-bold tracking-wider relative"
               style={{
@@ -224,7 +224,7 @@ export default function SocialMedia({
               }}
             >
               <SplitText
-                text={stats?.name || ''}
+                text={stats?.name || 'Laura Biagiotti Parfums'}
                 variant="heading"
                 element="p"
               />
@@ -255,12 +255,12 @@ export default function SocialMedia({
             <Link
               onMouseEnter={() => setHoveredLink(1)}
               onMouseLeave={() => setHoveredLink(null)}
-              href={`https://www.instagram.com/${stats?.username || ''}`}
+              href={`https://www.instagram.com/${stats?.username || 'laurabiagiottiparfums'}`}
               target="_blank"
               className="text-[1rem] w-fit relative"
             >
               <SplitText
-                text={`@${stats?.username || ''}`}
+                text={`@${stats?.username || 'laurabiagiottiparfums'}`}
                 variant="paragraph"
                 element="p"
               />
@@ -346,7 +346,7 @@ export default function SocialMedia({
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={() => handleMouseLeave(index)}
           >
-            <a
+            <Link
               href={post.permalink}
               target="_blank"
               rel="noopener noreferrer"
@@ -427,14 +427,14 @@ export default function SocialMedia({
                   </svg>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
         ))}
       </div>
       
       <div className="mt-[2.5rem]">
         <Link
-          href={`https://www.instagram.com/${stats?.username || ''}`}
+          href={`https://www.instagram.com/${stats?.username || 'laurabiagiottiparfums'}`}
           target="_blank"
           className="cursor-pointer uppercase px-[1.7rem] py-[0.7rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
