@@ -307,9 +307,9 @@ export default function PerfumeDropdown({
                     />
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center w-[220px] h-[160px] rounded-[1rem] text-block bg-foreground text-background border-foreground border-[1px] hover:bg-background hover:text-foreground transition-colors duration-300">
+                  <Link href={`/${locale}/${category}-perfume`} className="transcend flex items-center justify-center w-[220px] h-[160px] rounded-[1rem] text-block bg-foreground text-background border-foreground border-[1px] hover:bg-background hover:text-foreground transition-colors duration-300 text-[1.25rem] font-[400]">
                     {categoryName}
-                  </div>
+                  </Link>
                 )}
               </div>
             </div>

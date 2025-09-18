@@ -16,6 +16,7 @@ import { HomePagePerfumeCarousel } from "@/types/home-page";
 import { useLocale } from "@/lib/i18n/context";
 import BuyNowPopup from "../ui/buy-now-popup";
 import { Perfume } from "@/types/perfume";
+import AnimatedUnderline from "../ui/animated-underline";
 
 interface HeroSliderProps {
   slides: HomePagePerfumeCarousel[];
@@ -25,6 +26,7 @@ interface HeroSliderProps {
 const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   const { t } = useLocale();
   const swiperRef = useRef<SwiperType | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [splitTypes, setSplitTypes] = useState<{ [key: number]: SplitType }>(
@@ -32,8 +34,30 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   );
   const [selectedPerfume, setSelectedPerfume] = useState<Perfume | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [hoveredLearnIndex, setHoveredLearnIndex] = useState<number | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   
   const totalSlides = slides.length;
+
+  useEffect(() => {
+    // Parallax: update progress as we scroll through the hero section
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const sectionHeight = Math.max(rect.height, 1);
+      const traveled = Math.min(Math.max(-rect.top, 0), sectionHeight);
+      const progress = traveled / sectionHeight; // 0 → 1 while section scrolls past
+      setScrollProgress(progress);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     // Initialize split text for all slides
@@ -87,24 +111,9 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
     }
   };
 
-  const animateImageTransition = (fromIndex: number, toIndex: number) => {
-    // Trigger Swiper slide change
-    if (swiperRef.current?.el) {
-      gsap.to(swiperRef.current.el, {
-        duration: 0.6,
-        ease: "power2.inOut",
-        onComplete: () => {
-    if (swiperRef.current) {
-      swiperRef.current.slideToLoop(toIndex);
-            gsap.to(swiperRef.current.el, {
-              duration: 0.6,
-              ease: "power2.inOut"
-            });
-          }
-        }
-      });
-    }
-  };
+  // We no longer animate or drive the Swiper instance itself with GSAP.
+  // Swiper controls the slide movement (autoplay, loop, navigation).
+  // We only animate text layers in/out during slide changes.
 
   const animateTextTransition = (fromIndex: number, toIndex: number) => {
     const fromTitle = document.querySelector(
@@ -232,104 +241,29 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   };
 
   const handleSlideTransition = (fromIndex: number, toIndex: number) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-
-    // Animate both image and text transitions
-    animateImageTransition(fromIndex, toIndex);
+    if (fromIndex === toIndex) return;
     animateTextTransition(fromIndex, toIndex);
-
-    // Reset transition state
-    setTimeout(() => {
-      setIsTransitioning(false);
-      setActiveIndex(toIndex);
-    }, 2500); // Increased to account for longer animation
+    setActiveIndex(toIndex);
   };
 
-  const animateSlideIn = (toIndex: number) => {
-    const toSlide = document.querySelector(`[data-slide-index="${toIndex}"]`);
-    if (!toSlide) {
-      setIsTransitioning(false);
-      return;
-    }
-
-    const toTitle = toSlide.querySelector(".slide-title") as HTMLElement;
-    const toButtons = toSlide.querySelector(".slide-buttons") as HTMLElement;
-
-    // Create a timeline for entrance animations
-    const enterTl = gsap.timeline({
-      delay: 1.3  , // Increased delay to wait for slide transition
-      onComplete: () => {
-        setIsTransitioning(false);
-        setActiveIndex(toIndex);
-      },
-    });
-
-    // Prepare and animate title
-    if (toTitle && splitTypes[toIndex]) {
-      gsap.set(splitTypes[toIndex].words, {
-        x: 0,
-        y: 40,
-        opacity: 0,
-      });
-
-      enterTl.to(splitTypes[toIndex].words, {
-        x: 0,
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "power2.out",
-        stagger: {
-          amount: 0.6,
-          from: "start",
-        },
-      });
-    }
-
-    // Prepare and animate buttons
-    if (toButtons) {
-      gsap.set(toButtons, {
-        x: 0,
-        y: 30,
-        opacity: 0,
-      });
-
-      enterTl.to(
-        toButtons,
-        {
-          x: 0,
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        },
-        ">-1"
-      );
-    }
-  };
+  // Entrance animation is handled within animateTextTransition for simplicity
 
   const handleSlideChange = (swiper: SwiperType) => {
     const newIndex = swiper.realIndex;
-    // Start enter animations immediately when slide changes
     handleSlideTransition(activeIndex, newIndex);
-    animateSlideIn(newIndex);
   };
 
   const goToSlide = (index: number) => {
-    if (index === activeIndex || isTransitioning) return;
-    handleSlideTransition(activeIndex, index);
+    if (index === activeIndex) return;
+    swiperRef.current?.slideToLoop(index);
   };
 
   const goNext = () => {
-    if (isTransitioning) return;
-    const nextIndex = activeIndex + 1 >= totalSlides ? 0 : activeIndex + 1;
-    handleSlideTransition(activeIndex, nextIndex);
+    swiperRef.current?.slideNext();
   };
 
   const goPrev = () => {
-    if (isTransitioning) return;
-    const prevIndex = activeIndex - 1 < 0 ? totalSlides - 1 : activeIndex - 1;
-    handleSlideTransition(activeIndex, prevIndex);
+    swiperRef.current?.slidePrev();
   };
 
   const handleBuyNowClick = (perfume: Perfume) => {
@@ -340,7 +274,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   if (slides.length === 0) return null;
 
   return (
-    <section className="h-full w-full overflow-hidden relative">
+    <section ref={sectionRef as unknown as React.RefObject<HTMLElement>} className="h-full w-full overflow-hidden relative">
       {/* Background Slider */}
       <Swiper
         modules={[Navigation, Autoplay]}
@@ -361,6 +295,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         fadeEffect={{
           crossFade: true
         }}
+        style={{ transform: `translateY(${scrollProgress * 60}px)`, willChange: 'transform' }}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index} className="relative">
@@ -379,7 +314,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       </Swiper>
 
       {/* Fixed Content Layer */}
-      <div className="absolute inset-0 z-50">
+      <div className="absolute inset-0 z-50" style={{ transform: `translateY(${scrollProgress * 30}px)`, willChange: 'transform' }}>
         <div className="2xl:px-[34px] md:px-[38px] px-[18px] h-full flex items-center">
           <div className="relative w-full max-w">
             {slides.map((slide, index) => (
@@ -418,9 +353,12 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                   {/* Secondary CTA */}
                   <Link
                     href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
-                    className="cursor-pointer text-background tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
+                    className="cursor-pointer text-background tracking-[1.1px] text-[14px] leading-[20px] font-[400] relative inline-block"
+                    onMouseEnter={() => setHoveredLearnIndex(index)}
+                    onMouseLeave={() => setHoveredLearnIndex(null)}
                   >
                     {t("learnMore")}
+                    <AnimatedUnderline isActive={hoveredLearnIndex === index} className="bg-background" />
                   </Link>
                 </div>
               </div>
@@ -442,12 +380,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
-                    disabled={isTransitioning}
-                    className={`absolute text-background/90 text-light text-[1rem] leading-none pb-2 transition-all duration-300 disabled:cursor-not-allowed ${
-                      index === activeIndex ? "opacity-100" : "opacity-50"
+                    className={`cursor-pointer absolute text-background/90 text-light text-[1rem] leading-none pb-2 transition-all duration-300 hover:text-foreground ${
+                      index === activeIndex ? "opacity-100" : "opacity-50 hover:opacity-100 "
                     }`}
                     style={{
-                      left: `${(100 / (slides.length - 1)) * index + 3}%`,
+                      left: `${(100 / (slides.length - 1)) * index}%`,
                       transform: 'translateX(-50%)'
                     }}
                   >
@@ -461,7 +398,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                   <div
                     className="h-full bg-white transition-all duration-500 ease-out"
                     style={{
-                      width: `${(100 / (slides.length - 1)) * (activeIndex + 1)}%`,
+                      width: `${Math.min(100, (activeIndex / (slides.length - 1)) * 100)}%`,
                       transformOrigin: "left",
                     }}
                   />
@@ -474,8 +411,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
           <div className="flex items-center gap-2 absolute bottom-[1.5rem] h-fit right-0 lg:right-0 pointer-events-auto">
             <button
               onClick={goPrev}
-              disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
+              className="cursor-pointer w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Previous slide"
             >
               <Image
@@ -489,8 +425,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
 
             <button
               onClick={goNext}
-              disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
+              className="cursor-pointer w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Next slide"
             >
               <Image

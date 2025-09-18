@@ -176,7 +176,9 @@ p {
 
 
 
-
+.transcend {
+  font-family: Transcend, Times New Roman, sans-serif;
+}
 
 
 
@@ -326,3 +328,7 @@ input[type="range"]:focus::-moz-range-thumb {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
+
+
+
+

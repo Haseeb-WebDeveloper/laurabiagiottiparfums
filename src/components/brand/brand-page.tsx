@@ -37,7 +37,7 @@ export default function BrandPageComponent({
       <div className="min-h-[calc(100vh-10rem)] overflow-hidden">
         <div className="flex flex-col md:flex-row justify-between gap-4">
           {/* left image 1 */}
-          <div className="absolute left-0 2xl:w-[47.5%] md:w-[42%] w-full">
+          <div className="absolute left-0 2xl:w-[43.5%] md:w-[42%] w-full">
             <div className="md:h-[70vh] h-[32vh] w-full relative">
               <ParallaxImage
                 className=""
@@ -60,7 +60,7 @@ export default function BrandPageComponent({
             <p></p>
           </div>
           {/* right content container */}
-          <div className="w-full md:w-1/2  pt-[38vh] md:pt-[3.4rem] 2xl:pt-[4rem] md:px-2 px-0">
+          <div className="w-full  md:w-1/2  pt-[38vh] md:pt-[3.4rem] 2xl:pt-[4rem] md:px-2 px-0">
             <h1
               className="2xl:text-[4rem] md:text-[3rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]"
               style={{
@@ -71,7 +71,10 @@ export default function BrandPageComponent({
               {brandPageData.firstSection.title}
             </h1>
             <p
-              className="md:max-w-[66%]w-full md:pt-[3.8rem] pt-[1rem] md:pb-[1rem] pb-[2 rem]"
+              className="md:max-w-[66%] w-full md:pt-[3.8rem] pt-[1rem] md:pb-[1rem] pb-[2 rem]"
+              style={{
+                wordSpacing: "0.07em",
+              }}
               dangerouslySetInnerHTML={{
                 __html: brandPageData.firstSection.description,
               }}
@@ -85,10 +88,10 @@ export default function BrandPageComponent({
                 alt={brandPageData.firstSection.images[1]?.alt || ""}
                 fill={true}
               />
-              <p className=" mt-[0.8rem] text-start text-[0.875rem] tracking-[0.1em] uppercase">
+            </div>
+              <p className=" mt-[0.5rem] text-start text-[0.8rem] tracking-[0.1em] uppercase">
                 {brandPageData.firstSection.images[1]?.alt}
               </p>
-            </div>
           </div>
         </div>
       </div>
@@ -129,7 +132,7 @@ export default function BrandPageComponent({
       </div>
 
       {/* Third Section */}
-      <div className="flex flex-col lg:flex-row justify-between gap-12 md:mt-[8rem] lg:mt-[10rem] mt-[5rem] w-full">
+      <div className="lg:max-w-[85%] mx-auto flex flex-col lg:flex-row justify-between gap-12 md:mt-[8rem] lg:mt-[10rem] mt-[5rem] w-full">
         <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12 items-start">
           <div className="w-full h-full flex md:items-center md:max-w-[67%] max-w-full">
             <p
@@ -152,7 +155,7 @@ export default function BrandPageComponent({
       </div>
 
       {/* Fourth Section */}
-      <div className="flex justify-between gap-12 lg:mt-[6rem] md:mt-[6rem] mt-[3.5rem] w-full">
+      <div className="flex justify-between gap-12 lg:mt-[10rem] md:mt-[8rem] mt-[3.5rem] w-full">
         <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12">
           {/* Image container - order changes between mobile and desktop */}
           <div className="w-full h-full flex justify-center relative md:order-1 order-2">

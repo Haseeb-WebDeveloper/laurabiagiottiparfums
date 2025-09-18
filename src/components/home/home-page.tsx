@@ -52,15 +52,15 @@ export default function HomePage({
             />
             <div
               className="mt-[0.5rem] text-[1rem] text-foreground"
-              style={{
-                wordSpacing: "0em",
-              }}
             >
               <SplitText
                 text={t("playWithOurNotesDiscription")}
                 variant="heading"
                 element="p"
                 className="mt-[0.5rem] text-[1rem] text-foreground"
+                style={{
+                  wordSpacing: "0em",
+                }}
               />
             </div>
             <WearYourPerfume

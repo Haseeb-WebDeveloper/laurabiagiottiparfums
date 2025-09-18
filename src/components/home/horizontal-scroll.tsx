@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+// import { useGSAP } from "@gsap/react";
 import { HomePageNews } from "@/types/home-page";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import Link from "next/link";
@@ -112,7 +112,7 @@ const NewsHorizontalScroll = ({
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden">
+    <section ref={sectionRef} className="relative">
       {/* Desktop Layout - Horizontal Scroll */}
       <div
         ref={triggerRef}
@@ -164,7 +164,7 @@ const NewsHorizontalScroll = ({
                   </div>
                   <Link
                     href={`/${locale}/news/${card.slug}`}
-                    className="mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
+                    className="mt-[4rem] cursor-pointer w-fit flex items-center justify-center  tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
                   >
                     {t("readMore")}
                   </Link>
@@ -182,7 +182,7 @@ const NewsHorizontalScroll = ({
               backfaceVisibility: "hidden",
             }}
           >
-            <div className="flex items-center justify-center w-[190px] h-[190px] rounded-full border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
+            <div className="flex items-center justify-center xl:w-[210.66px] xl:h-[210.66px] w-[190px] h-[190px] rounded-full border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300">
               <span className="uppercase text-[13px] tracking-wide font-[400] text-back">
                 {t("discoverAllNews")}
               </span>
@@ -227,7 +227,7 @@ const NewsHorizontalScroll = ({
                   </div>
                   <Link
                     href={`/${locale}/news/${card.slug}`}
-                    className="mt-[2rem] md:mt-[4rem] cursor-pointer w-fit flex items-center justify-center uppercase tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
+                    className="mt-[2rem] md:mt-[4rem] cursor-pointer w-fit flex items-center justify-center  tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
                   >
                     {t("readMore")}
                   </Link>
