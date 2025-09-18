@@ -6,15 +6,17 @@ import SocialIcons from "./social";
 import SplitText from "../ui/split-text";
 import NewsletterPopup from "../ui/newsletter-popup";
 import { useLocale } from "@/lib/i18n/context";
+import { useState } from "react";
+import AnimatedUnderline from "@/components/ui/animated-underline";
 
 export default function Footer() {
   const { locale } = useLocale();
 
   return (
-    <footer className="pb-[4rem] lg:pb-[7rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
+    <footer className="pb-[4rem] lg:pb-[6rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
       <div className="max-w">
         {/* Footer top */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[9rem]">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[7rem]">
           {/* Logo */}
           <div className="w-full h-full flex flex-col gap-20">
             <Link href={`/${locale}`} className="w-fit h-fit">
@@ -28,7 +30,7 @@ export default function Footer() {
             </Link>
 
             {/* Newsletter Section */}
-            {locale === "it" ||
+            {/* {locale === "it" ||
               (locale === "de" && (
                 <div className="flex flex-col max-w-[300px]">
                   <SplitText
@@ -41,7 +43,7 @@ export default function Footer() {
                     text="Subscribe to our newsletter to get the latest news and updates."
                     variant="paragraph"
                     element="p"
-                    className="mt-[0.5rem] text-[0.9rem] font-[500] text-foreground"
+                    className="mt-[0.5rem] text-[0.8rem] font-[500] text-foreground"
                   />
                   <NewsletterPopup
                     customTrigger={
@@ -55,64 +57,63 @@ export default function Footer() {
                     }
                   />
                 </div>
-              ))}
+              ))} */}
           </div>
 
           {/* Navigation Links */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-4 gap-12">
             {/* Info Section */}
-            <div className="w-full space-y-2 lg:space-y-4">
+            <div className="w-full space-y-2 lg:space-y-3">
               <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
                 <SplitText text="Info" variant="heading" element="h2" />
               </div>
               <ul>
                 <li>
-                  <Link
-                    href={`/${locale}/news`}
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
-                    <SplitText text="News" variant="paragraph" element="p" />
-                  </Link>
+                  <FooterLink href={`/${locale}/news`}>
+                    <SplitText text="News" variant="paragraph" element="p" style={{
+                      fontWeight: "500",
+                    }}/>
+                  </FooterLink>
                 </li>
               </ul>
             </div>
 
             {/* Product Section */}
-            <div className="w-full space-y-2 lg:space-y-4">
+            <div className="w-full space-y-2 lg:space-y-3">
               <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Product" variant="heading" element="h2" />
+                <SplitText text="Products" variant="heading" element="h2" />
               </div>
-              <ul className="flex flex-col gap-[0.65rem]">
+              <ul className="flex flex-col gap-[0.4rem]">
                 <li>
-                  <Link
-                    href={`/${locale}/women-perfume`}
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
+                  <FooterLink href={`/${locale}/women-perfume`}>
                     <SplitText
-                      text="Women's Perfumes"
+                      text="Women's Perfume"
                       variant="paragraph"
                       element="p"
+                      style={{
+                        fontWeight: "500",
+                      }}
                     />
-                  </Link>
+                  </FooterLink>
                 </li>
                 <li>
-                  <Link
-                    href={`/${locale}/men-perfume`}
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
+                  <FooterLink href={`/${locale}/men-perfume`}>
                     <SplitText
-                      text="Men's Perfumes"
+                      text="Men's Perfume"
                       variant="paragraph"
                       element="p"
+                      style={{
+                        fontWeight: "500",
+                      }}
                     />
-                  </Link>
+                  </FooterLink>
                 </li>
               </ul>
             </div>
 
             {/* Brand Section */}
-            <div className="w-full space-y-2 lg:space-y-4">
-              <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
+            <div className="w-full space-y-2 lg:space-y-3">
+              <div className="text-[1.6rem] lg:text-[1.5rem] text-foreground">
                 <SplitText
                   text="Brand"
                   variant="heading"
@@ -120,50 +121,46 @@ export default function Footer() {
                   className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
                 />
               </div>
-              <ul className="flex flex-col gap-[0.65rem]">
+              <ul className="flex flex-col gap-[0.4rem]">
                 <li>
-                  <Link
-                    href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
+                  <FooterLink href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`} external>
                     <SplitText
                       text="Laura Biagiotti Shop"
                       variant="paragraph"
                       element="p"
+                      style={{
+                        fontWeight: "500",
+                      }}
                     />
-                  </Link>
+                  </FooterLink>
                 </li>
                 <li>
-                  <Link
-                    href={`https://www.laurabiagiotti.it/`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
+                  <FooterLink href={`https://www.laurabiagiotti.it/`} external>
                     <SplitText
                       text="Laura Biagiotti World"
                       variant="paragraph"
                       element="p"
+                      style={{
+                        fontWeight: "500",
+                      }}
                     />
-                  </Link>
+                  </FooterLink>
                 </li>
                 <li>
-                  <Link
-                    href={`https://abparfums.com/recycling/italian/`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[0.9rem] font-[500] text-foreground"
-                  >
+                  <FooterLink href={`https://abparfums.com/recycling/italian/`} external>
                     <span className="leading-[130%]">
                       <SplitText
-                        text="Instructions for separate collection of packaging"
+                        text={`Instructions for separate collection of packaging`}
                         variant="paragraph"
                         element="p"
+                        style={{
+                          maxWidth: "150px",
+                          display: "inline-block",
+                          fontWeight: "500",
+                        }}
                       />
                     </span>
-                  </Link>
+                  </FooterLink>
                 </li>
               </ul>
             </div>
@@ -174,14 +171,32 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[4.8rem]">
           {/* Legal Links - Desktop */}
           <div className="space-y-[.5rem] hidden lg:block">
-            <div className="flex items-center gap-[1rem] text-[0.9rem] tracking-tight text-foreground">
-              <SplitText
-                text="Privacy Policy | Cookies Policy | Terms of use | info@laurabiagiottiparfums.com"
-                variant="paragraph"
-                element="p"
-              />
+            <div className="flex items-center gap-[0.3rem] text-[0.8rem] tracking-tight text-foreground">
+              <Link href={`/${locale}/privacy-policy`} className="flex items-center">
+                <SplitText text="Privacy Policy" variant="paragraph" element="p"
+                className="hover:underline text-[0.8rem] leading-[100%]"
+                />
+              </Link>
+              <span>|</span>
+              <Link href={`/${locale}/cookies-policy`} className="flex items-center">
+                <SplitText text="Cookies Policy" variant="paragraph" element="p"
+                className="hover:underline text-[0.8rem]  leading-[100%]"
+                />
+              </Link>
+              <span>|</span>
+              <Link href={`/${locale}/terms-of-use`} className="flex items-center">
+                <SplitText text="Terms of use" variant="paragraph" element="p"
+                className="hover:underline text-[0.8rem] leading-[100%]"
+                />
+              </Link>
+              <span>|</span>
+              <Link href={`mailto:info@laurabiagiottiparfums.com`} className="flex items-center">
+                <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p"
+                className="hover:underline text-[0.8rem] leading-[100%]"
+                />
+              </Link>
             </div>
-            <div className="text-[0.9rem] text-foreground">
+            <div className="text-[0.8rem] text-foreground">
               <SplitText
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
                 variant="paragraph"
@@ -193,22 +208,26 @@ export default function Footer() {
           {/* Legal Links - Mobile */}
           <div className="space-y-[.7rem] block lg:hidden w-full">
             <div className="space-y-2">
-              <div className="text-[0.9rem] tracking-tight text-foreground">
-                <SplitText
-                  text="Privacy Policy | Cookies Policy | Terms of use"
-                  variant="paragraph"
-                  element="p"
-                />
+              <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-0 text-[0.8rem] tracking-tight text-foreground">
+                <Link href={`/${locale}/privacy-policy`} className="flex items-center">
+                  <SplitText text="Privacy Policy" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                </Link>
+                <span>|</span>
+                <Link href={`/${locale}/cookies-policy`} className="flex items-center">
+                  <SplitText text="Cookies Policy" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                </Link>
+                <span>|</span>
+                <Link href={`/${locale}/terms-of-use`} className="flex items-center">
+                  <SplitText text="Terms of use" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                </Link>
               </div>
-              <div className="text-[0.9rem] text-foreground">
-                <SplitText
-                  text="info@laurabiagiottiparfums.com"
-                  variant="paragraph"
-                  element="p"
-                />
+              <div className="text-[0.8rem] text-foreground">
+                <Link href={`mailto:info@laurabiagiottiparfums.com`} className="flex items-center">
+                  <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                </Link>
               </div>
             </div>
-            <div className="text-[0.9rem] tracking-tight text-foreground">
+            <div className="text-[0.8rem] tracking-tight text-foreground">
               <SplitText
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
                 variant="paragraph"
@@ -224,5 +243,35 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLink({
+  href,
+  children,
+  external = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  external?: boolean;
+}) {
+  const [isHover, setIsHover] = useState(false);
+  const externalProps = external
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+
+  return (
+    <Link
+      href={href}
+      {...externalProps}
+      className="relative inline-block text-[0.8rem] text-foreground"
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
+      <span className="relative">
+        {children}
+      <AnimatedUnderline isActive={isHover} className="-bottom-[1px] "/>
+      </span>
+    </Link>
   );
 }

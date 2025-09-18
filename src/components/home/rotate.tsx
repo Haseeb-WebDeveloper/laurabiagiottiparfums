@@ -23,12 +23,15 @@ export default function Rotate({
   useGSAP(() => {
     let scrollTimeout: NodeJS.Timeout;
 
-    // Simplified scroll handler
+    // Scroll handler: reverse direction
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const delta = currentScrollY - lastScrollY.current;
 
-      rotationRef.current += delta * 0.1;  // adjust this value to change the sensitivity
+      // Reverse direction: scroll down (delta > 0) = clockwise (increase rotation)
+      // scroll up (delta < 0) = counterclockwise (decrease rotation)
+      rotationRef.current -= delta * 0.1; // Subtract instead of add
+
       lastScrollY.current = currentScrollY;
 
       setForceUpdate((prev) => prev + 1);
@@ -54,11 +57,14 @@ export default function Rotate({
       }, 100);
     };
 
-    // Simplified wheel handler
+    // Wheel handler: reverse direction
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      
-      rotationRef.current += e.deltaY * 0.5;
+
+      // Reverse direction: scroll down (deltaY > 0) = clockwise (increase rotation)
+      // scroll up (deltaY < 0) = counterclockwise (decrease rotation)
+      rotationRef.current -= e.deltaY * 0.5; // Subtract instead of add
+
       setForceUpdate((prev) => prev + 1);
 
       if (containerRef.current) {
@@ -82,7 +88,7 @@ export default function Rotate({
       }, 100);
     };
 
-    // Simplified touch handlers
+    // Touch handlers: reverse direction
     let touchStartY = 0;
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -94,7 +100,10 @@ export default function Rotate({
       const delta = touchStartY - touchCurrentY;
 
       if (Math.abs(delta) > 5) {
-        rotationRef.current += delta * 1;   //adjust this value to change the sensitivity
+        // Reverse direction: swipe up (delta > 0) = clockwise (increase rotation)
+        // swipe down (delta < 0) = counterclockwise (decrease rotation)
+        rotationRef.current -= delta * 1; // Subtract instead of add
+
         setForceUpdate((prev) => prev + 1);
 
         if (containerRef.current) {

@@ -14,6 +14,7 @@ import { useGSAP } from "@gsap/react";
 import WearYourPerfume from "../wear-your-perfume";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import AnimatedUnderline from "../ui/animated-underline";
 
 export default function Navbar() {
   const { locale, t } = useLocale();
@@ -177,10 +178,10 @@ export default function Navbar() {
     <div className="relative">
       {/* Desktop Navbar */}
       <div className="hidden md:block fixed top-0 left-0 right-0 z-[100] bg-background 2xl:px-[34px] px-[38px]">
-        <div className="max-w pt-[45px] 2xl:pt-[48px]">
+        <div className="max-w pt-[45px] lg:pt-[45.5px] 2xl:pt-[48px]">
           <div className="flex justify-between">
             {/* Left */}
-            <div className="flex h-fit gap-[0.75rem] w-full">
+            <div className="flex h-fit gap-[0.8rem] w-full">
               <LanguageSwitcher />
               {/* Search */}
               <div
@@ -238,27 +239,11 @@ export default function Navbar() {
                     className="relative cursor-pointer text-[0.9rem] 2xl:tracking-[0.003em] font-[400] leading-0"
                   >
                     {item.label}
-                    <motion.div
-                      initial={{ width: 0, height: 2 }}
-                      animate={
-                        hoveredIndex === index
-                          ? {
-                              width: "100%",
-                              height: 1,
-                              opacity: 1,
-                              transition: {
-                                width: { duration: 0.4, ease: "easeInOut" },
-                                height: { delay: 0.3, duration: 0.2 },
-                              },
-                            }
-                          : {
-                              width: 0,
-                              height: 2,
-                              opacity: 0,
-                              transition: { duration: 0.2 },
-                            }
+                    <AnimatedUnderline
+                      isActive={
+                        hoveredIndex === index ||
+                        (!!hoveredCategory && item.category === hoveredCategory)
                       }
-                      className="absolute z-[200] -bottom-[4px] left-0 bg-foreground"
                     />
                   </Link>
                 </div>

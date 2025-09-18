@@ -47,19 +47,26 @@ export default function NotesAnimation({
     let positions;
     if (isDesktop) {
       // Desktop: horizontal layout
-      positions =
-        notes?.length === 4
-          ? [
-              { x: -450, y: 0 },
-              { x: -150, y: 0 },
-              { x: 150, y: 0 },
-              { x: 450, y: 0 },
-            ]
-          : [
-              { x: -340, y: 0 },
-              { x: 0, y: 0 },
-              { x: 340, y: 0 },
-            ];
+      // Add 10px more gap between each note
+      // For 4 notes: original gap between x values is 300, so add 10 to each gap
+      // For 3 notes: original gap between x values is 340, so add 10 to each gap
+      if (notes?.length === 4) {
+        // Original gap between x values is 300, so add 10 to each gap: new gap = 310
+        // So, positions: -465, -155, 155, 465
+        positions = [
+          { x: -465, y: 0 },
+          { x: -155, y: 0 }, 
+          { x: 155, y: 0 },  
+          { x: 465, y: 0 }, 
+        ];
+      } else {
+        // 3 notes: -340, 0, 340 => gap = 340, so new gap = 350
+        positions = [
+          { x: -350, y: 0 }, // -340 - 10
+          { x: 0, y: 0 },
+          { x: 350, y: 0 },  // 340 + 10
+        ];
+      }
     } else {
       // Mobile/Tablet: vertical layout
       positions =
@@ -162,7 +169,7 @@ export default function NotesAnimation({
     <section ref={sectionRef} className="relative">
       <div
         ref={triggerRef}
-        className="relative lg:h-[800px] md:h-[1000px] h-[1200px] flex flex-col "
+        className=" lg:h-[800px] md:h-[1000px] h-[1200px] flex flex-col "
       >
         <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
           <h2 className="max-w w-full lg:mb-[6rem] mb-[5rem] text-[3rem] font-[700]">
@@ -176,7 +183,9 @@ export default function NotesAnimation({
             `}
         >
           {/* horizontal string */}
-          <div className="hidden md:block absolute top-[13%] left-0 w-full h-[1px] bg-foreground/10"></div>
+          <div className="hidden md:block absolute lg:top-[16%] md:top-[15%] left-1/2 -translate-x-1/2 w-full h-[1px] max-w-[1344px] mx-auto  2xl:px-[34px] md:px-[38px] px-[18px]">
+          <div className="w-full h-[1px] bg-foreground/10"></div>
+          </div>
 
           {notes?.map((note, index) => (
             <div
@@ -199,10 +208,10 @@ export default function NotesAnimation({
                     alt={note.title || note.name || ""}
                     width={500}
                     height={500}
-                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 w-full h-full xl:max-w-[200px] xl:max-h-[200px] max-w-[150px] max-h-[150px] aspect-square object-cover rounded-full"
+                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] opacity-80 group-hover:opacity-100 transition-all duration-300 w-full h-full xl:max-w-[200px] xl:max-h-[200px] max-w-[150px] max-h-[150px] aspect-square object-cover rounded-full"
                   />
                   {note.title && (
-                    <h3 className="mt-[2rem] text-[2rem] font-[700] leading-[120%]">
+                    <h3 className="mt-[2rem] text-[2rem] font-[700] leading-[120%] tracking-wider">
                       {note.title.split(" ").length > 2 ? (
                         <>
                           {note.title.split(" ")[0]}
@@ -248,7 +257,7 @@ export default function NotesAnimation({
                     alt={note.title || note.name || ""}
                     width={500}
                     height={500}
-                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 lg:w-[100px] lg:h-[100px] md:w-[10px] md:h-[10px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
+                    className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] opacity-80 group-hover:opacity-100 transition-all duration-300 lg:w-[100px] lg:h-[100px] md:w-[10px] md:h-[10px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
                   />
                   <div className="flex-1">
                     <h3 className="mb-[1rem] text-[1.9rem] font-[700]">
