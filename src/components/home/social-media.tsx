@@ -17,7 +17,7 @@ interface SocialMediaProps {
 }
 
 export default function SocialMedia({ 
-  refreshInterval = 300000, // 5 minutes
+  refreshInterval = 60000, // 1 minute
   limit = 4 
 }: SocialMediaProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

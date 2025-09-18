@@ -6,7 +6,7 @@ const fetcher = (url: string): Promise<InstagramStats> =>
 
 
 
-export function useInstagramStats(refreshInterval: number = 3600000) { // 1 hour
+export function useInstagramStats(refreshInterval: number = 60000) { 
   const { data, error, isLoading } = useSWR<InstagramStats>(
     '/api/instagram/stats',
     fetcher,

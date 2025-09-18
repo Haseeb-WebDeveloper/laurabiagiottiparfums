@@ -4,7 +4,7 @@ import { InstagramApiResponse } from '@/types/insta-post';
 const fetcher = (url: string): Promise<InstagramApiResponse> => 
   fetch(url).then(res => res.json());
 
-export function useInstagram(limit: number = 4, refreshInterval: number = 300000) {
+export function useInstagram(limit: number = 4, refreshInterval: number = 60000) {
   const { data, error, isLoading, mutate } = useSWR<InstagramApiResponse>(
     `/api/instagram/posts?limit=${limit}`,
     fetcher,
