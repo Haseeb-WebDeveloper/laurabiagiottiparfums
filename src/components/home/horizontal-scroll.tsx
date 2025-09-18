@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import { useGSAP } from "@gsap/react";
@@ -9,6 +9,7 @@ import { ParallaxImage } from "../ui/ParallaxImage";
 import Link from "next/link";
 import { formatDate } from "@/utils/formet-data";
 import { useLocale } from "@/lib/i18n/context";
+import AnimatedUnderline from "../ui/animated-underline";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +25,7 @@ const NewsHorizontalScroll = ({
   const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
-
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   // Function to initialize the animation
   const initAnimation = () => {
     const container = containerRef.current;
@@ -164,9 +165,12 @@ const NewsHorizontalScroll = ({
                   </div>
                   <Link
                     href={`/${locale}/news/${card.slug}`}
-                    className="mt-[4rem] cursor-pointer w-fit flex items-center justify-center  tracking-[1.1px] text-[14px] leading-[20px] font-[400] border-b border-foreground transition-colors duration-300"
+                    className="relative inline-block mt-[4rem] cursor-pointer w-fit tracking-[1.1px] text-[14px] leading-[20px] font-[400] transition-colors duration-300"
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
                     {t("readMore")}
+                    <AnimatedUnderline isActive={hoveredIndex === index} className="-bottom-[1px] "/>
                   </Link>
                 </div>
               </div>

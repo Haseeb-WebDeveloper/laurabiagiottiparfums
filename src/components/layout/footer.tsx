@@ -8,6 +8,7 @@ import NewsletterPopup from "../ui/newsletter-popup";
 import { useLocale } from "@/lib/i18n/context";
 import { useState } from "react";
 import AnimatedUnderline from "@/components/ui/animated-underline";
+import NewSplitText from "../ui/new-split-text";
 
 export default function Footer() {
   const { locale } = useLocale();
@@ -43,7 +44,7 @@ export default function Footer() {
                     text="Subscribe to our newsletter to get the latest news and updates."
                     variant="paragraph"
                     element="p"
-                    className="mt-[0.5rem] text-[0.8rem] font-[500] text-foreground"
+                    className="mt-[0.5rem] text-[0.87rem] font-[500] text-foreground"
                   />
                   <NewsletterPopup
                     customTrigger={
@@ -168,35 +169,35 @@ export default function Footer() {
         </div>
 
         {/* Footer bottom */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[4.8rem]">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[4.87rem]">
           {/* Legal Links - Desktop */}
           <div className="space-y-[.5rem] hidden lg:block">
-            <div className="flex items-center gap-[0.3rem] text-[0.8rem] tracking-tight text-foreground">
+            <div className="flex items-center gap-[0.3rem] text-[0.87rem] tracking-tight text-foreground">
               <Link href={`/${locale}/privacy-policy`} className="flex items-center">
                 <SplitText text="Privacy Policy" variant="paragraph" element="p"
-                className="hover:underline text-[0.8rem] leading-[100%]"
+                className="hover:underline text-[0.87rem] leading-[100%]"
                 />
               </Link>
               <span>|</span>
               <Link href={`/${locale}/cookies-policy`} className="flex items-center">
                 <SplitText text="Cookies Policy" variant="paragraph" element="p"
-                className="hover:underline text-[0.8rem]  leading-[100%]"
+                className="hover:underline text-[0.87rem]  leading-[100%]"
                 />
               </Link>
               <span>|</span>
               <Link href={`/${locale}/terms-of-use`} className="flex items-center">
                 <SplitText text="Terms of use" variant="paragraph" element="p"
-                className="hover:underline text-[0.8rem] leading-[100%]"
+                className="hover:underline text-[0.87rem] leading-[100%]"
                 />
               </Link>
               <span>|</span>
               <Link href={`mailto:info@laurabiagiottiparfums.com`} className="flex items-center">
                 <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p"
-                className="hover:underline text-[0.8rem] leading-[100%]"
+                className="hover:underline text-[0.87rem] leading-[100%]"
                 />
               </Link>
             </div>
-            <div className="text-[0.8rem] text-foreground">
+            <div className="text-[0.87rem] text-foreground">
               <SplitText
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
                 variant="paragraph"
@@ -208,26 +209,26 @@ export default function Footer() {
           {/* Legal Links - Mobile */}
           <div className="space-y-[.7rem] block lg:hidden w-full">
             <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-0 text-[0.8rem] tracking-tight text-foreground">
+              <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-0 text-[0.87rem] tracking-tight text-foreground">
                 <Link href={`/${locale}/privacy-policy`} className="flex items-center">
-                  <SplitText text="Privacy Policy" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                  <SplitText text="Privacy Policy" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
                 </Link>
                 <span>|</span>
                 <Link href={`/${locale}/cookies-policy`} className="flex items-center">
-                  <SplitText text="Cookies Policy" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                  <SplitText text="Cookies Policy" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
                 </Link>
                 <span>|</span>
                 <Link href={`/${locale}/terms-of-use`} className="flex items-center">
-                  <SplitText text="Terms of use" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                  <SplitText text="Terms of use" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
                 </Link>
               </div>
-              <div className="text-[0.8rem] text-foreground">
+              <div className="text-[0.87rem] text-foreground">
                 <Link href={`mailto:info@laurabiagiottiparfums.com`} className="flex items-center">
-                  <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p" className="hover:underline text-[0.8rem] leading-[90%]" />
+                  <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
                 </Link>
               </div>
             </div>
-            <div className="text-[0.8rem] tracking-tight text-foreground">
+            <div className="text-[0.87rem] tracking-tight text-foreground">
               <SplitText
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
                 variant="paragraph"
@@ -264,7 +265,7 @@ function FooterLink({
     <Link
       href={href}
       {...externalProps}
-      className="relative inline-block text-[0.8rem] text-foreground"
+      className="relative inline-block text-[0.87rem] text-foreground"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
