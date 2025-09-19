@@ -102,7 +102,7 @@ function AppProvider({ children, locale }: AppProviderProps) {
   return (
     <>
       <PiwikProProvider>
-        <ThemeProvider attribute="class" defaultTheme="system">
+        <ThemeProvider attribute="class" defaultTheme="light">
           <LocaleWrapper locale={locale}>
             <SmoothScrolling>
               <SplitHeadingsAnimation />
