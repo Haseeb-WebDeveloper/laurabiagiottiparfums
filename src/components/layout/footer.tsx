@@ -82,13 +82,13 @@ export default function Footer() {
             {/* Product Section */}
             <div className="w-full space-y-2 lg:space-y-3">
               <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Products" variant="heading" element="h2" />
+                <SplitText text="Fragrances" variant="heading" element="h2" />
               </div>
               <ul className="flex flex-col gap-[0.4rem]">
                 <li>
                   <FooterLink href={`/${locale}/women-perfume`}>
                     <SplitText
-                      text="Women's Perfume"
+                      text="Women"
                       variant="paragraph"
                       element="p"
                       style={{
@@ -100,7 +100,7 @@ export default function Footer() {
                 <li>
                   <FooterLink href={`/${locale}/men-perfume`}>
                     <SplitText
-                      text="Men's Perfume"
+                      text="Men"
                       variant="paragraph"
                       element="p"
                       style={{
