@@ -47,26 +47,19 @@ export default function NotesAnimation({
     let positions;
     if (isDesktop) {
       // Desktop: horizontal layout
-      // Add 10px more gap between each note
-      // For 4 notes: original gap between x values is 300, so add 10 to each gap
-      // For 3 notes: original gap between x values is 340, so add 10 to each gap
-      if (notes?.length === 4) {
-        // Original gap between x values is 300, so add 10 to each gap: new gap = 310
-        // So, positions: -465, -155, 155, 465
-        positions = [
-          { x: -465, y: 0 },
-          { x: -155, y: 0 }, 
-          { x: 155, y: 0 },  
-          { x: 465, y: 0 }, 
-        ];
-      } else {
-        // 3 notes: -340, 0, 340 => gap = 340, so new gap = 350
-        positions = [
-          { x: -350, y: 0 }, // -340 - 10
-          { x: 0, y: 0 },
-          { x: 350, y: 0 },  // 340 + 10
-        ];
-      }
+      positions =
+        notes?.length === 4
+          ? [
+              { x: -500, y: 0 },
+              { x: -167, y: 0 },
+              { x: 167, y: 0 },
+              { x: 500, y: 0 },
+            ]
+          : [
+              { x: -340, y: 0 },
+              { x: 0, y: 0 },
+              { x: 340, y: 0 },
+            ];
     } else {
       // Mobile/Tablet: vertical layout
       positions =
@@ -184,7 +177,7 @@ export default function NotesAnimation({
         >
           {/* horizontal string */}
           <div className="hidden md:block absolute lg:top-[16%] md:top-[15%] left-1/2 -translate-x-1/2 w-full h-[1px] max-w-[1344px] mx-auto  2xl:px-[34px] md:px-[38px] px-[18px]">
-          <div className="w-full h-[1px] bg-foreground/10"></div>
+            <div className="w-full h-[1px] bg-foreground/10"></div>
           </div>
 
           {notes?.map((note, index) => (
