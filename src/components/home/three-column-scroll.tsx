@@ -148,7 +148,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           rightHeight = rightColumn.offsetHeight;
 
           // Find the shortest column to use as reference
-          const minColumnHeight = Math.min(leftHeight, centerHeight, rightHeight) + 2000;
+          const minColumnHeight = Math.min(leftHeight, centerHeight, rightHeight) + 4000;
 
           // Set container height
           container.style.height = `${minColumnHeight}px`;

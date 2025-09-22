@@ -5,6 +5,7 @@ import { ParallaxImage } from "../ui/ParallaxImage";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
 import { useLocale } from "@/lib/i18n/context";
+import SplitText from "../ui/split-text";
 
 export default function ProductsSection({
   products,
@@ -97,8 +98,17 @@ export default function ProductsSection({
             </div>
           </div>
 
-          <div className="w-full h-full flex  flex-col items-center justify-center">
-            <h2 className="text-center mb-[1rem]">{products.title}</h2>
+          <div className="w-full h-full flex flex-col items-center justify-center">
+            <SplitText
+              text={products.title}
+              variant="heading"
+              element="h2"
+              textAlign="center"
+              className="mb-[1rem] lg:text-[3rem] text-[2.6rem] leading-[1.2] font-semibold"
+              style={{
+                letterSpacing: "-.03em",
+              }}
+            />
             <p className="text-center mb-[1.5rem]">{products.description}</p>
             <button
               onClick={() => setIsPopupOpen(true)}
