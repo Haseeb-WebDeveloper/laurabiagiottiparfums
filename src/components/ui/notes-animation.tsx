@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useGSAP } from "@gsap/react";
 import { Note } from "@/types/notes";
 import Link from "next/link";
+import SplitText from "./split-text";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,6 +84,7 @@ export default function NotesAnimation({
         start: "top 120%",
         end: "bottom center",
         scrub: 1,
+        invalidateOnRefresh: true,
       },
     });
 
@@ -91,12 +92,12 @@ export default function NotesAnimation({
     tl.fromTo(
       cards,
       {
-        x: (index) => window.innerWidth + 300,
-        y: (index) => positions[index].y,
+        x: (index: number) => window.innerWidth + 300,
+        y: (index: number) => positions[index].y,
       },
       {
-        x: (index) => positions[index].x,
-        y: (index) => positions[index].y,
+        x: (index: number) => positions[index].x,
+        y: (index: number) => positions[index].y,
         stagger: {
           amount: 0.08,
           from: "start",
@@ -108,7 +109,7 @@ export default function NotesAnimation({
       // Second part: Cards move off-screen to the left
       .to(cards, {
         x: -window.innerWidth - 300,
-        y: (index) => positions[index].y, // Maintain vertical position while moving left
+        y: (index: number) => positions[index].y, // Maintain vertical position while moving left
         stagger: {
           amount: 0.08,
           from: "start",
@@ -144,6 +145,7 @@ export default function NotesAnimation({
         timelineRef.current.kill();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes?.length]);
 
   // Handle window resize
@@ -156,6 +158,7 @@ export default function NotesAnimation({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -204,39 +207,43 @@ export default function NotesAnimation({
                     className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] opacity-80 group-hover:opacity-100 transition-all duration-300 w-full h-full xl:max-w-[200px] xl:max-h-[200px] max-w-[150px] max-h-[150px] aspect-square object-cover rounded-full"
                   />
                   {note.title && (
-                    <h3 className="mt-[2rem] text-[2rem] font-[700] leading-[120%] tracking-wider">
-                      {note.title.split(" ").length > 2 ? (
-                        <>
-                          {note.title.split(" ")[0]}
-                          <br />
-                          {note.title.split(" ").slice(1).join(" ")}
-                        </>
-                      ) : (
-                        note.title
-                      )}
-                    </h3>
+                    <SplitText
+                      className="mt-[2rem] text-[2rem] font-[700] leading-[120%] tracking-wider"
+                      text={
+                        note.title.split(" ").length > 2 ? (
+                          <>
+                            {note.title.split(" ")[0]}
+                            <br />
+                            {note.title.split(" ").slice(1).join(" ")}
+                          </>
+                        ) : (
+                          note.title
+                        )
+                      }
+                    />
                   )}
                   {note.name && (
-                    <h3 className="mt-[2rem] text-[2rem] font-[700]">
-                      {note.name}
-                    </h3>
+                    <SplitText
+                      className="mt-[2rem] text-[2rem] font-[700]"
+                      text={note.name}
+                    />
                   )}
                   {note.notes && (
                     <div className="mt-[1rem] flex flex-col gap-[0.5rem]">
-                      {note.notes?.map((note, key) => (
-                        <p key={key}>{note.name}</p>
+                      {note.notes?.map((n, key) => (
+                        <SplitText key={key} text={n.name} />
                       ))}
                     </div>
                   )}
                   {note.perfumeNotes && (
                     <div className="mt-[1.1rem] flex flex-col gap-[0.3rem]">
-                      {note.perfumeNotes?.map((note, key) => (
+                      {note.perfumeNotes?.map((pn, key) => (
                         <Link
                           className="text-[0.9rem] font-[400]"
-                          href={`/${locale}/${note.category}-perfume/${note.slug}`}
+                          href={`/${locale}/${pn.category}-perfume/${pn.slug}`}
                           key={key}
                         >
-                          {note.title}
+                          <SplitText text={pn.title} />
                         </Link>
                       ))}
                     </div>
@@ -253,27 +260,28 @@ export default function NotesAnimation({
                     className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] opacity-80 group-hover:opacity-100 transition-all duration-300 lg:w-[100px] lg:h-[100px] md:w-[10px] md:h-[10px] w-[90px] h-[90px] aspect-square object-cover rounded-full flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <h3 className="mb-[1rem] text-[1.9rem] font-[700]">
-                      {note.title || note.name || ""}
-                    </h3>
+                    <SplitText
+                      className="mb-[1rem] text-[1.9rem] font-[700]"
+                      text={note.title || note.name || ""}
+                    />
                     <div className="flex flex-col gap-[0.5rem]">
                       {note.notes && (
                         <div className="flex flex-col gap-[0.5rem]">
-                          {note.notes?.map((note, key) => (
-                            <p key={key}>{note.name}</p>
+                          {note.notes?.map((n, key) => (
+                            <SplitText key={key} text={n.name} />
                           ))}
                         </div>
                       )}
 
                       {note.perfumeNotes && (
                         <div className="flex flex-col gap-[0.5rem]">
-                          {note.perfumeNotes?.map((note, key) => (
+                          {note.perfumeNotes?.map((pn, key) => (
                             <Link
                               className="text-[0.9rem] font-[400]"
-                              href={`/${locale}/${note.category}-perfume/${note.slug}`}
+                              href={`/${locale}/${pn.category}-perfume/${pn.slug}`}
                               key={key}
                             >
-                              {note.title}
+                              <SplitText text={pn.title} />
                             </Link>
                           ))}
                         </div>

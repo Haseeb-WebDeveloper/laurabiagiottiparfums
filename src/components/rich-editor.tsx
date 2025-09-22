@@ -82,7 +82,7 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
 
         return (
           <p
-            // gsap-target="paragraph-1"
+            // gsap-target=""
             className={`${lineClamp ? `line-clamp-${lineClamp}` : ""}`}
             style={{
               wordSpacing: "-0.03em",

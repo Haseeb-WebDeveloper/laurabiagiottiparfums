@@ -9,7 +9,8 @@ import { ParallaxImage } from "../ui/ParallaxImage";
 import Link from "next/link";
 import { formatDate } from "@/utils/formet-data";
 import { useLocale } from "@/lib/i18n/context";
-import AnimatedUnderline from "../ui/animated-underline";
+import SplitText from "../ui/split-text";
+// Local underline animation: keeps underline visible while hovered
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +27,49 @@ const NewsHorizontalScroll = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const underlineRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  // Initialize underline baseline styles for GSAP-driven animation
+  useEffect(() => {
+    if (!underlineRefs.current) return;
+    gsap.set(underlineRefs.current, {
+      transformOrigin: "left",
+      scaleX: 0,
+      height: 2,
+      opacity: 0,
+    });
+  }, [cards]);
+
+  const animateUnderlineIn = (index: number) => {
+    const el = underlineRefs.current[index];
+    if (!el) return;
+    gsap.killTweensOf(el);
+    gsap.set(el, { transformOrigin: "left", height: 2, opacity: 1 });
+    const tl = gsap.timeline();
+    tl.to(el, {
+      scaleX: 1,
+      duration: 0.6,
+      ease: "power2.out",
+    }).to(el, {
+      height: 1,
+      duration: 0.1,
+      ease: "none",
+    });
+  };
+
+  const animateUnderlineOut = (index: number) => {
+    const el = underlineRefs.current[index];
+    if (!el) return;
+    gsap.killTweensOf(el);
+    gsap.to(el, {
+      scaleX: 0,
+      duration: 0.35,
+      ease: "power2.in",
+      onComplete: () => {
+        gsap.set(el, { height: 2, opacity: 0 });
+      },
+    });
+  };
   // Function to initialize the animation
   const initAnimation = () => {
     const container = containerRef.current;
@@ -119,7 +163,11 @@ const NewsHorizontalScroll = ({
         ref={triggerRef}
         className="relative hidden lg:flex h-[calc(100vh-20px)] flex-col justify-between"
       >
-        <h2 className="md:text-[3rem] text-[3.5rem] font-bold">News</h2>
+        <SplitText
+          className="md:text-[3rem] text-[3.5rem] font-bold"
+          text="News"
+          variant="heading"
+        />
         {/* Container that moves horizontally */}
         <div
           ref={containerRef}
@@ -153,9 +201,10 @@ const NewsHorizontalScroll = ({
                 </div>
                 <div className="w-fit h-full min-h-[400px] flex flex-col justify-between">
                   <div className="">
-                    <div className="uppercase tracking-[0.1em] text-[0.875rem] font-[500]">
-                      {formatDate(card._updatedAt)}
-                    </div>
+                    <SplitText
+                      className="uppercase tracking-[0.1em] text-[0.875rem] font-[500]"
+                      text={formatDate(card._updatedAt)}
+                    />
                     <h3 className="max-w-[300px] text-[2rem] font-bold line-clamp-2">
                       {card.title}
                     </h3>
@@ -165,12 +214,24 @@ const NewsHorizontalScroll = ({
                   </div>
                   <Link
                     href={`/${locale}/news/${card.slug}`}
-                    className="relative inline-block mt-[4rem] cursor-pointer w-fit tracking-[1.1px] text-[14px] leading-[20px] font-[400] transition-colors duration-300"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
+                    className="relative inline-block mt-[4rem] pb-[3px] cursor-pointer w-fit tracking-[1.1px] text-[14px] leading-[20px] font-[400] transition-colors duration-300"
+                    onMouseEnter={() => {
+                      setHoveredIndex(index);
+                      animateUnderlineIn(index);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredIndex((prev) => (prev === index ? null : prev));
+                      animateUnderlineOut(index);
+                    }}
                   >
                     {t("readMore")}
-                    <AnimatedUnderline isActive={hoveredIndex === index} className="-bottom-[1px] "/>
+                    <span
+                      ref={(el) => {
+                        underlineRefs.current[index] = el;
+                      }}
+                      className="pointer-events-none absolute left-0 right-0 bottom-0 w-full bg-foreground z-10"
+                      style={{ willChange: "transform, height, opacity" }}
+                    />
                   </Link>
                 </div>
               </div>
@@ -203,7 +264,11 @@ const NewsHorizontalScroll = ({
 
       {/* Tablet & Mobile Layout - Single Column */}
       <div className="block lg:hidden py-8">
-        <h2 className="text-[2rem] md:text-[3rem] font-bold mb-8">News</h2>
+        <SplitText
+          className="text-[2rem] md:text-[3rem] font-bold mb-8"
+          text="News"
+          variant="heading"
+        />
 
         {/* Single column layout */}
         <div className="flex flex-col gap-8 md:gap-12">

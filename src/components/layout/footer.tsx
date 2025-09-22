@@ -8,7 +8,6 @@ import NewsletterPopup from "../ui/newsletter-popup";
 import { useLocale } from "@/lib/i18n/context";
 import { useState } from "react";
 import AnimatedUnderline from "@/components/ui/animated-underline";
-import NewSplitText from "../ui/new-split-text";
 
 export default function Footer() {
   const { locale } = useLocale();
@@ -127,7 +126,7 @@ export default function Footer() {
                   <FooterLink href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`} external>
                     <SplitText
                       text="Laura Biagiotti Shop"
-                      variant="paragraph"
+                      variant="heading"
                       element="p"
                       style={{
                         fontWeight: "500",

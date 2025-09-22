@@ -16,9 +16,9 @@ interface SocialMediaProps {
   limit?: number;
 }
 
-export default function SocialMedia({ 
+export default function SocialMedia({
   refreshInterval = 60000, // 1 minute
-  limit = 4 
+  limit = 4,
 }: SocialMediaProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
@@ -27,7 +27,10 @@ export default function SocialMedia({
   const descriptionRef = useRef<(HTMLDivElement | null)[]>([]);
 
   // Fetch Instagram data
-  const { posts, isLoading, error, refresh } = useInstagram(limit, refreshInterval);
+  const { posts, isLoading, error, refresh } = useInstagram(
+    limit,
+    refreshInterval
+  );
   const { stats, isLoading: statsLoading } = useInstagramStats();
 
   const handleMouseEnter = (index: number) => {
@@ -96,10 +99,13 @@ export default function SocialMedia({
     });
   }, [posts]); // Re-run when posts change
 
-  const truncateCaption = (caption: string, maxLength: number = 100): string => {
-    if (!caption) return '';
-    return caption.length > maxLength 
-      ? caption.substring(0, maxLength) + '...' 
+  const truncateCaption = (
+    caption: string,
+    maxLength: number = 100
+  ): string => {
+    if (!caption) return "";
+    return caption.length > maxLength
+      ? caption.substring(0, maxLength) + "..."
       : caption;
   };
 
@@ -107,26 +113,24 @@ export default function SocialMedia({
   if (isLoading && posts.length === 0 && statsLoading) {
     return (
       <section className="">
-        <div
-          style={{
-            letterSpacing: "-0.04em",
-            marginBottom: "0.5rem",
-          }}
-        >
+        <div>
           <SplitText
             text="Follow us on Instagram"
             variant="heading"
             element="h2"
             className="md:text-[3rem] text-[2.2rem] font-bold"
+            style={{
+              letterSpacing: "-0.04em",
+              marginBottom: "0.5rem",
+            }}
           />
         </div>
         <SplitText
           text="Become a #LBlover!"
-          variant="paragraph"
           element="p"
-          className="text-[1rem]"
+          className="text-[1rem] "
         />
-        
+
         {/* Loading grid */}
         <div className="mt-[2.5rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[...Array(limit)].map((_, index) => (
@@ -159,8 +163,8 @@ export default function SocialMedia({
         </div>
         <div className="text-center py-8">
           <p className="text-gray-500 mb-4">Unable to load Instagram posts</p>
-          <button 
-            onClick={() => refresh()} 
+          <button
+            onClick={() => refresh()}
             className="text-blue-500 hover:text-blue-600 underline"
           >
             Try again
@@ -172,31 +176,31 @@ export default function SocialMedia({
 
   return (
     <section className="">
-      <div
-        style={{
-          letterSpacing: "-0.04em",
-          marginBottom: "0.5rem",
-        }}
-      >
+      <div>
         <SplitText
           text="Follow us on Instagram"
           variant="heading"
           element="h2"
           className="md:text-[3rem] text-[2.2rem] font-bold"
+          style={{
+            letterSpacing: "-0.04em",
+            marginBottom: "0.5rem",
+          }}
         />
       </div>
-      <SplitText
+     <div className="">
+     <SplitText
         text="Become a #LBlover!"
-        variant="paragraph"
+        className="text-[1rem] "
         element="p"
-        className="text-[1rem]"
       />
-      
+     </div>
+
       <div className="mt-[2rem] w-full flex flex-col gap-y-[1.5rem] md:flex-row justify-between">
         <div className="flex gap-[1rem] items-center">
-          <div className="flex items-center rounded-full relative bg-red-500 md:w-[67px] md:h-[67px] w-[45px] h-[45px]">
+          <div className="flex items-center rounded-full relative  md:w-[67px] md:h-[67px] w-[45px] h-[45px]">
             <Image
-              src={stats?.profilePicture || '/logo/insta-bg.jpg'}
+              src={stats?.profilePicture || "/logo/insta-bg.jpg"}
               alt="Social Media"
               width={100}
               height={100}
@@ -209,13 +213,12 @@ export default function SocialMedia({
               height={100}
               className="absolute top-0 left-0 w-full h-feull object-cover rounded-full aspect-square"
             />
-            
           </div>
           <div className="flex flex-col">
             <Link
               onMouseEnter={() => setHoveredLink(0)}
               onMouseLeave={() => setHoveredLink(null)}
-              href={`https://www.instagram.com/${stats?.username || 'laurabiagiottiparfums'}`}
+              href={`https://www.instagram.com/${stats?.username || "laurabiagiottiparfums"}`}
               target="_blank"
               className="md:text-[2rem] text-[1.5rem] font-bold tracking-wider relative"
               style={{
@@ -224,7 +227,7 @@ export default function SocialMedia({
               }}
             >
               <SplitText
-                text={stats?.name || 'Laura Biagiotti Parfums'}
+                text={stats?.name || "Laura Biagiotti Parfums"}
                 variant="heading"
                 element="p"
               />
@@ -255,12 +258,12 @@ export default function SocialMedia({
             <Link
               onMouseEnter={() => setHoveredLink(1)}
               onMouseLeave={() => setHoveredLink(null)}
-              href={`https://www.instagram.com/${stats?.username || 'laurabiagiottiparfums'}`}
+              href={`https://www.instagram.com/${stats?.username || "laurabiagiottiparfums"}`}
               target="_blank"
               className="text-[1rem] w-fit relative"
             >
               <SplitText
-                text={`@${stats?.username || 'laurabiagiottiparfums'}`}
+                text={`@${stats?.username || "laurabiagiottiparfums"}`}
                 variant="paragraph"
                 element="p"
               />
@@ -289,12 +292,12 @@ export default function SocialMedia({
             </Link>
           </div>
         </div>
-        
+
         {/* Dynamic Stats */}
         <div className="flex gap-[3rem] px-[0.5rem]">
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text={stats?.posts || ''}
+              text={stats?.posts || ""}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -308,7 +311,7 @@ export default function SocialMedia({
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text={stats?.followers || ''}
+              text={stats?.followers || ""}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -322,7 +325,7 @@ export default function SocialMedia({
           </div>
           <div className="flex flex-col md:gap-[0.2rem] gap-[0.2rem]">
             <SplitText
-              text={stats?.following || ''}
+              text={stats?.following || ""}
               variant="paragraph"
               element="h3"
               className="md:text-[2rem] text-[1.8rem] font-semibold"
@@ -336,7 +339,7 @@ export default function SocialMedia({
           </div>
         </div>
       </div>
-      
+
       {/* Instagram Posts Grid */}
       <div className="mt-[2.5rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {posts.map((post: InstagramPost, index: number) => (
@@ -353,18 +356,30 @@ export default function SocialMedia({
               className="block w-full h-full"
             >
               <ParallaxImage
-                src={post.media_type === 'VIDEO' ? (post.thumbnail_url || post.media_url) : post.media_url}
-                alt={post.caption || 'Instagram post'}
+                src={
+                  post.media_type === "VIDEO"
+                    ? post.thumbnail_url || post.media_url
+                    : post.media_url
+                }
+                alt={post.caption || "Instagram post"}
                 fill
                 className=""
               />
               <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 transition-colors" />
 
               {/* Video indicator */}
-              {post.media_type === 'VIDEO' && (
+              {post.media_type === "VIDEO" && (
                 <div className="absolute top-4 right-4 z-50">
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
               )}
@@ -379,7 +394,7 @@ export default function SocialMedia({
               >
                 {truncateCaption(post.caption)}
               </p>
-              
+
               <div
                 ref={(el) => {
                   if (el) {
@@ -431,10 +446,10 @@ export default function SocialMedia({
           </div>
         ))}
       </div>
-      
+
       <div className="mt-[2.5rem]">
         <Link
-          href={`https://www.instagram.com/${stats?.username || 'laurabiagiottiparfums'}`}
+          href={`https://www.instagram.com/${stats?.username || "laurabiagiottiparfums"}`}
           target="_blank"
           className="cursor-pointer uppercase px-[1.7rem] py-[0.7rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >

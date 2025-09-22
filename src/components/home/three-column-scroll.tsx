@@ -24,6 +24,10 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
   const [minHeight, setMinHeight] = useState<number>(0);
   const [selectedPerfume, setSelectedPerfume] = useState<Perfume | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  // Keep references to created ScrollTriggers so we don't kill unrelated ones
+  const leftSTRef = useRef<ScrollTrigger | null>(null);
+  const centerSTRef = useRef<ScrollTrigger | null>(null);
+  const rightSTRef = useRef<ScrollTrigger | null>(null);
 
   const handleBuyNowClick = (product: Perfume) => {
     setSelectedPerfume(product);
@@ -99,8 +103,9 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           const leftSpeed = leftHeight - minColumnHeight;
           const rightSpeed = rightHeight - minColumnHeight;
 
-          // Kill existing ScrollTriggers
-          ScrollTrigger.getAll().forEach((st) => st.kill());
+          // Kill existing triggers created by this component only
+          leftSTRef.current?.kill();
+          rightSTRef.current?.kill();
 
           const commonScrollTriggerConfig = {
             trigger: container,
@@ -111,7 +116,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           };
 
           // Left column animation
-          ScrollTrigger.create({
+          leftSTRef.current = ScrollTrigger.create({
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
@@ -123,7 +128,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           });
 
           // Right column animation
-          ScrollTrigger.create({
+          rightSTRef.current = ScrollTrigger.create({
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
@@ -154,8 +159,10 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           const centerSpeed = centerHeight - minColumnHeight;
           const rightSpeed = rightHeight - minColumnHeight;
 
-          // Kill existing ScrollTriggers
-          ScrollTrigger.getAll().forEach((st) => st.kill());
+          // Kill existing triggers created by this component only
+          leftSTRef.current?.kill();
+          centerSTRef.current?.kill();
+          rightSTRef.current?.kill();
 
           const commonScrollTriggerConfig = {
             trigger: container,
@@ -166,7 +173,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           };
 
           // Left column animation
-          ScrollTrigger.create({
+          leftSTRef.current = ScrollTrigger.create({
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
@@ -178,7 +185,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           });
 
           // Center column animation
-          ScrollTrigger.create({
+          centerSTRef.current = ScrollTrigger.create({
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
@@ -190,7 +197,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           });
 
           // Right column animation
-          ScrollTrigger.create({
+          rightSTRef.current = ScrollTrigger.create({
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
@@ -212,7 +219,9 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
       // Cleanup
       return () => {
         ctx.revert();
-        ScrollTrigger.getAll().forEach((st) => st.kill());
+        leftSTRef.current?.kill();
+        centerSTRef.current?.kill();
+        rightSTRef.current?.kill();
       };
     },
     { scope: containerRef, dependencies: [minHeight] }

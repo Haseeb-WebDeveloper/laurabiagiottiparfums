@@ -7,6 +7,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
 import { useLocale } from "@/lib/i18n/context";
+import SplitText from "../ui/split-text";
+
 export default function BrandPageComponent({
   brandPageData,
 }: {
@@ -48,10 +50,7 @@ export default function BrandPageComponent({
                 fill={true}
               />
             </div>
-            <h6
-              gsap-target="heading-1"
-              className="hidden md:block mt-[1rem] text-end text-[0.875rem] tracking-[0em] text-foreground/90"
-            >
+            <h6 className="hidden md:block mt-[1rem] text-end text-[0.875rem] tracking-[0em] text-foreground/90">
               {brandPageData.firstSection.images[0]?.alt}
             </h6>
           </div>
@@ -61,15 +60,16 @@ export default function BrandPageComponent({
           </div>
           {/* right content container */}
           <div className="w-full  md:w-1/2  pt-[38vh] md:pt-[3.4rem] 2xl:pt-[4rem] md:px-2 px-0">
-            <h1
+            <SplitText
               className="2xl:text-[4rem] md:text-[3rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]"
               style={{
                 letterSpacing: "0.01em",
                 wordSpacing: "0.08em",
               }}
-            >
-              {brandPageData.firstSection.title}
-            </h1>
+              text={brandPageData.firstSection.title}
+              variant="heading"
+              element="h1"
+            />
             <p
               className="md:max-w-[66%] w-full md:pt-[3.8rem] pt-[1rem] md:pb-[1rem] pb-[2 rem]"
               style={{
@@ -89,15 +89,15 @@ export default function BrandPageComponent({
                 fill={true}
               />
             </div>
-              <p className=" mt-[0.5rem] text-start text-[0.8rem] tracking-[0.1em] uppercase">
-                {brandPageData.firstSection.images[1]?.alt}
-              </p>
+            <p className=" mt-[0.5rem] text-start text-[0.8rem] tracking-[0.1em] uppercase">
+              {brandPageData.firstSection.images[1]?.alt}
+            </p>
           </div>
         </div>
       </div>
 
       <div className="font-primary lg:mt-[8rem] md:mt-[2rem] mt-[6rem] lg:mx-[2rem]  text-center lg:text-[2rem] md:text-[2.5rem] text-[1.43rem] leading-[150%] font-primary">
-        {brandPageData.firstSection.bottomText}
+        <SplitText text={brandPageData.firstSection.bottomText} />
       </div>
 
       {/* Second Section */}
@@ -136,7 +136,6 @@ export default function BrandPageComponent({
         <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12 items-start">
           <div className="w-full h-full flex md:items-center md:max-w-[67%] max-w-full">
             <p
-              gsap-target="paragraph-1"
               className=""
               dangerouslySetInnerHTML={{
                 __html: brandPageData.thirdSection.text,

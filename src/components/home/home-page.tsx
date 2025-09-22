@@ -47,7 +47,6 @@ export default function HomePage({
             <SplitText
               text={t("playWithOurNotes")}
               variant="heading"
-              element="h4"
               className="md:text-[2.9rem] text-[2.4rem] font-[700] tracking-tight"
             />
             <div
@@ -55,8 +54,6 @@ export default function HomePage({
             >
               <SplitText
                 text={t("playWithOurNotesDiscription")}
-                variant="heading"
-                element="p"
                 className="mt-[0.5rem] text-[1rem] text-foreground"
                 style={{
                   wordSpacing: "0em",
@@ -96,8 +93,7 @@ export default function HomePage({
             <SplitText
               text={homeData.textImageSection.heading}
               variant="heading"
-              className="md:text-5xl text-[2.3rem] font-[500] leading-[120%]"
-              element="h2"
+              className="md:text-5xl text-[2.3rem] font-[500] leading-[120%] lg:max-w-[60%]"
             />
             <SplitText
               text={homeData.textImageSection.description}
