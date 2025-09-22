@@ -12,15 +12,6 @@ import { PageViews } from "@piwikpro/react-piwik-pro";
 import PiwikProProvider from "@/components/PiwikProProvider.tsx";
 import { ModeToggle } from "@/components/theme-toggle";
 
-const SplitHeadingsAnimation = dynamic(
-  () => import("@/components/ui/split-headings-animation"),
-  { ssr: false }
-);
-
-const SplitParagraphsAnimation = dynamic(
-  () => import("@/components/ui/split-paragraphs-animation"),
-  { ssr: false }
-);
 
 interface AppProviderProps {
   children: React.ReactNode;
@@ -40,6 +31,23 @@ function AppProvider({ children, locale }: AppProviderProps) {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
+  }, []);
+
+  // On hard reloads, force scroll to top to avoid landing mid-page with hidden animations
+  useEffect(() => {
+    try {
+      const navEntries = (performance.getEntriesByType("navigation") || []) as PerformanceNavigationTiming[];
+      const navType = navEntries[0]?.type as string | undefined;
+      // Fallback for older browsers
+      const legacyNavType = (performance as any).navigation?.type;
+      const isReload = navType === "reload" || legacyNavType === 1;
+      if (isReload) {
+        // Defer to next frame to ensure layout is ready, then scroll to top
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        });
+      }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -105,8 +113,8 @@ function AppProvider({ children, locale }: AppProviderProps) {
         <ThemeProvider attribute="class" defaultTheme="light">
           <LocaleWrapper locale={locale}>
             <SmoothScrolling>
-              <SplitHeadingsAnimation />
-              <SplitParagraphsAnimation />
+              {/* <SplitHeadingsAnimation /> */}
+              {/* <SplitParagraphsAnimation /> */}
               <Navbar />
               {/* <div className="fixed bottom-4 right-4 z-[100]">
                 <ModeToggle />

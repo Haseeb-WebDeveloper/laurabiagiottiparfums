@@ -157,7 +157,7 @@ const NewsHorizontalScroll = ({
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative">
+    <section ref={sectionRef} className="relative overflow-hidden">
       {/* Desktop Layout - Horizontal Scroll */}
       <div
         ref={triggerRef}

@@ -10,6 +10,7 @@ import RelatedPerfumes from "./related-perfumes";
 import { useState } from "react";
 import NextPrePerfume from "./next-pre-perfume";
 import { useLocale } from "@/lib/i18n/context";
+import AnimatedUnderline from "../ui/animated-underline";
 
 export default function PerfumeSlug({
   perfume,
@@ -20,9 +21,8 @@ export default function PerfumeSlug({
   locale: string;
   subCategories: SubCategory[];
 }) {
-  const [selectedCountry, setSelectedCountry] = useState<Country[] | null>(
-    null
-  );
+  const [selectedCountry, setSelectedCountry] = useState<Country[] | null>(null);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { t } = useLocale();
   const handleBuyNowClick = (country: Country[]) => {
@@ -31,27 +31,38 @@ export default function PerfumeSlug({
   };
 
   return (
-    <div className=" mb-[15rem] lg:mt-[10.6rem] mt-[1rem]">
+    <div className=" mb-[15rem] lg:mt-[9.4rem] mt-[1rem]">
       {/* header title category and sub category 1st Section*/}
       <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <div className="min-h-[100vh] overflow-hidden flex flex-col justify-center">
             <div className="flex flex-col lg:flex-row gap-4 justify-between xl:items-end">
-              <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]">
+              <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%] ">
                 {perfume.title}
               </h1>
-              <div className="flex gap-10 h-fit">
+              <div className="flex items-center gap-2.5 h-fit lg:pb-2">
                 <div
-                  className={`cursor-pointer h-fit w-fit text-[0.9rem] font-[400] `}
+                  className="relative cursor-pointer h-fit w-fit text-[0.9rem] font-[400]"
+                  onMouseEnter={() => setHoveredCategory("category")}
+                  onMouseLeave={() => setHoveredCategory(null)}
                 >
                   {perfume.category === "mens"
                     ? "men's Perfume"
                     : "women's Perfume"}
+                  <AnimatedUnderline
+                    isActive={hoveredCategory === "category"}
+                  />
                 </div>
+                <div className="h-[1px] w-[17px] bg-foreground/10"></div>
                 <div
-                  className={`cursor-pointer h-fit w-fit text-[0.9rem] font-[400] `}
+                  className="relative cursor-pointer h-fit w-fit text-[0.9rem] font-[400]"
+                  onMouseEnter={() => setHoveredCategory("subCategory")}
+                  onMouseLeave={() => setHoveredCategory(null)}
                 >
                   {perfume.subCategory}
+                  <AnimatedUnderline
+                    isActive={hoveredCategory === "subCategory"}
+                  />
                 </div>
               </div>
             </div>

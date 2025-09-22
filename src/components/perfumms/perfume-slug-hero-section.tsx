@@ -46,6 +46,9 @@ export default function PerfumeSlugHeroSection({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
 
+  // Set the Swiper transition speed (ms)
+  const SWIPER_TRANSITION_SPEED = 1000; // Increased from default (300ms) to 800ms for smoother/slower slide
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (autoplayEnabled && mainSwiperRef.current && thumbSwiperRef.current) {
@@ -53,11 +56,11 @@ export default function PerfumeSlugHeroSection({
         setCurrentIndex(nextIndex);
 
         // Sync both swipers
-        mainSwiperRef.current.slideTo(nextIndex);
+        mainSwiperRef.current.slideTo(nextIndex, SWIPER_TRANSITION_SPEED);
 
         // For vertical slider, calculate which group of 3 should be visible
         const groupIndex = Math.floor(nextIndex / 3) * 3;
-        thumbSwiperRef.current.slideTo(groupIndex);
+        thumbSwiperRef.current.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
       }
     }, 4000);
 
@@ -75,18 +78,18 @@ export default function PerfumeSlugHeroSection({
     // Update vertical slider position
     if (thumbSwiperRef.current) {
       const groupIndex = Math.floor(newIndex / 3) * 3;
-      thumbSwiperRef.current.slideTo(groupIndex);
+      thumbSwiperRef.current.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
     }
   };
 
   const handleThumbClick = (index: number) => {
     setCurrentIndex(index);
     if (mainSwiperRef.current) {
-      mainSwiperRef.current.slideTo(index);
+      mainSwiperRef.current.slideTo(index, SWIPER_TRANSITION_SPEED);
     }
     if (thumbSwiperRef.current) {
       const groupIndex = Math.floor(index / 3) * 3;
-      thumbSwiperRef.current.slideTo(groupIndex);
+      thumbSwiperRef.current.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
     }
     // Pause autoplay temporarily when user interacts
     setAutoplayEnabled(false);
@@ -112,6 +115,7 @@ export default function PerfumeSlugHeroSection({
                 <Swiper
                   modules={[Autoplay]}
                   slidesPerView={1}
+                  speed={SWIPER_TRANSITION_SPEED}
                   autoplay={{
                     delay: 4000,
                     disableOnInteraction: false,
@@ -154,6 +158,7 @@ export default function PerfumeSlugHeroSection({
                 spaceBetween={16}
                 slidesPerView={3}
                 direction="vertical"
+                speed={SWIPER_TRANSITION_SPEED}
                 className="h-[15rem] w-[4rem]"
                 onSwiper={(swiper) => {
                   thumbSwiperRef.current = swiper;
@@ -182,7 +187,7 @@ export default function PerfumeSlugHeroSection({
                       className="!h-[4rem] !w-[4rem] rounded-[1rem]"
                     >
                       <div
-                        className="relative w-[4rem] h-[4rem] rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105"
+                        className="relative w-[4rem] h-[4rem] rounded-lg overflow-hidden transition-all duration-700 cursor-pointer hover:scale-105"
                         style={{ opacity }}
                         onClick={() => handleThumbClick(index)}
                       >
@@ -227,6 +232,7 @@ export default function PerfumeSlugHeroSection({
               <Swiper
                 modules={[Autoplay]}
                 slidesPerView={1}
+                speed={SWIPER_TRANSITION_SPEED}
                 autoplay={{
                   delay: 4000,
                   disableOnInteraction: false,
@@ -269,6 +275,7 @@ export default function PerfumeSlugHeroSection({
                   spaceBetween={16}
                   slidesPerView={5}
                   direction="horizontal"
+                  speed={SWIPER_TRANSITION_SPEED}
                   className="h-[45px] w-full"
                   onSwiper={(swiper) => {
                     thumbSwiperRef.current = swiper;
@@ -297,7 +304,7 @@ export default function PerfumeSlugHeroSection({
                         className="!h-[45px] !w-[45px] rounded-[1rem]"
                       >
                         <div
-                          className="relative w-[45px] h-[45px] rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105"
+                          className="relative w-[45px] h-[45px] rounded-lg overflow-hidden transition-all duration-700 cursor-pointer hover:scale-105"
                           style={{ opacity }}
                           onClick={() => handleThumbClick(index)}
                         >
@@ -340,10 +347,11 @@ export default function PerfumeSlugHeroSection({
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
           {/* Main Carousel */}
           <div className="w-full max-w-[32.5%] flex justify-center">
-            <div className="relative w-full max-w-[450px] aspect-square">
+            <div className="relative w-full max-w-[450px] aspect-square rounded-[1rem]">
               <Swiper
                 modules={[Autoplay]}
                 slidesPerView={1}
+                speed={SWIPER_TRANSITION_SPEED}
                 autoplay={{
                   delay: 4000,
                   disableOnInteraction: false,
@@ -353,14 +361,14 @@ export default function PerfumeSlugHeroSection({
                 }}
                 onSlideChange={handleMainSlideChange}
                 onTouchStart={handleMainTouchStart}
-                className="w-full h-full overflow-hidden"
+                className="w-full h-full overflow-hidden rounded-[1rem]"
                 allowTouchMove={true} // Enable touch/swipe
                 allowSlideNext={true}
                 allowSlidePrev={true}
               >
                 {heroSectionImages.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <div className="relative w-full h-full rounded-[1rem] overflow-hidden">
+                    <div className="relative w-full h-full overflow-hidden">
                       <div className="aspect-square w-full h-full">
                         <Image
                           src={image.asset.url}
@@ -397,18 +405,21 @@ export default function PerfumeSlugHeroSection({
           </div>
 
           {/* Mini Vertical Carousel - Now Clickable and Scrollable */}
-          <div className="w-full lg:w-[15%] mx-auto lg:mx-0 flex justify-end">
+          <div className="w-full lg:w-[15%] mx-auto lg:mx-0 flex justify-center">
             <div className="w-[90px]">
               <Swiper
-                spaceBetween={16}
+                spaceBetween={15}
                 slidesPerView={3}
                 direction="vertical"
-                className="h-[320px] w-[90px]"
+                speed={SWIPER_TRANSITION_SPEED}
+                className="h-[315px] w-[90px]"
                 onSwiper={(swiper) => {
                   thumbSwiperRef.current = swiper;
                 }}
                 allowTouchMove={true} // Enable scrolling
                 modules={[]}
+                centeredSlides={true}
+                centeredSlidesBounds={true}
               >
                 {heroSectionImages.map((image, index) => {
                   let opacity = 0.5;
@@ -431,7 +442,7 @@ export default function PerfumeSlugHeroSection({
                       className="!h-[90px] !w-[90px] rounded-[1rem]"
                     >
                       <div
-                        className="relative w-[90px] h-[90px] rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105 hover:opacity-100"
+                        className="relative w-[90px] h-[90px] rounded-lg overflow-hidden transition-all duration-700 cursor-pointer hover:scale-105 hover:opacity-100"
                         style={{ opacity }}
                         onClick={() => handleThumbClick(index)}
                       >

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SocialIcons from "./social";
 import SplitText from "../ui/split-text";
-import NewsletterPopup from "../ui/newsletter-popup";
+// import NewsletterPopup from "../ui/newsletter-popup";
 import { useLocale } from "@/lib/i18n/context";
 import { useState } from "react";
 import AnimatedUnderline from "@/components/ui/animated-underline";

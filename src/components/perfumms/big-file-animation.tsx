@@ -119,7 +119,7 @@ export default function BigFileAnimation({
               onMouseEnter={() => setIsVideoHover(true)}
               onMouseLeave={() => setIsVideoHover(false)}
             >
-              {isMuted ? (
+              {!isMuted ? (
                 <Image
                   src={isVideoHover ? "/icons/light-play.svg" : "/icons/play.svg"}
                   alt="pause"

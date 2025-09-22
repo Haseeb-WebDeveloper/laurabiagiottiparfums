@@ -12,6 +12,7 @@ import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
 import WearYourPerfume from "../wear-your-perfume";
 import Link from "next/link";
+import Footer from "../layout/footer";
 
 export default function HomePage({
   homeData,
