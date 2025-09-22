@@ -148,7 +148,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           rightHeight = rightColumn.offsetHeight;
 
           // Find the shortest column to use as reference
-          const minColumnHeight = Math.min(leftHeight, centerHeight, rightHeight);
+          const minColumnHeight = Math.min(leftHeight, centerHeight, rightHeight) + 2000;
 
           // Set container height
           container.style.height = `${minColumnHeight}px`;
@@ -240,7 +240,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
   return (
     <div className="relative">
       {/* Three Column Scroll Section */}
-      <div className={`relative pb-[2rem]`}>
+      <div className={`relative pb-[3rem]`}>
         {/* Responsive Grid Layout */}
         <div
           ref={containerRef}
@@ -279,7 +279,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           {/* Center Column - Only visible on large screens */}
           <div 
             ref={centerColumnRef} 
-            className="hidden lg:block overflow-hidden h-fit"
+            className="hidden lg:block overflow-hidden h-fit pb-[1px]"
           >
             <div className="flex flex-col gap-y-24 lg:gap-y-[5rem]">
               {centerProducts.map((product, index) => (
