@@ -8,7 +8,7 @@
   import MainProductImage from "./main-product-image";
   import RelatedPerfumes from "./related-perfumes";
   import { useState } from "react";
-  import NextPrePerfume from "./next-pre-perfume";
+  import NavigationBar from "./navigation-bar";
   import { useLocale } from "@/lib/i18n/context";
   import AnimatedUnderline from "../ui/animated-underline";
 
@@ -136,7 +136,7 @@
 
         {/* Navigation Section */}
         <div className="my-[8rem] overflow-x-hidden hidden md:block  ">
-          <NextPrePerfume
+          <NavigationBar
             previous={perfume.previousProduct}
             next={perfume.nextProduct}
           />
