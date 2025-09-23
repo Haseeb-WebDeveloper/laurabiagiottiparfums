@@ -115,7 +115,7 @@ export default function HomePage({
       </section>
 
       {/* News Section */}
-      <div className="lg:mt-[10rem] mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="lg:mt-[5rem] mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <NewsHorizontalScrollNew cards={homeData.news} locale={locale} />
         </div>

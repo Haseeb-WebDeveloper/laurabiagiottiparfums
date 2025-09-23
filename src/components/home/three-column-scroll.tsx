@@ -183,7 +183,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           // Left column animation
           leftSTRef.current = ScrollTrigger.create({
             ...commonScrollTriggerConfig,
-            onUpdate: (self) => {
+            onUpdate: (self) => { 
               const progress = self.progress;
               gsap.to(leftColumn, {
                 y: -progress * leftSpeed,
