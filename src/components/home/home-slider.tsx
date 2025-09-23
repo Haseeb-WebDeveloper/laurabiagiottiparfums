@@ -353,7 +353,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                   {/* Secondary CTA */}
                   <Link
                     href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
-                    className="cursor-pointer text-background tracking-[1.1px] text-[14px] leading-[20px] font-[400] relative inline-block"
+                    className="cursor-pointer text-background  text-[14px] leading-[20px] font-[400] relative inline-block"
                     onMouseEnter={() => setHoveredLearnIndex(index)}
                     onMouseLeave={() => setHoveredLearnIndex(null)}
                   >

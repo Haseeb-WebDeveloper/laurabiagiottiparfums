@@ -44,14 +44,14 @@ const LanguageSwitcher: React.FC = () => {
   };
 
   return (
-    <div className="flex gap-[0.25rem]">
+    <div className="flex gap-[0.24rem]">
       {LOCALES.map((loc) => (
         <button
           key={loc}
           onClick={() => handleLanguageChange(loc)}
-          className={`navbar-button cursor-pointer flex justify-center items-center py-[0.4em] px-[0.55em] rounded-[0.55rem] border hover:border-foreground border-transparent transition-colors duration-300 ${
+          className={`navbar-button cursor-pointer flex justify-center items-center py-[0.4em] px-[0.56em] rounded-[0.55rem] border hover:border-foreground border-transparent transition-colors duration-300 ${
             isActive(loc)
-              ? "bg-foreground text-background hover:bg-background hover:text-foreground"
+              ? "bg-foreground text-background hover:bg-background hover:text-foreground "
               : "text-foreground"
           }`}
         >

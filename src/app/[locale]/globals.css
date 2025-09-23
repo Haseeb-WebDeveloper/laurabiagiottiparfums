@@ -118,7 +118,7 @@
   }
 
   body {
-    @apply bg-background text-foreground
+    @apply bg-background text-foreground;
   }
 }
 body {
@@ -154,8 +154,6 @@ h4 {
   /* letter-spacing: 0em; */
 }
 
-
-
 p {
   line-height: 1.5;
   font-weight: 400;
@@ -165,44 +163,38 @@ p {
   word-spacing: 2.5px;
 }
 
-
-
 .max-w {
   max-width: 1344px;
   margin-left: auto;
   margin-right: auto;
 }
 
-
-
-
 .transcend {
-  font-family: Transcend, Times New Roman, sans-serif;
+  font-family:
+    Transcend,
+    Times New Roman,
+    sans-serif;
 }
 
-
-
-
-
-.main{
-  overflow-x:hidden;
+.main {
+  overflow-x: hidden;
 }
-.horizontal-sliders{
-  display:flex;
-  flex-wrap:no-wrap;
+.horizontal-sliders {
+  display: flex;
+  flex-wrap: no-wrap;
   width: 500%;
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
-.slide{
-  height:80vh;
-  width:100%;
+.slide {
+  height: 80vh;
+  width: 100%;
 }
-.slide:nth-child(2n){
-  background-color:aqua;
+.slide:nth-child(2n) {
+  background-color: aqua;
 }
-.next-block{
-  height:100vh;
-  background:blue;
+.next-block {
+  height: 100vh;
+  background: blue;
 }
 
 /* Custom Range Input Styles */
@@ -253,7 +245,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-
 input[type="range"]:active + div {
   transform: translateY(-50%) !important;
 }
@@ -270,19 +261,6 @@ input[type="range"]:focus::-webkit-slider-thumb {
 input[type="range"]:focus::-moz-range-thumb {
   outline: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Cookie Banner */
 
@@ -328,7 +306,3 @@ input[type="range"]:focus::-moz-range-thumb {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
-
-
-
-

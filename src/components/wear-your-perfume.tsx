@@ -216,11 +216,11 @@ export default function WearYourPerfume({
         {customTrigger || (
           <div className="w-full flex justify-end">
             <span
-              className={`w-fit h-fit cursor-pointer bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground rounded-[0.45rem] p-[0.55rem] transition-colors duration-300 flex items-center gap-[0.5rem]`}
+              className={`w-fit h-fit cursor-pointer bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground rounded-[0.45rem] px-[0.5rem] py-[0.6rem] transition-colors duration-300 flex items-center gap-[0.4rem]`}
               onMouseEnter={() => setTriggerHover(true)}
               onMouseLeave={() => setTriggerHover(false)}
             >
-              <span className="text-[0.75rem] font-[400] leading-0 tracking-tight text-pretty">
+              <span className="text-[0.78rem] font-[400] leading-0 tracking-[-0.01em] text-pretty">
                 {t("wearYourPerfume")}
               </span>
               <Image
@@ -230,8 +230,8 @@ export default function WearYourPerfume({
                     : "/icons/light-loading.svg"
                 }
                 alt="arrow-down"
-                width={12}
-                height={12}
+                width={11}
+                height={11}
                 className="dark:invert"
               />
             </span>

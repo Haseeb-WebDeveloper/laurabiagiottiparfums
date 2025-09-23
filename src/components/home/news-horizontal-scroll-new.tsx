@@ -3,18 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import { useGSAP } from "@gsap/react";
 import { HomePageNews } from "@/types/home-page";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import Link from "next/link";
 import { formatDate } from "@/utils/formet-data";
 import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
-// Local underline animation: keeps underline visible while hovered
 
 gsap.registerPlugin(ScrollTrigger);
 
-const NewsHorizontalScroll = ({
+const NewsHorizontalScrollNew = ({
   cards,
   locale,
 }: {
@@ -22,10 +20,8 @@ const NewsHorizontalScroll = ({
   locale: string;
 }) => {
   const { t } = useLocale();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const underlineRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -70,112 +66,94 @@ const NewsHorizontalScroll = ({
       },
     });
   };
-  // Function to initialize the animation
-  const initAnimation = () => {
+
+  useEffect(() => {
     const container = containerRef.current;
-    const trigger = triggerRef.current;
-    if (!container || !trigger) return;
+    const scrollContainer = scrollContainerRef.current;
+
+    if (!container || !scrollContainer) return;
 
     // Check if it's desktop (1024px and up)
     const isDesktop = window.innerWidth >= 1024;
+    if (!isDesktop) return;
 
-    // Kill any existing timeline
-    if (timelineRef.current) {
-      timelineRef.current.scrollTrigger?.kill();
-      timelineRef.current.kill();
-    }
+    // Calculate scroll distance
+    const scrollWidth = scrollContainer.scrollWidth;
+    const containerWidth = container.offsetWidth;
+    const scrollDistance = scrollWidth - containerWidth;
 
-    // Only create animation for desktop
-    if (!isDesktop) {
-      return;
-    }
-
-    // Calculate the scroll width
-    const totalWidth = container.scrollWidth;
-    const windowWidth = window.innerWidth;
-    const distance = totalWidth - windowWidth;
-
-    // Create timeline
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: trigger,
-        start: "top +=185px",
-        end: "bottom top",
-        pin: true,
-        scrub: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        markers: true,
+    // Create the scroll trigger animation
+    let scrollTrigger = ScrollTrigger.create({
+      trigger: container,
+      start: "top +=135px",
+      end: `+=${scrollDistance + window.innerHeight}`,
+      pin: true,
+      scrub: 1,
+      // markers: true,
+      onUpdate: (self) => {
+        // Calculate how much to translate based on scroll progress
+        const progress = self.progress;
+        const translateX = -scrollDistance * progress;
+        gsap.set(scrollContainer, { x: translateX });
       },
+      invalidateOnRefresh: true,
     });
 
-    // Add animation to timeline
-    tl.to(container, {
-      x: -distance,
-      ease: "none",
-      duration: 1,
-    });
+    // Handle resize
+    const handleResize = () => {
+      scrollTrigger.kill();
 
-    // Store timeline reference
-    timelineRef.current = tl;
-  };
-
-  useEffect(() => {
-    // Handler for the columnHeightSet event
-    const handleColumnHeightSet = () => {
-      // Small delay to ensure DOM is settled
+      // Recalculate on resize
       setTimeout(() => {
-        initAnimation();
-        ScrollTrigger.refresh();
+        const newIsDesktop = window.innerWidth >= 1024;
+        if (!newIsDesktop) return;
+
+        const newScrollWidth = scrollContainer.scrollWidth;
+        const newContainerWidth = container.offsetWidth;
+        const newScrollDistance = newScrollWidth - newContainerWidth;
+
+        scrollTrigger = ScrollTrigger.create({
+          trigger: container,
+          start: "top +=135px",
+          end: `+=${newScrollDistance + window.innerHeight}`,
+          pin: true,
+          scrub: 1,
+          // markers: true,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const translateX = -newScrollDistance * progress;
+            gsap.set(scrollContainer, { x: translateX });
+          },
+          invalidateOnRefresh: true,
+        });
       }, 100);
     };
 
-    // Listen for the columnHeightSet event
-    window.addEventListener("columnHeightSet", handleColumnHeightSet);
-
-    // Initialize animation immediately as well
-    initAnimation();
-
-    return () => {
-      window.removeEventListener("columnHeightSet", handleColumnHeightSet);
-      if (timelineRef.current) {
-        timelineRef.current.scrollTrigger?.kill();
-        timelineRef.current.kill();
-      }
-    };
-  }, []);
-
-  // Handle window resize
-  useEffect(() => {
-    const handleResize = () => {
-      initAnimation();
-    };
-
     window.addEventListener("resize", handleResize);
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      scrollTrigger.kill();
     };
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative ">
+    <section className="relative">
       {/* Desktop Layout - Horizontal Scroll */}
       <div
-        ref={triggerRef}
-        className="relative hidden lg:flex h-[calc(100vh-20px)] flex-col justify-center lg:gap-[600px]"
+        ref={containerRef}
+        className="relative hidden lg:flex h-[calc(100vh-20px)] flex-col xl:gap-6 2xl:gap-10 justify-center"
       >
-        <div className="pb-[150px]">
-          <SplitText
-            className="md:text-[2.85rem] text-[3.5rem] font-bold leading-[100%] tracking-[-0.05rem]"
-            text="News"
-            variant="heading"
-          />
-        </div>
-        
+        <SplitText
+          className="md:text-[2.85rem] text-[3.5rem] font-bold leading-[100%] tracking-[-0.05rem]"
+          text="News"
+          variant="heading"
+        />
+
         {/* Container that moves horizontally */}
         <div
-          ref={containerRef}
-          className="absolute top-1/2 -translate-y-1/2 left-0 flex items-center gap-[7rem]"
+          ref={scrollContainerRef}
+          className="flex items-center gap-[7rem] pl-0 z-50"
           style={{
             willChange: "transform",
             backfaceVisibility: "hidden",
@@ -195,7 +173,7 @@ const NewsHorizontalScroll = ({
               }}
             >
               <div className="w-fit flex gap-[2rem] items-start h-full">
-                <div className="aspect-[4/3] relative h-full w-[300px] min-h-[400px]">
+                <div className="aspect-[4/3] relative h-full w-[300px] 2xl:min-h-[400px] xl:min-h-[370px]">
                   <ParallaxImage
                     src={card.featuredImage?.asset.url || ""}
                     alt={card.title}
@@ -203,7 +181,7 @@ const NewsHorizontalScroll = ({
                     direction="horizontal"
                   />
                 </div>
-                <div className="w-fit h-full min-h-[400px] flex flex-col justify-between">
+                <div className="w-fit h-full 2xl:min-h-[400px] xl:min-h-[370px] flex flex-col justify-between">
                   <div className="">
                     <SplitText
                       className="uppercase tracking-[0.1em] text-[0.875rem] font-[500]"
@@ -244,7 +222,7 @@ const NewsHorizontalScroll = ({
           {/* View all circle button*/}
           <Link
             href={`/${locale}/news`}
-            className="relative flex-none overflow-hidden group min-w-[600px] h-full"
+            className="relative flex-none overflow-hidden group min-w-[600px] h-fit flex items-center justify-start "
             style={{
               willChange: "transform",
               transform: "translateZ(0)",
@@ -258,10 +236,10 @@ const NewsHorizontalScroll = ({
             </div>
           </Link>
         </div>
-        
+
         <Link
           href={`/${locale}/news`}
-          className="cursor-pointer -mt-[200px] uppercase w-fit px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+          className="cursor-pointer uppercase w-fit px-[1.7rem] py-[0.6rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
           {t("discoverAllNews")}
         </Link>
@@ -325,4 +303,4 @@ const NewsHorizontalScroll = ({
   );
 };
 
-export default NewsHorizontalScroll;
+export default NewsHorizontalScrollNew;

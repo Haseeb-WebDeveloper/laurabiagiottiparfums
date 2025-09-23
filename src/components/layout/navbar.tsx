@@ -185,7 +185,7 @@ export default function Navbar() {
               <LanguageSwitcher />
               {/* Search */}
               <div
-                className="cursor-pointer group flex items-center gap-[0.3rem] border border-foreground rounded-[0.55rem] px-[0.5rem] hover:bg-foreground transition-colors"
+                className="cursor-pointer group flex items-center gap-[0.39rem] border border-foreground rounded-[0.56rem] px-[0.48rem] hover:bg-foreground transition-colors"
                 onClick={() => setIsSearchOpen(true)}
               >
                 <span className="text-[.75rem] font-[400] leading-0 text-pretty group-hover:text-background">

@@ -114,16 +114,20 @@ export default function SocialMedia({
     return (
       <section className="">
         <div>
-          <SplitText
+          {/* <SplitText
             text="Follow us on Instagram"
             variant="heading"
             element="h2"
+          /> */}
+          <h2
             className="md:text-[3rem] text-[2.2rem] font-bold"
             style={{
               letterSpacing: "-0.04em",
               marginBottom: "0.5rem",
             }}
-          />
+          >
+            Follow us on Instagram
+          </h2>
         </div>
         <SplitText
           text="Become a #LBlover!"
@@ -188,13 +192,13 @@ export default function SocialMedia({
           }}
         />
       </div>
-     <div className="">
-     <SplitText
-        text="Become a #LBlover!"
-        className="text-[1rem] "
-        element="p"
-      />
-     </div>
+      <div className="">
+        <SplitText
+          text="Become a #LBlover!"
+          className="text-[1rem] "
+          element="p"
+        />
+      </div>
 
       <div className="mt-[2rem] w-full flex flex-col gap-y-[1.5rem] md:flex-row justify-between">
         <div className="flex gap-[1rem] items-center">

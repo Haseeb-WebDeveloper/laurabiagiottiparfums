@@ -4,7 +4,7 @@ import { HomePageInterface } from "@/types/home-page";
 import ThreeColumnScroll from "./three-column-scroll";
 import Rotate from "./rotate";
 import { ParallaxImage } from "../ui/ParallaxImage";
-import NewsHorizontalScroll from "./horizontal-scroll";
+import NewsHorizontalScrollNew from "./news-horizontal-scroll-new";
 import SocialMedia from "./social-media";
 import HeroSlider from "./home-slider";
 import NotesAnimation from "../ui/notes-animation";
@@ -13,6 +13,7 @@ import SplitText from "../ui/split-text";
 import WearYourPerfume from "../wear-your-perfume";
 import Link from "next/link";
 import Footer from "../layout/footer";
+import NewsSectionHome, { sampleNews } from "@/test/test-1";
 
 export default function HomePage({
   homeData,
@@ -50,9 +51,7 @@ export default function HomePage({
               variant="heading"
               className="md:text-[2.9rem] text-[2.4rem] font-[700] tracking-tight"
             />
-            <div
-              className="mt-[0.5rem] text-[1rem] text-foreground"
-            >
+            <div className="mt-[0.5rem] text-[1rem] text-foreground">
               <SplitText
                 text={t("playWithOurNotesDiscription")}
                 className="mt-[0.5rem] text-[1rem] text-foreground"
@@ -115,7 +114,7 @@ export default function HomePage({
       {/* News Section */}
       <div className="lg:mt-[10rem] mt-[4rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
-          <NewsHorizontalScroll cards={homeData.news} locale={locale} />
+          <NewsHorizontalScrollNew cards={homeData.news} locale={locale} />
         </div>
       </div>
 
