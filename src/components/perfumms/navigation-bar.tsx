@@ -7,7 +7,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,10 +23,37 @@ export default function NavigationBar({
   const navRef = useRef<HTMLElement>(null);
   const [isFixed, setIsFixed] = useState(true);
   const [hoveredElement, setHoveredElement] = useState<"prev" | "next" | null>(null);
+  const [navPosition, setNavPosition] = useState({ top: 0, left: 0, right: 0 });
 
   // Create portal containers for hover images
   const prevImageRef = useRef<HTMLDivElement>(null);
   const nextImageRef = useRef<HTMLDivElement>(null);
+
+  // Timers for delayed hide to prevent flickering
+  const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Update navigation position when it changes between fixed and relative
+  const updateNavPosition = () => {
+    if (navRef.current) {
+      const rect = navRef.current.getBoundingClientRect();
+      setNavPosition({
+        top: rect.top,
+        left: rect.left,
+        right: window.innerWidth - rect.right,
+      });
+    }
+  };
+
+  useEffect(() => {
+    updateNavPosition();
+    window.addEventListener('resize', updateNavPosition);
+    window.addEventListener('scroll', updateNavPosition);
+    
+    return () => {
+      window.removeEventListener('resize', updateNavPosition);
+      window.removeEventListener('scroll', updateNavPosition);
+    };
+  }, [isFixed]);
 
   useGSAP(() => {
     if (!containerRef.current || !navRef.current) return;
@@ -59,6 +86,9 @@ export default function NavigationBar({
             zIndex: 50,
           });
         }
+        
+        // Update position after changing layout
+        setTimeout(updateNavPosition, 0);
       },
     });
   }, []);
@@ -66,6 +96,12 @@ export default function NavigationBar({
   const showHoverImage = (element: "prev" | "next") => {
     const imageRef = element === "prev" ? prevImageRef : nextImageRef;
     if (!imageRef.current) return;
+
+    // Clear any pending hide timer
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
 
     setHoveredElement(element);
     
@@ -89,35 +125,79 @@ export default function NavigationBar({
     const imageRef = element === "prev" ? prevImageRef : nextImageRef;
     if (!imageRef.current) return;
 
-    setHoveredElement(null);
-    
-    gsap.to(imageRef.current, {
-      opacity: 0,
-      scale: 0.8,
-      y: 20,
-      duration: 0.2,
-      ease: "power2.in"
-    });
+    // Use a small delay to prevent flickering when moving between button and image
+    hideTimerRef.current = setTimeout(() => {
+      setHoveredElement(null);
+      
+      gsap.to(imageRef.current, {
+        opacity: 0,
+        scale: 0.8,
+        y: 20,
+        duration: 0.2,
+        ease: "power2.in"
+      });
+    }, 100); // 100ms delay
   };
+
+  const handleImageMouseEnter = (element: "prev" | "next") => {
+    // Clear hide timer when hovering over image
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
+    setHoveredElement(element);
+  };
+
+  const handleImageMouseLeave = (element: "prev" | "next") => {
+    hideHoverImage(element);
+  };
+
+  // Calculate image positions based on nav position
+  const getImagePosition = (element: "prev" | "next") => {
+    
+    if (isFixed) {
+      // Fixed positioning - relative to viewport
+      return {
+        position: "fixed" as const,
+        bottom: "30px",
+        top: "auto",
+        transform: element === "prev" ? "translateX(-50%)" : "translateX(50%)",
+      };
+    } else {
+      // Absolute positioning - relative to nav's document position
+      return {
+        position: "absolute" as const,
+        top: `${navPosition.top - 220}px`, // 220px above nav (200px image height + 20px margin)
+        bottom: "auto",
+        transform: element === "prev" ? "translateX(-50%)" : "translateX(50%)",
+      };
+    }
+  };
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
-      {/* Hover Images - Positioned absolutely in body, outside of navigation */}
+      {/* Hover Images - Positioned dynamically based on nav state */}
       <div className="fixed inset-0 pointer-events-none z-[200]">
         {/* Previous Image */}
         <div
           ref={prevImageRef}
-          className="absolute opacity-0"
-          style={{
-            left: '200px', // Adjust based on button position
-            bottom: isFixed ? '80px' : 'auto',
-            top: isFixed ? 'auto' : 'calc(100vh - 300px)',
-            transform: 'translateX(-50%)',
-          }}
+          className="opacity-0 left-[12%] pb-[20px] pointer-events-auto"
+          style={getImagePosition("prev")}
+          onMouseEnter={() => handleImageMouseEnter("prev")}
+          onMouseLeave={() => handleImageMouseLeave("prev")}
         >
           <Link
             href={`/${locale}/${previous.category}-perfume/${previous.slug}`}
-            className="block pointer-events-auto"
+            className="block"
           >
             <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden border">
               <Image
@@ -134,17 +214,14 @@ export default function NavigationBar({
         {/* Next Image */}
         <div
           ref={nextImageRef}
-          className="absolute opacity-0"
-          style={{
-            right: '200px', // Adjust based on button position
-            bottom: isFixed ? '80px' : 'auto',
-            top: isFixed ? 'auto' : 'calc(100vh - 300px)',
-            transform: 'translateX(50%)',
-          }}
+          className="opacity-0 right-[12%] pb-[20px] pointer-events-auto"
+          style={getImagePosition("next")}
+          onMouseEnter={() => handleImageMouseEnter("next")}
+          onMouseLeave={() => handleImageMouseLeave("next")}
         >
           <Link
             href={`/${locale}/${next.category}-perfume/${next.slug}`}
-            className="block pointer-events-auto"
+            className="block"
           >
             <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden border">
               <Image
@@ -175,7 +252,11 @@ export default function NavigationBar({
           <div className="flex gap-4 justify-between max-w mx-auto">
             {/* Previous Button */}
             <div
-              className="flex gap-12 justify-start items-center hover:bg-background hover:text-foreground px-[0.51rem] w-[200px] transition-all duration-300 py-[0.3rem] cursor-pointer"
+              className={`flex gap-12 justify-start items-center px-[0.51rem] w-[200px] transition-all duration-300 py-[0.3rem] cursor-pointer ${
+                hoveredElement === "prev" 
+                  ? "bg-background text-foreground" 
+                  : "hover:bg-background hover:text-foreground"
+              }`}
               onMouseEnter={() => showHoverImage("prev")}
               onMouseLeave={() => hideHoverImage("prev")}
             >
@@ -196,7 +277,11 @@ export default function NavigationBar({
 
             {/* Next Button */}
             <div
-              className="flex gap-12 justify-end items-center hover:bg-background hover:text-foreground px-[0.51rem] w-[200px] transition-all duration-300 py-[0.3rem] cursor-pointer"
+              className={`flex gap-12 justify-end items-center px-[0.51rem] w-[200px] transition-all duration-300 py-[0.3rem] cursor-pointer ${
+                hoveredElement === "next" 
+                  ? "bg-background text-foreground" 
+                  : "hover:bg-background hover:text-foreground"
+              }`}
               onMouseEnter={() => showHoverImage("next")}
               onMouseLeave={() => hideHoverImage("next")}
             >
