@@ -111,7 +111,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             trigger: container,
             start: `top ${isDesktop ? "190px" : "60px"}`,
             end: "bottom bottom",
-            scrub: 1,
+            scrub: 0.8, // Slightly slower scrub for smoother feel
             invalidateOnRefresh: true,
           };
 
@@ -120,9 +120,12 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
-              gsap.set(leftColumn, {
+              gsap.to(leftColumn, {
                 y: -progress * leftSpeed,
+                duration: 0.1,
+                ease: "power2.out",
                 force3D: true,
+                overwrite: "auto",
               });
             },
           });
@@ -132,9 +135,12 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
-              gsap.set(rightColumn, {
+              gsap.to(rightColumn, {
                 y: -progress * rightSpeed,
+                duration: 0.1,
+                ease: "power2.out",
                 force3D: true,
+                overwrite: "auto",
               });
             },
           });
@@ -148,7 +154,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           rightHeight = rightColumn.offsetHeight;
 
           // Find the shortest column to use as reference
-          const minColumnHeight = Math.min(leftHeight, centerHeight, rightHeight) + 4000;
+          const minColumnHeight = Math.min(leftHeight, centerHeight, rightHeight) + 2000;
 
           // Set container height
           container.style.height = `${minColumnHeight}px`;
@@ -168,7 +174,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             trigger: container,
             start: "top +=190px",
             end: "bottom bottom",
-            scrub: 1,
+            scrub: 0.8, // Slightly slower scrub for smoother feel
             invalidateOnRefresh: true,
           };
 
@@ -177,9 +183,12 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
-              gsap.set(leftColumn, {
+              gsap.to(leftColumn, {
                 y: -progress * leftSpeed,
+                duration: 0.1,
+                ease: "power2.out",
                 force3D: true,
+                overwrite: "auto",
               });
             },
           });
@@ -189,9 +198,12 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
-              gsap.set(centerColumn, {
+              gsap.to(centerColumn, {
                 y: -progress * centerSpeed,
+                duration: 0.1,
+                ease: "power2.out",
                 force3D: true,
+                overwrite: "auto",
               });
             },
           });
@@ -201,9 +213,12 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
             ...commonScrollTriggerConfig,
             onUpdate: (self) => {
               const progress = self.progress;
-              gsap.set(rightColumn, {
+              gsap.to(rightColumn, {
                 y: -progress * rightSpeed,
+                duration: 0.1,
+                ease: "power2.out",
                 force3D: true,
+                overwrite: "auto",
               });
             },
           });

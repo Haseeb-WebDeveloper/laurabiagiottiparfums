@@ -199,7 +199,7 @@ export default function NavigationBar({
             href={`/${locale}/${previous.category}-perfume/${previous.slug}`}
             className="block"
           >
-            <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden border">
+            <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden">
               <Image
                 src={previous.featuredImage.asset.url}
                 alt={previous.title}
@@ -223,7 +223,7 @@ export default function NavigationBar({
             href={`/${locale}/${next.category}-perfume/${next.slug}`}
             className="block"
           >
-            <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden border">
+            <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden">
               <Image
                 src={next.featuredImage.asset.url}
                 alt={next.title}
