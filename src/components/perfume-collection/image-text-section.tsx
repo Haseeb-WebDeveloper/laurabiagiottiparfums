@@ -9,6 +9,8 @@ import "swiper/css";
 import { useLocale } from "@/lib/i18n/context";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
+import SplitText from "../ui/split-text";
+import HtmlSplitText from "../ui/html-split-text";
 export default function ImageTextSection({
   products,
   locale,
@@ -25,6 +27,9 @@ export default function ImageTextSection({
     setSelectedPerfume(perfume);
     setIsPopupOpen(true);
   };
+
+
+  console.log(products[0].ingredients);
   return (
     <section className="pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
       {products.map((product, index) => (
@@ -38,9 +43,10 @@ export default function ImageTextSection({
             {/* Text Content Section */}
             <div className="w-full lg:w-[45%]">
               <div className="flex flex-col gap-[1rem]">
-                <div className="text-[2.5rem] lg:text-[3rem] font-[500]">
-                  {product.title}
-                </div>
+                <SplitText
+                  className="text-[2.5rem] lg:text-[3rem] font-[500]"
+                  text={product.title}
+                />
                 <p>{product.description}</p>
 
                 {/* Buttons */}
@@ -106,13 +112,20 @@ export default function ImageTextSection({
                       className="group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300 aspect-square object-cover rounded-full flex-shrink-0"
                     />
                   </div>
-                  <div className="flex flex-col gap-[0.7rem]">
-                    <h3 className="text-[1.2rem] lg:text-[2rem] font-[600]">
-                      {ingredient.ingredientName}
-                    </h3>
-                    <div className="text-[1rem] font-[400]">
-                      {ingredient.description}
-                    </div>
+                  <div className="flex flex-col gap-[0.7rem] ">
+                    <SplitText
+                      className="text-[1.2rem] lg:text-[1.7rem] font-[600] leading-[1.2]"
+                      style={{
+                        letterSpacing: "2px",
+                      }}
+                      text={ingredient.ingredientName}
+                    />
+                    <HtmlSplitText
+                      className="text-[1rem] font-[400] w-full leading-[1.5]"
+                      variant="paragraph"
+                      style={{ display: "block" }}
+                      htmlContent={ingredient.description}
+                    />
                   </div>
                 </div>
               ))}

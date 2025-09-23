@@ -15,6 +15,13 @@ export interface SplitTextProps {
   textAlign?: React.CSSProperties["textAlign"];
   onAnimationComplete?: () => void;
   style?: React.CSSProperties;
+  /**
+   * Controls whether paragraph line splitting uses absolute positioning.
+   * Absolute positioning is great for consistent animations but can cause
+   * layout issues in complex/flexible containers. Set to false to keep
+   * lines in the normal flow.
+   */
+  absoluteLines?: boolean;
 }
 
 const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = ({
@@ -25,6 +32,7 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
   element = "div",
   style,
   onAnimationComplete,
+  absoluteLines = true,
   ...rest
 }) => {
   const ref = useRef<HTMLDivElement | HTMLParagraphElement | null>(null);
@@ -78,13 +86,13 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
             ease: "power3.out",
           };
 
-      const absoluteLines = baseConfig.splitType === "lines";
-      if (absoluteLines) el.style.position = "relative";
+      const useAbsoluteLines = baseConfig.splitType === "lines" && absoluteLines;
+      if (useAbsoluteLines) el.style.position = "relative";
 
       try {
         splitter = new GSAPSplitText(el, {
           type: baseConfig.splitType,
-          absolute: absoluteLines,
+          absolute: useAbsoluteLines,
           linesClass: "split-line",
         });
       } catch (error) {
@@ -271,6 +279,8 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
   // Ensure no initial flash: default to hidden unless user overrides visibility
   const mergedStyle: React.CSSProperties = {
     textAlign,
+    overflow: "hidden",
+    display: "inline-block",
     whiteSpace: "normal",
     wordWrap: "break-word",
     ...style,
