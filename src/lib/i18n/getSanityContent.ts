@@ -217,7 +217,6 @@ export async function getNavbarPerfumes(locale: string) {
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
     )) as NavbarPerfumes;
-    console.dir(data, { depth: null });
     if (!data) return null;
 
     const { collections, mainPerfumes, perfumes } = data;

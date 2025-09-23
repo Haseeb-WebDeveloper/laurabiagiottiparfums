@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
 import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
+import HtmlSplitText from "../ui/html-split-text";
 
 export default function BrandPageComponent({
   brandPageData,
@@ -70,14 +71,14 @@ export default function BrandPageComponent({
               variant="heading"
               element="h1"
             />
-            <p
-              className="md:max-w-[66%] w-full md:pt-[3.8rem] pt-[1rem] md:pb-[1rem] pb-[2 rem]"
+            <HtmlSplitText
+              className="md:max-w-[70%] leading-[125%] w-full md:pt-[3.5rem] pt-[1rem] md:pb-[1rem] pb-[2rem]"
               style={{
                 wordSpacing: "0.07em",
               }}
-              dangerouslySetInnerHTML={{
-                __html: brandPageData.firstSection.description,
-              }}
+              htmlContent={brandPageData.firstSection.description}
+              variant="paragraph"
+              element="div"
             />
             <div className="md:h-[300px] lg:h-[420px] h-[460px] mt-[2rem] w-full relative">
               <ParallaxImage
@@ -97,7 +98,12 @@ export default function BrandPageComponent({
       </div>
 
       <div className="font-primary lg:mt-[8rem] md:mt-[2rem] mt-[6rem] lg:mx-[2rem]  text-center lg:text-[2rem] md:text-[2.5rem] text-[1.43rem] leading-[150%] font-primary">
-        <SplitText text={brandPageData.firstSection.bottomText} />
+        <SplitText
+          variant="paragraph"
+          element="p"
+          textAlign="center"
+          text={brandPageData.firstSection.bottomText}
+        />
       </div>
 
       {/* Second Section */}
@@ -135,11 +141,13 @@ export default function BrandPageComponent({
       <div className="lg:max-w-[85%] mx-auto flex flex-col lg:flex-row justify-between gap-12 md:mt-[8rem] lg:mt-[10rem] mt-[5rem] w-full">
         <div className="w-full grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-12 items-start">
           <div className="w-full h-full flex md:items-center md:max-w-[67%] max-w-full">
-            <p
-              className=""
-              dangerouslySetInnerHTML={{
-                __html: brandPageData.thirdSection.text,
+            <HtmlSplitText
+              style={{
+                wordSpacing: "0.07em",
               }}
+              htmlContent={brandPageData.thirdSection.text}
+              variant="paragraph"
+              element="p"
             />
           </div>
           <div className="relative w-full h-full md:min-h-[300px] lg:min-h-[410px] min-h-[400px] max-w-[522px]">
@@ -167,14 +175,17 @@ export default function BrandPageComponent({
           </div>
           {/* Text container - order changes between mobile and desktop */}
           <div className="w-full h-full flex flex-col gap-4 lg:order-2 order-1">
-            <h2 className="lg:max-w-[75%] max-w-full md:text-[2.8rem] text-[2.2rem] font-[700] leading-[120%]">
-              {brandPageData.fourthSection.title}
-            </h2>
-            <p
+            <SplitText
+              className="lg:max-w-[75%] max-w-full md:text-[2.8rem] text-[2.2rem] font-[700] leading-[120%]"
+              variant="heading"
+              element="h2"
+              text={brandPageData.fourthSection.title}
+            />
+            <HtmlSplitText
               className="lg:max-w-[80%] max-w-full"
-              dangerouslySetInnerHTML={{
-                __html: brandPageData.fourthSection.text,
-              }}
+              htmlContent={brandPageData.fourthSection.text}
+              variant="paragraph"
+              element="p"
             />
           </div>
         </div>
@@ -183,11 +194,12 @@ export default function BrandPageComponent({
       {/* Last Section */}
       <div className="flex justify-between gap-4 w-full">
         <div className="w-full h-full flex flex-col  gap-8 justify-center items-center">
-          <div
+          <HtmlSplitText
             className="lg:mt-[8rem] mt-[6rem] lg:mx-[2rem] text-center lg:text-[2rem] md:text-[2.5rem] text-[1.4rem] leading-[150%] font-primary"
-            dangerouslySetInnerHTML={{
-              __html: brandPageData.lastSection.text,
-            }}
+            htmlContent={brandPageData.lastSection.text}
+            variant="paragraph"
+            element="p"
+            textAlign="center"
           />
           <Link
             href={brandPageData.lastSection.url}

@@ -25,6 +25,7 @@ export const brand = defineType({
           name: 'description',
           type: 'object',
           title: 'Description',
+          description: 'For blod text write content in <b> tag. For example: <b>Bold text</b>',
           fields: [
             {name: 'en', type: 'text', title: 'English'},
             {name: 'it', type: 'text', title: 'Italian'},

@@ -18,13 +18,17 @@ export async function GET() {
       return NextResponse.json({ error: data.error.message }, { status: 400 });
     }
 
-    // Format numbers for display
+    // Format numbers for display (truncate, not round, for K/M)
     const formatNumber = (num: number): string => {
       if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + "M";
+        // Truncate to 1 decimal place for millions
+        const truncated = Math.floor(num / 100000) / 10;
+        return truncated.toFixed(1) + "M";
       }
       if (num >= 1000) {
-        return (num / 1000).toFixed(1) + "K";
+        // Truncate to 1 decimal place for thousands
+        const truncated = Math.floor(num / 100) / 10;
+        return truncated.toFixed(1) + "K";
       }
       return num.toString();
     };
@@ -35,7 +39,7 @@ export async function GET() {
       name: data.name || 'Laura Biagiotti Parfums', // Display name
       profilePicture: data.profile_picture_url || '/logo/insta-bg.jpg',
       accountType: data.account_type || 'BUSINESS',
-      posts: formatNumber(data.media_count || 0),
+      posts: data.media_count || 0,
       followers: formatNumber(data.followers_count || 0),
       following: formatNumber(data.follows_count || 0),
     };
