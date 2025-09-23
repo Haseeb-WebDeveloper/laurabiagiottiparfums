@@ -16,10 +16,11 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
         <div className="w-full md:max-w-[40%] lg:max-w-[32.5%] md:sticky md:top-[16.8rem] md:self-start">
           <div className="aspect-[4/5] w-full relative">
             <ParallaxImage
-              className="rounded-[1rem]"
+              className="rounded-[1rem] object-cover"
               src={news.featuredImage?.asset.url || ""}
               alt={news.title}
               fill={true}
+              objectPosition="top-left"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
           </div>

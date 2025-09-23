@@ -173,11 +173,11 @@ const NewsHorizontalScrollNew = ({
               }}
             >
               <div className="w-fit flex gap-[2rem] items-start h-full">
-                <div className="aspect-[4/3] relative h-full w-[300px] 2xl:min-h-[400px] min-h-[370px]">
+                <div className="aspect-[4/3] rounded-[1rem] overflow-hidden relative h-full w-[300px] 2xl:min-h-[400px] min-h-[370px]">
                   <ParallaxImage
                     src={card.featuredImage?.asset.url || ""}
                     alt={card.title}
-                    className="rounded-[1rem] w-full h-full object-cover"
+                    className="rounded-[1rem] w-full h-full object-cover scale-[108%]"
                     direction="horizontal"
                   />
                 </div>
