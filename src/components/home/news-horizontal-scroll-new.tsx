@@ -173,7 +173,7 @@ const NewsHorizontalScrollNew = ({
               }}
             >
               <div className="w-fit flex gap-[2rem] items-start h-full">
-                <div className="aspect-[4/3] relative h-full w-[300px] 2xl:min-h-[400px] xl:min-h-[370px]">
+                <div className="aspect-[4/3] relative h-full w-[300px] 2xl:min-h-[400px] min-h-[370px]">
                   <ParallaxImage
                     src={card.featuredImage?.asset.url || ""}
                     alt={card.title}
@@ -181,7 +181,7 @@ const NewsHorizontalScrollNew = ({
                     direction="horizontal"
                   />
                 </div>
-                <div className="w-fit h-full 2xl:min-h-[400px] xl:min-h-[370px] flex flex-col justify-between">
+                <div className="w-fit h-full 2xl:min-h-[400px] min-h-[370px] flex flex-col justify-between">
                   <div className="">
                     <SplitText
                       className="uppercase tracking-[0.1em] text-[0.875rem] font-[500]"

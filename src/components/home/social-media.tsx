@@ -114,11 +114,6 @@ export default function SocialMedia({
     return (
       <section className="">
         <div>
-          {/* <SplitText
-            text="Follow us on Instagram"
-            variant="heading"
-            element="h2"
-          /> */}
           <h2
             className="md:text-[3rem] text-[2.2rem] font-bold"
             style={{
@@ -181,16 +176,15 @@ export default function SocialMedia({
   return (
     <section className="">
       <div>
-        <SplitText
-          text="Follow us on Instagram"
-          variant="heading"
-          element="h2"
+        <h2
           className="md:text-[3rem] text-[2.2rem] font-bold"
           style={{
             letterSpacing: "-0.04em",
             marginBottom: "0.5rem",
           }}
-        />
+        >
+          Follow us on Instagram
+        </h2>
       </div>
       <div className="">
         <SplitText

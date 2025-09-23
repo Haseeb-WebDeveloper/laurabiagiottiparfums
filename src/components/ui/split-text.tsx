@@ -44,6 +44,7 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
     let tl: gsap.core.Timeline;
     let splitter: GSAPSplitText;
     let targets: Element[];
+    let resizeTimeout: NodeJS.Timeout;
 
     const initializeAnimation = () => {
       animationCompletedRef.current = false;
@@ -190,11 +191,65 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
       }
     };
 
+    // Handle window resize events
+    const handleResize = () => {
+      // Clear any existing resize timeout
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      
+      // Debounce resize handling to avoid performance issues
+      resizeTimeout = setTimeout(() => {
+        if (!el || !splitter) return;
+        
+        try {
+          // Kill existing timeline and ScrollTrigger
+          if (tl) {
+            tl.kill();
+          }
+          if (scrollTriggerRef.current) {
+            scrollTriggerRef.current.kill();
+            scrollTriggerRef.current = null;
+          }
+          
+          // Revert the splitter to clean up DOM
+          if (splitter) {
+            splitter.revert();
+          }
+          
+          // Clear any existing transforms and styles
+          if (targets && targets.length > 0) {
+            gsap.killTweensOf(targets);
+            gsap.set(targets, { clearProps: "all" });
+          }
+          
+          // Reset element styles
+          el.style.visibility = "hidden";
+          
+          // Reinitialize the animation with fresh calculations
+          setTimeout(initializeAnimation, 50);
+          
+        } catch (error) {
+          console.error("Error handling resize in SplitText:", error);
+        }
+      }, 150); // 150ms debounce delay
+    };
+
     // Initialize with delay for footer elements to avoid conflicts
     const timeoutId = setTimeout(initializeAnimation, initDelay);
+    
+    // Add resize event listener
+    window.addEventListener('resize', handleResize);
 
     return () => {
       clearTimeout(timeoutId);
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      
+      // Remove resize event listener
+      window.removeEventListener('resize', handleResize);
+      
       if (tl) {
         tl.kill();
       }

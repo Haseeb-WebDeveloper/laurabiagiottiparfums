@@ -18,6 +18,7 @@ interface ThreeColumnScrollProps {
 
 const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const centerColumnRef = useRef<HTMLDivElement>(null);
   const rightColumnRef = useRef<HTMLDivElement>(null);
@@ -28,6 +29,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
   const leftSTRef = useRef<ScrollTrigger | null>(null);
   const centerSTRef = useRef<ScrollTrigger | null>(null);
   const rightSTRef = useRef<ScrollTrigger | null>(null);
+  const parallaxSTRef = useRef<ScrollTrigger | null>(null);
 
   const handleBuyNowClick = (product: Perfume) => {
     setSelectedPerfume(product);
@@ -172,9 +174,9 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
 
           const commonScrollTriggerConfig = {
             trigger: container,
-            start: "top +=190px",
+            start: "top +=240px",
             end: "bottom bottom",
-            scrub: 0.8, // Slightly slower scrub for smoother feel
+            scrub: 0.8,
             invalidateOnRefresh: true,
           };
 
@@ -224,6 +226,31 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
           });
         }
 
+        // Add parallax animation for the entire section (separate from column animations)
+        if (wrapperRef.current) {
+            parallaxSTRef.current = ScrollTrigger.create({
+              trigger: wrapperRef.current,
+              start: "top bottom+=200", // Start much earlier when section is still below viewport
+              end: "bottom top", // End later for longer effect
+              scrub: 0.8, // Faster response for more immediate effect
+              onUpdate: (self) => {
+                if (wrapperRef.current) {
+                  // More aggressive parallax calculation for better visual impact
+                  const parallaxDistance = 170; // Increased base distance
+                  const progress = self.progress;
+                  
+                  // Use easing function for more dramatic effect at the beginning
+                  const easedProgress = 1 - Math.pow(1 - progress, 2); // Ease out quad
+                  
+                  gsap.set(wrapperRef.current, {
+                    y: -easedProgress * parallaxDistance,
+                    force3D: true,
+                  });
+                }
+              },
+            });
+        }
+
         // Dispatch event when height is set
         window.dispatchEvent(new CustomEvent("columnHeightSet"));
 
@@ -237,6 +264,7 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
         leftSTRef.current?.kill();
         centerSTRef.current?.kill();
         rightSTRef.current?.kill();
+        parallaxSTRef.current?.kill();
       };
     },
     { scope: containerRef, dependencies: [minHeight] }
@@ -253,9 +281,9 @@ const ThreeColumnScroll: React.FC<ThreeColumnScrollProps> = ({ products, locale 
   }, []);
 
   return (
-    <div className="relative">
+    <div ref={wrapperRef} className="relative ">
       {/* Three Column Scroll Section */}
-      <div className={`relative pb-[3rem]`}>
+      <div className={`relative pt-[1rem]`}>
         {/* Responsive Grid Layout */}
         <div
           ref={containerRef}

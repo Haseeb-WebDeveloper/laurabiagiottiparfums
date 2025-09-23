@@ -40,14 +40,21 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   const totalSlides = slides.length;
 
   useEffect(() => {
-    // Parallax: update progress as we scroll through the hero section
+    // Enhanced parallax: more responsive and prominent movement
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
       const sectionHeight = Math.max(rect.height, 1);
-      const traveled = Math.min(Math.max(-rect.top, 0), sectionHeight);
-      const progress = traveled / sectionHeight; // 0 → 1 while section scrolls past
-      setScrollProgress(progress);
+      
+      // Start parallax earlier - when section is 200px below viewport
+      const startOffset = 200;
+      const traveled = Math.min(Math.max(-rect.top + startOffset, 0), sectionHeight + startOffset);
+      const progress = traveled / (sectionHeight + startOffset); // 0 → 1 while section scrolls past
+      
+      // Apply easing for more dramatic effect
+      const easedProgress = 1 - Math.pow(1 - progress, 2); // Ease out quad
+      setScrollProgress(easedProgress);
     };
 
     handleScroll();
@@ -295,7 +302,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         fadeEffect={{
           crossFade: true
         }}
-        style={{ transform: `translateY(${scrollProgress * 60}px)`, willChange: 'transform' }}
+        style={{ transform: `translateY(${scrollProgress * 120}px)`, willChange: 'transform' }}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index} className="relative">
@@ -314,7 +321,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       </Swiper>
 
       {/* Fixed Content Layer */}
-      <div className="absolute inset-0 z-50" style={{ transform: `translateY(${scrollProgress * 30}px)`, willChange: 'transform' }}>
+      <div className="absolute inset-0 z-50" style={{ transform: `translateY(${scrollProgress * 80}px)`, willChange: 'transform' }}>
         <div className="2xl:px-[34px] md:px-[38px] px-[18px] h-full flex items-center">
           <div className="relative w-full max-w">
             {slides.map((slide, index) => (

@@ -12,8 +12,7 @@ import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
 import WearYourPerfume from "../wear-your-perfume";
 import Link from "next/link";
-import Footer from "../layout/footer";
-import NewsSectionHome, { sampleNews } from "@/test/test-1";
+import { useRef, useEffect, useState } from "react";
 
 export default function HomePage({
   homeData,
@@ -23,6 +22,7 @@ export default function HomePage({
   locale: string;
 }) {
   const { t } = useLocale();
+  const threeColumnSectionRef = useRef<HTMLDivElement>(null);
 
   return (
     <main className="">
@@ -30,14 +30,17 @@ export default function HomePage({
         <HeroSlider slides={homeData.perfumesCarousel} locale={locale} />
       </div>
       {/* Hero Section with Featured Perfumes */}
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div 
+        ref={threeColumnSectionRef}
+        className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]"
+      >
         <div className="max-w">
           <ThreeColumnScroll products={homeData.perfumes} locale={locale} />
         </div>
       </div>
 
       {/* Circular Ingredients Section */}
-      <div className="lg:mt-[6rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="-pt-[4vw] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <Rotate images={homeData.circularIngridientsImages} />
         </div>
@@ -71,7 +74,7 @@ export default function HomePage({
         </div>
       </div>
 
-      <div className="lg:mt-[2rem] ">
+      <div className="lg:mt-[2rem] mt-[6rem]">
         <div className="overflow-hidden">
           <NotesAnimation notes={homeData.notes} locale={locale} />
         </div>
@@ -119,7 +122,7 @@ export default function HomePage({
       </div>
 
       {/* Social Media Section */}
-      <div className="mt-[8rem] mb-[14rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <div className="mt-[3rem] mb-[14rem] bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w">
           <SocialMedia />
         </div>
