@@ -283,7 +283,7 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 /* Custom Scrollbar */
-.custom-scrollbar::-webkit-scrollbar {
+/* .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -301,7 +301,7 @@ input[type="range"]:focus::-moz-range-thumb {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* For Firefox */
+For Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;

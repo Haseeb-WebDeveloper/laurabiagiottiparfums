@@ -70,9 +70,14 @@ export default function Footer() {
               <ul>
                 <li>
                   <FooterLink href={`/${locale}/news`}>
-                    <SplitText text="News" variant="paragraph" element="p" style={{
-                      fontWeight: "500",
-                    }}/>
+                    <SplitText
+                      text="News"
+                      variant="paragraph"
+                      element="p"
+                      style={{
+                        fontWeight: "500",
+                      }}
+                    />
                   </FooterLink>
                 </li>
               </ul>
@@ -123,7 +128,10 @@ export default function Footer() {
               </div>
               <ul className="flex flex-col gap-[0.4rem]">
                 <li>
-                  <FooterLink href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`} external>
+                  <FooterLink
+                    href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`}
+                    external
+                  >
                     <SplitText
                       text="Laura Biagiotti Shop"
                       variant="heading"
@@ -147,7 +155,10 @@ export default function Footer() {
                   </FooterLink>
                 </li>
                 <li>
-                  <FooterLink href={`https://abparfums.com/recycling/italian/`} external>
+                  <FooterLink
+                    href={`https://abparfums.com/recycling/italian/`}
+                    external
+                  >
                     <span className="leading-[130%]">
                       <SplitText
                         text={`Instructions for separate collection of packaging`}
@@ -172,27 +183,63 @@ export default function Footer() {
           {/* Legal Links - Desktop */}
           <div className="space-y-[.5rem] hidden lg:block">
             <div className="flex items-center gap-[0.3rem] text-[0.87rem] tracking-tight text-foreground">
-              <Link href={`/${locale}/privacy-policy`} className="flex items-center">
-                <SplitText text="Privacy Policy" variant="paragraph" element="p"
-                className="hover:underline text-[0.87rem] leading-[100%]"
+              <Link
+                href={`/${locale}/privacy-policy`}
+                className="flex items-center"
+              >
+                <SplitText
+                  text="Privacy Policy"
+                  variant="paragraph"
+                  element="p"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  style={{
+                    lineHeight: "100%"
+                  }}
                 />
               </Link>
               <span>|</span>
-              <Link href={`/${locale}/cookies-policy`} className="flex items-center">
-                <SplitText text="Cookies Policy" variant="paragraph" element="p"
-                className="hover:underline text-[0.87rem]  leading-[100%]"
+              <Link
+                href={`/${locale}/cookies-policy`}
+                className="flex items-center"
+              >
+                <SplitText
+                  text="Cookies Policy"
+                  variant="paragraph"
+                  element="p"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  style={{
+                    lineHeight: "100%"
+                  }}
                 />
               </Link>
               <span>|</span>
-              <Link href={`/${locale}/terms-of-use`} className="flex items-center">
-                <SplitText text="Terms of use" variant="paragraph" element="p"
-                className="hover:underline text-[0.87rem] leading-[100%]"
+              <Link
+                href={`/${locale}/terms-of-use`}
+                className="flex items-center"
+              >
+                <SplitText
+                  text="Terms of use"
+                  variant="paragraph"
+                  element="p"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  style={{
+                    lineHeight: "100%"
+                  }}
                 />
               </Link>
               <span>|</span>
-              <Link href={`mailto:info@laurabiagiottiparfums.com`} className="flex items-center">
-                <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p"
-                className="hover:underline text-[0.87rem] leading-[100%]"
+              <Link
+                href={`mailto:info@laurabiagiottiparfums.com`}
+                className="flex items-center"
+              >
+                <SplitText
+                  text="info@laurabiagiottiparfums.com"
+                  variant="paragraph"
+                  element="p"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  style={{
+                    lineHeight: "100%"
+                  }}
                 />
               </Link>
             </div>
@@ -201,6 +248,10 @@ export default function Footer() {
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
                 variant="paragraph"
                 element="p"
+                className=""
+                style={{
+                  wordSpacing: "0em",
+                }}
               />
             </div>
           </div>
@@ -209,21 +260,53 @@ export default function Footer() {
           <div className="space-y-[.7rem] block lg:hidden w-full">
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-0 text-[0.87rem] tracking-tight text-foreground">
-                <Link href={`/${locale}/privacy-policy`} className="flex items-center">
-                  <SplitText text="Privacy Policy" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
+                <Link
+                  href={`/${locale}/privacy-policy`}
+                  className="flex items-center"
+                >
+                  <SplitText
+                    text="Privacy Policy"
+                    variant="paragraph"
+                    element="p"
+                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                  />
                 </Link>
                 <span>|</span>
-                <Link href={`/${locale}/cookies-policy`} className="flex items-center">
-                  <SplitText text="Cookies Policy" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
+                <Link
+                  href={`/${locale}/cookies-policy`}
+                  className="flex items-center"
+                >
+                  <SplitText
+                    text="Cookies Policy"
+                    variant="paragraph"
+                    element="p"
+                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                  />
                 </Link>
                 <span>|</span>
-                <Link href={`/${locale}/terms-of-use`} className="flex items-center">
-                  <SplitText text="Terms of use" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
+                <Link
+                  href={`/${locale}/terms-of-use`}
+                  className="flex items-center"
+                >
+                  <SplitText
+                    text="Terms of use"
+                    variant="paragraph"
+                    element="p"
+                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                  />
                 </Link>
               </div>
               <div className="text-[0.87rem] text-foreground">
-                <Link href={`mailto:info@laurabiagiottiparfums.com`} className="flex items-center">
-                  <SplitText text="info@laurabiagiottiparfums.com" variant="paragraph" element="p" className="hover:underline text-[0.87rem] leading-[90%]" />
+                <Link
+                  href={`mailto:info@laurabiagiottiparfums.com`}
+                  className="flex items-center"
+                >
+                  <SplitText
+                    text="info@laurabiagiottiparfums.com"
+                    variant="paragraph"
+                    element="p"
+                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                  />
                 </Link>
               </div>
             </div>
@@ -270,9 +353,8 @@ function FooterLink({
     >
       <span className="relative">
         {children}
-      <AnimatedUnderline isActive={isHover} className="-bottom-[1px] "/>
+        <AnimatedUnderline isActive={isHover} className="-bottom-[1px] " />
       </span>
     </Link>
   );
 }
-

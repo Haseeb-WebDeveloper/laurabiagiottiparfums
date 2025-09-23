@@ -271,8 +271,6 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
   // Ensure no initial flash: default to hidden unless user overrides visibility
   const mergedStyle: React.CSSProperties = {
     textAlign,
-    overflow: "hidden",
-    display: "inline-block",
     whiteSpace: "normal",
     wordWrap: "break-word",
     ...style,
