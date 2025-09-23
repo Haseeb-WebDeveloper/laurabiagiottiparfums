@@ -390,7 +390,7 @@ export default function PerfumeSlugHeroSection({
 
           {/* Content */}
           <div className="w-full lg:w-full space-y-8">
-            <div className="space-y-6 max-w-[400px] mx-auto">
+            <div className="space-y-6 max-w-[300px] mx-auto">
               <div className="prose prose-gray max-w-none">
                 <p className="">{description}</p>
               </div>

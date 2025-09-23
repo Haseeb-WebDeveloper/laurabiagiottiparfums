@@ -5,6 +5,7 @@ import { RelatedProduct } from "@/types/perfume";
 import Image from "next/image";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
+import SplitText from "../ui/split-text";
 
 export default function RelatedPerfumes({
   relatedPerfumes,
@@ -15,13 +16,18 @@ export default function RelatedPerfumes({
 
   return (
     <section className="lg:max-w-[83%] w-full mx-auto mt-[5rem]">
-      <h3 className="mb-12 lg:text-[3rem] text-[2.5rem] font-[500]">
-        {locale === "en"
-          ? "Related fragrances"
-          : locale === "it"
-            ? "Altre fragranze"
-            : "Andere Düfte"}
-      </h3>
+      <SplitText
+        className="mb-12 lg:text-[3rem] text-[2.5rem] font-[500]"
+        variant="heading"
+        element="h3"
+        text={
+          locale === "en"
+            ? "Related fragrances"
+            : locale === "it"
+              ? "Altre fragranze"
+              : "Andere Düfte"
+        }
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 justify-between lg:gap-8 gap-16">
         {relatedPerfumes.map((related, index) => (
           <div

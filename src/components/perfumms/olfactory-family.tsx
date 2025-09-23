@@ -4,6 +4,7 @@ import { Perfume } from "@/types/perfume";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
 import { useLocale } from "@/lib/i18n/context";
+import SplitText from "../ui/split-text";
 
 export default function OlfactoryFamily({
   olfactoryFamily,
@@ -39,18 +40,30 @@ export default function OlfactoryFamily({
       {/* Left Column */}
       <div className="w-full flex flex-col md:flex-row lg:gap-[2rem] gap-[1.5rem]">
         <div className="w-full space-y-[0.7rem]">
-          <h3 className="text-[2rem] lg:font-[600] font-[700]">
+          <h3 className="text-[2rem] lg:font-[600] font-[700] tracking-wider">
             {t("olfactoryFamily")}
           </h3>
-          <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
-            {olfactoryFamily}
-          </span>
+          <SplitText
+            className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-bold mb-[1.8rem]"
+            variant="paragraph"
+            element="p"
+            text={olfactoryFamily}
+            style={{
+              fontWeight: "500",
+            }}
+          />
         </div>
         <div className="w-full space-y-[0.7rem]">
-          <h3 className="text-[2rem] lg:font-[600] font-[700]">{t("nose")}</h3>
-          <span className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-[600] text-foreground/90 mb-[1.8rem]">
-            {nose}
-          </span>
+          <h3 className="text-[2rem] lg:font-[600] font-[700] tracking-wider">{t("nose")}</h3>
+          <SplitText
+            className="lg:text-[1rem] text-[1.1rem] leading-[1.5rem] font-bold mb-[1.8rem]"
+            variant="paragraph"
+            element="p"
+            text={nose}
+            style={{
+              fontWeight: "500",
+            }}
+          />
         </div>
       </div>
 

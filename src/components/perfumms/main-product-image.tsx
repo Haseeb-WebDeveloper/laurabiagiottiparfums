@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
 import { useLocale } from "@/lib/i18n/context";
+import SplitText from "../ui/split-text";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function MainProductImage({
@@ -76,14 +77,15 @@ export default function MainProductImage({
       </div>
       {/* Product Name and Price */}
       <div className="-mt-[4rem] flex flex-col justify-center items-center">
-        <h2
-          className="mb-[1.4rem] text-center"
+        <SplitText
+          className="mb-[1.4rem] text-center lg:text-[3rem] text-[2.6rem] leading-[1.2] font-semibold"
           style={{
             fontWeight: "500",
           }}
-        >
-          {title}
-        </h2>
+          variant="heading"
+          element="h2"
+          text={title}
+        />
         <button
           onClick={() => setIsPopupOpen(true)}
           className="cursor-pointer flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
