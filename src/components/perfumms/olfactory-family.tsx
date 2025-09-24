@@ -1,10 +1,10 @@
 "use client";
 
-import { Perfume } from "@/types/perfume";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
 import { useLocale } from "@/lib/i18n/context";
 import SplitText from "../ui/split-text";
+import HtmlSplitText from "../ui/html-split-text";
 
 export default function OlfactoryFamily({
   olfactoryFamily,
@@ -69,7 +69,7 @@ export default function OlfactoryFamily({
 
       {/* Right Column */}
       <div className="w-full flex flex-col gap-[2rem]">
-        <p className="mb-[0.4rem]">{scentDescription}</p>
+        <HtmlSplitText className="mb-[0.4rem]" variant="paragraph" htmlContent={scentDescription} />
         <button
           onClick={() => setIsPopupOpen(true)}
           className={`cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border text-foreground  transition-colors duration-300 

@@ -8,6 +8,8 @@ import gsap from "gsap";
 import BigHeading from "../layout/big-heading";
 import BuyNowPopup from "../ui/buy-now-popup";
 import { useState } from "react";
+import SplitText from "../ui/split-text";
+import HtmlSplitText from "../ui/html-split-text";
 
 export default function SeventhSection({
   seventhSection,
@@ -63,12 +65,9 @@ export default function SeventhSection({
         <div className="w-[30%] flex flex-col gap-[3rem] justify-between items-end ">
           {/* top row */}
           <div className="space-y-[1rem]">
-            <h3 className="text-[2rem] font-[600]">
-              {seventhSection.content.title}
-            </h3>
-            <p className=" lg:pr-[4rem] text-[1rem] font-[400]">
-              {seventhSection.content.description}
-            </p>
+            <SplitText className="text-[2rem] font-[600]" variant="heading" element="h3" text={seventhSection.content.title} />
+             
+            <HtmlSplitText className=" lg:pr-[4rem] text-[1rem] font-[400]" variant="paragraph" htmlContent={seventhSection.content.description} />
           </div>
 
           {/* bottom row */}

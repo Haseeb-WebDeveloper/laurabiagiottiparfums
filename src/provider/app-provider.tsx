@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { EnhancedThemeProvider } from "@/components/enhanced-theme-provider";
 import React, { useEffect, useState, useRef } from "react";
 import LocaleWrapper from "@/components/i18n/LocaleWrapper";
 import Navbar from "@/components/layout/navbar";
@@ -110,7 +110,7 @@ function AppProvider({ children, locale }: AppProviderProps) {
   return (
     <>
       <PiwikProProvider>
-        <ThemeProvider attribute="class" defaultTheme="light">
+        <EnhancedThemeProvider attribute="class" defaultTheme="light">
           <LocaleWrapper locale={locale}>
             <SmoothScrolling>
               {/* <SplitHeadingsAnimation /> */}
@@ -123,7 +123,7 @@ function AppProvider({ children, locale }: AppProviderProps) {
               <Footer />
             </SmoothScrolling>
           </LocaleWrapper>
-        </ThemeProvider>
+        </EnhancedThemeProvider>
       </PiwikProProvider>
     </>
   );

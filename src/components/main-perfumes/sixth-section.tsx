@@ -9,6 +9,7 @@ import { useLocale } from "@/lib/i18n/context";
 import { MainPerfume } from "@/types/main-perfume";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
+import SplitText from "../ui/split-text";
 
 export default function SixthSection({
   sixthSection,
@@ -48,9 +49,12 @@ export default function SixthSection({
 
   return (
     <div className="w-full flex flex-col gap-[2rem]">
-      <h3 className="lg:text-[2.9rem] text-[2.3rem] lg:text-center font-[600] tracking-[110%]">
-        {sixthSection.heading}
-      </h3>
+      <SplitText
+        className="lg:text-[2.9rem] text-[2.3rem] lg:text-center font-[600] tracking-[110%]"
+        variant="heading"
+        element="h3"
+        text={sixthSection.heading}
+      />
 
       {/* 2 main columns */}
       <div className="hidden lg:flex mt-[4rem] w-full md:flex flex-col lg:flex-row gap-[3rem]">
@@ -66,12 +70,17 @@ export default function SixthSection({
               />
             </div>
             <div className="space-y-[1rem]">
-              <h3 className="text-[2rem] font-[600]">
-                {sixthSection.firstContent.title}
-              </h3>
-              <p className="text-[1rem] max-w-[70%] font-[400]">
-                {sixthSection.firstContent.description}
-              </p>
+              <SplitText
+                className="text-[2rem] font-[600]"
+                variant="heading"
+                element="h3"
+                text={sixthSection.firstContent.title}
+              />
+              <SplitText
+                className="text-[1rem] max-w-[70%] font-[400]"
+                variant="paragraph"
+                text={sixthSection.firstContent.description}
+              />
             </div>
           </div>
           {/* bottom row */}
@@ -98,12 +107,17 @@ export default function SixthSection({
           {/* bottom row */}
           <div className="max-w-[80%]">
             <div className="space-y-[1rem]">
-              <h3 className="text-[2rem] font-[600]">
-                {sixthSection.firstContent.title}
-              </h3>
-              <p className=" lg:pr-[4rem] text-[1rem] font-[400]">
-                {sixthSection.firstContent.description}
-              </p>
+              <SplitText
+                className="text-[2rem] font-[600]"
+                variant="heading"
+                element="h3"
+                text={sixthSection.firstContent.title}
+              />
+              <SplitText
+                className=" lg:pr-[4rem] text-[1rem] font-[400]"
+                variant="paragraph"
+                text={sixthSection.firstContent.description}
+              />
               <button
                 onClick={() => handleBuyNowClick(mainPerfume)}
                 className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300"
@@ -130,12 +144,17 @@ export default function SixthSection({
 
           {/* 1st Text */}
           <div className="space-y-[1rem]">
-            <h3 className="text-[2rem] font-[600]">
-              {sixthSection.firstContent.title}
-            </h3>
-            <p className="text-[1rem] max-w-[70%] font-[400]">
-              {sixthSection.firstContent.description}
-            </p>
+            <SplitText
+              className="text-[2rem] font-[600]"
+              variant="heading"
+              element="h3"
+              text={sixthSection.firstContent.title}
+            />
+            <SplitText
+              className="text-[1rem] max-w-[70%] font-[400]"
+              variant="paragraph"
+              text={sixthSection.firstContent.description}
+            />
           </div>
 
           {/* Media */}
@@ -149,12 +168,17 @@ export default function SixthSection({
 
           {/* 2nd Text */}
           <div className="space-y-[1rem]">
-            <h3 className="text-[2rem] font-[600]">
-              {sixthSection.firstContent.title}
-            </h3>
-            <p className="text-[1rem] font-[400]">
-              {sixthSection.firstContent.description}
-            </p>
+            <SplitText
+              className="text-[2rem] font-[600]"
+              variant="heading"
+              element="h3"
+              text={sixthSection.firstContent.title}
+            />
+            <SplitText
+              className="text-[1rem] font-[400]"
+              variant="paragraph"
+              text={sixthSection.firstContent.description}
+            />
           </div>
 
           {/* Media */}

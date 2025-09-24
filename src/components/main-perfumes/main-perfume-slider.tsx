@@ -332,11 +332,11 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                     key={index}
                     onClick={() => goToSlide(index)}
                     disabled={isTransitioning}
-                    className={`absolute text-foreground/90 text-light text-[1rem] leading-none pb-2 transition-all duration-300 disabled:cursor-not-allowed ${
-                      index === activeIndex ? "opacity-100" : "opacity-50"
+                    className={`cursor-pointer absolute text-foreground/90 text-light text-[1rem] leading-none pb-2 transition-all duration-300 hover:text-foreground ${
+                      index === activeIndex ? "opacity-100" : "opacity-50 hover:opacity-100"
                     }`}
                     style={{
-                      left: `${(100 / (slides.length - 1)) * index + 3}%`,
+                      left: `${(100 / (slides.length - 1)) * index}%`,
                       transform: "translateX(-50%)",
                     }}
                   >
@@ -349,7 +349,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                   <div
                     className="h-full bg-white transition-all duration-500 ease-out"
                     style={{
-                      width: `${(100 / (slides.length - 1)) * (activeIndex + 1)}%`,
+                      width: `${Math.min(100, (activeIndex / (slides.length - 1)) * 100)}%`,
                       transformOrigin: "left",
                     }}
                   />
@@ -363,7 +363,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
             <button
               onClick={goPrev}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
+              className="cursor-pointer w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Previous slide"
             >
               <Image
@@ -378,7 +378,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
             <button
               onClick={goNext}
               disabled={isTransitioning}
-              className="w-12 h-12 flex items-center justify-center transition-colors duration-300"
+              className="cursor-pointer w-12 h-12 flex items-center justify-center transition-colors duration-300"
               aria-label="Next slide"
             >
               <Image

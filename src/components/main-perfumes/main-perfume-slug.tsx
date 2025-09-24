@@ -16,6 +16,8 @@ import BigImageAnimation from "./big-image-animation";
 import { MainPerfumeSlider } from "./main-perfume-slider";
 import { useLocale } from "@/lib/i18n/context";
 import BuyNowPopup from "../ui/buy-now-popup";
+import SplitText from "../ui/split-text";
+import { useThemeStore } from "@/store/theme-store";
 
 export default function MainPerfumeSlug({
   mainPerfume,
@@ -26,29 +28,42 @@ export default function MainPerfumeSlug({
 }) {
   const { setTheme, theme, resolvedTheme } = useTheme();
   const { t } = useLocale();
-  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(null);
+  const [selectedPerfume, setSelectedPerfume] = useState<MainPerfume | null>(
+    null
+  );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  
+  const { 
+    forceTheme, 
+    restoreOriginalTheme, 
+    setOriginalTheme 
+  } = useThemeStore();
 
   const handleBuyNowClick = (perfume: MainPerfume) => {
     setSelectedPerfume(perfume);
     setIsPopupOpen(true);
   };
 
-
   useEffect(() => {
-    // Store original theme
-    const originalTheme = resolvedTheme;
+    // Store the current theme as original if it exists and we haven't stored it yet
+    if (resolvedTheme && resolvedTheme !== 'dark') {
+      setOriginalTheme(resolvedTheme);
+    }
 
-    // Force dark theme
+    // Force dark theme for this page
+    forceTheme("dark", "main-perfume");
     setTheme("dark");
 
     return () => {
       // Restore original theme on unmount
-      if (originalTheme) {
-        setTheme(originalTheme);
+      restoreOriginalTheme();
+      // Apply the original theme immediately
+      const state = useThemeStore.getState();
+      if (state.originalTheme && state.originalTheme !== 'dark') {
+        setTheme(state.originalTheme);
       }
     };
-  }, []);
+  }, [forceTheme, restoreOriginalTheme, setOriginalTheme, resolvedTheme, setTheme]);
 
   return (
     <section className="mb-[15rem]">
@@ -73,9 +88,11 @@ export default function MainPerfumeSlug({
                 height={50}
               />
             </div>
-            <p className="lg:text-[2rem] text-[1.35rem] lg:max-w-[60%] max-w-full px-[1rem] lg:px-0 font-[500] font-primary text-center mx-auto">
-              {mainPerfume.secondSectionQuoteText}
-            </p>
+            <SplitText
+              className="lg:text-[2rem] text-[1.35rem] lg:max-w-[60%] max-w-full px-[1rem] lg:px-0 font-[500] font-primary text-center mx-auto"
+              textAlign="center"
+              text={mainPerfume.secondSectionQuoteText}
+            />
             <div className="mt-[0.5rem] w-full flex justify-center">
               <Image
                 src="/icons/quote.svg"
@@ -120,12 +137,18 @@ export default function MainPerfumeSlug({
       <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w mt-[5rem] lg:mt-[10rem] w-full flex flex-col lg:flex-row gap-[2rem]">
           <div className="w-full space-y-[1rem]">
-            <h2 className="lg:text-[3rem] text-[2.2rem] font-[600]">
-              {mainPerfume.fourthSectionTextImage.title}
-            </h2>
-            <p className="text-[1rem] font-[400] lg:max-w-[75%]">
-              {mainPerfume.fourthSectionTextImage.text}
-            </p>
+            <SplitText
+              className="lg:text-[3rem] text-[2.2rem] font-[600]"
+              variant="heading"
+              element="h2"
+              text={mainPerfume.fourthSectionTextImage.title}
+            />
+
+            <SplitText
+              className="text-[1rem] font-[400] lg:max-w-[75%]"
+              variant="paragraph"
+              text={mainPerfume.fourthSectionTextImage.text}
+            />
             <button
               onClick={() => handleBuyNowClick(mainPerfume)}
               className="cursor-pointer mt-[2rem] w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-ring hover:bg-ring transition-colors duration-300"
@@ -171,14 +194,22 @@ export default function MainPerfumeSlug({
       {/* Sixth Section */}
       <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="mt-[9rem] max-w">
-          <SixthSection sixthSection={mainPerfume.sixthSection} mainPerfume={mainPerfume} locale={locale} />
+          <SixthSection
+            sixthSection={mainPerfume.sixthSection}
+            mainPerfume={mainPerfume}
+            locale={locale}
+          />
         </div>
       </div>
 
       {/* Seventh Section */}
       <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="mt-[1rem] max-w">
-          <SeventhSection seventhSection={mainPerfume.seventhSection} mainPerfume={mainPerfume} locale={locale} />
+          <SeventhSection
+            seventhSection={mainPerfume.seventhSection}
+            mainPerfume={mainPerfume}
+            locale={locale}
+          />
         </div>
       </div>
 

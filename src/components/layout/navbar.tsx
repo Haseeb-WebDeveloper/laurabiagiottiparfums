@@ -19,6 +19,7 @@ import AnimatedUnderline from "../ui/animated-underline";
 export default function Navbar() {
   const { locale, t } = useLocale();
   const { theme } = useTheme();
+  console.log(theme);
   const [perfumes, setPerfumes] = useState<{
     mens: CombinedPerfume[];
     womens: CombinedPerfume[];
@@ -196,24 +197,30 @@ export default function Navbar() {
                   alt="search"
                   width={11}
                   height={11}
-                  className="text-foreground group-hover:invert"
+                  className="text-foreground group-hover:invert dark:invert"
                 />
               </div>
             </div>
             {/* Center */}
             <div className="w-full flex flex-col items-center">
               <Link href={`/${locale}`} className="h-fit">
+               {theme === "dark" ? (
                 <Image
-                  src={
-                    theme === "dark"
-                      ? "/logo/desktop-light-logo.svg"
-                      : "/logo/desktop-logo.svg"
-                  }
+                  src="/logo/desktop-light-logo.svg"
                   alt="logo"
                   width={200}
                   height={200}
                   className="w-[11rem] h-fit"
                 />
+               ) : (
+                <Image
+                  src="/logo/desktop-logo.svg"
+                  alt="logo"
+                  width={200}
+                  height={200}
+                  className="w-[11rem] h-fit"
+                />
+               )}
               </Link>
             </div>
             {/* Right */}
