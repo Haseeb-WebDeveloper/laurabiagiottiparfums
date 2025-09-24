@@ -19,8 +19,8 @@ export const translations = {
 
     // Navbar
     search: "Search",
-    womensPerfume: "Women's perfume",
-    mensPerfume: "Men's perfume",
+    womensPerfume: "Women's Perfume",
+    mensPerfume: "Men's Perfume",
     wearYourPerfume: "Wear your perfume",
     wypstep1Title: "Wear your perfume",
     wypstep1Description:

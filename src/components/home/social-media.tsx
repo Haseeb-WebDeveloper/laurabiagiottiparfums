@@ -115,7 +115,7 @@ export default function SocialMedia({
       <section className="">
         <div>
           <h2
-            className="md:text-[3rem] text-[2.2rem] font-bold"
+            className="md:text-[3rem] text-[2.25rem] font-bold"
             style={{
               letterSpacing: "-0.04em",
               marginBottom: "0.5rem",
@@ -196,13 +196,13 @@ export default function SocialMedia({
 
       <div className="mt-[2rem] w-full flex flex-col gap-y-[1.5rem] md:flex-row justify-between">
         <div className="flex gap-[1rem] items-center">
-          <div className="flex items-center rounded-full relative  md:w-[67px] md:h-[67px] w-[45px] h-[45px]">
+          <div className="flex items-center rounded-full relative  md:w-[62px] md:h-[62px] w-[45px] h-[45px]">
             <Image
               src={stats?.profilePicture || "/logo/insta-bg.jpg"}
               alt="Social Media"
               width={100}
               height={100}
-              className="z-10 absolute top-0 left-0 scale-[96%] w-full h-feull object-cover rounded-full aspect-square"
+              className="z-10 absolute top-0 left-0 scale-[96%] w-full h-full object-cover rounded-full aspect-square"
             />
             <Image
               src="/logo/insta-bg.jpg"
@@ -212,24 +212,34 @@ export default function SocialMedia({
               className="absolute top-0 left-0 w-full h-feull object-cover rounded-full aspect-square"
             />
           </div>
-          <div className="flex flex-col">
-            <Link
-              onMouseEnter={() => setHoveredLink(0)}
-              onMouseLeave={() => setHoveredLink(null)}
-              href={`https://www.instagram.com/${stats?.username || "laurabiagiottiparfums"}`}
-              target="_blank"
-              className="md:text-[2rem] text-[1.5rem] font-bold tracking-wider relative"
-              style={{
-                wordSpacing: "0.15em",
-                lineHeight: "1em",
-              }}
-            >
-              <SplitText
-                text={stats?.name || "Laura Biagiotti Parfums"}
-                variant="heading"
-                element="p"
+          <div className="flex flex-col md:gap-[0.2rem]">
+            <div className="flex gap-[0.5rem] items-center relative">
+              <Link
+                onMouseEnter={() => setHoveredLink(0)}
+                onMouseLeave={() => setHoveredLink(null)}
+                href={`https://www.instagram.com/${stats?.username || "laurabiagiottiparfums"}`}
+                target="_blank"
+                className=""
+              >
+                <SplitText
+                  text={stats?.name || "Laura Biagiotti Parfums"}
+                  variant="heading"
+                  element="p"
+                  className="md:text-[2rem] text-[1.75rem] tracking-[2px]"
+                  style={{
+                    wordSpacing: "0.15em",
+                    fontWeight: "700",
+                    lineHeight: "110%",
+                  }}
+                />
+              </Link>
+              <Image
+                src="/icons/varify.svg"
+                alt="Check"
+                width={20}
+                height={20}
+                className="w-[1rem] h-[1rem] hidden md:block"
               />
-
               <motion.div
                 initial={{ width: 0, height: 2 }}
                 animate={
@@ -250,9 +260,9 @@ export default function SocialMedia({
                         transition: { duration: 0.2 },
                       }
                 }
-                className="absolute z-[200] bottom-[8px] left-0 bg-foreground"
+                className="absolute z-[200] bottom-[3px] left-0 bg-foreground"
               />
-            </Link>
+            </div>
             <Link
               onMouseEnter={() => setHoveredLink(1)}
               onMouseLeave={() => setHoveredLink(null)}
@@ -264,6 +274,7 @@ export default function SocialMedia({
                 text={`@${stats?.username || "laurabiagiottiparfums"}`}
                 variant="paragraph"
                 element="p"
+                className="text-[1rem]"
               />
               <motion.div
                 initial={{ width: 0, height: 2 }}
@@ -285,7 +296,7 @@ export default function SocialMedia({
                         transition: { duration: 0.2 },
                       }
                 }
-                className="absolute z-[200] bottom-[4px] left-0 bg-foreground"
+                className="absolute z-[200] bottom-[2px] left-0 bg-foreground"
               />
             </Link>
           </div>

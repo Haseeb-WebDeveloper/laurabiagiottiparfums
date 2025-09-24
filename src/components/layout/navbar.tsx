@@ -258,7 +258,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="h-[29px] w-screen border-b-[1px] border-foreground/[0.08]"></div>
+        <div className="h-[29px] w-[100vw] border-b-[1px] border-foreground/[0.08]"></div>
         {/* Dropdown */}
         {hoveredCategory && (
           <div
