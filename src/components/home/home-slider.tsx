@@ -302,7 +302,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         fadeEffect={{
           crossFade: true
         }}
-        style={{ transform: `translateY(${scrollProgress * 120}px)`, willChange: 'transform' }}
+        // style={{ transform: `translateY(${scrollProgress * 120}px)`, willChange: 'transform' }}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index} className="relative">
@@ -379,7 +379,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
         <div className="relative h-full max-w">
           {/* Custom Navigation Controls */}
           <div className="absolute md:bottom-[4rem] md:top-auto top-8 left-0 pointer-events-auto">
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-8 px-3 md:px-0">
               {/* Slide Numbers with Progress Line */}
               <div className="relative w-[200px]">
                 {/* Numbers */}

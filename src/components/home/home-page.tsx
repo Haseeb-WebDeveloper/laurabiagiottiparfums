@@ -81,7 +81,7 @@ export default function HomePage({
       </div>
 
       {/* Text Image Section */}
-      <section className="-mt-[14rem] lg:-mt-[12rem]  bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+      <section className="-mt-[18rem] lg:-mt-[12rem]  bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="max-w flex flex-col md:flex-row md:gap-28 gap-10 items-center">
           <div className="md:w-[60%] w-full">
             <div className=" w-full h-[500px]">
@@ -96,7 +96,7 @@ export default function HomePage({
             <SplitText
               text={homeData.textImageSection.heading}
               variant="heading"
-              className="md:text-5xl text-[2.3rem] font-[500] leading-[120%] lg:max-w-[60%]"
+              className="md:text-5xl text-[2.3rem] font-[500] leading-[120%] max-w-[60%]"
             />
             <SplitText
               text={homeData.textImageSection.description}

@@ -248,7 +248,7 @@ const NewsHorizontalScrollNew = ({
       {/* Tablet & Mobile Layout - Single Column */}
       <div className="block lg:hidden py-8">
         <SplitText
-          className="text-[2rem] md:text-[3rem] font-bold mb-8"
+          className="text-[2.25rem] md:text-[3rem] font-bold mb-8"
           text="News"
           variant="heading"
         />
@@ -258,14 +258,14 @@ const NewsHorizontalScrollNew = ({
           {cards.map((card, index) => (
             <div key={index} className="relative overflow-hidden group">
               <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-start">
-                <div className="aspect-[4/3] relative w-full md:w-[300px] md:min-h-[300px]">
+                <div className="aspect-[4/3] relative w-full min-h-[320px]">
                   <ParallaxImage
                     src={card.featuredImage?.asset.url || ""}
                     alt={card.title}
                     className="rounded-[1rem] w-full h-full object-cover"
                   />
                 </div>
-                <div className="w-full md:flex-1 flex flex-col justify-between md:min-h-[300px]">
+                <div className="w-full md:flex-1 flex flex-col justify-between">
                   <div className="">
                     <div className="uppercase tracking-[0.1em] text-[0.875rem] font-[500]">
                       {formatDate(card._updatedAt)}
