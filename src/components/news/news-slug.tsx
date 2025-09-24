@@ -10,7 +10,7 @@ import { useLocale } from "@/lib/i18n/context";
 export default function NewsSlug({ news }: { news: NewsItem }) {
   const { t } = useLocale();
   return (
-    <div className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[10rem] mb-[13rem]">
+    <div className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[8rem] mb-[13rem]">
       <div className="flex flex-col md:flex-row justify-between gap-8">
         {/* Image */}
         <div className="w-full md:max-w-[40%] lg:max-w-[32.5%] md:sticky md:top-[16.8rem] md:self-start">

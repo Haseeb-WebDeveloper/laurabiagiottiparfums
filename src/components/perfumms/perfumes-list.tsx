@@ -38,7 +38,7 @@ export default function PerfumesList({
   return (
     <div className="max-w 2xl:mt-[17rem] lg:mt-[16.6rem] mt-[8.2rem] mb-[15rem]">
       <div className="flex flex-col lg:flex-row gap-4 justify-between items-center py-[0.3rem]">
-        <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%] tracking-[0.008em]">
+        <h1 className="2xl:text-[4rem] lg:text-[3.85rem] text-[2.5rem] leading-[150%] tracking-[0.008em]">
           {title}
         </h1>
         <div className="flex gap-4 lg:pt-[0.3rem] pt-0 h-full w-full md:w-auto">
