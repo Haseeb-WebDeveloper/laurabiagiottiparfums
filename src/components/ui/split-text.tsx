@@ -22,6 +22,16 @@ export interface SplitTextProps {
    * lines in the normal flow.
    */
   absoluteLines?: boolean;
+  /**
+   * Custom stagger delay between animated elements (in seconds).
+   * Overrides the default stagger value for this instance.
+   */
+  customStagger?: number;
+  /**
+   * Custom animation duration (in seconds).
+   * Overrides the default duration for this instance.
+   */
+  customDuration?: number;
 }
 
 const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = ({
@@ -33,6 +43,8 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
   style,
   onAnimationComplete,
   absoluteLines = true,
+  customStagger,
+  customDuration,
   ...rest
 }) => {
   const ref = useRef<HTMLDivElement | HTMLParagraphElement | null>(null);
@@ -69,7 +81,7 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
               opacity: 1,
               y: 0,
             },
-            stagger: 0.1,
+            stagger: customStagger ?? 0.1,
             ease: "power3.out",
           }
         : {
@@ -82,8 +94,9 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
               opacity: 1,
               y: "0",
             },
-            stagger: 0.1,
+            stagger: customStagger ?? 0.1,
             ease: "power3.out",
+            duration: customDuration ?? 0.8,
           };
 
       const useAbsoluteLines = baseConfig.splitType === "lines" && absoluteLines;
@@ -190,6 +203,7 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
         ...baseConfig.to,
         ease: baseConfig.ease,
         stagger: baseConfig.stagger,
+        duration: baseConfig.duration,
         force3D: true,
       });
 

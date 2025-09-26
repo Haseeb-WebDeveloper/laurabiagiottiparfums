@@ -64,12 +64,14 @@ export default function BrandPageComponent({
             <SplitText
               className="2xl:text-[4rem] md:text-[3rem] lg:text-[3.85rem] text-[2.6rem] leading-[150%]"
               style={{
-                letterSpacing: "0.01em",
-                wordSpacing: "0.08em",
+                letterSpacing: "0.002em",
+                wordSpacing: "0.15em",
               }}
               text={brandPageData.firstSection.title}
               variant="heading"
               element="h1"
+              customStagger={0.2}
+              customDuration={1.2}
             />
             <HtmlSplitText
               className="md:max-w-[70%] leading-[125%] w-full md:pt-[3.5rem] pt-[1rem] md:pb-[1rem] pb-[2rem]"

@@ -13,10 +13,10 @@ export default function Footer() {
   const { locale } = useLocale();
 
   return (
-    <footer className="pb-[4rem] lg:pb-[6rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
+    <footer className="pb-[4rem] lg:pb-[6.8rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
       <div className="max-w">
         {/* Footer top */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[7rem]">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[9.5rem]">
           {/* Logo */}
           <div className="w-full h-full flex flex-col gap-20">
             <Link href={`/${locale}`} className="w-fit h-fit">
@@ -63,9 +63,14 @@ export default function Footer() {
           {/* Navigation Links */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-4 gap-12">
             {/* Info Section */}
-            <div className="w-full space-y-2 lg:space-y-3">
-              <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Info" variant="heading" element="h2" />
+            <div className="w-full space-y-2 lg:space-y-4">
+              <div className="">
+                <SplitText
+                  text="Info"
+                  variant="heading"
+                  element="h2"
+                  className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
+                />
               </div>
               <ul>
                 <li>
@@ -74,6 +79,7 @@ export default function Footer() {
                       text="News"
                       variant="paragraph"
                       element="p"
+                      className="lg:text-[14px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -84,17 +90,23 @@ export default function Footer() {
             </div>
 
             {/* Product Section */}
-            <div className="w-full space-y-2 lg:space-y-3">
-              <div className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground">
-                <SplitText text="Fragrances" variant="heading" element="h2" />
+            <div className="w-full space-y-2 lg:space-y-4">
+              <div className="">
+                <SplitText
+                  text="Fragrances"
+                  variant="heading"
+                  element="h2"
+                  className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
+                />
               </div>
-              <ul className="flex flex-col gap-[0.4rem]">
+              <ul className="flex flex-col gap-[0.5rem]">
                 <li>
                   <FooterLink href={`/${locale}/women-perfume`}>
                     <SplitText
                       text="Women"
                       variant="paragraph"
                       element="p"
+                      className="lg:text-[14px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -107,6 +119,7 @@ export default function Footer() {
                       text="Men"
                       variant="paragraph"
                       element="p"
+                      className="lg:text-[14px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -117,8 +130,8 @@ export default function Footer() {
             </div>
 
             {/* Brand Section */}
-            <div className="w-full space-y-2 lg:space-y-3">
-              <div className="text-[1.6rem] lg:text-[1.5rem] text-foreground">
+            <div className="w-full space-y-2 lg:space-y-4">
+              <div className="">
                 <SplitText
                   text="Brand"
                   variant="heading"
@@ -126,7 +139,7 @@ export default function Footer() {
                   className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
                 />
               </div>
-              <ul className="flex flex-col gap-[0.4rem]">
+              <ul className="flex flex-col gap-[0.5rem]">
                 <li>
                   <FooterLink
                     href={`https://laurabiagiotti.it/categoria-prodotto/fragrances/?lang=en`}
@@ -136,6 +149,7 @@ export default function Footer() {
                       text="Laura Biagiotti Shop"
                       variant="heading"
                       element="p"
+                      className="lg:text-[14px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -148,6 +162,7 @@ export default function Footer() {
                       text="Laura Biagiotti World"
                       variant="paragraph"
                       element="p"
+                      className="lg:text-[14px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -164,6 +179,7 @@ export default function Footer() {
                         text={`Instructions for separate collection of packaging`}
                         variant="paragraph"
                         element="p"
+                        className="lg:text-[14px]"
                         style={{
                           maxWidth: "150px",
                           display: "inline-block",
@@ -182,7 +198,7 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-center gap-[1rem] pt-[4.87rem]">
           {/* Legal Links - Desktop */}
           <div className="space-y-[.5rem] hidden lg:block">
-            <div className="flex items-center gap-[0.3rem] text-[0.87rem] tracking-tight text-foreground">
+            <div className="flex items-center gap-[0.2rem] text-[0.87rem] tracking-tight text-foreground">
               <Link
                 href={`/${locale}/privacy-policy`}
                 className="flex items-center"
@@ -191,9 +207,10 @@ export default function Footer() {
                   text="Privacy Policy"
                   variant="paragraph"
                   element="p"
-                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0 tracking-[0rem]"
                   style={{
-                    lineHeight: "100%"
+                    wordSpacing: "0.05em",
+                    lineHeight: "100%",
                   }}
                 />
               </Link>
@@ -206,9 +223,10 @@ export default function Footer() {
                   text="Cookies Policy"
                   variant="paragraph"
                   element="p"
-                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0 tracking-[0rem]"
                   style={{
-                    lineHeight: "100%"
+                    wordSpacing: "0.05em",
+                    lineHeight: "100%",
                   }}
                 />
               </Link>
@@ -221,9 +239,10 @@ export default function Footer() {
                   text="Terms of use"
                   variant="paragraph"
                   element="p"
-                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0 tracking-[0rem]"
                   style={{
-                    lineHeight: "100%"
+                    wordSpacing: "0.05em",
+                    lineHeight: "100%",
                   }}
                 />
               </Link>
@@ -236,9 +255,10 @@ export default function Footer() {
                   text="info@laurabiagiottiparfums.com"
                   variant="paragraph"
                   element="p"
-                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0"
+                  className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0 tracking-[0rem]"
                   style={{
-                    lineHeight: "100%"
+                    wordSpacing: "0.05em",
+                    lineHeight: "100%",
                   }}
                 />
               </Link>
@@ -250,7 +270,7 @@ export default function Footer() {
                 element="p"
                 className=""
                 style={{
-                  wordSpacing: "0em",
+                  wordSpacing: "0.02em",
                 }}
               />
             </div>
@@ -259,7 +279,7 @@ export default function Footer() {
           {/* Legal Links - Mobile */}
           <div className="space-y-[.7rem] block lg:hidden w-full">
             <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-0 text-[0.87rem] tracking-tight text-foreground">
+              <div className="flex flex-wrap gap-x-[0.5rem] gap-y-0 text-[0.87rem] tracking-tight text-foreground">
                 <Link
                   href={`/${locale}/privacy-policy`}
                   className="flex items-center"
@@ -268,7 +288,10 @@ export default function Footer() {
                     text="Privacy Policy"
                     variant="paragraph"
                     element="p"
-                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                    className="text-[0.87rem] leading-[80%] border-b-[1px] border-transparent hover:border-foreground"
+                    style={{
+                      wordSpacing: "0.05em",
+                    }}
                   />
                 </Link>
                 <span>|</span>
@@ -280,7 +303,10 @@ export default function Footer() {
                     text="Cookies Policy"
                     variant="paragraph"
                     element="p"
-                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                    className="text-[0.87rem] leading-[80%] border-b-[1px] border-transparent hover:border-foreground"
+                    style={{
+                      wordSpacing: "0.05em",
+                    }}
                   />
                 </Link>
                 <span>|</span>
@@ -292,11 +318,14 @@ export default function Footer() {
                     text="Terms of use"
                     variant="paragraph"
                     element="p"
-                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                    className="text-[0.87rem] leading-[80%] border-b-[1px] border-transparent hover:border-foreground"
+                    style={{
+                      wordSpacing: "0.05em",
+                    }}
                   />
                 </Link>
               </div>
-              <div className="text-[0.87rem] text-foreground">
+              <div className="">
                 <Link
                   href={`mailto:info@laurabiagiottiparfums.com`}
                   className="flex items-center"
@@ -305,16 +334,23 @@ export default function Footer() {
                     text="info@laurabiagiottiparfums.com"
                     variant="paragraph"
                     element="p"
-                    className="text-[0.87rem] leading-[90%] border-b-[1px] border-transparent hover:border-foreground"
+                    className="text-[0.87rem] leading-[80%] border-b-[1px] border-transparent hover:border-foreground"
+                    style={{
+                      wordSpacing: "0.05em",
+                    }}
                   />
                 </Link>
               </div>
             </div>
-            <div className="text-[0.87rem] tracking-tight text-foreground">
+            <div className="">
               <SplitText
                 text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
                 variant="paragraph"
                 element="p"
+                style={{
+                  wordSpacing: "0.05em",
+                }}
+                className="text-[0.87rem] text-foreground"
               />
             </div>
           </div>
