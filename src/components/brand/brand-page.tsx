@@ -197,7 +197,7 @@ export default function BrandPageComponent({
       <div className="flex justify-between gap-4 w-full">
         <div className="w-full h-full flex flex-col  gap-8 justify-center items-center">
           <HtmlSplitText
-            className="lg:mt-[8rem] mt-[6rem] lg:mx-[2rem] text-center lg:text-[2rem] md:text-[2.5rem] text-[1.4rem] leading-[150%] font-primary"
+            className="lg:mt-[8rem] mt-[6rem] lg:mx-[1.82rem] text-center lg:text-[2rem] md:text-[2.5rem] text-[1.4rem] leading-[150%] font-primary"
             htmlContent={brandPageData.lastSection.text}
             variant="paragraph"
             element="p"

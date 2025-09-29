@@ -83,6 +83,7 @@ const SplitText: React.FC<SplitTextProps & React.HTMLAttributes<HTMLElement>> = 
             },
             stagger: customStagger ?? 0.1,
             ease: "power3.out",
+            duration: customDuration ?? 0.8,
           }
         : {
             splitType: "words" as const,

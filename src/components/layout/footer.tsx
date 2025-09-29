@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className="pb-[4rem] lg:pb-[6.8rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
       <div className="max-w">
         {/* Footer top */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-0 justify-between lg:border-b-[2px] border-foreground pb-[9.5rem]">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-4 justify-between lg:border-b-[2px] border-foreground pb-[9.5rem]">
           {/* Logo */}
           <div className="w-full h-full flex flex-col gap-20">
             <Link href={`/${locale}`} className="w-fit h-fit">
@@ -63,7 +63,7 @@ export default function Footer() {
           {/* Navigation Links */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-4 gap-12">
             {/* Info Section */}
-            <div className="w-full space-y-2 lg:space-y-4">
+            <div className="w-full space-y-2 lg:space-y-[15px]">
               <div className="">
                 <SplitText
                   text="Info"
@@ -79,7 +79,7 @@ export default function Footer() {
                       text="News"
                       variant="paragraph"
                       element="p"
-                      className="lg:text-[14px]"
+                      className="lg:text-[14px] tracking-[0.25px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -90,7 +90,7 @@ export default function Footer() {
             </div>
 
             {/* Product Section */}
-            <div className="w-full space-y-2 lg:space-y-4">
+            <div className="w-full space-y-2 lg:space-y-[15px]">
               <div className="">
                 <SplitText
                   text="Fragrances"
@@ -106,7 +106,7 @@ export default function Footer() {
                       text="Women"
                       variant="paragraph"
                       element="p"
-                      className="lg:text-[14px]"
+                      className="lg:text-[14px] tracking-[0.25px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -119,7 +119,7 @@ export default function Footer() {
                       text="Men"
                       variant="paragraph"
                       element="p"
-                      className="lg:text-[14px]"
+                      className="lg:text-[14px] tracking-[0.25px]"
                       style={{
                         fontWeight: "500",
                       }}
@@ -130,7 +130,7 @@ export default function Footer() {
             </div>
 
             {/* Brand Section */}
-            <div className="w-full space-y-2 lg:space-y-4">
+            <div className="w-full space-y-2 lg:space-y-[15px]">
               <div className="">
                 <SplitText
                   text="Brand"
@@ -149,9 +149,10 @@ export default function Footer() {
                       text="Laura Biagiotti Shop"
                       variant="heading"
                       element="p"
-                      className="lg:text-[14px]"
+                      className="lg:text-[14px] tracking-[0.25px]"
                       style={{
                         fontWeight: "500",
+                        wordSpacing: "0.12em",
                       }}
                     />
                   </FooterLink>
@@ -162,9 +163,10 @@ export default function Footer() {
                       text="Laura Biagiotti World"
                       variant="paragraph"
                       element="p"
-                      className="lg:text-[14px]"
+                      className="lg:text-[14px] tracking-[0.25px]"
                       style={{
                         fontWeight: "500",
+                        wordSpacing: "0.12em",
                       }}
                     />
                   </FooterLink>
@@ -174,16 +176,18 @@ export default function Footer() {
                     href={`https://abparfums.com/recycling/italian/`}
                     external
                   >
-                    <span className="leading-[130%]">
+                    <span className="">
                       <SplitText
                         text={`Instructions for separate collection of packaging`}
                         variant="paragraph"
                         element="p"
-                        className="lg:text-[14px]"
+                        className="lg:text-[14px] tracking-[0.25px] "
                         style={{
                           maxWidth: "150px",
                           display: "inline-block",
                           fontWeight: "500",
+                          wordSpacing: "0.12em",
+                          lineHeight: "145%",
                         }}
                       />
                     </span>

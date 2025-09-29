@@ -4,8 +4,10 @@ import { NewsItem } from "@/types/news";
 import { formatDateOnly } from "@/utils/formet-data";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
-import RichEditor from "../rich-editor";
+import AnimatedRichEditor from "../animated-rich-editor";
 import { useLocale } from "@/lib/i18n/context";
+import RichEditor from "../rich-editor";
+import SplitText from "../ui/split-text";
 
 export default function NewsSlug({ news }: { news: NewsItem }) {
   const { t } = useLocale();
@@ -38,8 +40,15 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
           </div>
 
           {/* Content */}
+          {/* <div className="lg:max-w-[84%] pr-2">
+            <SplitText
+              text={<RichEditor content={news.content} />}
+              variant="paragraph"
+              element="div"
+            />
+          </div> */}
           <div className="lg:max-w-[84%] pr-2">
-            <RichEditor content={news.content} />
+            <AnimatedRichEditor content={news.content} />
           </div>
 
           {/* More News */}
