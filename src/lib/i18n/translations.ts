@@ -16,6 +16,19 @@ export const translations = {
     visitTheOfficialWebsite: "Visit the official website",
     discoverAllNews: "Discover all news",
     subscribe: "Subscribe",
+    info: "Info",
+    Fragrances: "Fragrances",
+    brand: "Brand",
+    news: "News",
+    women: "Women",
+    men: "Men",
+    LauraBiagiottiShop: "Laura Biagiotti Shop",
+    LauraBiagiottiWorld: "Laura Biagiotti World",
+    Instructionsforrecycling:
+      "Instructions for recycling collection of packaging",
+    termsOfUse: "Terms of use",
+    footerLastLine:
+      "Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved.",
 
     // Navbar
     search: "Search",
@@ -53,7 +66,6 @@ export const translations = {
     olfactoryNotes: "Olfactory Notes",
     olfactoryFamily: "Olfactory Family",
     nose: "Nose",
-
   },
 
   it: {
@@ -70,6 +82,19 @@ export const translations = {
     visitTheOfficialWebsite: "Visita il sito ufficiale",
     discoverAllNews: "Scopri tutte le news",
     subscribe: "Iscriviti",
+    info: "Info",
+    Fragrances: "Fragranze",
+    brand: "Marca",
+    news: "News",
+    women: "Donne",
+    men: "Uomo",
+    LauraBiagiottiShop: "Laura Biagiotti Shop",
+    LauraBiagiottiWorld: "Laura Biagiotti World",
+    Instructionsforrecycling:
+      "Istruzioni per la raccolta differenziata degli imballaggi",
+    termsOfUse: "Termini di utilizzo",
+    footerLastLine:
+      "Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved.",
     // Navbar
     search: "Cerca",
     wearYourPerfume: "Indossa il tuo profumo",
@@ -143,7 +168,19 @@ export const translations = {
     visitTheOfficialWebsite: "Besuchen Sie die offizielle Website",
     discoverAllNews: "Entdecken Sie alle Neuigkeiten",
     subscribe: "Abonnieren",
-
+    info: "Info",
+    Fragrances: "Düfte",
+    brand: "Marke",
+    news: "News",
+    women: "Damenparfüm",
+    men: "Herrenparfüm",
+    LauraBiagiottiShop: "Laura Biagiotti Shop",
+    LauraBiagiottiWorld: "Laura Biagiotti World",
+    Instructionsforrecycling:
+      "Anweisungen für die getrennte Sammlung von Verpackungen",
+    termsOfUse: "Nutzungsbedingungen",
+    footerLastLine:
+      "Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - Alle Rechte vorbehalten.",
     // Navbar
     search: "Suchen",
     wearYourPerfume: "Tragen Sie Ihr Parfüm",

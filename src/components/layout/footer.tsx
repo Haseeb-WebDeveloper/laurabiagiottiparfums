@@ -10,7 +10,7 @@ import { useState } from "react";
 import AnimatedUnderline from "@/components/ui/animated-underline";
 
 export default function Footer() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   return (
     <footer className="pb-[4rem] lg:pb-[6.8rem] 2xl:px-[34px] md:px-[38px] px-[18px]">
@@ -66,7 +66,7 @@ export default function Footer() {
             <div className="w-full space-y-2 lg:space-y-[15px]">
               <div className="">
                 <SplitText
-                  text="Info"
+                  text={t("info")}
                   variant="heading"
                   element="h2"
                   className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
@@ -76,7 +76,7 @@ export default function Footer() {
                 <li>
                   <FooterLink href={`/${locale}/news`}>
                     <SplitText
-                      text="News"
+                      text={t("news")}
                       variant="paragraph"
                       element="p"
                       className="lg:text-[14px] tracking-[0.25px]"
@@ -93,7 +93,7 @@ export default function Footer() {
             <div className="w-full space-y-2 lg:space-y-[15px]">
               <div className="">
                 <SplitText
-                  text="Fragrances"
+                  text={t("Fragrances")}
                   variant="heading"
                   element="h2"
                   className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
@@ -103,7 +103,7 @@ export default function Footer() {
                 <li>
                   <FooterLink href={`/${locale}/women-perfume`}>
                     <SplitText
-                      text="Women"
+                      text={t("women")}
                       variant="paragraph"
                       element="p"
                       className="lg:text-[14px] tracking-[0.25px]"
@@ -116,7 +116,7 @@ export default function Footer() {
                 <li>
                   <FooterLink href={`/${locale}/men-perfume`}>
                     <SplitText
-                      text="Men"
+                      text={t("men")}
                       variant="paragraph"
                       element="p"
                       className="lg:text-[14px] tracking-[0.25px]"
@@ -133,7 +133,7 @@ export default function Footer() {
             <div className="w-full space-y-2 lg:space-y-[15px]">
               <div className="">
                 <SplitText
-                  text="Brand"
+                  text={t("brand")}
                   variant="heading"
                   element="h2"
                   className="text-[1.6rem] lg:text-[1.5rem] font-[500] text-foreground"
@@ -146,7 +146,7 @@ export default function Footer() {
                     external
                   >
                     <SplitText
-                      text="Laura Biagiotti Shop"
+                      text={t("LauraBiagiottiShop")}
                       variant="heading"
                       element="p"
                       className="lg:text-[14px] tracking-[0.25px]"
@@ -160,7 +160,7 @@ export default function Footer() {
                 <li>
                   <FooterLink href={`https://www.laurabiagiotti.it/`} external>
                     <SplitText
-                      text="Laura Biagiotti World"
+                      text={t("LauraBiagiottiWorld")}
                       variant="paragraph"
                       element="p"
                       className="lg:text-[14px] tracking-[0.25px]"
@@ -178,7 +178,7 @@ export default function Footer() {
                   >
                     <span className="">
                       <SplitText
-                        text={`Instructions for separate collection of packaging`}
+                        text={t("Instructionsforrecycling")}
                         variant="paragraph"
                         element="p"
                         className="lg:text-[14px] tracking-[0.25px] "
@@ -240,7 +240,7 @@ export default function Footer() {
                 className="flex items-center"
               >
                 <SplitText
-                  text="Terms of use"
+                  text={t("termsOfUse")}
                   variant="paragraph"
                   element="p"
                   className="text-[0.87rem] leading-0 border-b-[1px] border-transparent hover:border-foreground py-0 tracking-[0rem]"
@@ -269,7 +269,7 @@ export default function Footer() {
             </div>
             <div className="text-[0.87rem] text-foreground">
               <SplitText
-                text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
+                text={t("footerLastLine")}
                 variant="paragraph"
                 element="p"
                 className=""
@@ -319,7 +319,7 @@ export default function Footer() {
                   className="flex items-center"
                 >
                   <SplitText
-                    text="Terms of use"
+                    text={t("termsOfUse")}
                     variant="paragraph"
                     element="p"
                     className="text-[0.87rem] leading-[80%] border-b-[1px] border-transparent hover:border-foreground"
@@ -348,7 +348,7 @@ export default function Footer() {
             </div>
             <div className="">
               <SplitText
-                text="Powered by AB Parfums S.p.A. P.IVA 00902901008 - © 2025 Laura Biagiotti - All Rights Reserved."
+                text={t("footerLastLine")}
                 variant="paragraph"
                 element="p"
                 style={{
