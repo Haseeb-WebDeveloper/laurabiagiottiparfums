@@ -20,8 +20,13 @@ export const homePage = defineType({
             },
             {
               name: 'title',
-              type: 'string',
+              type: 'object',
               title: 'Title',
+              fields: [
+                {name: 'en', type: 'string', title: 'English'},
+                {name: 'it', type: 'string', title: 'Italian'},
+                {name: 'de', type: 'string', title: 'German'},
+              ],
             },
             {
               name: 'image',
@@ -122,62 +127,6 @@ export const homePage = defineType({
       name: 'news',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'news'}]}],
-    }),
-    defineField({
-      name: 'socialMediaImages',
-      title: 'Social Media Images',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'image',
-              title: 'Image',
-              type: 'image',
-            }),
-            defineField({
-              name: 'url',
-              title: 'URL',
-              type: 'url',
-            }),
-            defineField({
-              name: 'description',
-              title: 'Description',
-              type: 'object',
-              fields: [
-                defineField({
-                  name: 'en',
-                  title: 'English',
-                  type: 'string',
-                }),
-                defineField({
-                  name: 'it',
-                  title: 'Italian',
-                  type: 'string',
-                }),
-                defineField({
-                  name: 'de',
-                  title: 'German',
-                  type: 'string',
-                }),
-              ],
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'url',
-              media: 'image',
-            },
-            prepare(selection) {
-              return {
-                title: selection.title,
-                media: selection.media,
-              }
-            },
-          },
-        },
-      ],
     }),
     // SEO
     defineField({

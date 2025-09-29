@@ -414,7 +414,7 @@ export const getBrandPageQuery = (locale: string) => `
             url
           }
         },
-        alt
+        "alt": alt.${locale}
       },
       "bottomText": bottomText.${locale}
     },
@@ -1267,7 +1267,7 @@ export const getHomePageQuery = (locale: string) => `
           }
         },  
       },
-      title,
+      "title": title.${locale},
       image {
         asset-> {
           url
@@ -1340,15 +1340,6 @@ export const getHomePageQuery = (locale: string) => `
           url
         }
       }
-    },
-    socialMediaImages[] {
-      image {
-        asset-> {
-          url
-        }
-      },
-      url,
-      "description": description.${locale}
     }
   }
 `;

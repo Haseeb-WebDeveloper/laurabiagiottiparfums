@@ -41,7 +41,16 @@ export const brand = defineType({
               type: 'object',
               fields: [
                 {name: 'image', type: 'image', title: 'Image', options: {hotspot: true}},
-                {name: 'alt', type: 'string', title: 'Alt'},
+                {
+                  name: 'alt',
+                  type: 'object',
+                  title: 'Alt',
+                  fields: [
+                    {name: 'en', type: 'string', title: 'English'},
+                    {name: 'it', type: 'string', title: 'Italian'},
+                    {name: 'de', type: 'string', title: 'German'},
+                  ],
+                },
               ],
             },
           ],
