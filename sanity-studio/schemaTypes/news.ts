@@ -17,13 +17,14 @@ export const news = defineType({
     }),
     defineField({
       name: 'slug',
-      type: 'slug',
+      type: 'object',
       title: 'Slug',
       description: 'URL-friendly identifier for the news',
-      options: {
-        source: 'title.en',
-        maxLength: 96,
-      },
+      fields: [
+        {name: 'en', type: 'slug', title: 'English', options: {source: 'title.en', maxLength: 96}},
+        {name: 'it', type: 'slug', title: 'Italian', options: {source: 'title.it', maxLength: 96}},
+        {name: 'de', type: 'slug', title: 'German', options: {source: 'title.de', maxLength: 96}},
+      ],
     }),
     defineField({
       name: 'featuredImage',

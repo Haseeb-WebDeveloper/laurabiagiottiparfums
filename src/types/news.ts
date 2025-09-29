@@ -8,7 +8,11 @@ export interface NewsListItem {
   _createdAt: string;
   _updatedAt: string;
   title: string;
-  slug: string;
+  slug: {
+    en: string;
+    it: string;
+    de: string;
+  };
   featuredImage: {
     asset: SanityImageAssetDocument;
   };
@@ -20,7 +24,11 @@ export interface NewsItem {
   _createdAt: string;
   _updatedAt: string;
   title: string;
-  slug: string;
+  slug: {
+    en: string;
+    it: string;
+    de: string;
+  };
   featuredImage: {
     asset: SanityImageAssetDocument;
   };

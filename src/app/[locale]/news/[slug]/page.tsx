@@ -31,10 +31,13 @@ export async function generateStaticParams() {
 
   LOCALES.forEach((locale) => {
     allNews?.forEach((news: any) => {
-      paths.push({
-        locale,
-        slug: news.slug,
-      });
+      const localizedSlug = news?.[locale];
+      if (typeof localizedSlug === "string" && localizedSlug) {
+        paths.push({
+          locale,
+          slug: localizedSlug,
+        });
+      }
     });
   });
 

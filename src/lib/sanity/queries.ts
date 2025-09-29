@@ -1,7 +1,9 @@
 // news For SITEMAP
 export const getAllNewsSlugQuery = () => `
 *[_type == "news"] {
-  "slug": slug.current,
+  "en": slug.en.current,
+  "it": slug.it.current,
+  "de": slug.de.current,
   _updatedAt
 }
 `;
@@ -36,7 +38,11 @@ export const getProductBySlugsForSitemapQuery = (category: string) => `
 // SEO TAGS
 // Get a single news
 export const getNewsBySlugForSEOQuery = (slug: string, locale: string) => `
-*[_type == "news" && slug.current == "${slug}"][0]{
+*[_type == "news" && (
+      slug.en.current == "${slug}" ||
+      slug.it.current == "${slug}" ||
+      slug.de.current == "${slug}"
+    )][0]{
   "metaTitle": metaTitle.${locale},
   "metaDescription": metaDescription.${locale},
   "ogTitle": ogTitle.${locale},
@@ -102,7 +108,6 @@ export const getHomePageForSEOQuery = (locale: string) => `
 }
 `;
 
-
 // Terms of Use for SEO
 export const getTermsOfUseForSEOQuery = (locale: string) => `
 *[_type == "termsOfUse"][0]{
@@ -136,7 +141,6 @@ export const getPrivacyPolicyForSEOQuery = (locale: string) => `
   }
 }
 `;
-
 
 // Cookies Policy for SEO
 export const getCookiesPolicyForSEOQuery = (locale: string) => `
@@ -206,8 +210,10 @@ export const getProductBySlugForSEOQuery = (slug: string, locale: string) => `
 // Static Generation
 // News slugs for static generation
 export const getAllNewsSlugsQuery = () => `
-  *[_type == "news" && defined(slug.current)] {
-    "slug": slug.current
+  *[_type == "news"] {
+    "en": slug.en.current,
+    "it": slug.it.current,
+    "de": slug.de.current
   }
 `;
 
@@ -350,7 +356,7 @@ export const getNewsPageQuery = (locale: string) => `
     "news": news[]->{
       "title": title.${locale},
       "description": description.${locale},
-      "slug": slug.current,
+      "slug": slug.${locale}.current,
       _createdAt,
       _updatedAt,
       featuredImage {
@@ -368,7 +374,7 @@ export const getNewsPageQuery = (locale: string) => `
 export const getNewsListQuery = (locale: string) => `
   *[_type == "news"] | order(_createdAt desc){
     "title": title.${locale},
-    "slug": slug.current,
+    "slug": slug.${locale}.current,
     _createdAt,
     _updatedAt,
     featuredImage {
@@ -383,12 +389,20 @@ export const getNewsListQuery = (locale: string) => `
 `;
 
 // Individual News
+// This query finds the news post by matching the slug in any language, then returns the content in the requested locale.
+// It first finds the news document where any of the localized slugs matches the provided slug.
 export const getNewsBySlugQuery = (slug: string, locale: string) => `
-  *[_type == "news" && slug.current == "${slug}"][0]{
+  *[
+    _type == "news" && (
+      slug.en.current == "${slug}" ||
+      slug.it.current == "${slug}" ||
+      slug.de.current == "${slug}"
+    )
+  ][0]{
     _createdAt,
     _updatedAt,
     "title": title.${locale},
-    "slug": slug.current,
+    "slug": slug.${locale}.current,
     featuredImage {
       asset -> {
         _id,
@@ -1344,8 +1358,6 @@ export const getHomePageQuery = (locale: string) => `
   }
 `;
 
-
-
 export const getTermsOfUseQuery = ({ locale }: { locale: string }) => `
   *[_type == "termsOfUse"][0] {
     "name": name.${locale},
@@ -1398,7 +1410,6 @@ export const getPrivacyPolicyQuery = ({ locale }: { locale: string }) => `
     }
   }
 `;
-
 
 export const getNotesQuery = ({ locale }: { locale: string }) => `
   *[_type == "notes"] {

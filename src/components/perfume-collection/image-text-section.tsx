@@ -29,7 +29,6 @@ export default function ImageTextSection({
   };
 
 
-  console.log(products[0].ingredients);
   return (
     <section className="pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
       {products.map((product, index) => (

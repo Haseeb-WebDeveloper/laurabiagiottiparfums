@@ -16,7 +16,9 @@ export interface PerfumeData {
 }
 
 interface NewsItem {
-  slug: string;
+  en?: string | null;
+  it?: string | null;
+  de?: string | null;
   _updatedAt: string;
 }
 
@@ -114,11 +116,13 @@ export async function GET() {
     }
   }
 
-  // News 
+  // News (localized slugs)
   for (const newsItem of news) {
     for (const locale of LOCALES) {
+      const localizedSlug = locale === "en" ? newsItem.en : locale === "it" ? newsItem.it : newsItem.de;
+      if (!localizedSlug) continue;
       pages.push({
-        url: `${BASE_URL}/${locale}/news/${newsItem.slug}`,
+        url: `${BASE_URL}/${locale}/news/${localizedSlug}`,
         lastModified: newsItem._updatedAt,
         priority: 0.8,
         changefreq: "weekly",

@@ -19,7 +19,6 @@ import AnimatedUnderline from "../ui/animated-underline";
 export default function Navbar() {
   const { locale, t } = useLocale();
   const { theme } = useTheme();
-  console.log(theme);
   const [perfumes, setPerfumes] = useState<{
     mens: CombinedPerfume[];
     womens: CombinedPerfume[];

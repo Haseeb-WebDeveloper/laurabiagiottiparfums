@@ -6,11 +6,12 @@ import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import AnimatedRichEditor from "../animated-rich-editor";
 import { useLocale } from "@/lib/i18n/context";
-import RichEditor from "../rich-editor";
-import SplitText from "../ui/split-text";
+// import RichEditor from "../rich-editor";
+// import SplitText from "../ui/split-text";
 
 export default function NewsSlug({ news }: { news: NewsItem }) {
   const { t } = useLocale();
+
   return (
     <div className="max-w 2xl:mt-[17rem] md:mt-[16.8rem] mt-[8rem] mb-[13rem]">
       <div className="flex flex-col md:flex-row justify-between gap-8">
