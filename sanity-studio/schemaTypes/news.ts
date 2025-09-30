@@ -51,18 +51,27 @@ export const news = defineType({
           name: 'en',
           title: 'English',
           type: 'array',
-          of: [{type: 'block'}],
+          of: [
+            {type: 'block'},
+            {type: 'image', options: {hotspot: true}},
+          ],
         },
         {
           name: 'it',
           type: 'array',
-          of: [{type: 'block'}],
+          of: [
+            {type: 'block'},
+            {type: 'image', options: {hotspot: true}},
+          ],
           title: 'Italian',
         },
         {
           name: 'de',
           type: 'array',
-          of: [{type: 'block'}],
+          of: [
+            {type: 'block'},
+            {type: 'image', options: {hotspot: true}},
+          ],
           title: 'German',
         },
       ],

@@ -15,7 +15,7 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
     types: {
       image: ({ value }: any) => (
         <Image
-          src={value.asset.url}
+          src={value}
           alt={value.alt || ""}
           width={800}
           height={500}

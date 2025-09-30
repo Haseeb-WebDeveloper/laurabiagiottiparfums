@@ -410,7 +410,13 @@ export const getNewsBySlugQuery = (slug: string, locale: string) => `
       },
     },
     "description": description.${locale},
-    "content": content.${locale}
+    "content": content.${locale}[]{
+      ...,
+      asset->{
+        _id,
+        url
+      }
+    }
   }
 `;
 
