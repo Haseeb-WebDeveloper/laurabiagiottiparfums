@@ -12,8 +12,10 @@ import {termsOfUse} from './terms-of-use'
 import {cookiesPolicy} from './cookies-policy'
 import {privacyPolicy} from './privacy-policy'
 import { twoColumnTable } from './custom/two-column-table'
+import { fileBlock } from './custom/file-block'
 
 export const schemaTypes = [
+  fileBlock,
   tableBlock,
   twoColumnTable,
   homePage,

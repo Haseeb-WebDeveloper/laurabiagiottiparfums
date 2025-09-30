@@ -359,6 +359,7 @@ export const getNewsPageQuery = (locale: string) => `
       "slug": slug.${locale}.current,
       _createdAt,
       _updatedAt,
+      updatedAt,
       featuredImage {
         asset -> {
           _id,
@@ -377,6 +378,7 @@ export const getNewsListQuery = (locale: string) => `
     "slug": slug.${locale}.current,
     _createdAt,
     _updatedAt,
+    updatedAt,
     featuredImage {
       asset -> {
         _id,
@@ -401,8 +403,10 @@ export const getNewsBySlugQuery = (slug: string, locale: string) => `
   ][0]{
     _createdAt,
     _updatedAt,
+    updatedAt,
     "title": title.${locale},
     "slug": slug.${locale}.current,
+    updatedAt,
     featuredImage {
       asset -> {
         _id,
@@ -415,7 +419,17 @@ export const getNewsBySlugQuery = (slug: string, locale: string) => `
       asset->{
         _id,
         url
-      }
+      },
+      _type == "fileBlock" => {
+        isYoutubeVideo,
+        videoUrl,
+        image {
+          asset->{
+            url
+          }
+        },
+        aspectRatio
+      },
     }
   }
 `;
@@ -1351,6 +1365,7 @@ export const getHomePageQuery = (locale: string) => `
     news[]-> {
       _id,
       _updatedAt,
+      updatedAt,
       _createdAt,
       "title": title.${locale},
       "description": description.${locale},

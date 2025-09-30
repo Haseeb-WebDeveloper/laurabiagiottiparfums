@@ -15,11 +15,10 @@ export default function RichEditor({ content, lineClamp }: RichEditorProps) {
     types: {
       image: ({ value }: any) => (
         <Image
-          src={value}
+          src={value.asset.url}
           alt={value.alt || ""}
-          width={800}
-          height={500}
-          className="my-[0.5vw] rounded-lg shadow-md object-cover w-full h-auto aspect-video object-center"
+          fill={true}
+          className="my-[0.5vw]  object-cover w-full h-full  object-center"
         />
       ),
       tableBlock: ({ value }: any) => {

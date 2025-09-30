@@ -7,6 +7,7 @@ export interface NewsPage {
 export interface NewsListItem {
   _createdAt: string;
   _updatedAt: string;
+  updatedAt: string;
   title: string;
   slug: {
     en: string;
@@ -23,6 +24,7 @@ export interface NewsListItem {
 export interface NewsItem {
   _createdAt: string;
   _updatedAt: string;
+  updatedAt: string;
   title: string;
   slug: {
     en: string;

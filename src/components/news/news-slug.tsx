@@ -1,11 +1,12 @@
 "use client";
 
 import { NewsItem } from "@/types/news";
-import { formatDateOnly } from "@/utils/formet-data";
+import { formatDateOnly, formatTimeOnly } from "@/utils/formet-data";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import AnimatedRichEditor from "../animated-rich-editor";
 import { useLocale } from "@/lib/i18n/context";
+import Image from "next/image";
 // import RichEditor from "../rich-editor";
 // import SplitText from "../ui/split-text";
 
@@ -18,7 +19,7 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
         {/* Image */}
         <div className="w-full md:max-w-[40%] lg:max-w-[32.5%] md:sticky md:top-[16.8rem] md:self-start">
           <div className="aspect-[4/5] w-full relative">
-            <ParallaxImage
+            <Image
               className="rounded-[1rem] object-cover"
               src={news.featuredImage?.asset.url || ""}
               alt={news.title}
@@ -26,6 +27,14 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
               objectPosition="top-left"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
+            {/* <ParallaxImage
+              className="rounded-[1rem] object-cover"
+              src={news.featuredImage?.asset.url || ""}
+              alt={news.title}
+              fill={true}
+              objectPosition="top-left"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            /> */}
           </div>
         </div>
         {/* Content */}
@@ -37,7 +46,9 @@ export default function NewsSlug({ news }: { news: NewsItem }) {
             // gsap-target="heading-1"
             className="uppercase tracking-[0.1em] text-[0.875rem] font-[700]"
           >
-            {formatDateOnly(news._createdAt)}
+            {news.updatedAt
+              ? `${news.updatedAt}`
+              : `${formatDateOnly(news._createdAt)}`}
           </div>
 
           {/* Content */}

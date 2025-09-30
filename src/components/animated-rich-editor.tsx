@@ -6,6 +6,7 @@ import TableBlockComponent from "./editor/table-block-component";
 import TwoColumnTableComponent from "./editor/two-column-table-component";
 // import SplitText from "./ui/split-text";
 import React from "react";
+import FileBlock from "./editor/file-block";
 
 interface AnimatedRichEditorProps {
   content: TypedObject | TypedObject[] | any;
@@ -14,49 +15,64 @@ interface AnimatedRichEditorProps {
 
 // Helper function to extract text content from React children
 const extractTextFromChildren = (children: React.ReactNode): string => {
-  if (typeof children === 'string') {
+  if (typeof children === "string") {
     return children;
   }
-  
+
   if (Array.isArray(children)) {
-    return children.map(child => extractTextFromChildren(child)).join('');
+    return children.map((child) => extractTextFromChildren(child)).join("");
   }
-  
+
   if (React.isValidElement(children)) {
     return extractTextFromChildren((children.props as any).children);
   }
-  
-  return '';
+
+  return "";
 };
 
 // Wrapper component for animated text elements
-const AnimatedTextElement = ({ 
-  children, 
-  variant, 
-  element, 
-  className, 
-  style 
+const AnimatedTextElement = ({
+  children,
+  variant,
+  element,
+  className,
+  style,
 }: {
   children: React.ReactNode;
   variant: "paragraph" | "heading";
-  element: "div" | "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "span" | undefined;
+  element:
+    | "div"
+    | "p"
+    | "h1"
+    | "h2"
+    | "h3"
+    | "h4"
+    | "h5"
+    | "h6"
+    | "span"
+    | undefined;
   className?: string;
   style?: React.CSSProperties;
 }) => {
   const textContent = extractTextFromChildren(children);
-  
+
   if (!textContent.trim()) {
     // If no text content, render the original children without animation
     const Component = element as any;
-    return <Component className={className} style={style}>{children}</Component>;
+    return (
+      <Component className={className} style={style}>
+        {children}
+      </Component>
+    );
   }
-  
+
   // Custom animation implementation for better React children handling
   const ref = React.useRef<HTMLElement | null>(null);
   const hasPlayedRef = React.useRef(false);
 
   React.useEffect(() => {
-    if (typeof window === "undefined" || !ref.current || hasPlayedRef.current) return;
+    if (typeof window === "undefined" || !ref.current || hasPlayedRef.current)
+      return;
 
     const el = ref.current;
     const { gsap } = require("gsap");
@@ -76,23 +92,24 @@ const AnimatedTextElement = ({
       }
 
       // Configuration based on variant
-      const baseConfig = variant === "paragraph"
-        ? {
-            splitType: "lines" as const,
-            from: { opacity: 0, y: "2rem" },
-            to: { opacity: 1, y: 0 },
-            stagger: 0.15,
-            ease: "power3.out",
-            duration: 1.0,
-          }
-        : {
-            splitType: "words" as const,
-            from: { opacity: 0, y: "2rem" },
-            to: { opacity: 1, y: "0" },
-            stagger: 0.2,
-            ease: "power3.out",
-            duration: 1.0,
-          };
+      const baseConfig =
+        variant === "paragraph"
+          ? {
+              splitType: "lines" as const,
+              from: { opacity: 0, y: "2rem" },
+              to: { opacity: 1, y: 0 },
+              stagger: 0.15,
+              ease: "power3.out",
+              duration: 1.0,
+            }
+          : {
+              splitType: "words" as const,
+              from: { opacity: 0, y: "2rem" },
+              to: { opacity: 1, y: "0" },
+              stagger: 0.2,
+              ease: "power3.out",
+              duration: 1.0,
+            };
 
       try {
         splitter = new GSAPSplitText(el, {
@@ -101,7 +118,8 @@ const AnimatedTextElement = ({
           linesClass: "split-line",
         });
 
-        targets = baseConfig.splitType === "lines" ? splitter.lines : splitter.words;
+        targets =
+          baseConfig.splitType === "lines" ? splitter.lines : splitter.words;
 
         if (!targets || targets.length === 0) {
           splitter.revert();
@@ -142,7 +160,6 @@ const AnimatedTextElement = ({
           duration: baseConfig.duration,
           force3D: true,
         });
-
       } catch (error) {
         console.error("Failed to create SplitText:", error);
         el.style.visibility = "visible";
@@ -160,7 +177,7 @@ const AnimatedTextElement = ({
   }, [variant]);
 
   const Component = (element === "span" ? "div" : element) as any;
-  
+
   return (
     <Component
       ref={ref}
@@ -175,7 +192,10 @@ const AnimatedTextElement = ({
   );
 };
 
-export default function AnimatedRichEditor({ content, lineClamp }: AnimatedRichEditorProps) {
+export default function AnimatedRichEditor({
+  content,
+  lineClamp,
+}: AnimatedRichEditorProps) {
   const components: Partial<PortableTextReactComponents> = {
     types: {
       image: ({ value }: any) => (
@@ -184,9 +204,12 @@ export default function AnimatedRichEditor({ content, lineClamp }: AnimatedRichE
           alt={value.alt || ""}
           width={800}
           height={500}
-          className="my-[0.5vw] rounded-lg shadow-md object-cover w-full h-auto aspect-video object-center"
+          className="my-[0.5vw] object-cover w-full h-full object-center"
         />
       ),
+      fileBlock: ({ value }: any) => {
+        return <FileBlock value={value} />;
+      },
       tableBlock: ({ value }: any) => {
         return (
           <div className="table-block">

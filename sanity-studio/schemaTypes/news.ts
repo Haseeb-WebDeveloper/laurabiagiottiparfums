@@ -54,6 +54,7 @@ export const news = defineType({
           of: [
             {type: 'block'},
             {type: 'image', options: {hotspot: true}},
+            { type: "fileBlock" },
           ],
         },
         {
@@ -62,6 +63,7 @@ export const news = defineType({
           of: [
             {type: 'block'},
             {type: 'image', options: {hotspot: true}},
+            { type: "fileBlock" },
           ],
           title: 'Italian',
         },
@@ -71,6 +73,7 @@ export const news = defineType({
           of: [
             {type: 'block'},
             {type: 'image', options: {hotspot: true}},
+            { type: "fileBlock" },
           ],
           title: 'German',
         },
@@ -236,6 +239,11 @@ export const news = defineType({
       options: {
         hotspot: true,
       },
+    }),
+    defineField({
+      name: 'updatedAt',
+      title: 'Updated At',
+      type: 'string',
     }),
   ],
   preview: {

@@ -1,7 +1,7 @@
 "use client";
 
 import { NewsListItem } from "@/types/news";
-import { formatDate } from "@/utils/formet-data";
+import { formatDateOnly, formatTimeOnly } from "@/utils/formet-data";
 import Link from "next/link";
 import { ParallaxImage } from "../ui/ParallaxImage";
 import { useLocale } from "@/lib/i18n/context";
@@ -29,7 +29,10 @@ export default function NewsList({ news }: { news: NewsListItem[] }) {
                 // gsap-target="heading-1"
                 className="uppercase tracking-[0.1em] text-[0.875rem] font-[700]"
               >
-                {formatDate(item._createdAt)}
+                {item.updatedAt
+                  ? `${item.updatedAt}`
+                  : `${formatDateOnly(item._createdAt)}`}{" "}
+                - {formatTimeOnly(item._createdAt)}
               </div>
               <h3 className="line-clamp-2 text-[1.25rem]  md:text-[2rem] font-[700] tracking-wider leading-[120%] ">
                 {item.title}
