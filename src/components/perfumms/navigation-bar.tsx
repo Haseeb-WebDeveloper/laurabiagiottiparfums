@@ -196,7 +196,7 @@ export default function NavigationBar({
           onMouseLeave={() => handleImageMouseLeave("prev")}
         >
           <Link
-            href={`/${locale}/${previous.category}-perfume/${previous.slug}`}
+            href={`/${locale}/${previous?.category}-perfume/${previous?.slug}`}
             className="block"
           >
             <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden">
@@ -220,12 +220,12 @@ export default function NavigationBar({
           onMouseLeave={() => handleImageMouseLeave("next")}
         >
           <Link
-            href={`/${locale}/${next.category}-perfume/${next.slug}`}
+            href={`/${locale}/${next?.category}-perfume/${next?.slug}`}
             className="block"
           >
             <div className="w-[200px] h-[200px] rounded-2xl shadow-2xl bg-white overflow-hidden">
               <Image
-                src={next.featuredImage.asset.url}
+                src={next?.featuredImage?.asset?.url}
                 alt={next.title}
                 width={200}
                 height={200}
