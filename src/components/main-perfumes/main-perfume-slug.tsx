@@ -18,6 +18,7 @@ import { useLocale } from "@/lib/i18n/context";
 import BuyNowPopup from "../ui/buy-now-popup";
 import SplitText from "../ui/split-text";
 import { useThemeStore } from "@/store/theme-store";
+import HtmlSplitText from "../ui/html-split-text";
 
 export default function MainPerfumeSlug({
   mainPerfume,
@@ -144,10 +145,10 @@ export default function MainPerfumeSlug({
               text={mainPerfume.fourthSectionTextImage.title}
             />
 
-            <SplitText
+            <HtmlSplitText
               className="text-[1rem] font-[400] lg:max-w-[75%]"
               variant="paragraph"
-              text={mainPerfume.fourthSectionTextImage.text}
+              htmlContent={mainPerfume.fourthSectionTextImage.text}
             />
             <button
               onClick={() => handleBuyNowClick(mainPerfume)}

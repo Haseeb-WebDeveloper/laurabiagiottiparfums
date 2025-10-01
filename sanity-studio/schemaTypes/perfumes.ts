@@ -9,12 +9,14 @@ export const perfume = defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'featuredImage',
       type: 'image',
       title: 'Featured Image',
       description: 'This will be featured image',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -25,6 +27,7 @@ export const perfume = defineType({
         source: 'title',
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'description',
@@ -35,6 +38,7 @@ export const perfume = defineType({
         {name: 'it', type: 'text', title: 'Italian'},
         {name: 'de', type: 'text', title: 'German'},
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
@@ -62,6 +66,7 @@ export const perfume = defineType({
       title: 'Hero Section Images',
       description: 'This will be used the the 1st section of this perfume slug page.',
       of: [{type: 'image', title: 'Image'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'olfactoryNotes',
@@ -198,12 +203,14 @@ export const perfume = defineType({
         {name: 'de', type: 'string', title: 'German'},
       ],
       description: 'e.g., Floral – Chypre – Gourmand',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'nose',
       type: 'string',
       title: 'Nose',
       description: 'Creator of the fragrance',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'scentDescription',
@@ -223,6 +230,7 @@ export const perfume = defineType({
       options: {
         accept: 'video/*, image/*',
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'productImagesSection',
@@ -261,6 +269,7 @@ export const perfume = defineType({
       name: 'heroProductImage',
       type: 'image',
       title: 'Hero Product Image',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'momentOfDay',
@@ -363,6 +372,7 @@ export const perfume = defineType({
           ],
         }),
       ],
+      validation: (Rule) => Rule.required(),
     }),
     // --- Buy field ends here ---
     defineField({
@@ -371,6 +381,7 @@ export const perfume = defineType({
       to: [{type: 'perfume'}],
       title: 'Previous Product',
       description: 'Reference to the previous perfume in the sequence',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'nextProduct',
@@ -378,6 +389,7 @@ export const perfume = defineType({
       to: [{type: 'perfume'}],
       title: 'Next Product',
       description: 'Reference to the next perfume in the sequence',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'relatedProducts',
@@ -390,6 +402,7 @@ export const perfume = defineType({
       ],
       title: 'Related Products',
       description: 'References to related perfumes',
+      validation: (Rule) => Rule.required(),
     }),
     // SEO
     defineField({

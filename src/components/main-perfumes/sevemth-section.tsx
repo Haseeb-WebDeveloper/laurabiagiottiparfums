@@ -39,6 +39,8 @@ export default function SeventhSection({
     });
   });
 
+  console.log(seventhSection);
+
   return (
     <div className="w-full flex flex-col gap-[2rem]">
       <div className="w-full">
@@ -73,7 +75,7 @@ export default function SeventhSection({
           {/* bottom row */}
           <div className="w-full h-full min-h-[280px] ">
             <ParallaxImage
-              src={seventhSection.files[0].asset.url}
+              src={seventhSection.files[1].asset.url}
               alt={seventhSection.content.title}
               className="w-full h-full object-cover"
             />
@@ -86,7 +88,7 @@ export default function SeventhSection({
             {/* top row */}
             <div className="w-full h-full min-h-[400px] max-w-[90%]">
               <ParallaxImage
-                src={seventhSection.files[1].asset.url}
+                src={seventhSection.files[2].asset.url}
                 alt={seventhSection.content.title}
                 className="w-full h-full object-cover"
               />

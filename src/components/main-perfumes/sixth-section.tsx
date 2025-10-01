@@ -99,7 +99,7 @@ export default function SixthSection({
           <div className="max-w-[80%]">
             <ParallaxImage
               src={sixthSection.files[2].asset.url}
-              alt={sixthSection.firstContent.title}
+              alt={sixthSection.secondContent.title}
               className="w-full h-full object-cover"
             />
           </div>
@@ -111,12 +111,12 @@ export default function SixthSection({
                 className="text-[2rem] font-[600]"
                 variant="heading"
                 element="h3"
-                text={sixthSection.firstContent.title}
+                text={sixthSection.secondContent.title}
               />
               <SplitText
                 className=" lg:pr-[4rem] text-[1rem] font-[400]"
                 variant="paragraph"
-                text={sixthSection.firstContent.description}
+                text={sixthSection.secondContent.description}
               />
               <button
                 onClick={() => handleBuyNowClick(mainPerfume)}
