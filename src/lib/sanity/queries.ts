@@ -1450,8 +1450,51 @@ export const getNotesQuery = ({ locale }: { locale: string }) => `
           url
         }
       },
-      momentOfDay,
       sharpness
     }
   }
 `;
+
+// Wear Your Perfume - Get all perfumes with minimal data (perfume, mainPerfume, collections)
+export const getAllPerfumesForWearYourPerfumeQuery = () => `
+{
+  "perfumes": *[_type == "perfume"] {
+    _id,
+    _type,
+    title,
+    "slug": slug.current,
+    category,
+    sharpness,
+    featuredImage {
+      asset -> {
+        url
+      }
+    }
+  },
+  "mainPerfumes": *[_type == "mainPerfume"] {
+    _id,
+    _type,
+    title,
+    "slug": slug.current,
+    category,
+    sharpness,
+    featuredImage {
+      asset -> {
+        url
+      }
+    }
+  },
+  "collections": *[_type == "collections"] {
+    _id,
+    _type,
+    title,
+    "slug": slug.current,
+    category,
+    sharpness,
+    featuredImage {
+      asset -> {
+        url
+      }
+    }
+  }
+}`;

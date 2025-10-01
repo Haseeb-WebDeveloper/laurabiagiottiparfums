@@ -9,7 +9,7 @@ export interface NoteItem {
   featuredImage?: {
     asset: SanityImage;
   };
-  momentOfDay?: string;
+  // momentOfDay?: string;
   sharpness?: number;
 }
 

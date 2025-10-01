@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { useLocale } from "@/lib/i18n/context";
-import { Note, NoteItem } from "@/types/notes";
-import { getNotes } from "@/lib/i18n/getSanityContent";
+import { Perfume } from "@/types/perfume";
+import { getAllPerfumesForWearYourPerfume } from "@/lib/i18n/getSanityContent";
 import Link from "next/link";
 import { ParallaxImage } from "./ui/ParallaxImage";
 import { circlePath, starPath } from "@/constants/data";
@@ -27,6 +27,42 @@ interface WearYourPerfumeProps {
   customTrigger?: React.ReactNode;
   showCustomCloseIcon?: boolean;
 }
+
+// Hardcoded notes array
+const notesData = [
+  {
+    title: "Fresh and Citrus",
+    image: {
+      asset: {
+        url: "https://cdn.sanity.io/images/wa3zfgpk/production/f6cdd95b83cc44dac86c8b7cbc5a8fdfeb3d2a2d-1400x1400.webp",
+      },
+    },
+  },
+  {
+    title: "Spicy and Woody",
+    image: {
+      asset: {
+        url: "https://cdn.sanity.io/images/wa3zfgpk/production/f6ecefd98510be7c1cab8711473c1d9d55837cdb-1400x1400.webp",
+      },
+    },
+  },
+  {
+    title: "Flower and Fruity",
+    image: {
+      asset: {
+        url: "https://cdn.sanity.io/images/wa3zfgpk/production/3a7fd666121432199bb28f360ccc993847b8bc30-1400x1400.webp",
+      },
+    },
+  },
+  {
+    title: "Sweet and Sensual",
+    image: {
+      asset: {
+        url: "https://cdn.sanity.io/images/wa3zfgpk/production/18ac5b22bb72285e013bb77657475e9fd0c7199e-1400x1400.webp",
+      },
+    },
+  },
+];
 
 const timesOfDay = [
   {
@@ -57,8 +93,8 @@ export default function WearYourPerfume({
   const [currentStep, setCurrentStep] = useState(1);
   const [previousStep, setPreviousStep] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [matchedPerfumes, setMatchedPerfumes] = useState<NoteItem[]>([]);
+  const [allPerfumes, setAllPerfumes] = useState<Perfume[]>([]);
+  const [matchedPerfumes, setMatchedPerfumes] = useState<Perfume[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const morphingPathRef = useRef<SVGPathElement>(null);
   const [triggerHover, setTriggerHover] = useState(false);
@@ -79,18 +115,19 @@ export default function WearYourPerfume({
     intensity: 50,
   });
 
-  // Fetch notes on component mount
+  // Fetch all perfumes on component mount
   useEffect(() => {
-    const fetchNotes = async () => {
+    const fetchPerfumes = async () => {
       try {
-        const notesData = await getNotes(locale);
-        setNotes(notesData);
+        const perfumesData = await getAllPerfumesForWearYourPerfume();
+        console.log("perfumesData", perfumesData);
+        setAllPerfumes(perfumesData);
       } catch (error) {
-        console.error("Error fetching notes:", error);
+        console.error("Error fetching perfumes:", error);
       }
     };
-    fetchNotes();
-  }, [locale]);
+    fetchPerfumes();
+  }, []);
 
   const handleNextStep = () => {
     if (currentStep < 5 && !isAnimating) {
@@ -117,17 +154,10 @@ export default function WearYourPerfume({
   const findMatchingPerfumes = () => {
     setIsLoading(true);
     try {
-      // Get all perfumes from the selected note
-      const selectedNotePerfumes =
-        step2Selection.selectedNote?.perfumeNotes || [];
-
-      // Filter perfumes based on all criteria
-      const matches = selectedNotePerfumes.filter((perfume) => {
-        // Match gender
+      // Filter perfumes based on category and intensity only
+      const matches = allPerfumes.filter((perfume) => {
+        // Match gender/category
         if (perfume.category !== step1Selection.gender) return false;
-
-        // Match time of day
-        if (perfume.momentOfDay !== step3Selection.timeOfDay) return false;
 
         // Match intensity (within 30 points range)
         const intensityDiff = Math.abs(
@@ -210,6 +240,9 @@ export default function WearYourPerfume({
     setMatchedPerfumes([]);
     closeRef.current?.click();
   };
+
+  console.log("allPerfumes", allPerfumes);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -301,7 +334,7 @@ export default function WearYourPerfume({
               {t("wypstep2Title")}
             </h2>
             <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full justify-between gap-x-8 gap-y-10">
-              {notes.map((note, index) => (
+              {notesData.map((note, index) => (
                 <button
                   key={index}
                   onClick={() => {
@@ -460,18 +493,18 @@ export default function WearYourPerfume({
 
           {/* Results */}
           <div
-            className={`absolute inset-0 min-h-[60vh] px-[2rem] flex justify-center items-center transition-all duration-500 ease-in-out ${getStepClasses(5)}`}
+            className={`absolute inset-0 min-h-[60vh] px-[2rem] flex flex-col justify-center items-center transition-all duration-500 ease-in-out ${getStepClasses(5)}`}
           >
-            <h2 className="text-[2.2rem] lg:text-[2.5rem] font-[500] mb-[1rem] text-center">
+            <h2 className="text-[2.2rem] lg:text-[2.5rem] font-[500] mb-[1rem]  max-w-sm mx-auto text-center">
               {t("wypResult")}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mx-auto justify-center items-center place-items-center">
               {matchedPerfumes.map((perfume) => (
-                <div key={perfume._id} className="group w-full -[340px] ">
-                  <div className="space-y-[1rem]">
-                    <div className="lg:h-[14rem] h-[16rem] w-full relative">
+                <div key={perfume._id} className="group w-full md:w-[315px]">
+                  <div className="space-y-[1rem] w-[325px]">
+                    <div className="lg:h-[14rem] h-[16rem] relative">
                       <ParallaxImage
-                        src={perfume.featuredImage?.asset.url || ""}
+                        src={perfume.featuredImage?.asset?.url || ""}
                         alt={perfume.title}
                         className="rounded-[1rem] border-[1px] border-transparent hover:border-foreground transition-colors duration-300"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -512,7 +545,7 @@ export default function WearYourPerfume({
                 <button
                   onClick={findMatchingPerfumes}
                   disabled={isLoading}
-                  className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                  className="cursor-pointer w-fit flex flex-col items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
                 >
                   {isLoading ? "Finding matches..." : t("unveil")}
                 </button>

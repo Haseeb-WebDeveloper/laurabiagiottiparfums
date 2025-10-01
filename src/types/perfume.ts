@@ -52,12 +52,13 @@ export interface Ingredient {
 
 export interface Perfume {
   _id: string;
+  _type?: string;
   title: string;
   slug: string;
-  description: string;
+  description?: string;
   category: 'mens' | 'womens';
-  subCategory: string;
-  featuredImage: {
+  subCategory?: string;
+  featuredImage?: {
     asset: {
       url: string;
     };
@@ -68,22 +69,23 @@ export interface Perfume {
   olfactoryNotes?: OlfactoryNote[];
   isPartOfCollection?: boolean;
   ingredients?: Ingredient[];
-  olfactoryFamily: string;
-  nose: string;
-  scentDescription: string;
-  bgFile: {
+  olfactoryFamily?: string;
+  nose?: string;
+  scentDescription?: string;
+  bgFile?: {
     asset: SanityImage;
   };
-  productImagesSection: ProductImagesSection;
-  heroProductImage: {
+  productImagesSection?: ProductImagesSection;
+  heroProductImage?: {
     asset: SanityImage;
   };
   buy?: {
     countries: Country[];
   };
-  previousProduct: RelatedProduct;
-  nextProduct: RelatedProduct;
-  relatedProducts: RelatedProduct[];
+  previousProduct?: RelatedProduct;
+  nextProduct?: RelatedProduct;
+  relatedProducts?: RelatedProduct[];
+  sharpness?: number;
 }
 
 export interface NavbarPerfumes {

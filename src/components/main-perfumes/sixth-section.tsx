@@ -10,6 +10,7 @@ import { MainPerfume } from "@/types/main-perfume";
 import { useState } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
 import SplitText from "../ui/split-text";
+import HtmlSplitText from "../ui/html-split-text";
 
 export default function SixthSection({
   sixthSection,
@@ -150,10 +151,10 @@ export default function SixthSection({
               element="h3"
               text={sixthSection.firstContent.title}
             />
-            <SplitText
+            <HtmlSplitText
               className="text-[1rem] max-w-[70%] font-[400]"
               variant="paragraph"
-              text={sixthSection.firstContent.description}
+              htmlContent={sixthSection.firstContent.description}
             />
           </div>
 
@@ -174,10 +175,10 @@ export default function SixthSection({
               element="h3"
               text={sixthSection.firstContent.title}
             />
-            <SplitText
+            <HtmlSplitText
               className="text-[1rem] font-[400]"
               variant="paragraph"
-              text={sixthSection.firstContent.description}
+              htmlContent={sixthSection.firstContent.description}
             />
           </div>
 

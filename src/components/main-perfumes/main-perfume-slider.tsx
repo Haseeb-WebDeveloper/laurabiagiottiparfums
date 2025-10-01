@@ -287,7 +287,7 @@ export const MainPerfumeSlider: React.FC<MainPerfumeSliderProps> = ({
                 id={`slide-content-${index}`}
                 className="absolute md:-bottom-30 md:top-auto top-32 left-0 right-0 w-full"
                 style={{
-                  //   opacity: index === activeIndex ? 1 : 0,
+                    opacity: index === activeIndex ? 1 : 0,
                   pointerEvents: index === activeIndex ? "auto" : "none",
                 }}
               >

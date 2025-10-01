@@ -6,6 +6,8 @@ import BigFileAnimation from "../perfumms/big-file-animation";
 import ImageTextSection from "./image-text-section";
 import RelatedPerfumes from "../perfumms/related-perfumes";
 import { useLocale } from "@/lib/i18n/context";
+import HtmlSplitText from "../ui/html-split-text";
+
 export default function CollectionSlug({
   collection,
   locale,
@@ -43,9 +45,10 @@ export default function CollectionSlug({
           </div>
 
           {/* description */}
-          <p className="mt-[4.5rem] w-full text-center mx-auto lg:max-w-[45%]">
-            {collection.firstSection.description}
-          </p>
+          <HtmlSplitText
+            className="mt-[4.5rem] w-full text-center mx-auto lg:max-w-[45%]"
+            htmlContent={collection.firstSection.description}
+          />
 
           {/* bg media */}
           <div className="">

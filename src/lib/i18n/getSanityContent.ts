@@ -22,6 +22,7 @@ import {
   getProductBySlugQuery,
   getHomePageQuery,
   getNotesQuery,
+  getAllPerfumesForWearYourPerfumeQuery,
   getAllNewsSlugsQuery,
   getNewsBySlugForSEOQuery,
   getNewsPageForSEOQuery,
@@ -364,6 +365,33 @@ export async function getNotes(locale: string): Promise<Note[]> {
     return data as Note[];
   } catch (error) {
     console.error("Error fetching notes:", error);
+    return [];
+  }
+}
+
+// Wear Your Perfume - Get all perfumes with minimal data (perfume, mainPerfume, collections merged)
+export async function getAllPerfumesForWearYourPerfume(): Promise<Perfume[]> {
+  try {
+    const data = await fetchSanityData(
+      getAllPerfumesForWearYourPerfumeQuery(),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    ) as {
+      perfumes: Perfume[];
+      mainPerfumes: Perfume[];
+      collections: Perfume[];
+    };
+
+    // Merge all three arrays into one, treating them all as perfumes
+    const allPerfumes = [
+      ...data.perfumes,
+      ...data.mainPerfumes,
+      ...data.collections
+    ];
+
+    return allPerfumes;
+  } catch (error) {
+    console.error("Error fetching perfumes for wear your perfume:", error);
     return [];
   }
 }

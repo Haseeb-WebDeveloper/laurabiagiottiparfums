@@ -360,21 +360,21 @@ export const mainPerfume = defineType({
             title: "Hero Product Image",
 
         }),
-        defineField({
-            name: 'momentOfDay',
-            type: 'string',
-            title: 'Moment Of Day',
-            description: 'e.g., Sunrise, Daytime, Sunset, Afternoon, Night',
-            options: {
-              list: [
-                {title: 'Sunrise', value: 'sunrise'},
-                {title: 'Daytime', value: 'daytime'},
-                {title: 'Afternoon', value: 'afternoon'},
-                {title: 'Sunset', value: 'sunset'},
-                {title: 'Night', value: 'night'},
-              ],
-            },
-          }),
+        // defineField({
+        //     name: 'momentOfDay',
+        //     type: 'string',
+        //     title: 'Moment Of Day',
+        //     description: 'e.g., Sunrise, Daytime, Sunset, Afternoon, Night',
+        //     options: {
+        //       list: [
+        //         {title: 'Sunrise', value: 'sunrise'},
+        //         {title: 'Daytime', value: 'daytime'},
+        //         {title: 'Afternoon', value: 'afternoon'},
+        //         {title: 'Sunset', value: 'sunset'},
+        //         {title: 'Night', value: 'night'},
+        //       ],
+        //     },
+        //   }),
           defineField({
             name: 'sharpness',
             type: 'number',
