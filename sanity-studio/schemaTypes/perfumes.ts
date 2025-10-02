@@ -378,18 +378,16 @@ export const perfume = defineType({
     defineField({
       name: 'previousProduct',
       type: 'reference',
-      to: [{type: 'perfume'}],
+      to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
       title: 'Previous Product',
       description: 'Reference to the previous perfume in the sequence',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'nextProduct',
       type: 'reference',
-      to: [{type: 'perfume'}],
+      to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
       title: 'Next Product',
       description: 'Reference to the next perfume in the sequence',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'relatedProducts',
@@ -397,12 +395,11 @@ export const perfume = defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'perfume'}],
+          to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
         },
       ],
       title: 'Related Products',
       description: 'References to related perfumes',
-      validation: (Rule) => Rule.required(),
     }),
     // SEO
     defineField({

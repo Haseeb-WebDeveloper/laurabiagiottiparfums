@@ -104,7 +104,11 @@ export const collections = defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'perfume'}],
+           to: [
+        {type: 'perfume'},
+        {type: 'collections'},
+        {type: 'mainPerfume'},
+      ],
         },
       ],
       title: 'Products Collection',
@@ -138,7 +142,11 @@ export const collections = defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'perfume'}],
+           to: [
+        {type: 'perfume'},
+        {type: 'collections'},
+        {type: 'mainPerfume'},
+      ],
         },
       ],
       title: 'Related Products',
