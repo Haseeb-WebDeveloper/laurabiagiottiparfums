@@ -35,6 +35,8 @@ import {
   getCookiesPolicyQuery,
   getPrivacyPolicyQuery,
   getPrivacyPolicyForSEOQuery,
+  getMensPerfumePageForSEOQuery,
+  getWomensPerfumePageForSEOQuery,
 } from "../sanity/queries";
 import { HomePageInterface } from "@/types/home-page";
 import { Note } from "@/types/notes";
@@ -49,17 +51,6 @@ export type StaticSlug = {
   slug: string;
 };
 
-type MensProductsResponse = {
-  perfumes: Perfume[];
-  mainPerfumes: MainPerfume[];
-  // collections: Collection[];
-};
-
-type WomensProductsResponse = {
-  perfumes: Perfume[];
-  mainPerfumes: MainPerfume[];
-  // collections: Collection[];
-};
 
 // Home Page
 export async function getHomePage(locale: string) {
@@ -79,27 +70,14 @@ export async function getHomePage(locale: string) {
 // Perfumes
 export async function getMensPerfumes(locale: string) {
   try {
-    const data = (await fetchSanityData(
+    const data = await fetchSanityData(
       getMensPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    )) as MensProductsResponse;
+    ) as { perfumes: Perfume[] };
 
-    // Convert mainPerfumes and collections to Perfume type format
-    const mainPerfumesAsPerfumes = data.mainPerfumes.map((mp) => ({
-      ...mp,
-      _type: "perfume" as const,
-      buy: undefined, // Since main perfumes don't have buy info
-    }));
-
-    // const collectionsAsPerfumes = data.collections.map(c => ({
-    //   ...c,
-    //   _type: "perfume" as const,
-    //   buy: undefined // Since collections don't have buy info
-    // }));
-
-    // Combine all products   TODO add  ...collectionsAsPerfumes
-    return [...data.perfumes, ...mainPerfumesAsPerfumes] as Perfume[];
+    // Return the perfumes array directly from the page schema
+    return data.perfumes || [];
   } catch (error) {
     console.error("Error fetching men's perfumes:", error);
     return null;
@@ -108,27 +86,14 @@ export async function getMensPerfumes(locale: string) {
 
 export async function getWomensPerfumes(locale: string) {
   try {
-    const data = (await fetchSanityData(
+    const data = await fetchSanityData(
       getWomensPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    )) as WomensProductsResponse;
+    ) as { perfumes: Perfume[] };
 
-    // Convert mainPerfumes and collections to Perfume type format
-    const mainPerfumesAsPerfumes = data.mainPerfumes.map((mp) => ({
-      ...mp,
-      _type: "perfume" as const,
-      buy: undefined, // Since main perfumes don't have buy info
-    }));
-
-    // const collectionsAsPerfumes = data.collections.map(c => ({
-    //   ...c,
-    //   _type: "perfume" as const,
-    //   buy: undefined // Since collections don't have buy info
-    // }));
-
-    // Combine all products   TODO add  ...collectionsAsPerfumes
-    return [...data.perfumes, ...mainPerfumesAsPerfumes] as Perfume[];
+    // Return the perfumes array directly from the page schema
+    return data.perfumes || [];
   } catch (error) {
     console.error("Error fetching women's perfumes:", error);
     return null;
@@ -571,6 +536,34 @@ export async function getPrivacyPolicyForSEO(locale: string) {
     return data;
   } catch (error) {
     console.error("Error fetching privacy policy for SEO:", error);
+    return null;
+  }
+}
+
+export async function getMensPerfumePageForSEO(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getMensPerfumePageForSEOQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching men's perfume page for SEO:", error);
+    return null;
+  }
+}
+
+export async function getWomensPerfumePageForSEO(locale: string) {
+  try {
+    const data = await fetchSanityData(
+      getWomensPerfumePageForSEOQuery(locale),
+      {},
+      { revalidate: IS_DEVELOPMENT ? 10 : 60 }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching women's perfume page for SEO:", error);
     return null;
   }
 }

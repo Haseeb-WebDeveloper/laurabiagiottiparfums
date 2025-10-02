@@ -475,6 +475,14 @@ export const mainPerfume = defineType({
       title: 'Related Products',
       description: 'References to related perfumes',
     }),
+    // // Show on navbar
+    // defineField({
+    //   name: 'showOnNavbar',
+    //   title: 'Show On Navbar',
+    //   type: 'boolean',
+    //   initialValue: true,
+    //   description: 'If this main perfume should be shown on the navbar',
+    // }),
   ],
   preview: {
     select: {

@@ -13,6 +13,8 @@ import {cookiesPolicy} from './cookies-policy'
 import {privacyPolicy} from './privacy-policy'
 import { twoColumnTable } from './custom/two-column-table'
 import { fileBlock } from './custom/file-block'
+import { mensPerfumePage } from './mens-perfume-page'
+import { womensPerfumePage } from './womens-perfume-page'
 
 export const schemaTypes = [
   fileBlock,
@@ -21,6 +23,8 @@ export const schemaTypes = [
   homePage,
   brand,
   newsPage,
+  mensPerfumePage,
+  womensPerfumePage,
   termsOfUse,
   privacyPolicy,
   cookiesPolicy,

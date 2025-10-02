@@ -142,6 +142,40 @@ export const getPrivacyPolicyForSEOQuery = (locale: string) => `
 }
 `;
 
+// Men's Perfume Page for SEO
+export const getMensPerfumePageForSEOQuery = (locale: string) => `
+*[_type == "mensPerfumePage"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
+// Women's Perfume Page for SEO
+export const getWomensPerfumePageForSEOQuery = (locale: string) => `
+*[_type == "womensPerfumePage"][0]{
+  "metaTitle": metaTitle.${locale},
+  "metaDescription": metaDescription.${locale},
+  "ogTitle": ogTitle.${locale},
+  "ogDescription": ogDescription.${locale},
+  "twitterTitle": twitterTitle.${locale},
+  "twitterDescription": twitterDescription.${locale},
+  ogImage {
+    asset->{
+      url
+    }
+  }
+}
+`;
+
 // Cookies Policy for SEO
 export const getCookiesPolicyForSEOQuery = (locale: string) => `
 *[_type == "cookiesPolicy"][0]{
@@ -240,7 +274,7 @@ export const getAllSubCategoriesQuery = (locale: string) => `
 
 // Navbar Perfumes
 export const getNavbarPerfumesQuery = (locale: string) => `{
-  "perfumes": *[_type == "perfume"] {
+  "perfumes": *[_type == "perfume" && isPartOfCollection == false] {
     _id,
     title,
     "slug": slug.current,
@@ -251,7 +285,7 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
       }
     },
   },
-  "collections": *[_type == "collections"] {
+  "collections": *[_type == "collections" && isPartOfCollection == false] {
     _id,
     title,
     "description": description.${locale},
@@ -264,7 +298,7 @@ export const getNavbarPerfumesQuery = (locale: string) => `{
       }
     },
   },
-  "mainPerfumes": *[_type == "mainPerfume"] {
+  "mainPerfumes": *[_type == "mainPerfume" && isPartOfCollection == false] {
     _id,
     title,
     "description": description.${locale},
@@ -496,146 +530,74 @@ export const getBrandPageQuery = (locale: string) => `
   }
 `;
 
-// Perfumes  TODO uncomment collections
-export const getMensPerfumesQuery = (locale: string) => `{
-  "perfumes": *[_type == "perfume" && category == "mens"] {
-    _id,
-    _type,
-    title,
-    category,
-    "subCategory": subCategory->name.${locale},
-    "slug": slug.current,
-    "description": description.${locale},
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    buy {
-      countries[] {
-        countryName,
-        websites[] {
-          logo {
-            asset -> {
-              _id,
-              url
-            }
-          },
+// Men's Perfumes from Page Schema
+export const getMensPerfumesQuery = (locale: string) => `
+  *[_type == "mensPerfumePage"][0] {
+    perfumes[]-> {
+      _id,
+      _type,
+      title,
+      category,
+      "subCategory": subCategory->name.${locale},
+      "slug": slug.current,
+      "description": description.${locale},
+      featuredImage {
+        asset -> {
+          _id,
           url
+        }
+      },
+      buy {
+        countries[] {
+          countryName,
+          websites[] {
+            logo {
+              asset -> {
+                _id,
+                url
+              }
+            },
+            url
+          }
         }
       }
     }
-  },
-  "mainPerfumes": *[_type == "mainPerfume" && category == "mens"] {
-    _id,
-    _type,
-    title,
-    category,
-    "subCategory": subCategory->name.${locale},
-    "slug": slug.current,
-    "description": description.${locale},
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    buy {
-      countries[] {
-        countryName,
-        websites[] {
-          logo {
-            asset -> {
-              _id,
-              url
-            }
-          },
-          url
-        }
-      }
-    }
-  },
-  // "collections": *[_type == "collections" && category == "mens"] {
-  //   _id,
-  //   _type,
-  //   title,
-  //   "description": description.${locale},
-  //   category,
-  //   "subCategory": subCategory->name.${locale},
-  //   "slug": slug.current,
-  //   featuredImage {
-  //     asset -> {
-  //       _id,
-  //       url
-  //     }
-  //   }
-  // }
-}`;
+  }
+`;
 
-// Womens Perfumes
+// Women's Perfumes from Page Schema
 export const getWomensPerfumesQuery = (locale: string) => `
-{
-  "perfumes": *[_type == "perfume" && category == "womens"] {
-    _id,
-    _type,
-    title,
-    category,
-    "subCategory": subCategory->name.${locale},
-    "slug": slug.current,
-    "description": description.${locale},
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    },
-    buy {
-      countries[] {
-        countryName,
-        websites[] {
-          logo {
-            asset -> {
-              _id,
-              url
-            }
-          },
+  *[_type == "womensPerfumePage"][0] {
+    perfumes[]-> {
+      _id,
+      _type,
+      title,
+      category,
+      "subCategory": subCategory->name.${locale},
+      "slug": slug.current,
+      "description": description.${locale},
+      featuredImage {
+        asset -> {
+          _id,
           url
+        }
+      },
+      buy {
+        countries[] {
+          countryName,
+          websites[] {
+            logo {
+              asset -> {
+                _id,
+                url
+              }
+            },
+            url
+          }
         }
       }
     }
-  },
-  "mainPerfumes": *[_type == "mainPerfume" && category == "womens"] {
-    _id,
-    _type,
-    title,
-    category,
-    "subCategory": subCategory->name.${locale},
-    "slug": slug.current,
-    "description": description.${locale},
-    featuredImage {
-      asset -> {
-        _id,
-        url
-      }
-    }
-  },
-  // "collections": *[_type == "collections" && category == "womens"] {
-  //   _id,
-  //   _type,
-  //   title,
-  //   "description": description.${locale},
-  //   category,
-  //   "subCategory": subCategory->name.${locale},
-  //   "slug": slug.current,
-  //   featuredImage {
-  //     asset -> {
-  //       _id,
-  //       url
-  //     }
-  //   }
-  // }
-}
+  }
 `;
 
 // Main Perfumes List

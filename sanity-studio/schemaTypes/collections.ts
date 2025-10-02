@@ -152,6 +152,14 @@ export const collections = defineType({
       title: 'Related Products',
       description: 'References to related perfumes',
     }),
+     // Show on navbar
+    //  defineField({
+    //   name: 'showOnNavbar',
+    //   title: 'Show On Navbar',
+    //   type: 'boolean',
+    //   initialValue: true,
+    //   description: 'If this collection should be shown on the navbar',
+    // }),
      // SEO
      defineField({
       name: 'metaTitle',
