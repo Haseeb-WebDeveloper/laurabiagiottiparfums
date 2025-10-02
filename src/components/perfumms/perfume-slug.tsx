@@ -72,7 +72,7 @@ export default function PerfumeSlug({
             <div className="lg:mt-[2.3rem] mt-[1.5rem]">
               <PerfumeSlugHeroSection
                 heroSectionImages={perfume.heroSectionImages || []}
-                description={perfume.description}
+                description={perfume.description || ""}
                 locale={locale}
                 buy={perfume.buy}
               />
@@ -95,9 +95,9 @@ export default function PerfumeSlug({
       <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="lg:-mt-[4rem] -mt-[18rem] max-w">
           <OlfactoryFamily
-            olfactoryFamily={perfume.olfactoryFamily}
-            nose={perfume.nose}
-            scentDescription={perfume.scentDescription}
+            olfactoryFamily={perfume.olfactoryFamily || ""}
+            nose={perfume.nose || ""}
+            scentDescription={perfume.scentDescription || ""}
             locale={locale}
             buy={perfume.buy}
           />
@@ -108,7 +108,7 @@ export default function PerfumeSlug({
       <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="lg:mt-[3rem] -mt-[6rem] max-w">
           <BigFileAnimation
-            file={perfume.bgFile}
+            file={perfume.bgFile || { asset: { url: "" } }}
             className="w-full h-full object-cover"
           />
         </div>
@@ -118,7 +118,7 @@ export default function PerfumeSlug({
       <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
         <div className="lg:mt-[100vh] mt-[90vh] max-w">
           <ProductsSection
-            products={perfume.productImagesSection}
+            products={perfume.productImagesSection || { title: "", description: "", images: [] }}
             locale={locale}
             buy={perfume.buy}
           />
@@ -128,7 +128,7 @@ export default function PerfumeSlug({
       <div className="2xl:px-[34px] md:px-[38px] px-[18px] border-b-[1px] md:border-none border-foreground">
         <div className="max-w">
           <MainProductImage
-            image={perfume.heroProductImage}
+            image={perfume.heroProductImage || { asset: { url: "" } }}
             title={perfume.title}
             locale={locale}
             buy={perfume.buy}
@@ -149,7 +149,7 @@ export default function PerfumeSlug({
       {perfume.relatedProducts && perfume.relatedProducts.length > 0 && (
         <div className="2xl:px-[34px] md:px-[38px] px-[18px]">
           <div className="max-w">
-            <RelatedPerfumes relatedPerfumes={perfume.relatedProducts} />
+            <RelatedPerfumes relatedPerfumes={perfume.relatedProducts || []} />
           </div>
         </div>
       )}
