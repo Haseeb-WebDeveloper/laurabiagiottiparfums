@@ -50,6 +50,7 @@ export default function CollectionSlug({
               className="mt-[4.5rem] w-full text-center mx-auto lg:max-w-[45%]"
               htmlContent={collection.firstSection.description}
               textAlign="center"
+              variant="paragraph"
             />
           </div>
 

@@ -28,7 +28,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   const swiperRef = useRef<SwiperType | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  // const [isTransitioning, setIsTransitioning] = useState(false);
   const [splitTypes, setSplitTypes] = useState<{ [key: number]: SplitType }>(
     {}
   );
@@ -117,10 +117,6 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       });
     }
   };
-
-  // We no longer animate or drive the Swiper instance itself with GSAP.
-  // Swiper controls the slide movement (autoplay, loop, navigation).
-  // We only animate text layers in/out during slide changes.
 
   const animateTextTransition = (fromIndex: number, toIndex: number) => {
     const fromTitle = document.querySelector(

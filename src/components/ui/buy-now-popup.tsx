@@ -51,7 +51,7 @@ export default function BuyNowPopup({
 
   return createPortal(
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
-      <div className="relative z-[110] bg-background dark:bg-[#1B1B1B] px-10 py-16 max-w-[90%] h-fit max-h-[90%] overflow-y-auto w-full lg:w-fit lg:max-w-[420px]">
+      <div className="relative z-[110] bg-background dark:bg-[#1B1B1B] px-10 py-16 max-w-[90%] h-fit max-h-[90%] overflow-y-auto w-full lg:w-fit lg:max-w-[450px]">
         <div className=" flex justify-between items-center mb-6">
           <p className="max-w-[90%] text-foreground">
             {!selectedCountry
