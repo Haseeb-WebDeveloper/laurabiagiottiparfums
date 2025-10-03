@@ -175,6 +175,9 @@ export default function SocialMedia({
     );
   }
 
+  console.log("posts", posts);
+
+
   return (
     <section className="">
       <div>
