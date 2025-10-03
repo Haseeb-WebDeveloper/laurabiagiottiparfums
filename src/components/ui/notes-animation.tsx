@@ -11,10 +11,12 @@ import SplitText from "./split-text";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function NotesAnimation({
+  isTitleInOneLine = false,
   notes,
   header,
   locale,
 }: {
+  isTitleInOneLine?: boolean;
   notes: Note[];
   header?: string;
   locale?: string;
@@ -210,15 +212,17 @@ export default function NotesAnimation({
                     <SplitText
                       className="mt-[2rem] text-[2rem] font-[700] leading-[120%] tracking-wider"
                       text={
-                        note.title.split(" ").length > 2 ? (
-                          <>
-                            {note.title.split(" ")[0]}
-                            <br />
-                            {note.title.split(" ").slice(1).join(" ")}
-                          </>
-                        ) : (
-                          note.title
-                        )
+                        isTitleInOneLine
+                          ? note.title
+                          : note.title.split(" ").length > 2 ? (
+                              <>
+                                {note.title.split(" ")[0]}
+                                <br />
+                                {note.title.split(" ").slice(1).join(" ")}
+                              </>
+                            ) : (
+                              note.title
+                            )
                       }
                     />
                   )}

@@ -87,6 +87,7 @@ export default function PerfumeSlug({
           <NotesAnimation
             notes={perfume?.olfactoryNotes || []}
             header={t("olfactoryNotes")}
+            isTitleInOneLine={true}
           />
         </div>
       </div>
