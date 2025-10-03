@@ -9,7 +9,6 @@ export default function TableBlockComponent({
 }: {
   TableBlock: TableBlock;
 }) {
-
   return (
     <div className="w-full mt-[3rem] space-y-2 overflow-hidden">
       <h2 className="text-[1rem] font-bold">{TableBlock.tableTitle}</h2>
@@ -35,11 +34,9 @@ export default function TableBlockComponent({
         </div>
 
         {/* Second Column - Content */}
-        <div className="flex-1 p-3">
+        <div className="flex w-full items-center p-3">
           {/* Rich Text Content */}
-          <div className="mb-4">
-            <RichEditor content={TableBlock.content} />
-          </div>
+          <RichEditor content={TableBlock.content} />
         </div>
       </div>
     </div>
