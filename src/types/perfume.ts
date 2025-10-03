@@ -68,6 +68,10 @@ export interface Perfume {
   }[];
   olfactoryNotes?: OlfactoryNote[];
   isPartOfCollection?: boolean;
+  collectionPageImages?: {
+    asset: SanityImage;
+  }[];
+  descriptionForCollectionPage?: string;
   ingredients?: Ingredient[];
   olfactoryFamily?: string;
   nose?: string;

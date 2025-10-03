@@ -108,7 +108,7 @@ export async function generateMetadata({
       type: "article",
       images: [
         {
-          url: news.ogImage?.asset?.url || `${baseUrl}/og-image.jpg`,
+          url: news.ogImage?.asset?.url || `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
           alt: news.ogTitle || ogTitle,
@@ -119,7 +119,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: news.twitterTitle || twitterTitle,
       description: news.twitterDescription || twitterDescription,
-      creator: "@figmenta",
+      creator: "@laurabiagiottiparfums",
       images: [news.ogImage?.asset?.url || `${baseUrl}/logo.webp`],
     },
   };

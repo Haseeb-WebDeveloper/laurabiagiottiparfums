@@ -28,6 +28,7 @@ export default function ImageTextSection({
     setIsPopupOpen(true);
   };
 
+  console.log(products);
 
   return (
     <section className="pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
@@ -80,7 +81,7 @@ export default function ImageTextSection({
                 allowSlideNext={true}
                 allowSlidePrev={true}
               >
-                {product.heroSectionImages?.map((image, index) => (
+                {product.collectionPageImages?.map((image, index) => (
                   <SwiperSlide key={index}>
                     <div className="relative w-full h-full overflow-hidden">
                       <ParallaxImage

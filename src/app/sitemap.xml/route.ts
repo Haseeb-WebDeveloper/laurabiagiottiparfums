@@ -7,7 +7,7 @@ import { fetchSanityData } from "@/lib/sanity/fetch";
 import { LOCALES } from "@/lib/i18n/constants";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://studio.figmenta.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.laurabiagiottiparfums.com";
 
 export interface PerfumeData {
   perfume?: { slug: string; _updatedAt: string };

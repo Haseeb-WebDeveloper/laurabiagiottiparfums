@@ -18,6 +18,10 @@ export interface CollectionPerfume {
     asset: SanityImage;
   }[];
   isPartOfCollection?: boolean;
+  collectionPageImages?: {
+    asset: SanityImage;
+  }[];
+  descriptionForCollectionPage?: string;
   ingredients?: Ingredient[];
   buy?: {
     countries: Country[];

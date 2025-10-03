@@ -97,7 +97,7 @@ export async function generateMetadata({
       type: "article",
       images: [
         {
-          url: `${baseUrl}/og-image.jpg`,
+          url: `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
           alt: "Womens Perfume | Laurabiagiotti",
@@ -108,7 +108,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: "Womens Perfume | Laurabiagiotti",
       description: "Discover the latest news and updates from Laurabiagiotti.",
-      creator: "@figmenta",
+      creator: "@laurabiagiottiparfums",
       images: [`${baseUrl}/logo.webp`],
     },
   };

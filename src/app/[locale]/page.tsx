@@ -87,7 +87,7 @@ export async function generateMetadata({
       type: "article",
       images: [
         {
-          url: homePage.ogImage?.asset?.url || `${baseUrl}/og-image.jpg`,
+          url: homePage.ogImage?.asset?.url || `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
           alt: homePage.ogTitle || ogTitle,
@@ -98,7 +98,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: homePage.twitterTitle || twitterTitle,
       description: homePage.twitterDescription || twitterDescription,
-      creator: "@figmenta",
+      creator: "@laurabiagiottiparfums",
       images: [homePage.ogImage?.asset?.url || `${baseUrl}/logo.webp`],
     },
   };

@@ -141,12 +141,21 @@ export const perfume = defineType({
       title: 'Description For Collection Page',
       type: 'object',
       fields: [
-        { name: 'en', type: 'text', title: 'English' },
-        { name: 'it', type: 'text', title: 'Italian' },
-        { name: 'de', type: 'text', title: 'German' },
+        {name: 'en', type: 'text', title: 'English'},
+        {name: 'it', type: 'text', title: 'Italian'},
+        {name: 'de', type: 'text', title: 'German'},
       ],
-      description: 'Short description for the Collection page (shown only if "Is Part Of Collection" is checked).',
-      hidden: ({ parent }) => !parent?.isPartOfCollection,
+      description:
+        'Short description for the Collection page (shown only if "Is Part Of Collection" is checked).',
+      hidden: ({parent}) => !parent?.isPartOfCollection,
+    }),
+    defineField({
+      name: 'collectionPageImages',
+      type: 'array',
+      title: 'Collection Page Images',
+      description: 'This will be used at collection page.',
+      hidden: ({parent}) => !parent?.isPartOfCollection,
+      of: [{name: 'image', type: 'image', title: 'Image'}],
     }),
     defineField({
       name: 'ingredients',

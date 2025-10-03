@@ -120,7 +120,6 @@ export default function WearYourPerfume({
     const fetchPerfumes = async () => {
       try {
         const perfumesData = await getAllPerfumesForWearYourPerfume();
-        console.log("perfumesData", perfumesData);
         setAllPerfumes(perfumesData);
       } catch (error) {
         console.error("Error fetching perfumes:", error);
@@ -266,7 +265,6 @@ export default function WearYourPerfume({
     closeRef.current?.click();
   };
 
-  console.log("allPerfumes", allPerfumes);
 
   return (
     <Dialog>
