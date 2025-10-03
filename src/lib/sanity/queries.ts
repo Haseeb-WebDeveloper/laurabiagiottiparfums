@@ -272,45 +272,39 @@ export const getAllSubCategoriesQuery = (locale: string) => `
   }
 `;
 
-// Navbar Perfumes
-export const getNavbarPerfumesQuery = (locale: string) => `{
-  "perfumes": *[_type == "perfume" && isPartOfCollection == false] {
-    _id,
-    title,
-    "slug": slug.current,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
+// Navbar Perfumes from Schema
+export const getNavbarPerfumesQuery = (locale: string) => `
+  *[_type == "navbar"][0] {
+    "mensPerfumes": mensPerfumes[]-> {
+      _id,
+      _type,
+      title,
+      "slug": slug.current,
+      category,
+      "subCategory": subCategory->name.${locale},
+      "description": description.${locale},
+      featuredImage {
+        asset-> {
+          url
+        }
+      },
     },
-  },
-  "collections": *[_type == "collections" && isPartOfCollection == false] {
-    _id,
-    title,
-    "description": description.${locale},
-    "slug": slug.current,
-    category,
-    "subCategory": subCategory->name.${locale},
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
-  },
-  "mainPerfumes": *[_type == "mainPerfume" && isPartOfCollection == false] {
-    _id,
-    title,
-    "description": description.${locale},
-    "slug": slug.current,
-    category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
+    "womensPerfumes": womensPerfumes[]-> {
+      _id,
+      _type,
+      title,
+      "slug": slug.current,
+      category,
+      "subCategory": subCategory->name.${locale},
+      "description": description.${locale},
+      featuredImage {
+        asset-> {
+          url
+        }
+      },
+    }
   }
-}`;
+`;
 
 // Search Results
 export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{

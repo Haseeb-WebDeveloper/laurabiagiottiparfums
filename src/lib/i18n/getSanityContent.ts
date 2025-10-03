@@ -175,43 +175,34 @@ export async function getPerfumeBySlug(slug: string, locale: string) {
   }
 }
 
-// Navbar Perfumes
+// Navbar Perfumes from Schema
 export async function getNavbarPerfumes(locale: string) {
   try {
-    const data = (await fetchSanityData(
+    const data = await fetchSanityData(
       getNavbarPerfumesQuery(locale),
       {},
       { revalidate: IS_DEVELOPMENT ? 10 : 60 }
-    )) as NavbarPerfumes;
-    if (!data) return null;
-
-    const { collections, mainPerfumes, perfumes } = data;
-
-    // Function to combine and sort perfumes by category
-    const combinePerfumesByCategory = (category: "mens" | "womens") => {
-      const categoryCollections = collections
-        .filter((item) => item.category === category)
-        .map((item) => ({ ...item, type: "collection" as const }));
-
-      const categoryMainPerfumes = mainPerfumes
-        .filter((item) => item.category === category)
-        .map((item) => ({ ...item, type: "mainPerfume" as const }));
-
-      const categoryPerfumes = perfumes
-        .filter((item) => item.category === category)
-        .map((item) => ({ ...item, type: "perfume" as const }));
-
-      // Combine in the specified order: collections -> mainPerfumes -> perfumes
-      return [
-        ...categoryCollections,
-        ...categoryMainPerfumes,
-        ...categoryPerfumes,
-      ] as CombinedPerfume[];
+    ) as {
+      mensPerfumes: CombinedPerfume[];
+      womensPerfumes: CombinedPerfume[];
     };
 
-    // Create combined arrays for both categories
-    const mensPerfumes = combinePerfumesByCategory("mens");
-    const womensPerfumes = combinePerfumesByCategory("womens");
+    if (!data) return null;
+
+    // Add type property to each perfume based on _type
+    const mensPerfumes = data.mensPerfumes.map((perfume) => ({
+      ...perfume,
+      type: perfume._type === "collections" ? "collection" as const :
+            perfume._type === "mainPerfume" ? "mainPerfume" as const :
+            "perfume" as const
+    }));
+
+    const womensPerfumes = data.womensPerfumes.map((perfume) => ({
+      ...perfume,
+      type: perfume._type === "collections" ? "collection" as const :
+            perfume._type === "mainPerfume" ? "mainPerfume" as const :
+            "perfume" as const
+    }));
 
     return {
       mens: mensPerfumes,

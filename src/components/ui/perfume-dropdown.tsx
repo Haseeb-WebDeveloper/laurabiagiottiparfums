@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface PerfumeDropdownProps {
   perfumes: {
@@ -35,36 +35,12 @@ export default function PerfumeDropdown({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const categoryPerfumes =
     category === "mens" ? perfumes.mens : perfumes.womens;
 
-  // Handle image opacity transition when hovering over perfumes
-  useEffect(() => {
-    if (!imageRef.current) return;
-
-    const ctx = gsap.context(() => {
-      if (hoveredPerfume) {
-        gsap.to(imageRef.current, {
-          // opacity: 0,
-          duration: 0.3,
-          ease: "power2.out",
-          onComplete: () => {
-            gsap.to(imageRef.current, {
-              // opacity: 1,
-              duration: 0.3,
-              ease: "power2.out",
-            });
-          },
-        });
-      }
-    });
-
-    return () => ctx.revert();
-  }, [hoveredPerfume]);
-
+  // Animate dropdown open/close
   useEffect(() => {
     if (!dropdownRef.current) return;
 
@@ -163,10 +139,24 @@ export default function PerfumeDropdown({
     return () => ctx.revert();
   }, [isOpen]);
 
-  // Split perfumes into two columns
-  const midPoint = Math.ceil(categoryPerfumes?.length / 2);
+  // Split perfumes into two columns, but ensure first column has at least 3 perfumes if possible
+  let midPoint = Math.ceil(categoryPerfumes?.length / 2);
+  if (categoryPerfumes.length >= 3 && midPoint < 3) {
+    midPoint = 3;
+  }
   const firstColumnPerfumes = categoryPerfumes.slice(0, midPoint);
   const secondColumnPerfumes = categoryPerfumes.slice(midPoint);
+
+  // For smooth image/link fade
+  const [imageKey, setImageKey] = useState<string>("init");
+  useEffect(() => {
+    // Use a key that changes when hoveredPerfume or fallback changes
+    if (hoveredPerfume && hoveredPerfume.featuredImage) {
+      setImageKey(hoveredPerfume._id + "-img");
+    } else {
+      setImageKey("fallback-link");
+    }
+  }, [hoveredPerfume, category, categoryName]);
 
   return (
     <div
@@ -182,7 +172,7 @@ export default function PerfumeDropdown({
         <div className="max-w mx-auto px-[2rem] pb-[4rem] pt-[3.2rem]">
           <div className="flex justify-center gap-[1rem]">
             {/* First Column */}
-            <div className="w-[200px] flex flex-col justify-center gap-[1rem]">
+            <div className="w-[200px] flex flex-col justify-center">
               {firstColumnPerfumes.map((perfume, index) => (
                 <div
                   key={perfume._id}
@@ -192,7 +182,7 @@ export default function PerfumeDropdown({
                 >
                   <Link
                     href={`/${locale}/${category}-perfume/${perfume.slug}`}
-                    className="transition-colors block relativew-fit"
+                    className="transition-colors block relative w-fit pb-[0.5rem]"
                     onMouseEnter={() => {
                       setHoveredPerfume(perfume);
                       setHoveredIndex(index);
@@ -237,7 +227,7 @@ export default function PerfumeDropdown({
               ))}
             </div>
             {/* Second Column */}
-            <div className="w-[200px] flex flex-col justify-center gap-[1rem]">
+            <div className="w-[200px] flex flex-col justify-center">
               {secondColumnPerfumes.map((perfume, index) => (
                 <div
                   key={perfume._id}
@@ -247,7 +237,7 @@ export default function PerfumeDropdown({
                 >
                   <Link
                     href={`/${locale}/${category}-perfume/${perfume.slug}`}
-                    className="transition-colors block relative w-fit"
+                    className="transition-colors block relative w-fit pb-[0.5rem]"
                     onMouseEnter={() => {
                       setHoveredPerfume(perfume);
                       setHoveredIndex(index + midPoint);
@@ -292,26 +282,36 @@ export default function PerfumeDropdown({
               ))}
             </div>
             {/* Hovered perfume image */}
-            <div ref={imageContainerRef}>
-              <div
-                ref={imageRef}
-                className="opacity-100 transition-opacity duration-150"
-              >
-                {hoveredPerfume && hoveredPerfume.featuredImage ? (
-                  <div className="relative w-[220px] h-[160px] rounded-[1rem] overflow-hidden">
+            <div ref={imageContainerRef} className="flex items-center justify-center min-w-[220px] min-h-[160px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={imageKey}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { duration: 0.32 } }}
+                  exit={{ opacity: 0, transition: { duration: 0.22 } }}
+                  className={
+                    hoveredPerfume && hoveredPerfume.featuredImage
+                      ? "relative w-[220px] h-[160px] rounded-[1rem] overflow-hidden"
+                      : "w-[220px] h-[160px] flex items-center justify-center"
+                  }
+                >
+                  {hoveredPerfume && hoveredPerfume.featuredImage ? (
                     <Image
                       src={hoveredPerfume.featuredImage.asset.url}
                       alt={hoveredPerfume.title}
                       fill
-                      className="object-cover rounded-[1rem] transition-transform duration-300 hover:scale-110"
+                      className="object-cover rounded-[1rem] transition-transform duration-500 hover:scale-110"
                     />
-                  </div>
-                ) : (
-                  <Link href={`/${locale}/${category}-perfume`} className="transcend flex items-center justify-center w-[220px] h-[160px] rounded-[1rem] text-block bg-foreground text-background border-foreground border-[1px] hover:bg-background hover:text-foreground transition-colors duration-300 text-[1.25rem] font-[400]">
-                    {categoryName}
-                  </Link>
-                )}
-              </div>
+                  ) : (
+                    <Link
+                      href={`/${locale}/${category}-perfume`}
+                      className="transcend flex items-center justify-center w-[220px] h-[160px] rounded-[1rem] text-block bg-foreground text-background border-foreground border-[1px] hover:bg-background hover:text-foreground transition-colors duration-500 text-[1.25rem] font-[400]"
+                    >
+                      {categoryName}
+                    </Link>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
