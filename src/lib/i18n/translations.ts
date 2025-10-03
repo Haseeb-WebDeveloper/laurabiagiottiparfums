@@ -71,6 +71,7 @@ export const translations = {
     // Social Media
     followUsOnInstagram: "Follow us on Instagram",
     becomeALover: "Become a #LBlover!",
+    follow: "Follow",
   },
 
   it: {
@@ -161,6 +162,7 @@ export const translations = {
     // Social Media
     followUsOnInstagram: "Seguici su Instagram",
     becomeALover: "Diventa una #LBlover!",
+    follow: "Seguici",
   },
 
   de: {
@@ -250,5 +252,6 @@ export const translations = {
     // Social Media
     followUsOnInstagram: "Folge uns auf Instagram",
     becomeALover: "Werde ein #LBlover!",
+    follow: "Folgen Sie uns",
   },
 };

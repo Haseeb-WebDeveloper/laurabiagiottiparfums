@@ -464,7 +464,7 @@ export default function SocialMedia({
           target="_blank"
           className="cursor-pointer uppercase px-[1.7rem] py-[0.7rem] rounded-[1.1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
         >
-          Follow
+          {t("follow")}
         </Link>
       </div>
     </section>

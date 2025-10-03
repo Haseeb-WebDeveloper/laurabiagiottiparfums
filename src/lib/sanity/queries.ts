@@ -1325,7 +1325,7 @@ export const getHomePageQuery = (locale: string) => `
       _createdAt,
       "title": title.${locale},
       "description": description.${locale},
-      "slug": slug.current,
+      "slug": slug.${locale}.current,
       featuredImage {
         asset-> {
           url

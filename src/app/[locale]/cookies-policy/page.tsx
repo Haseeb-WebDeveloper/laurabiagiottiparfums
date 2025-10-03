@@ -101,7 +101,7 @@ export async function generateMetadata({
       title: cookiesPolicyData.twitterTitle || twitterTitle,
       description: cookiesPolicyData.twitterDescription || twitterDescription,
       creator: "@laurabiagiottiparfums",
-      images: [cookiesPolicyData.ogImage?.asset?.url || `${baseUrl}/logo.webp`],
+      images: [cookiesPolicyData.ogImage?.asset?.url || `${baseUrl}/logo.png`],
     },
   };
 

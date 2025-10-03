@@ -36,6 +36,12 @@ function getLocale(request: NextRequest) {
  */
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+
+  // Allow all requests for files in the public folder (assets/images/etc) to pass through
+  // This includes any file with an extension at the root or any subfolder (e.g. /logo.png, /images/foo.jpg, /assets/bar.svg, etc.)
+  if (/\/[^/]+\.[a-zA-Z0-9]+$/.test(pathname) || /\/(images|assets|fonts|media|public)\/.+\.[a-zA-Z0-9]+$/.test(pathname)) {
+    return;
+  }
   
   // Check if the pathname already has a locale
   const pathnameHasLocale = LOCALES.some(
@@ -85,7 +91,7 @@ export function middleware(request: NextRequest) {
  */
 export const config = {
   matcher: [
-    // Match all paths that do not start with these exclusions
-    '/((?!api|_next/static|_next/image|favicon.ico|images|.*\\.svg|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.webp|.*\\.ico|.*\\.txt|.*\\.xml|.*\\.json|.*\\.mp4|.*\\.gif).*)',
+    // Match all paths except those for static assets in the public folder (allow all extensions at root or in subfolders)
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.[a-zA-Z0-9]+).*)',
   ],
 };

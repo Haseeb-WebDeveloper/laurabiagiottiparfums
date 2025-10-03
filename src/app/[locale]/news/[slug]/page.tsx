@@ -120,7 +120,7 @@ export async function generateMetadata({
       title: news.twitterTitle || twitterTitle,
       description: news.twitterDescription || twitterDescription,
       creator: "@laurabiagiottiparfums",
-      images: [news.ogImage?.asset?.url || `${baseUrl}/logo.webp`],
+      images: [news.ogImage?.asset?.url || `${baseUrl}/logo.png`],
     },
   };
 

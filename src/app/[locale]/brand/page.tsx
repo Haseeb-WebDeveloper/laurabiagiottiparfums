@@ -103,7 +103,7 @@ export async function generateMetadata({
       title: brandPage.twitterTitle || twitterTitle,
       description: brandPage.twitterDescription || twitterDescription,
       creator: "@laurabiagiottiparfums",
-      images: [brandPage.ogImage?.asset?.url || `${baseUrl}/logo.webp`],
+      images: [brandPage.ogImage?.asset?.url || `${baseUrl}/logo.png`],
     },
   };
 

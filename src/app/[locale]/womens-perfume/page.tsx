@@ -109,7 +109,7 @@ export async function generateMetadata({
       title: "Womens Perfume | Laurabiagiotti",
       description: "Discover the latest news and updates from Laurabiagiotti.",
       creator: "@laurabiagiottiparfums",
-      images: [`${baseUrl}/logo.webp`],
+      images: [`${baseUrl}/logo.png`],
     },
   };
 
