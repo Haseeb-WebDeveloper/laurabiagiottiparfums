@@ -1,7 +1,8 @@
 import { Country } from "@/types/perfume";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocale } from "@/lib/i18n/context";
+import { createPortal } from "react-dom";
 
 interface BuyNowPopupProps {
   isOpen: boolean;
@@ -16,18 +17,27 @@ export default function BuyNowPopup({
   countries,
   locale,
 }: BuyNowPopupProps) {
-
   const { t } = useLocale();
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(() => {
     // If locale is 'it', find Italy, if 'de', find Germany
     if (locale === "it" || locale === "de") {
       const countryName = locale === "it" ? "Italy" : "Germany";
       return (
-        countries.find((country) => country.countryName.toLowerCase() === countryName.toLowerCase()) || null
+        countries.find(
+          (country) =>
+            country.countryName.toLowerCase() === countryName.toLowerCase()
+        ) || null
       );
     }
     return null;
   });
+
+  // Reset selected country when popup closes (for non-it/de locales)
+  useEffect(() => {
+    if (!isOpen && !["it", "de"].includes(locale)) {
+      setSelectedCountry(null);
+    }
+  }, [isOpen, locale]);
 
   if (!isOpen) return null;
 
@@ -39,8 +49,8 @@ export default function BuyNowPopup({
     onClose();
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[210]">
+  return createPortal(
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
       <div className="relative z-[110] bg-background dark:bg-[#1B1B1B] px-10 py-16 max-w-[90%] h-fit max-h-[90%] overflow-y-auto w-full lg:w-fit lg:max-w-[420px]">
         <div className=" flex justify-between items-center mb-6">
           <p className="max-w-[90%] text-foreground">
@@ -48,7 +58,10 @@ export default function BuyNowPopup({
               ? "Select Country"
               : "Continuing you will be redirected to the website of one of our partners where you can purchase your fragrance."}
           </p>
-          <button onClick={onClose} className="cursor-pointer absolute top-4 right-4 z-100">
+          <button
+            onClick={onClose}
+            className="cursor-pointer absolute top-4 right-4 z-100"
+          >
             <Image
               src="/icons/close.svg"
               alt="Close"
@@ -72,7 +85,7 @@ export default function BuyNowPopup({
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5">
+          <div className="grid grid-cols-1 gap-5" data-lenis-prevent>
             {(
               selectedCountry ||
               countries.find(
@@ -111,6 +124,7 @@ export default function BuyNowPopup({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

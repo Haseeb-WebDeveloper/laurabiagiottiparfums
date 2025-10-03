@@ -1186,7 +1186,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     _id,
     title,
     "slug": slug.current,
-    "description": description.${locale},
+    "description": descriptionForHomePage.${locale},
     category,
     heroSectionImages[] {
       asset -> {

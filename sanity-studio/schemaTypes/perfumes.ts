@@ -137,6 +137,18 @@ export const perfume = defineType({
       description: 'If this perfume is part of a collection, then check this box.',
     }),
     defineField({
+      name: 'descriptionForHomePage',
+      title: 'Description For Home Page',
+      type: 'object',
+      fields: [
+        { name: 'en', type: 'text', title: 'English' },
+        { name: 'it', type: 'text', title: 'Italian' },
+        { name: 'de', type: 'text', title: 'German' },
+      ],
+      description: 'Short description for the home page (shown only if "Is Part Of Collection" is checked).',
+      hidden: ({ parent }) => !parent?.isPartOfCollection,
+    }),
+    defineField({
       name: 'ingredients',
       title: 'Ingredients',
       description:
@@ -401,14 +413,7 @@ export const perfume = defineType({
       title: 'Related Products',
       description: 'References to related perfumes',
     }),
-    // Show on navbar
-    // defineField({
-    //   name: 'showOnNavbar',
-    //   title: 'Show On Navbar',
-    //   type: 'boolean',
-    //   initialValue: true,
-    //   description: 'If this perfume should be shown on the navbar',
-    // }),
+
     // SEO
     defineField({
       name: 'metaTitle',

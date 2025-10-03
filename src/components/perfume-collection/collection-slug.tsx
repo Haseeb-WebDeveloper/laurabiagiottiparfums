@@ -45,10 +45,13 @@ export default function CollectionSlug({
           </div>
 
           {/* description */}
-          <HtmlSplitText
-            className="mt-[4.5rem] w-full text-center mx-auto lg:max-w-[45%]"
-            htmlContent={collection.firstSection.description}
-          />
+          <div className="w-full flex justify-center">
+            <HtmlSplitText
+              className="mt-[4.5rem] w-full text-center mx-auto lg:max-w-[45%]"
+              htmlContent={collection.firstSection.description}
+              textAlign="center"
+            />
+          </div>
 
           {/* bg media */}
           <div className="">
