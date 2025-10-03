@@ -12,7 +12,6 @@ import SearchModal from "../ui/search-modal";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import WearYourPerfume from "../wear-your-perfume";
-import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import AnimatedUnderline from "../ui/animated-underline";
 
@@ -210,6 +209,9 @@ export default function Navbar() {
                   width={200}
                   height={200}
                   className="w-[11rem] h-fit"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                  quality={100}
                 />
                ) : (
                 <Image
@@ -218,6 +220,9 @@ export default function Navbar() {
                   width={200}
                   height={200}
                   className="w-[11rem] h-fit"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                  quality={100}
                 />
                )}
               </Link>
@@ -324,6 +329,9 @@ export default function Navbar() {
               width={220}
               height={220}
               className="w-full h-full object-contain max-h-[25px]"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+              quality={100}
             />
           </Link>
 
