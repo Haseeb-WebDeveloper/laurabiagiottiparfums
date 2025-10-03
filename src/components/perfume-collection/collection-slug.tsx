@@ -18,7 +18,7 @@ export default function CollectionSlug({
   const { t } = useLocale();
 
   return (
-    <div className="mb-[15rem] lg:mt-[14.8rem] mt-[7rem] bg-background">
+    <div className="max-w  mb-[15rem] lg:mt-[14.8rem] mt-[7rem] bg-background">
       {/* 1st hero section */}
       <section className="lg:mb-[100vh] mb-[75vh]">
         <h1 className="text-center 2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide">

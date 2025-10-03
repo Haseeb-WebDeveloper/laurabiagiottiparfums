@@ -31,7 +31,7 @@ export default function ImageTextSection({
   console.log(products);
 
   return (
-    <section className="pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
+    <section className="max-w  pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
       {products.map((product, index) => (
         <div key={index} className="flex flex-col md:gap-[7rem] gap-[5rem]">
           {/* Right Left Section */}
