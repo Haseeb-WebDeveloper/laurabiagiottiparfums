@@ -41,7 +41,7 @@ export default function ImageTextSection({
             }`}
           >
             {/* Text Content Section */}
-            <div className="w-full lg:w-[45%]">
+            <div className={`w-full lg:w-[50%] ${index % 2 === 0 ? "lg:pr-[4rem]" : "lg:pl-[4rem]"}`}>
               <div className="flex flex-col gap-[1rem]">
                 <SplitText
                   className="text-[2.5rem] lg:text-[3rem] font-[500]"
@@ -68,7 +68,7 @@ export default function ImageTextSection({
             </div>
 
             {/* Image Slider Section */}
-            <div className="w-full lg:w-[45%] h-[420px]">
+            <div className="w-full lg:w-[50%] h-[420px]">
               <Swiper
                 modules={[Autoplay]}
                 slidesPerView={1}
@@ -99,11 +99,11 @@ export default function ImageTextSection({
 
           {/* Ingredients Section */}
           <div className="px-[0.5rem] w-full">
-            <div className="flex flex-col lg:flex-row justify-between lg:gap-[5rem] gap-[4rem]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 justify-start lg:gap-[7rem] gap-[4rem]">
               {product.ingredients?.map((ingredient, index) => (
                 <div
                   key={index}
-                  className="md:max-w-[80%] flex lg:items-start md:items-center flex-col md:flex-row lg:gap-[1.8rem] gap-[2rem]"
+                  className="flex lg:items-start md:items-center flex-col md:flex-row lg:gap-[1.8rem] gap-[2rem]"
                 >
                   <div className="lg:w-[90px] lg:h-[90px] md:w-[120px] md:h-[120px] w-[190px] h-[190px]">
                     <ParallaxImage
