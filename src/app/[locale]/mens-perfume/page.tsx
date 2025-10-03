@@ -32,7 +32,7 @@ export default async function MensPerfumePage({
         perfumes={perfumes}
         locale={locale}
         slugPrefix="mens-perfume"
-        title={locale === "en" ? "Men's Perfume" : locale === "it" ? "Profumi Uomo" : "Damendüfte"}
+        title={locale === "en" ? "Men's Perfume" : locale === "it" ? "Fragranze Uomo" : "HERRENDÜFTE"}
         subCategories={subCategories}
       />
     </div>

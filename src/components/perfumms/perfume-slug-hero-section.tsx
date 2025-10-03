@@ -42,30 +42,67 @@ export default function PerfumeSlugHeroSection({
   const { t } = useLocale();
   const [currentIndex, setCurrentIndex] = useState(0);
   const mainSwiperRef = useRef<SwiperType | null>(null);
-  const thumbSwiperRef = useRef<SwiperType | null>(null);
+  const mobileThumbSwiperRef = useRef<SwiperType | null>(null);
+  const tabletThumbSwiperRef = useRef<SwiperType | null>(null);
+  const desktopThumbSwiperRef = useRef<SwiperType | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
+  const [thumbGroupSize, setThumbGroupSize] = useState(3);
+  const [viewport, setViewport] = useState<"mobile" | "tablet" | "desktop">("mobile");
 
   // Set the Swiper transition speed (ms)
   const SWIPER_TRANSITION_SPEED = 1000; // Increased from default (300ms) to 800ms for smoother/slower slide
 
   useEffect(() => {
+    const computeGroupSize = () => {
+      if (typeof window === "undefined") return 3;
+      const width = window.innerWidth;
+      if (width >= 1024) return 3; // desktop vertical mini: 3
+      if (width >= 768) return 5; // tablet horizontal mini: 5
+      return 3; // mobile vertical mini: 3
+    };
+    const computeViewport = () => {
+      if (typeof window === "undefined") return "mobile" as const;
+      const width = window.innerWidth;
+      if (width >= 1024) return "desktop" as const;
+      if (width >= 768) return "tablet" as const;
+      return "mobile" as const;
+    };
+
+    const onResize = () => {
+      setThumbGroupSize(computeGroupSize());
+      setViewport(computeViewport());
+    };
+    onResize();
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const getActiveThumbSwiper = (): SwiperType | null => {
+    if (viewport === "mobile") return mobileThumbSwiperRef.current;
+    if (viewport === "tablet") return tabletThumbSwiperRef.current;
+    return desktopThumbSwiperRef.current;
+  };
+
+  useEffect(() => {
     const interval = setInterval(() => {
-      if (autoplayEnabled && mainSwiperRef.current && thumbSwiperRef.current) {
+      const activeThumb = getActiveThumbSwiper();
+      if (autoplayEnabled && mainSwiperRef.current && activeThumb) {
         const nextIndex = (currentIndex + 1) % heroSectionImages.length;
         setCurrentIndex(nextIndex);
 
         // Sync both swipers
         mainSwiperRef.current.slideTo(nextIndex, SWIPER_TRANSITION_SPEED);
 
-        // For vertical slider, calculate which group of 3 should be visible
-        const groupIndex = Math.floor(nextIndex / 3) * 3;
-        thumbSwiperRef.current.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
+        // Calculate which group should be visible for mini slider
+        const groupIndex = Math.floor(nextIndex / thumbGroupSize) * thumbGroupSize;
+        activeThumb.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
       }
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [currentIndex, heroSectionImages.length, autoplayEnabled]);
+  }, [currentIndex, heroSectionImages.length, autoplayEnabled, thumbGroupSize, viewport]);
 
   if (!heroSectionImages || heroSectionImages.length === 0) {
     return null;
@@ -75,10 +112,11 @@ export default function PerfumeSlugHeroSection({
     const newIndex = swiper.activeIndex;
     setCurrentIndex(newIndex);
 
-    // Update vertical slider position
-    if (thumbSwiperRef.current) {
-      const groupIndex = Math.floor(newIndex / 3) * 3;
-      thumbSwiperRef.current.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
+    // Update mini slider position
+    const activeThumb = getActiveThumbSwiper();
+    if (activeThumb) {
+      const groupIndex = Math.floor(newIndex / thumbGroupSize) * thumbGroupSize;
+      activeThumb.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
     }
   };
 
@@ -87,9 +125,10 @@ export default function PerfumeSlugHeroSection({
     if (mainSwiperRef.current) {
       mainSwiperRef.current.slideTo(index, SWIPER_TRANSITION_SPEED);
     }
-    if (thumbSwiperRef.current) {
-      const groupIndex = Math.floor(index / 3) * 3;
-      thumbSwiperRef.current.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
+    const activeThumb = getActiveThumbSwiper();
+    if (activeThumb) {
+      const groupIndex = Math.floor(index / thumbGroupSize) * thumbGroupSize;
+      activeThumb.slideTo(groupIndex, SWIPER_TRANSITION_SPEED);
     }
     // Pause autoplay temporarily when user interacts
     setAutoplayEnabled(false);
@@ -155,21 +194,24 @@ export default function PerfumeSlugHeroSection({
             {/* Mini Vertical Carousel - Now Clickable */}
             <div className="w-[4rem]">
               <Swiper
-                spaceBetween={16}
-                slidesPerView={3}
+                spaceBetween={8}
+                slidesPerView={Math.min(3, heroSectionImages.length)}
+                slidesPerGroup={Math.min(3, heroSectionImages.length)}
                 direction="vertical"
                 speed={SWIPER_TRANSITION_SPEED}
-                className="h-[15rem] w-[4rem]"
+                className="h-[208px] w-[4rem]" // 3 * 64px + 2 * 8px = 208px to avoid rem rounding
                 onSwiper={(swiper) => {
-                  thumbSwiperRef.current = swiper;
+                  mobileThumbSwiperRef.current = swiper;
                 }}
-                allowTouchMove={true} // Enable scrolling
+                allowTouchMove={heroSectionImages.length > 3} // Only enable scrolling if more than 3 slides
                 modules={[]}
+                watchSlidesProgress={true}
+                centeredSlides={false}
               >
                 {heroSectionImages.map((image, index) => {
                   let opacity = 0.5;
-                  const currentGroup = Math.floor(currentIndex / 3);
-                  const imageGroup = Math.floor(index / 3);
+                  const currentGroup = Math.floor(currentIndex / thumbGroupSize);
+                  const imageGroup = Math.floor(index / thumbGroupSize);
 
                   if (currentGroup === imageGroup) {
                     if (index === currentIndex) {
@@ -270,23 +312,26 @@ export default function PerfumeSlugHeroSection({
 
             {/* Mini Horizontal Carousel - Now Clickable */}
             <div className="flex justify-center">
-              <div className="w-full">
+              <div className="w-[289px]"> {/* Exact width: 5 * 45px + 4 * 16px = 289px */}
                 <Swiper
                   spaceBetween={16}
-                  slidesPerView={5}
+                  slidesPerView={Math.min(5, heroSectionImages.length)}
+                  slidesPerGroup={Math.min(5, heroSectionImages.length)}
                   direction="horizontal"
                   speed={SWIPER_TRANSITION_SPEED}
                   className="h-[45px] w-full"
                   onSwiper={(swiper) => {
-                    thumbSwiperRef.current = swiper;
+                    tabletThumbSwiperRef.current = swiper;
                   }}
-                  allowTouchMove={true} // Enable scrolling
+                  allowTouchMove={heroSectionImages.length > 5} // Only enable scrolling if more than 5 slides
                   modules={[]}
+                  watchSlidesProgress={true}
+                  centeredSlides={false}
                 >
                   {heroSectionImages.map((image, index) => {
                     let opacity = 0.5;
-                    const currentGroup = Math.floor(currentIndex / 3);
-                    const imageGroup = Math.floor(index / 3);
+                    const currentGroup = Math.floor(currentIndex / thumbGroupSize);
+                    const imageGroup = Math.floor(index / thumbGroupSize);
 
                     if (currentGroup === imageGroup) {
                       if (index === currentIndex) {
@@ -409,22 +454,23 @@ export default function PerfumeSlugHeroSection({
             <div className="w-[90px]">
               <Swiper
                 spaceBetween={15}
-                slidesPerView={3}
+                slidesPerView={Math.min(3, heroSectionImages.length)}
+                slidesPerGroup={Math.min(3, heroSectionImages.length)}
                 direction="vertical"
                 speed={SWIPER_TRANSITION_SPEED}
-                className="h-[315px] w-[90px]"
+                className="h-[300px] w-[90px]" // Adjusted height: 3 slides * 90px + 2 gaps * 15px = 300px
                 onSwiper={(swiper) => {
-                  thumbSwiperRef.current = swiper;
+                  desktopThumbSwiperRef.current = swiper;
                 }}
-                allowTouchMove={true} // Enable scrolling
+                allowTouchMove={heroSectionImages.length > 3} // Only enable scrolling if more than 3 slides
                 modules={[]}
-                centeredSlides={true}
-                centeredSlidesBounds={true}
+                watchSlidesProgress={true}
+                centeredSlides={false}
               >
                 {heroSectionImages.map((image, index) => {
                   let opacity = 0.5;
-                  const currentGroup = Math.floor(currentIndex / 3);
-                  const imageGroup = Math.floor(index / 3);
+                  const currentGroup = Math.floor(currentIndex / thumbGroupSize);
+                  const imageGroup = Math.floor(index / thumbGroupSize);
 
                   if (currentGroup === imageGroup) {
                     if (index === currentIndex) {

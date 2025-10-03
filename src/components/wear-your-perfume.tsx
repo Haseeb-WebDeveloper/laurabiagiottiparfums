@@ -154,32 +154,57 @@ export default function WearYourPerfume({
   const findMatchingPerfumes = () => {
     setIsLoading(true);
     try {
-      // Filter perfumes based on category and intensity only
-      const matches = allPerfumes.filter((perfume) => {
-        // Match gender/category
-        if (perfume.category !== step1Selection.gender) return false;
-
-        // Match intensity (within 30 points range)
-        const intensityDiff = Math.abs(
-          (perfume.sharpness || 50) - step4Selection.intensity
-        );
-        if (intensityDiff > 30) return false;
-
-        return true;
+      // First, filter perfumes by gender/category
+      const genderMatches = allPerfumes.filter((perfume) => {
+        return perfume.category === step1Selection.gender;
       });
 
-      // Sort by closest intensity match
-      const sortedMatches = matches.sort((a, b) => {
+      // If we have less than 2 perfumes for the selected gender, use all available perfumes
+      const perfumesToSearch = genderMatches.length >= 2 ? genderMatches : allPerfumes;
+
+      // Sort all perfumes by closest intensity match
+      const sortedByIntensity = perfumesToSearch.sort((a, b) => {
         const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
         const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
         return aDiff - bDiff;
       });
 
-      // Take top 2 matches
-      setMatchedPerfumes(sortedMatches.slice(0, 2));
+      // Ensure we always get exactly 2 perfumes
+      let finalMatches = [];
+      
+      if (sortedByIntensity.length >= 2) {
+        // Take the 2 closest matches
+        finalMatches = sortedByIntensity.slice(0, 2);
+      } else if (sortedByIntensity.length === 1) {
+        // If only 1 match, add the closest from all perfumes
+        finalMatches = [sortedByIntensity[0]];
+        const remaining = allPerfumes
+          .filter(p => p._id !== sortedByIntensity[0]._id)
+          .sort((a, b) => {
+            const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
+            const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
+            return aDiff - bDiff;
+          });
+        if (remaining.length > 0) {
+          finalMatches.push(remaining[0]);
+        }
+      } else {
+        // Fallback: if no matches at all, take 2 closest from all perfumes
+        const allSorted = allPerfumes.sort((a, b) => {
+          const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
+          const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
+          return aDiff - bDiff;
+        });
+        finalMatches = allSorted.slice(0, 2);
+      }
+
+      setMatchedPerfumes(finalMatches);
       setCurrentStep(5); // Show results
     } catch (error) {
       console.error("Error finding matching perfumes:", error);
+      // Fallback: show first 2 perfumes if error occurs
+      setMatchedPerfumes(allPerfumes.slice(0, 2));
+      setCurrentStep(5);
     } finally {
       setIsLoading(false);
     }

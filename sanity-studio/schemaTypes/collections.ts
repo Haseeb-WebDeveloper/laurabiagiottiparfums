@@ -152,14 +152,86 @@ export const collections = defineType({
       title: 'Related Products',
       description: 'References to related perfumes',
     }),
-     // Show on navbar
-    //  defineField({
-    //   name: 'showOnNavbar',
-    //   title: 'Show On Navbar',
-    //   type: 'boolean',
-    //   initialValue: true,
-    //   description: 'If this collection should be shown on the navbar',
-    // }),
+    defineField({
+      name: 'buy',
+      type: 'object',
+      title: 'Buy Options',
+      fields: [
+        defineField({
+          name: 'countries',
+          type: 'array',
+          title: 'Countries',
+          of: [
+            {
+              type: 'object',
+              name: 'countryBuy',
+              title: 'Country',
+              fields: [
+                {
+                  name: 'countryName',
+                  type: 'string',
+                  title: 'Country Name',
+                },
+                {
+                  name: 'websites',
+                  type: 'array',
+                  title: 'Websites',
+                  of: [
+                    {
+                      type: 'object',
+                      name: 'website',
+                      title: 'Website',
+                      fields: [
+                        {
+                          name: 'logo',
+                          type: 'image',
+                          title: 'Website Logo',
+                        },
+                        {
+                          name: 'url',
+                          type: 'url',
+                          title: 'Website URL',
+                        },
+                      ],
+                      preview: {
+                        select: {
+                          title: 'url',
+                          media: 'logo',
+                        },
+                        prepare(selection) {
+                          return {
+                            title: selection.title || 'Website',
+                            media: selection.media,
+                          }
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+              preview: {
+                select: {
+                  title: 'countryName',
+                  websites: 'websites',
+                },
+                prepare(selection) {
+                  const {title, websites} = selection
+                  let subtitle = ''
+                  if (websites && Array.isArray(websites)) {
+                    subtitle = `${websites.length} website${websites.length === 1 ? '' : 's'}`
+                  }
+                  return {
+                    title: title || 'Country',
+                    subtitle,
+                  }
+                },
+              },
+            },
+          ],
+        }),
+      ],
+      validation: (Rule) => Rule.required(),
+    }),
      // SEO
      defineField({
       name: 'metaTitle',

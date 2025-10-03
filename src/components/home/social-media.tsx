@@ -10,6 +10,7 @@ import SplitText from "../ui/split-text";
 import { useInstagram } from "@/hooks/useInstagram";
 import { useInstagramStats } from "@/hooks/useInstagramStats";
 import { InstagramPost } from "@/types/insta-post";
+import { useLocale } from "@/lib/i18n/context";
 
 interface SocialMediaProps {
   refreshInterval?: number;
@@ -25,6 +26,7 @@ export default function SocialMedia({
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
   const descriptionRef = useRef<(HTMLDivElement | null)[]>([]);
+  const { t } = useLocale();
 
   // Fetch Instagram data
   const { posts, isLoading, error, refresh } = useInstagram(
@@ -121,11 +123,11 @@ export default function SocialMedia({
               marginBottom: "0.5rem",
             }}
           >
-            Follow us on Instagram
+            {t("followUsOnInstagram")}
           </h2>
         </div>
         <SplitText
-          text="Become a #LBlover!"
+          text={t("becomeALover")}
           element="p"
           className="text-[1rem] "
         />
@@ -154,7 +156,7 @@ export default function SocialMedia({
           }}
         >
           <SplitText
-            text="Follow us on Instagram"
+            text={t("followUsOnInstagram")}
             variant="heading"
             element="h2"
             className="md:text-[3rem] text-[2.2rem] font-bold"

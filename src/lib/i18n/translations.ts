@@ -66,6 +66,11 @@ export const translations = {
     olfactoryNotes: "Olfactory Notes",
     olfactoryFamily: "Olfactory Family",
     nose: "Nose",
+
+
+    // Social Media
+    followUsOnInstagram: "Follow us on Instagram",
+    becomeALover: "Become a #LBlover!",
   },
 
   it: {
@@ -84,7 +89,7 @@ export const translations = {
     subscribe: "Iscriviti",
     info: "Info",
     Fragrances: "Fragranze",
-    brand: "Marca",
+    brand: "Brand",
     news: "News",
     women: "Donne",
     men: "Uomo",
@@ -98,7 +103,7 @@ export const translations = {
     // Navbar
     search: "Cerca",
     wearYourPerfume: "Indossa il tuo profumo",
-    womensPerfume: "Profumi Donne",
+    womensPerfume: "Profumi Donna",
     mensPerfume: "Profumi Uomo",
     wypstep1Title: "Indossa il tuo profumo",
     wypstep1Description:
@@ -152,6 +157,10 @@ export const translations = {
     newsLatterEmail: "tuo@indirizzo.email",
     newsLatterPhone: "Inserisci il numero di telefono",
     newsLatterCountry: "Seleziona il paese",
+
+    // Social Media
+    followUsOnInstagram: "Seguici su Instagram",
+    becomeALover: "Diventa una #LBlover!",
   },
 
   de: {
@@ -170,7 +179,7 @@ export const translations = {
     subscribe: "Abonnieren",
     info: "Info",
     Fragrances: "Düfte",
-    brand: "Marke",
+    brand: "Brand",
     news: "News",
     women: "Damenparfüm",
     men: "Herrenparfüm",
@@ -184,8 +193,8 @@ export const translations = {
     // Navbar
     search: "Suchen",
     wearYourPerfume: "Tragen Sie Ihr Parfüm",
-    womensPerfume: "Frauenparfüme",
-    mensPerfume: "Männerparfüme",
+    womensPerfume: "Damenparfum",
+    mensPerfume: "Herrenparfum",
     wypstep1Title: "Tragen Sie Ihr Parfüm",
     wypstep1Description:
       "Erzählen Sie uns etwas mehr über sich, und wir helfen Ihnen, Ihren perfekten Duft zu finden!",
@@ -237,5 +246,9 @@ export const translations = {
     newsLatterEmail: "Ihre@adresse.email",
     newsLatterPhone: "Geben Sie Ihre Telefonnummer ein",
     newsLatterCountry: "Land auswählen",
+
+    // Social Media
+    followUsOnInstagram: "Folge uns auf Instagram",
+    becomeALover: "Werde ein #LBlover!",
   },
 };

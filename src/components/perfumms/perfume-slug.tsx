@@ -138,7 +138,7 @@ export default function PerfumeSlug({
 
       {/* Navigation Section */}
       {perfume.previousProduct && perfume.nextProduct && (
-        <div className="my-[8rem] overflow-x-hidden hidden md:block  ">
+        <div className="mb-[8rem] mt-[1.7rem] overflow-x-hidden hidden md:block  ">
           <NavigationBar
             previous={perfume.previousProduct}
             next={perfume.nextProduct}

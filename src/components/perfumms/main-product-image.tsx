@@ -78,9 +78,11 @@ export default function MainProductImage({
       {/* Product Name and Price */}
       <div className="-mt-[4rem] flex flex-col justify-center items-center">
         <SplitText
-          className="mb-[1.4rem] text-center lg:text-[3rem] text-[2.6rem] leading-[1.2]"
+          className="mb-[1.4rem] text-center lg:text-[2.85rem] text-[2.6rem] leading-[1.2]"
           style={{
-            fontWeight: "400",
+            fontWeight: "500",
+            wordSpacing: "0.1.5em",
+            letterSpacing: "-0.02em",
           }}
           variant="heading"
           element="h2"
