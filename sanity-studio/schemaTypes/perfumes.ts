@@ -137,15 +137,15 @@ export const perfume = defineType({
       description: 'If this perfume is part of a collection, then check this box.',
     }),
     defineField({
-      name: 'descriptionForHomePage',
-      title: 'Description For Home Page',
+      name: 'descriptionForCollectionPage',
+      title: 'Description For Collection Page',
       type: 'object',
       fields: [
         { name: 'en', type: 'text', title: 'English' },
         { name: 'it', type: 'text', title: 'Italian' },
         { name: 'de', type: 'text', title: 'German' },
       ],
-      description: 'Short description for the home page (shown only if "Is Part Of Collection" is checked).',
+      description: 'Short description for the Collection page (shown only if "Is Part Of Collection" is checked).',
       hidden: ({ parent }) => !parent?.isPartOfCollection,
     }),
     defineField({
