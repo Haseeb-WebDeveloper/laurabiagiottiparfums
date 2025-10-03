@@ -28,10 +28,16 @@ interface WearYourPerfumeProps {
   showCustomCloseIcon?: boolean;
 }
 
-// Hardcoded notes array
-const notesData = [
+// Fixed: notesData should use objects, not arrays, for title translations
+type NoteTitleTranslations = { en: string; it: string; de: string };
+
+const notesData: { title: NoteTitleTranslations; image: { asset: { url: string } } }[] = [
   {
-    title: "Fresh and Citrus",
+    title: {
+      en: "Fresh & Citrus",
+      it: "Fresche & Agrumate",
+      de: "Frisch & Zitrisch",
+    },
     image: {
       asset: {
         url: "https://cdn.sanity.io/images/wa3zfgpk/production/f6cdd95b83cc44dac86c8b7cbc5a8fdfeb3d2a2d-1400x1400.webp",
@@ -39,7 +45,11 @@ const notesData = [
     },
   },
   {
-    title: "Spicy and Woody",
+    title: {
+      en: "Spicy and Woody",
+      it: "Speziate & Legnose",
+      de: "Würzig & holzig",
+    },
     image: {
       asset: {
         url: "https://cdn.sanity.io/images/wa3zfgpk/production/f6ecefd98510be7c1cab8711473c1d9d55837cdb-1400x1400.webp",
@@ -47,7 +57,11 @@ const notesData = [
     },
   },
   {
-    title: "Flower and Fruity",
+    title: {
+      en: "Floral & Fruity",
+      it: "Fiorite & Fruttate",
+      de: "Blumig & Fruchtig",
+    },
     image: {
       asset: {
         url: "https://cdn.sanity.io/images/wa3zfgpk/production/3a7fd666121432199bb28f360ccc993847b8bc30-1400x1400.webp",
@@ -55,7 +69,11 @@ const notesData = [
     },
   },
   {
-    title: "Sweet and Sensual",
+    title: {
+      en: "Sweet & Sensual",
+      it: "Dolci & Sensuali",
+      de: "Süß & sinnlich",
+    },
     image: {
       asset: {
         url: "https://cdn.sanity.io/images/wa3zfgpk/production/18ac5b22bb72285e013bb77657475e9fd0c7199e-1400x1400.webp",
@@ -162,15 +180,17 @@ export default function WearYourPerfume({
       const perfumesToSearch = genderMatches.length >= 2 ? genderMatches : allPerfumes;
 
       // Sort all perfumes by closest intensity match
-      const sortedByIntensity = perfumesToSearch.sort((a, b) => {
-        const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
-        const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
-        return aDiff - bDiff;
-      });
+      const sortedByIntensity = perfumesToSearch
+        .slice() // Fix: sort mutates array, so use slice to copy
+        .sort((a, b) => {
+          const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
+          const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
+          return aDiff - bDiff;
+        });
 
       // Ensure we always get exactly 2 perfumes
-      let finalMatches = [];
-      
+      let finalMatches: Perfume[] = [];
+
       if (sortedByIntensity.length >= 2) {
         // Take the 2 closest matches
         finalMatches = sortedByIntensity.slice(0, 2);
@@ -178,7 +198,8 @@ export default function WearYourPerfume({
         // If only 1 match, add the closest from all perfumes
         finalMatches = [sortedByIntensity[0]];
         const remaining = allPerfumes
-          .filter(p => p._id !== sortedByIntensity[0]._id)
+          .filter((p) => p._id !== sortedByIntensity[0]._id)
+          .slice()
           .sort((a, b) => {
             const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
             const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
@@ -189,11 +210,13 @@ export default function WearYourPerfume({
         }
       } else {
         // Fallback: if no matches at all, take 2 closest from all perfumes
-        const allSorted = allPerfumes.sort((a, b) => {
-          const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
-          const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
-          return aDiff - bDiff;
-        });
+        const allSorted = allPerfumes
+          .slice()
+          .sort((a, b) => {
+            const aDiff = Math.abs((a.sharpness || 50) - step4Selection.intensity);
+            const bDiff = Math.abs((b.sharpness || 50) - step4Selection.intensity);
+            return aDiff - bDiff;
+          });
         finalMatches = allSorted.slice(0, 2);
       }
 
@@ -230,21 +253,17 @@ export default function WearYourPerfume({
     if (isAnimating) {
       if (wasPreviousStep) {
         // Exiting step
-        const isMovingForward = currentStep > previousStep;
-        return isMovingForward
+        // const isMovingForward = currentStep > previousStep;
+        return currentStep > previousStep
           ? "-translate-x-full opacity-0"
           : "translate-x-full opacity-0";
       } else if (isCurrentStep) {
         // Entering step
-        const isMovingForward = currentStep > previousStep;
-        return isMovingForward
-          ? "translate-x-0 opacity-100"
-          : "translate-x-0 opacity-100";
+        // const isMovingForward = currentStep > previousStep;
+        return "translate-x-0 opacity-100";
       }
     }
 
-    // Hidden steps
-    const isMovingForward = currentStep > previousStep;
     if (stepNumber > currentStep) {
       return "translate-x-full opacity-0";
     } else if (stepNumber < currentStep) {
@@ -264,7 +283,6 @@ export default function WearYourPerfume({
     setMatchedPerfumes([]);
     closeRef.current?.click();
   };
-
 
   return (
     <Dialog>
@@ -361,23 +379,23 @@ export default function WearYourPerfume({
                 <button
                   key={index}
                   onClick={() => {
-                    setStep2Selection({ selectedNote: note });
+                    setStep2Selection({ selectedNote: note.title[locale as keyof typeof note.title] });
                     handleNextStep();
                   }}
                   className={`group cursor-pointer flex flex-col items-center gap-4
-                    ${step2Selection.selectedNote?.title === note.title ? "" : ""}`}
+                    ${step2Selection.selectedNote === note.title[locale as keyof typeof note.title] ? "" : ""}`}
                 >
                   <div className="lg:w-[190px] lg:h-[190px] w-[110px] h-[110px] rounded-full group-hover:shadow-[30px_30px_84px_rgba(180,133,94,0.45)] transition-all duration-300">
                     <Image
                       src={note.image.asset.url}
-                      alt={note.title || ""}
+                      alt={note.title[locale as keyof typeof note.title] || ""}
                       width={190}
                       height={190}
                       className="w-full h-full object-cover rounded-full"
                     />
                   </div>
                   <span className="text-center text-[1rem] tracking-tight font-[500] group-hover:underline transition-all duration-300">
-                    {note.title}
+                    {note.title[locale as keyof typeof note.title]}
                   </span>
                 </button>
               ))}
@@ -392,7 +410,7 @@ export default function WearYourPerfume({
               {t("wypstepe3Title")}
             </h2>
             <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10 w-full justify-between">
-              {timesOfDay.map((time: { name: string; label: string }) => (
+              {timesOfDay.map((time) => (
                 <button
                   key={time.name}
                   onClick={() => {
@@ -504,13 +522,6 @@ export default function WearYourPerfume({
                   {t("intense")}
                 </div>
               </div>
-
-              {/* Value Display */}
-              {/* <div className="text-center mt-8">
-                <span className="text-[1.2rem] font-[500]">
-                  Intensity: {step4Selection.intensity}%
-                </span>
-              </div> */}
             </div>
           </div>
 

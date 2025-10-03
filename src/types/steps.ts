@@ -6,7 +6,7 @@ export interface Step1Selection {
 }
 
 export interface Step2Selection {
-  selectedNote: Note | null;
+  selectedNote: string | null;
 }
 
 export interface Step3Selection {
