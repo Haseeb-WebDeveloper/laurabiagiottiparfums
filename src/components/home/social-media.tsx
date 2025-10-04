@@ -175,7 +175,9 @@ export default function SocialMedia({
     );
   }
 
+  console.log("stats", stats);
   console.log("posts", posts);
+  console.log("posts length:", posts.length);
 
 
   return (
@@ -188,12 +190,12 @@ export default function SocialMedia({
             marginBottom: "0.5rem",
           }}
         >
-          Follow us on Instagram
+          {t("followUsOnInstagram")}
         </h2>
       </div>
       <div className="">
         <SplitText
-          text="Become a #LBlover!"
+          text={t("becomeALover")}
           className="text-[1rem] "
           element="p"
         />
@@ -371,7 +373,7 @@ export default function SocialMedia({
             >
               <ParallaxImage
                 src={
-                  post.media_type === "VIDEO"
+                  post.media_type === "VIDEO" || post.media_type === "CAROUSEL_ALBUM"
                     ? post.thumbnail_url || post.media_url
                     : post.media_url
                 }
@@ -381,8 +383,8 @@ export default function SocialMedia({
               />
               <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 transition-colors" />
 
-              {/* Video indicator */}
-              {post.media_type === "VIDEO" && (
+              {/* Video/Carousel indicator */}
+              {(post.media_type === "VIDEO" || post.media_type === "CAROUSEL_ALBUM") && (
                 <div className="absolute top-4 right-4 z-50">
                   <svg
                     className="w-6 h-6 text-white"

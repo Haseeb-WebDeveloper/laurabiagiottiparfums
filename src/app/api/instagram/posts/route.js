@@ -12,12 +12,21 @@ const fetchPosts = async (limit) => {
 
   const data = await response.json();
 
+
+  console.log("data from api", data);
   if (data.error) {
     throw new Error(data.error.message);
   }
 
+  console.log("Raw data.data length:", data.data.length);
+  console.log("Media types in raw data:", data.data.map(p => ({ id: p.id, media_type: p.media_type })));
+  
   const posts = data.data
-    .filter(post => ['IMAGE', 'VIDEO'].includes(post.media_type))
+    .filter(post => {
+      const isAllowed = ['IMAGE', 'VIDEO', 'CAROUSEL_ALBUM'].includes(post.media_type);
+      console.log(`Post ${post.id} (${post.media_type}): ${isAllowed ? 'INCLUDED' : 'FILTERED OUT'}`);
+      return isAllowed;
+    })
     .map(post => ({
       id: post.id,
       caption: post.caption || '',
@@ -28,6 +37,8 @@ const fetchPosts = async (limit) => {
       timestamp: post.timestamp,
       formatted_date: new Date(post.timestamp).toLocaleDateString(),
     }));
+
+    console.log("posts from api", posts);
 
   return { posts, count: posts.length };
 };
