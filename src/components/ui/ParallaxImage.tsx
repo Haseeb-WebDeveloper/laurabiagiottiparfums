@@ -19,6 +19,7 @@ interface ParallaxImageProps {
   objectPosition?: string;
   objectFit?: string;
   direction?: "vertical" | "horizontal";
+  unoptimized?: boolean;
 }
 
 export function ParallaxImage({
@@ -32,6 +33,7 @@ export function ParallaxImage({
   objectPosition = "center",
   objectFit = "cover",
   direction = "vertical",
+  unoptimized = false,
 }: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -116,6 +118,7 @@ export function ParallaxImage({
           priority={priority}
           quality={quality}
           sizes={sizes}
+          unoptimized={unoptimized}
         />
       )}
     </div>

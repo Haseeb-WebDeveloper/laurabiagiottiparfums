@@ -114,6 +114,67 @@ export const collections = defineType({
       title: 'Products Collection',
       description: 'References to products in the collection',
     }),
+    defineField({
+      name: 'bottlesSection',
+      title: 'Bottles Section',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'images',
+              title: 'Images',
+              type: 'array',
+              of: [{ type: 'image' }],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+            defineField({
+              name: 'backgroundImage',
+              title: 'Background Image',
+              type: 'image',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'product',
+              title: 'Product',
+              type: 'reference',
+              to: [
+                {type: 'perfume'},
+                {type: 'collections'},
+                {type: 'mainPerfume'},
+              ],
+              description: 'Reference to the product featured in this section',
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              images: 'images',
+              backgroundImage: 'backgroundImage',
+              product: 'product',
+            },
+            prepare(selection) {
+              // Use first image if available for preview, fallback to bg
+              const image = (selection.images && selection.images.length > 0)
+                ? selection.images[0]
+                : selection.backgroundImage;
+              let subtitle = '';
+              if (selection.product) {
+                subtitle = '1 product';
+              }
+              return {
+                title: 'Bottle Section',
+                media: image,
+                subtitle,
+              };
+            },
+          },
+        },
+      ],
+      validation: (Rule) => Rule.max(4),
+      description: 'Section displaying bottles with images, a background, and a single related product (Max 4).',
+    }),
     // defineField({
     //   name: 'momentOfDay',
     //   type: 'string',

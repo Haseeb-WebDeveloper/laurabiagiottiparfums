@@ -1,4 +1,4 @@
-import CollectionSlug from "@/components/perfume-collection/collection-slug";
+// import CollectionSlug from "@/components/perfume-collection/collection-slug";
 import MainPerfumeSlug from "@/components/main-perfumes/main-perfume-slug";
 import PerfumeSlug from "@/components/perfumms/perfume-slug";
 import { LOCALES } from "@/lib/i18n/constants";
@@ -12,6 +12,9 @@ import { PerfumeSeoTagsInterface, SeoTagsInterface } from "@/types/news";
 import { fetchSanityData } from "@/lib/sanity/fetch";
 import { PerfumeData } from "@/app/sitemap.xml/route";
 import { getProductBySlugsForSitemapQuery } from "@/lib/sanity/queries";
+import NewCollectionSlug from "@/components/perfume-collection/new-collection-slug";
+import SlugNavbar from "@/components/layout/slug-navbar";
+import Navbar from "@/components/layout/navbar";
 
 export default async function PerfumePage({
   params,
@@ -29,31 +32,45 @@ export default async function PerfumePage({
   // Render based on which type of product was found
   if (productData.perfume) {
     return (
-      <div className="bg-background overflow-hidden">
-        <PerfumeSlug
-          perfume={productData.perfume}
-          locale={locale}
-          subCategories={subCategories || []}
-        />
-      </div>
+      <>
+        <Navbar />
+        <div className="bg-background overflow-hidden">
+          <PerfumeSlug
+            perfume={productData.perfume}
+            locale={locale}
+            subCategories={subCategories || []}
+          />
+        </div>
+      </>
     );
   }
 
   if (productData.mainPerfume) {
     return (
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px] mt-[30rem]">
-        <MainPerfumeSlug
-          mainPerfume={productData.mainPerfume}
-          locale={locale}
-        />
-      </div>
+      <>
+        <Navbar />
+        <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px] mt-[30rem]">
+          <MainPerfumeSlug
+            mainPerfume={productData.mainPerfume}
+            locale={locale}
+          />
+        </div>
+      </>
     );
   }
 
   if (productData.collection) {
     return (
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-        <CollectionSlug collection={productData.collection} locale={locale} />
+      <div className=" ">
+        {/* For collection only: make navbar transparent and absolute at top (not fixed on scroll) */}
+        {/* <NavbarAppearanceToggle transparent fixed={false} position="absolute" /> */}
+        <SlugNavbar />
+
+        {/* <CollectionSlug collection={productData.collection} locale={locale} /> */}
+        <NewCollectionSlug
+          collection={productData.collection}
+          locale={locale}
+        />
       </div>
     );
   }

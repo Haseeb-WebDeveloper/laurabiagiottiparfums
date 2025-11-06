@@ -2,10 +2,11 @@ import { LOCALES } from "@/lib/i18n/constants";
 import {
   getCookiesPolicy,
   getCookiesPolicyForSEO,
-} from "@/lib/i18n/getSanityContent";   
+} from "@/lib/i18n/getSanityContent";
 import { Metadata } from "next";
 import { SeoTagsInterface } from "@/types/news";
 import CookiesPolicyPage from "@/components/cookies-policy/cookies-policy-page";
+import Navbar from "@/components/layout/navbar";
 
 export default async function CookiesPolicy({
   params,
@@ -16,11 +17,14 @@ export default async function CookiesPolicy({
   const cookiesPolicyData = await getCookiesPolicy(locale);
 
   return (
-    <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-      {cookiesPolicyData && (
-        <CookiesPolicyPage cookiesPolicyData={cookiesPolicyData} />
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+        {cookiesPolicyData && (
+          <CookiesPolicyPage cookiesPolicyData={cookiesPolicyData} />
+        )}
+      </div>
+    </>
   );
 }
 
@@ -34,7 +38,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const cookiesPolicyData = (await getCookiesPolicyForSEO(locale)) as SeoTagsInterface;
+  const cookiesPolicyData = (await getCookiesPolicyForSEO(
+    locale
+  )) as SeoTagsInterface;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.laurabiagiottiparfums.com";
@@ -90,7 +96,8 @@ export async function generateMetadata({
       type: "article",
       images: [
         {
-          url: cookiesPolicyData.ogImage?.asset?.url || `${baseUrl}/og-image.png`,
+          url:
+            cookiesPolicyData.ogImage?.asset?.url || `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
         },

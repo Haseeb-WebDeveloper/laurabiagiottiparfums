@@ -6,7 +6,7 @@ import {
 import { Metadata } from "next";
 import { SeoTagsInterface } from "@/types/news";
 import PrivacyPolicyPage from "@/components/privacy-policy/privacy-policy-page";
-
+import Navbar from "@/components/layout/navbar";
 export default async function PrivacyPolicy({
   params,
 }: {
@@ -16,11 +16,14 @@ export default async function PrivacyPolicy({
   const privacyPolicyData = await getPrivacyPolicy(locale);
 
   return (
-    <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-      {privacyPolicyData && (
-        <PrivacyPolicyPage privacyPolicyData={privacyPolicyData} />
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+        {privacyPolicyData && (
+          <PrivacyPolicyPage privacyPolicyData={privacyPolicyData} />
+        )}
+      </div>
+    </>
   );
 }
 

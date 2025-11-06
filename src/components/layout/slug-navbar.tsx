@@ -14,10 +14,8 @@ import { useGSAP } from "@gsap/react";
 import WearYourPerfume from "../wear-your-perfume";
 import { useTheme } from "next-themes";
 import AnimatedUnderline from "../ui/animated-underline";
-import { useNavbarAppearance } from "./navbar-appearance-context";
 
-export default function SlugNavbar() {
-  const { transparent, fixed, position } = useNavbarAppearance();
+export default function Navbar() {
   const { locale, t } = useLocale();
   const { theme } = useTheme();
   const [perfumes, setPerfumes] = useState<{
@@ -30,8 +28,6 @@ export default function SlugNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  console.log("I am a navbar");
 
   // GSAP refs
   const menuIconRef = useRef<HTMLDivElement>(null);
@@ -180,17 +176,7 @@ export default function SlugNavbar() {
   return (
     <div className="relative">
       {/* Desktop Navbar */}
-      <div
-        className={`hidden md:block ${
-          position === "fixed"
-            ? "fixed top-0 left-0 right-0"
-            : position === "absolute"
-              ? "absolute top-0 left-0 right-0"
-              : fixed
-                ? "fixed top-0 left-0 right-0"
-                : "static"
-        } z-[100] ${transparent ? "bg-transparent" : "bg-background"} 2xl:px-[34px] px-[38px]`}
-      >
+      <div className="hidden md:block absolute top-0 left-0 right-0 z-[100] bg-transparent 2xl:px-[34px] px-[38px]">
         <div className="max-w pt-[45px] lg:pt-[45.5px] 2xl:pt-[48px]">
           <div className="flex justify-between">
             {/* Left */}
@@ -276,9 +262,7 @@ export default function SlugNavbar() {
             </div>
           </div>
         </div>
-        {!transparent && (
-          <div className="h-[29px] w-[100vw] border-b-[1px] border-foreground/[0.08]"></div>
-        )}
+        {/* <div className="h-[29px] w-[100vw] border-b-[1px] border-foreground/[0.08]"></div> */}
         {/* Dropdown */}
         {hoveredCategory && (
           <div
@@ -303,17 +287,7 @@ export default function SlugNavbar() {
       </div>
 
       {/* Mobile Navbar */}
-      <div
-        className={`md:hidden ${
-          position === "fixed"
-            ? "fixed top-0 left-0 right-0"
-            : position === "absolute"
-              ? "absolute top-0 left-0 right-0"
-              : fixed
-                ? "fixed top-0 left-0 right-0"
-                : "static"
-        } z-[100] ${transparent ? "bg-transparent" : "bg-background"}`}
-      >
+      <div className="md:hidden absolute top-0 left-0 right-0 z-[100] bg-transparent">
         <div className="flex justify-between items-center px-4 py-4">
           {/* Left - Search Icon */}
           <div className="flex items-center gap-[1rem]">
@@ -380,7 +354,7 @@ export default function SlugNavbar() {
             />
           </div>
         </div>
-        <div className="h-[1px] w-full bg-foreground/[0.08]"></div>
+        {/* <div className="h-[1px] w-full bg-foreground/[0.08]"></div> */}
       </div>
 
       {/* Mobile Menu Overlay */}

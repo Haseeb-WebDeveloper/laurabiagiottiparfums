@@ -3,6 +3,7 @@ import { getHomePage, getHomePageForSEO } from "@/lib/i18n/getSanityContent";
 import HomePage from "@/components/home/home-page";
 import { Metadata } from "next";
 import { SeoTagsInterface } from "@/types/news";
+import Navbar from "@/components/layout/navbar";
 
 export default async function Home({
   params,
@@ -14,6 +15,7 @@ export default async function Home({
 
   return (
     <div className="">
+      <Navbar />
       {homeData && <HomePage homeData={homeData} locale={locale} />}
     </div>
   );
@@ -37,11 +39,9 @@ export async function generateMetadata({
   const homePageUrl = `${baseUrl}/${locale}`;
 
   const metaTitle = "Home | Laurabiagiotti";
-  const metaDescription =
-    "Discover the latest products from Laurabiagiotti.";
+  const metaDescription = "Discover the latest products from Laurabiagiotti.";
   const ogTitle = "Home | Laurabiagiotti";
-  const ogDescription =
-    "Discover the latest products from Laurabiagiotti.";
+  const ogDescription = "Discover the latest products from Laurabiagiotti.";
   const twitterTitle = "Home | Laurabiagiotti";
   const twitterDescription =
     "Discover the latest products from Laurabiagiotti.";

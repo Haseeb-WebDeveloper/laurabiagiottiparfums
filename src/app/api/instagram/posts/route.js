@@ -2,41 +2,41 @@ import { NextResponse } from 'next/server';
 import { unstable_cache, revalidateTag } from 'next/cache';
 
 const fetchPosts = async (limit) => {
-  const response = await fetch(
-    `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&limit=${limit}&access_token=${process.env.INSTAGRAM_ACCESS_TOKEN}`
-  );
+    const response = await fetch(
+      `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&limit=${limit}&access_token=${process.env.INSTAGRAM_ACCESS_TOKEN}`
+    );
 
-  if (!response.ok) {
-    throw new Error(`Instagram API error: ${response.status}`);
-  }
+    if (!response.ok) {
+      throw new Error(`Instagram API error: ${response.status}`);
+    }
 
-  const data = await response.json();
+    const data = await response.json();
 
 
   console.log("data from api", data);
-  if (data.error) {
+    if (data.error) {
     throw new Error(data.error.message);
-  }
+    }
 
   console.log("Raw data.data length:", data.data.length);
   console.log("Media types in raw data:", data.data.map(p => ({ id: p.id, media_type: p.media_type })));
   
-  const posts = data.data
+    const posts = data.data
     .filter(post => {
       const isAllowed = ['IMAGE', 'VIDEO', 'CAROUSEL_ALBUM'].includes(post.media_type);
       console.log(`Post ${post.id} (${post.media_type}): ${isAllowed ? 'INCLUDED' : 'FILTERED OUT'}`);
       return isAllowed;
     })
-    .map(post => ({
-      id: post.id,
-      caption: post.caption || '',
-      media_type: post.media_type,
-      media_url: post.media_url,
-      thumbnail_url: post.thumbnail_url,
-      permalink: post.permalink,
-      timestamp: post.timestamp,
-      formatted_date: new Date(post.timestamp).toLocaleDateString(),
-    }));
+      .map(post => ({
+        id: post.id,
+        caption: post.caption || '',
+        media_type: post.media_type,
+        media_url: post.media_url,
+        thumbnail_url: post.thumbnail_url,
+        permalink: post.permalink,
+        timestamp: post.timestamp,
+        formatted_date: new Date(post.timestamp).toLocaleDateString(),
+      }));
 
     console.log("posts from api", posts);
 
@@ -51,14 +51,14 @@ export async function GET(request) {
     const getCached = unstable_cache(
       async () => fetchPosts(limit),
       ['instagram-posts', `limit:${limit}`],
-      { revalidate: 300, tags: ['instagram-posts'] }
+      { revalidate: 60, tags: ['instagram-posts'] }
     );
 
     const payload = await getCached();
 
     return NextResponse.json(payload, {
       headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
       },
     });
   } catch (error) {

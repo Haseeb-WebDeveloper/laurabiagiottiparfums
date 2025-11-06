@@ -210,6 +210,7 @@ export default function SocialMedia({
               width={100}
               height={100}
               className="z-10 absolute top-0 left-0 scale-[96%] w-full h-full object-cover rounded-full aspect-square"
+              unoptimized
             />
             <Image
               src="/logo/insta-bg.jpg"
@@ -380,6 +381,7 @@ export default function SocialMedia({
                 alt={post.caption || "Instagram post"}
                 fill
                 className=""
+                unoptimized
               />
               <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 transition-colors" />
 

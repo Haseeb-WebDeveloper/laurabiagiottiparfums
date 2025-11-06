@@ -5,6 +5,7 @@ import {
   getWomensPerfumes,
 } from "@/lib/i18n/getSanityContent";
 import { Metadata } from "next";
+import Navbar from "@/components/layout/navbar";
 
 export default async function WomensPerfumePage({
   params,
@@ -27,15 +28,24 @@ export default async function WomensPerfumePage({
   }
 
   return (
-    <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-      <PerfumesList
-        perfumes={perfumes}
-        locale={locale}
-        slugPrefix="womens-perfume"
-        title={locale === "en" ? "Women's perfume" : locale === "it" ? "Fragranze Donna" : "Damendüfte"}
-        subCategories={subCategories}
-      />
-    </div>
+    <>
+      <Navbar />
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+        <PerfumesList
+          perfumes={perfumes}
+          locale={locale}
+          slugPrefix="womens-perfume"
+          title={
+            locale === "en"
+              ? "Women's perfume"
+              : locale === "it"
+                ? "Fragranze Donna"
+                : "Damendüfte"
+          }
+          subCategories={subCategories}
+        />
+      </div>
+    </>
   );
 }
 

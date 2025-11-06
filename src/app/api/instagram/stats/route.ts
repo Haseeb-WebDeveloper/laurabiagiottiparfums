@@ -47,14 +47,14 @@ export async function GET() {
     const getCached = unstable_cache(
       async () => fetchStats(),
       ['instagram-stats'],
-      { revalidate: 300, tags: ['instagram-stats'] }
+      { revalidate: 60, tags: ['instagram-stats'] }
     );
 
     const profileData = await getCached();
 
     return NextResponse.json(profileData, {
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
       },
     });
   } catch (error) {

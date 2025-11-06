@@ -71,14 +71,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
-  // Deprecated but still supported for some hosting platforms
-  domains: [
-    "scontent.cdninstagram.com",
-    "video.cdninstagram.com",
-    "instagram.fbom3-1.fna.fbcdn.net",
-    "instagram.fblr1-1.fna.fbcdn.net",
-  ],
 };
 
 export default nextConfig;

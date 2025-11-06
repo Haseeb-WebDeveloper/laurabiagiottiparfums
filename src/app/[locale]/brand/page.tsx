@@ -1,4 +1,5 @@
 import BrandPageComponent from "@/components/brand/brand-page";
+import Navbar from "@/components/layout/navbar";
 import { LOCALES } from "@/lib/i18n/constants";
 import {
   getBrandPageContent,
@@ -19,9 +20,12 @@ export default async function Home({
   )) as BrandPage;
 
   return (
+    <>
+    <Navbar />
     <div className=" overflow-hidden bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
       <BrandPageComponent brandPageData={brandPageData} />
     </div>
+    </>
   );
 }
 

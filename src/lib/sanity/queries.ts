@@ -1036,111 +1036,111 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     }
   },
   "mainPerfume": *[_type == "mainPerfume" && slug.current == "${slug}"][0] {
-  _id,
-  _type,
-  title,
-  "slug": slug.current,
-  description,
-  category,
-  subCategory-> {
     _id,
+    _type,
     title,
-    "slug": slug.current
-  },
-  featuredImage {
-    asset-> {
-      url,
-    }
-  },
-  heroSectionImages[] {
-    title,
-    image {
-      asset-> {
-        url,
-      }
-    }
-  },
-  "secondSectionQuoteText": secondSectionQuoteText.${locale},
-  bgFile {
-    asset-> {
-      url,
-      mimeType
-    }
-  },
-  "bigHeading": bigHeading.${locale},
-  fourthSectionTextImage {
-    "title": title.${locale},
-    "text": text.${locale},
-    file {
-      asset-> {
-        url,
-        mimeType
-      }
-    }
-  },
-  olfactoryNotes[] {
-    image {
+    "slug": slug.current,
+    description,
+    category,
+    subCategory-> {
+      _id,
+      title,
+      "slug": slug.current
+    },
+    featuredImage {
       asset-> {
         url,
       }
     },
-    "title": title.${locale},
-    notes[] {
-      "name": ${locale}
-    }
-  },
-  "olfactoryFamily": olfactoryFamily.${locale},
-  nose,
-  "scentDescription": scentDescription.${locale},
-  sixthSection {
-    "heading": heading.${locale},
-    files[] {
+    heroSectionImages[] {
+      title,
+      image {
+        asset-> {
+          url,
+        }
+      }
+    },
+    "secondSectionQuoteText": secondSectionQuoteText.${locale},
+    bgFile {
       asset-> {
         url,
         mimeType
       }
     },
-    firstContent {
+    "bigHeading": bigHeading.${locale},
+    fourthSectionTextImage {
       "title": title.${locale},
-      "description": description.${locale}
+      "text": text.${locale},
+      file {
+        asset-> {
+          url,
+          mimeType
+        }
+      }
     },
-    secondContent {
+    olfactoryNotes[] {
+      image {
+        asset-> {
+          url,
+        }
+      },
       "title": title.${locale},
-      "description": description.${locale}
-    }
-  },
-  seventhSection {
-    "heading": heading.${locale},
-    files[] {
+      notes[] {
+        "name": ${locale}
+      }
+    },
+    "olfactoryFamily": olfactoryFamily.${locale},
+    nose,
+    "scentDescription": scentDescription.${locale},
+    sixthSection {
+      "heading": heading.${locale},
+      files[] {
+        asset-> {
+          url,
+          mimeType
+        }
+      },
+      firstContent {
+        "title": title.${locale},
+        "description": description.${locale}
+      },
+      secondContent {
+        "title": title.${locale},
+        "description": description.${locale}
+      }
+    },
+    seventhSection {
+      "heading": heading.${locale},
+      files[] {
+        asset-> {
+          url,
+          mimeType
+        }
+      },
+      content {
+        "title": title.${locale},
+        "description": description.${locale}
+      }
+    },
+    heroProductImage {
       asset-> {
         url,
-        mimeType
       }
     },
-    content {
-      "title": title.${locale},
-      "description": description.${locale}
-    }
-  },
-  heroProductImage {
-    asset-> {
-      url,
-    }
-  },
-  buy {
-    countries[] {
-      countryName,
-      websites[] {
-        logo {
-          asset-> {
-            url
-          }
-        },
-        url
+    buy {
+      countries[] {
+        countryName,
+        websites[] {
+          logo {
+            asset-> {
+              url
+            }
+          },
+          url
+        }
       }
-    }
-  },
-  "relatedProducts": relatedProducts[]->{
+    },
+    "relatedProducts": relatedProducts[]->{
       _id,
       title,
       "description": description.${locale},
@@ -1153,86 +1153,115 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
         }
       }
     }
-},
+  },
   "collection": *[_type == "collections" && slug.current == "${slug}"][0] {
-  _id,
-  _type,
-  title,
-  "description": description.${locale},
-  "slug": slug.current,
-  category,
-  "subCategory": subCategory->name.${locale},
-  featuredImage {
-    asset-> {
-      url,
-    }
-  },
-  firstSection {
-    "tagLine": tagLine.${locale},
-    image {
-      asset-> {
-        url,
-      }
-    },
-    "description": description.${locale},
-    bgMedia {
-      asset-> {
-        url,
-        mimeType
-      }
-    }
-  },
-  productsCollection[]-> {
     _id,
+    _type,
     title,
+    "description": description.${locale},
     "slug": slug.current,
-    "description": descriptionForCollectionPage.${locale},
     category,
-    collectionPageImages[] {
-      asset -> {
-        _id,
-        url
+    "subCategory": subCategory->name.${locale},
+    featuredImage {
+      asset-> {
+        url,
       }
     },
-    isPartOfCollection,
-    ingredients[] {
-      "ingredientName": ingredientName.${locale},
+    firstSection {
+      "tagLine": tagLine.${locale},
       image {
+        asset-> {
+          url,
+        }
+      },
+      "description": description.${locale},
+      bgMedia {
+        asset-> {
+          url,
+          mimeType
+        }
+      }
+    },
+    productsCollection[]-> {
+      _id,
+      title,
+      "slug": slug.current,
+      "description": descriptionForCollectionPage.${locale},
+      category,
+      collectionPageImages[] {
         asset -> {
           _id,
           url
         }
       },
-      "description": description.${locale}
-    },
-    buy {
-    countries[] {
-      countryName,
-      websites[] {
-        logo {
-          asset-> {
+      isPartOfCollection,
+      ingredients[] {
+        "ingredientName": ingredientName.${locale},
+        image {
+          asset -> {
+            _id,
             url
           }
         },
-        url
+        "description": description.${locale}
+      },
+      buy {
+        countries[] {
+          countryName,
+          websites[] {
+            logo {
+              asset-> {
+                url
+              }
+            },
+            url
+          }
+        }
+      },
+    },
+    bottlesSection[] {
+      images[] {
+        asset-> {
+          url
+        }
+      },
+      backgroundImage {
+        asset-> {
+          url
+        }
+      },
+      product->{
+        title,
+        "description": description.${locale},
+        buy {
+          countries[] {
+            countryName,
+            websites[] {
+              logo {
+                asset-> {
+                  url
+                }
+              },
+              url
+            }
+          }
+        }
       }
-    }
-  },
-  },
-  "relatedProducts": relatedProducts[]->{
-    _id,
-    title,
-    "description": description.${locale},
-    "slug": slug.current,
-    category,
-    featuredImage {
-      asset -> {
-        _id,
-        url
+    },
+    "relatedProducts": relatedProducts[]->{
+      _id,
+      title,
+      "description": description.${locale},
+      "slug": slug.current,
+      category,
+      featuredImage {
+        asset -> {
+          _id,
+          url
+        }
       }
     }
   }
-}
 }`;
 
 // Home Page Query

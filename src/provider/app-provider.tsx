@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { PageViews } from "@piwikpro/react-piwik-pro";
 import PiwikProProvider from "@/components/PiwikProProvider.tsx";
 import { ModeToggle } from "@/components/theme-toggle";
+import { NavbarAppearanceProvider } from "@/components/layout/navbar-appearance-context";
 
 
 interface AppProviderProps {
@@ -115,11 +116,13 @@ function AppProvider({ children, locale }: AppProviderProps) {
             <SmoothScrolling>
               {/* <SplitHeadingsAnimation /> */}
               {/* <SplitParagraphsAnimation /> */}
-              <Navbar />
-              {/* <div className="fixed bottom-4 right-4 z-[100]">
+              <NavbarAppearanceProvider>
+                {/* <Navbar /> */}
+                {/* <div className="fixed bottom-4 right-4 z-[100]">
                 <ModeToggle />
               </div> */}
-              {children}
+                {children}
+              </NavbarAppearanceProvider>
               <Footer />
             </SmoothScrolling>
           </LocaleWrapper>

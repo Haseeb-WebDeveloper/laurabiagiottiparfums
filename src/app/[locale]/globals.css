@@ -306,3 +306,6 @@ input[type="range"]:focus::-moz-range-thumb {
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
+.custom-text-shadow {
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}

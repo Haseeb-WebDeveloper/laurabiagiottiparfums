@@ -28,6 +28,26 @@ export interface CollectionPerfume {
   };
 }
 
+// Bottles Section type for collection
+export interface BottlesSectionItem {
+  images: {
+    asset: SanityImage;
+  }[];
+  backgroundImage: {
+    asset: SanityImage;
+  };
+  product: {
+    // Only require the fields queried for in bottlesSection in the query
+    title: string;
+    description: string;
+    buy?: {
+      countries: Country[];
+    };
+  };
+}
+
+type BottlesSection = BottlesSectionItem[];
+
 // First section content type
 interface FirstSection {
   tagLine: string;
@@ -52,6 +72,7 @@ export interface Collection {
   };
   firstSection: FirstSection;
   productsCollection: CollectionPerfume[];
+  bottlesSection: BottlesSection; 
   relatedProducts: RelatedProduct[];
 }
 

@@ -6,7 +6,7 @@ import {
 import { Metadata } from "next";
 import { SeoTagsInterface } from "@/types/news";
 import TermsOfUsePage from "@/components/terms-of-use/terms-of-use-page";
-
+import Navbar from "@/components/layout/navbar";
 export default async function TermsOfUse({
   params,
 }: {
@@ -16,9 +16,12 @@ export default async function TermsOfUse({
   const termsOfUseData = await getTermsOfUse(locale);
 
   return (
-    <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-      {termsOfUseData && <TermsOfUsePage termsOfUseData={termsOfUseData} />}
-    </div>
+    <>
+      <Navbar />
+      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
+        {termsOfUseData && <TermsOfUsePage termsOfUseData={termsOfUseData} />}
+      </div>
+    </>
   );
 }
 
@@ -32,7 +35,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const termsOfUseData = (await getTermsOfUseForSEO(locale)) as SeoTagsInterface;
+  const termsOfUseData = (await getTermsOfUseForSEO(
+    locale
+  )) as SeoTagsInterface;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.laurabiagiottiparfums.com";
