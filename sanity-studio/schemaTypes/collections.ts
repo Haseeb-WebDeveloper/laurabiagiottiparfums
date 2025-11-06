@@ -104,11 +104,7 @@ export const collections = defineType({
       of: [
         {
           type: 'reference',
-           to: [
-        {type: 'perfume'},
-        {type: 'collections'},
-        {type: 'mainPerfume'},
-      ],
+          to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
         },
       ],
       title: 'Products Collection',
@@ -123,10 +119,17 @@ export const collections = defineType({
           type: 'object',
           fields: [
             defineField({
+              name: 'bottleImage',
+              title: 'Bottle Image',
+              type: 'image',
+              description: 'This is the main bottle image.',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
               name: 'images',
               title: 'Images',
               type: 'array',
-              of: [{ type: 'image' }],
+              of: [{type: 'image'}],
               validation: (Rule) => Rule.required().min(1),
             }),
             defineField({
@@ -139,41 +142,33 @@ export const collections = defineType({
               name: 'product',
               title: 'Product',
               type: 'reference',
-              to: [
-                {type: 'perfume'},
-                {type: 'collections'},
-                {type: 'mainPerfume'},
-              ],
+              to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
               description: 'Reference to the product featured in this section',
               validation: (Rule) => Rule.required(),
             }),
           ],
           preview: {
             select: {
-              images: 'images',
-              backgroundImage: 'backgroundImage',
+              bottleImage: 'bottleImage',
               product: 'product',
             },
             prepare(selection) {
-              // Use first image if available for preview, fallback to bg
-              const image = (selection.images && selection.images.length > 0)
-                ? selection.images[0]
-                : selection.backgroundImage;
-              let subtitle = '';
+              let subtitle = ''
               if (selection.product) {
-                subtitle = '1 product';
+                subtitle = '1 product'
               }
               return {
                 title: 'Bottle Section',
-                media: image,
+                media: selection.bottleImage,
                 subtitle,
-              };
+              }
             },
           },
         },
       ],
       validation: (Rule) => Rule.max(4),
-      description: 'Section displaying bottles with images, a background, and a single related product (Max 4).',
+      description:
+        'Section displaying bottles with images, a background, and a single related product (Max 4).',
     }),
     // defineField({
     //   name: 'momentOfDay',
@@ -203,11 +198,7 @@ export const collections = defineType({
       of: [
         {
           type: 'reference',
-           to: [
-        {type: 'perfume'},
-        {type: 'collections'},
-        {type: 'mainPerfume'},
-      ],
+          to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
         },
       ],
       title: 'Related Products',
@@ -293,8 +284,8 @@ export const collections = defineType({
       ],
       validation: (Rule) => Rule.required(),
     }),
-     // SEO
-     defineField({
+    // SEO
+    defineField({
       name: 'metaTitle',
       title: 'Meta Title',
       type: 'object',

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+// import { useGSAP } from "@gsap/react";
 import BottleCard from "./bottle-card";
 import type { BottlesSectionItem, Collection } from "@/types/collection";
 
@@ -146,6 +146,12 @@ export default function BottlesSection({ items, firstSection }: Props) {
     };
   }, [openIdx, close]);
 
+  // Determine the foreground background image to display
+  const foregroundBgUrl =
+    openIdx !== null && items[openIdx]?.backgroundImage?.asset?.url
+      ? items[openIdx].backgroundImage.asset.url
+      : "";
+
   return (
     <section
       ref={sectionRef}
@@ -163,7 +169,7 @@ export default function BottlesSection({ items, firstSection }: Props) {
         ref={fgBgRef}
         data-elem="fg-bg"
         className="absolute inset-0 -z-0"
-        style={{ backgroundImage: `url(${items?.[0]?.backgroundImage?.asset?.url || ""})`, backgroundSize: "cover", backgroundPosition: "center" }}
+        style={{ backgroundImage: foregroundBgUrl ? `url(${foregroundBgUrl})` : undefined, backgroundSize: "cover", backgroundPosition: "center" }}
       />
 
       {/* Bottles row/column */}
@@ -172,7 +178,7 @@ export default function BottlesSection({ items, firstSection }: Props) {
           <div key={idx} className="relative flex flex-col items-center">
             <BottleCard
               idx={idx}
-              src={it.images?.[0]?.asset?.url || ""}
+              src={it.bottleImage?.asset?.url || ""}
               alt={it.product?.title || `Bottle ${idx + 1}`}
               onHoverIn={onHoverIn}
               onHoverOut={onHoverOut}
@@ -200,8 +206,6 @@ export default function BottlesSection({ items, firstSection }: Props) {
           <p className="mt-3 text-base md:text-lg opacity-90 leading-relaxed">{it.product?.description}</p>
         </div>
       ))}
-      
-
 
       {/* Click anywhere overlay when open to reverse */}
       {openIdx !== null && (
@@ -215,5 +219,4 @@ export default function BottlesSection({ items, firstSection }: Props) {
     </section>
   );
 }
-
 

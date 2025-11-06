@@ -5,6 +5,7 @@ import RelatedPerfumes from "../perfumms/related-perfumes";
 // import { useLocale } from "@/lib/i18n/context";
 import CollectionSectionTwo from "./collection-section-two";
 import BottlesSection from "./bottles-section";
+import CollectionLeftRight from "./collection-left-right";
 
 export default function NewCollectionSlug({
   collection,
@@ -51,10 +52,17 @@ export default function NewCollectionSlug({
       />
 
       {/* 2nd bottles animation section */}
-      <div className="py-[6vw]">
+      <div className="pt-[6vw]">
         <BottlesSection
           items={collection.bottlesSection}
           firstSection={collection.firstSection}
+        />
+      </div>
+
+      <div className="">
+        <CollectionLeftRight
+          items={collection.bottlesSection}
+          locale={locale}
         />
       </div>
 

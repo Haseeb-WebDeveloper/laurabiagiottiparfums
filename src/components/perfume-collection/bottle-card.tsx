@@ -48,5 +48,3 @@ const BottleCard = forwardRef<HTMLDivElement, BottleCardProps>(
 BottleCard.displayName = "BottleCard";
 
 export default BottleCard;
-
-

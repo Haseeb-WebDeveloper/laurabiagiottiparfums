@@ -1,5 +1,11 @@
 import { SanityAssetDocument } from "next-sanity";
-import { Country, Ingredient, RelatedProduct, SanityImage, SubCategory } from "./perfume";
+import {
+  Country,
+  Ingredient,
+  RelatedProduct,
+  SanityImage,
+  SubCategory,
+} from "./perfume";
 
 interface SanityFile {
   asset: SanityAssetDocument & {
@@ -30,6 +36,9 @@ export interface CollectionPerfume {
 
 // Bottles Section type for collection
 export interface BottlesSectionItem {
+  bottleImage: {
+    asset: SanityImage;
+  };
   images: {
     asset: SanityImage;
   }[];
@@ -72,7 +81,7 @@ export interface Collection {
   };
   firstSection: FirstSection;
   productsCollection: CollectionPerfume[];
-  bottlesSection: BottlesSection; 
+  bottlesSection: BottlesSection;
   relatedProducts: RelatedProduct[];
 }
 

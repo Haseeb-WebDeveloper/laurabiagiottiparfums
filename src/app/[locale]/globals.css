@@ -137,6 +137,14 @@ h1 {
   /* letter-spacing: 0em; */
 }
 
+.font-times-new-roman {
+  font-family: "Times New Roman", sans-serif;
+}
+
+.font-roboto-condensed {
+  font-family: "Roboto Condensed", sans-serif;
+}
+
 h2 {
   text-wrap: balance;
   /* line-height: 1.2; */

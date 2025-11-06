@@ -1220,6 +1220,11 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       },
     },
     bottlesSection[] {
+      bottleImage {
+        asset-> {
+          url
+        }
+      },
       images[] {
         asset-> {
           url
