@@ -4,9 +4,7 @@ import { Collection } from "@/types/collection";
 import RelatedPerfumes from "../perfumms/related-perfumes";
 // import { useLocale } from "@/lib/i18n/context";
 import CollectionSectionTwo from "./collection-section-two";
-// import BottlesShowcase from "./bottles-showcase";
-// import BottlesShowcase2 from "./bottles-showcase-2";
-import NewShowcase from "./new-showcase";
+import BottlesSection from "./bottles-section";
 
 export default function NewCollectionSlug({
   collection,
@@ -52,9 +50,12 @@ export default function NewCollectionSlug({
         secondDesc="our fragrances inspired by water and form, designed to reflect purity, strength, and timeless elegance."
       />
 
-      {/* Bottles animation section */}
+      {/* 2nd bottles animation section */}
       <div className="py-[6vw]">
-        <NewShowcase items={collection.bottlesSection} />
+        <BottlesSection
+          items={collection.bottlesSection}
+          firstSection={collection.firstSection}
+        />
       </div>
 
       {/* Related Products */}
