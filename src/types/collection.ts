@@ -49,6 +49,8 @@ export interface BottlesSectionItem {
     // Only require the fields queried for in bottlesSection in the query
     title: string;
     description: string;
+    slug?: string;
+    category?: "mens" | "womens";
     buy?: {
       countries: Country[];
     };

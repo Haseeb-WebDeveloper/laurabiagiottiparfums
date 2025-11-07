@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 // import { useGSAP } from "@gsap/react";
 import BottleCard from "./bottle-card";
@@ -604,6 +605,47 @@ export default function BottlesSection({ items, locale }: Props) {
     };
   }, [openIdx, close]);
 
+  // Auto-close on scroll: close when user scrolls 50vh past section bottom
+  useEffect(() => {
+    if (openIdx === null) return;
+    if (!sectionRef.current) return;
+
+    let rafId: number | null = null;
+    let hasClosed = false;
+
+    const handleScroll = () => {
+      if (hasClosed) return;
+
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+
+      rafId = requestAnimationFrame(() => {
+        if (!sectionRef.current || hasClosed) return;
+
+        const sectionRect = sectionRef.current.getBoundingClientRect();
+        const sectionBottom = sectionRect.bottom + window.scrollY;
+        const fiftyVh = window.innerHeight * 0.5;
+        const threshold = sectionBottom + fiftyVh;
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY >= threshold) {
+          hasClosed = true;
+          close();
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [openIdx, close]);
+
   // Determine the foreground background image to display
   const foregroundBgUrl =
     openIdx !== null && items[openIdx]?.backgroundImage?.asset?.url
@@ -665,28 +707,36 @@ export default function BottlesSection({ items, locale }: Props) {
             if (el) contentRefs.current[idx] = el;
           }}
           data-elem="content"
-          className={`z-[1000] w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
+          className={`z-[1300] w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
             contentOnLeft(idx)
               ? "md:left-8 md:right-auto"
               : "md:right-8 md:left-auto"
           }`}
         >
           <div className="">
-            <h3 className="text-[2.5rem] lg:text-[3.2rem] font-[700] font-times-new-roman">
+            <h3 className="text-[2.5rem] lg:text-[3.2rem] 2xl:text-[3.8rem] font-[700] font-times-new-roman">
               {it.product?.title}
             </h3>
-            <p className="leading-relaxed">{it.product?.description}</p>
+            <p className="leading-relaxed 2xl:text-[1.4rem]">{it.product?.description}</p>
           </div>
-          {it.product?.buy && (
-            <div className="lg:mt-[2rem] mt-[2rem] pointer-events-auto">
+          <div className="lg:mt-[2rem] mt-[2rem] flex gap-4 items-center pointer-events-auto">
+            {it.product?.buy && (
               <button
                 onClick={() => handleBuyNowClick(it)}
-                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[0.9rem] py-[0.6rem] rounded-[7.127px] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-foreground/90  transition-colors duration-300"
               >
                 {t("shop")}
               </button>
-            </div>
-          )}
+            )}
+             {it.product?.slug && it.product?.category && (
+              <Link
+                href={`/${locale}/${it.product.category}-perfume/${it.product.slug}`}
+                className="cursor-pointer w-fit flex items-center justify-center uppercase py-[0.6rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
+              >
+                {t("readMore") || "Read More"}
+              </Link>
+            )}
+          </div>
         </div>
       ))}
 
@@ -707,7 +757,28 @@ export default function BottlesSection({ items, locale }: Props) {
           type="button"
           aria-label="Close details"
           className="absolute inset-0 z-[1200] bg-transparent"
-          onClick={close}
+          onClick={(e) => {
+            // Don't close if clicking on interactive elements within content
+            const target = e.target as HTMLElement;
+            
+            // Check if click is on a button or link within content area
+            const clickedButton = target.closest('button:not([aria-label="Close details"])');
+            const clickedLink = target.closest('a');
+            const contentElement = target.closest('[data-elem="content"]');
+            
+            // Only prevent closing if clicking on buttons/links that are inside content
+            // Allow closing on carousel, empty areas, and content text
+            if (
+              (clickedButton && contentElement?.contains(clickedButton)) ||
+              (clickedLink && contentElement?.contains(clickedLink))
+            ) {
+              e.stopPropagation();
+              return;
+            }
+            
+            // Close on all other clicks (carousel, empty areas, etc.)
+            close();
+          }}
         />
       )}
 
@@ -866,7 +937,7 @@ function CornerCarousel({
 
   return (
     <div
-      className="absolute z-[1100] lg:h-[100dvh] h-[50vh] pointer-events-none"
+      className="absolute z-[1100] lg:h-[100dvh] h-[50vh] pointer-events-none "
       style={
         {
           bottom: 0,

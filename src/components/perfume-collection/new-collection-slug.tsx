@@ -32,11 +32,11 @@ export default function NewCollectionSlug({
         {/* Overlay for better text contrast (optional, comment out if not needed) */}
         <div className="absolute inset-0 bg-black/25 pointer-events-none z-10"></div>
 
-        <div className="relative z-10 flex flex-col justify-end items-center h-full pb-[4rem]">
-          <h1 className="text-background text-center 2xl:text-[4rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide custom-text-shadow">
+        <div className="relative z-10 flex flex-col justify-end items-center 2xl:gap-[1rem] h-full pb-[4rem]">
+          <h1 className="text-background text-center 2xl:text-[4.5rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide custom-text-shadow">
             {collection.title}
           </h1>
-          <p className="w-full text-background text-center mt-[0.8rem] custom-text-shadow">
+          <p className="w-full text-background text-center mt-[0.8rem] custom-text-shadow 2xl:text-[1.85rem] text-[1.2rem]">
             {collection.firstSection.tagLine}
           </p>
         </div>
@@ -64,8 +64,8 @@ export default function NewCollectionSlug({
       </div>
 
       {/* Related Products */}
-      <div className="mt-[2rem]">
-        <div className="max-w">
+      <div className="mt-[2rem] lg:mt-[6rem]">
+        <div className="max-w 2xl:px-[34px] md:px-[38px] px-[18px]">
           <RelatedPerfumes relatedPerfumes={collection.relatedProducts} />
         </div>
       </div>

@@ -11,6 +11,7 @@ import {
 } from "react";
 import BuyNowPopup from "../ui/buy-now-popup";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 
 type Props = {
@@ -37,7 +38,7 @@ function CustomCarousel({
     (fromIndex: number, toIndex: number) => {
       // Prevent multiple animations from running simultaneously
       if (isAnimatingRef.current) return;
-      
+
       const currentImg = imageRefs.current[fromIndex];
       const nextImg = imageRefs.current[toIndex];
 
@@ -161,7 +162,7 @@ function CustomCarousel({
     const interval = setInterval(() => {
       // Skip if already animating
       if (isAnimatingRef.current) return;
-      
+
       setCurrentIndex((prev) => {
         const next = (prev + 1) % images.length;
         animateTransition(prev, next);
@@ -271,43 +272,53 @@ export default function CollectionLeftRight({ items, locale }: Props) {
             backgroundPosition: "center",
           }}
         >
-          <div className={` max-w flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
-            index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-          }`}>
-
-          {/* Text (left) */}
+          {/* max-w  */}
           <div
-            className={`w-full lg:w-[40%] pt-[5rem] md:pt-0 px-[18px] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] md:pr-0" : "2xl:pr-[34px] md:pr-[38px] md:pl-0"}`}
+            className={` flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
+              index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+            }`}
           >
-            <div className="flex flex-col gap-[1rem]">
-              <h2 className="text-[2.5rem] lg:text-[3.2rem] font-[700] font-times-new-roman">
-                {item.product.title}
-              </h2>
-              <p className="">{item.product.description}</p>
+            {/* Text (left) */}
+            <div
+              className={`w-full lg:w-[40%] pt-[5rem] md:pt-0 px-[18px] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] md:pr-0" : "2xl:pr-[34px] md:pr-[38px] md:pl-0"}`}
+            >
+              <div className="flex flex-col">
+                <h2 className="text-[2.5rem] lg:text-[3.2rem] 2xl:text-[3.8rem] font-[700] font-times-new-roman">
+                  {item.product.title}
+                </h2>
+                <p className="leading-relaxed 2xl:text-[1.3rem]">{item.product.description}</p>
 
-              <div className="lg:mt-[1rem] mt-[1rem] flex gap-4 items-center">
-                {item.product.buy && (
-                  <button
-                    onClick={() => handleBuyNowClick(item)}
-                    className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-                  >
-                    {t("shop")}
-                  </button>
-                )}
+                <div className="lg:mt-[2rem] mt-[2rem] flex gap-4 items-center">
+                  {item.product.buy && (
+                    <button
+                      onClick={() => handleBuyNowClick(item)}
+                      className="cursor-pointer w-fit flex items-center justify-center uppercase px-[0.9rem] py-[0.6rem] rounded-[7.127px] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-foreground/90  transition-colors duration-300"
+                    >
+                      {t("shop")}
+                    </button>
+                  )}
+                  {item.product?.slug && item.product?.category && (
+                    <Link
+                      href={`/${locale}/${item.product.category}-perfume/${item.product.slug}`}
+                      className="cursor-pointer w-fit flex items-center justify-center uppercase py-[0.6rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
+                    >
+                      {t("readMore") || "Read More"}
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Images carousel */}
-          <div className="w-full lg:w-[60%] self-end">
-            {item.images && item.images.length > 0 && (
-              <CustomCarousel
-                images={item.images}
-                alt={item.product.title}
-                isRightSide={index % 2 === 0}
-              />
-            )}
-          </div>
+            {/* Images carousel */}
+            <div className="w-full lg:w-[60%] self-end">
+              {item.images && item.images.length > 0 && (
+                <CustomCarousel
+                  images={item.images}
+                  alt={item.product.title}
+                  isRightSide={index % 2 === 0}
+                />
+              )}
+            </div>
           </div>
         </div>
       ))}

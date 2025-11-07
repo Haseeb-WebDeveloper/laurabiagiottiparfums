@@ -1238,6 +1238,8 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
       product->{
         title,
         "description": description.${locale},
+        "slug": slug.current,
+        category,
         buy {
           countries[] {
             countryName,
