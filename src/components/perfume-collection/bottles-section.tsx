@@ -56,12 +56,14 @@ export default function BottlesSection({ items, locale }: Props) {
   const openTls = useRef<(gsap.core.Timeline | null)[]>([]);
   const carouselTimerRef = useRef<number | null>(null);
   const [showCarousel, setShowCarousel] = useState(false);
+  const bottleImageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const bottleOriginalPositions = useRef<
     { x: number; y: number; scale: number; rotate: number }[]
   >([]);
 
   // Custom initial positions for each bottle (staggered vertically and horizontally)
-  const initialBottlePositions = useMemo(
+  // Desktop positions
+  const initialBottlePositionsDesktop = useMemo(
     () => [
       { x: -30, y: 30 }, // 1st bottle
       { x: 0, y: 130 }, // 2nd bottle
@@ -70,6 +72,25 @@ export default function BottlesSection({ items, locale }: Props) {
     ],
     []
   );
+
+  // Mobile positions (optimized for vertical layout)
+  const initialBottlePositionsMobile = useMemo(
+    () => [
+      { x: "-20%", y: "2%" }, // 1st bottle
+      { x: "20%", y: "-2%" }, // 2nd bottle
+      { x: "-20%", y: "-2%" }, // 3rd bottle
+      { x: "20%", y: "-2%" }, // 4th bottle
+    ],
+    []
+  );
+
+  // Helper function to get positions based on screen size
+  const getInitialBottlePositions = useCallback(() => {
+    if (typeof window === "undefined") return initialBottlePositionsDesktop;
+    return window.innerWidth < 768
+      ? initialBottlePositionsMobile
+      : initialBottlePositionsDesktop;
+  }, [initialBottlePositionsDesktop, initialBottlePositionsMobile]);
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [selectedItem, setSelectedItem] = useState<BottlesSectionItem | null>(
@@ -93,27 +114,40 @@ export default function BottlesSection({ items, locale }: Props) {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
       gsap.set(fgBgRef.current, { yPercent: 100, autoAlpha: 0 });
       contentRefs.current.forEach((el, i) => {
         if (!el) return;
-        // Desktop: start from side
-        gsap.set(el, {
-          xPercent: contentOnLeft(i) ? -110 : 110,
-          autoAlpha: 0,
-        });
+        if (isMobile) {
+          // Mobile: start from top
+          gsap.set(el, { y: -100, autoAlpha: 0 });
+        } else {
+          // Desktop: start from side
+          gsap.set(el, {
+            xPercent: contentOnLeft(i) ? -110 : 110,
+            autoAlpha: 0,
+          });
+        }
       });
       // Set initial positions for bottles (staggered vertically and horizontally)
+      const positions = isMobile
+        ? initialBottlePositionsMobile
+        : initialBottlePositionsDesktop;
       bottleRefs.current.forEach((el, i) => {
-        if (el && initialBottlePositions[i]) {
+        if (el && positions[i]) {
           gsap.set(el, {
-            x: initialBottlePositions[i].x || 0,
-            y: initialBottlePositions[i].y || 0,
+            x: positions[i].x || 0,
+            y: positions[i].y || 0,
           });
         }
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, [contentOnLeft, initialBottlePositions]);
+  }, [
+    contentOnLeft,
+    initialBottlePositionsMobile,
+    initialBottlePositionsDesktop,
+  ]);
 
   // Hover behavior
   const hoverMaps = useMemo(
@@ -140,11 +174,12 @@ export default function BottlesSection({ items, locale }: Props) {
         duration: 0.35,
         ease: "power2.out",
       });
+      const positions = getInitialBottlePositions();
       others.forEach(({ el, i }) => {
         if (!el) return;
         const map = (hoverMaps as any)[idx]?.[i] || {};
-        const initialX = initialBottlePositions[i]?.x || 0;
-        const initialY = initialBottlePositions[i]?.y || 0;
+        const initialX = positions[i]?.x || 0;
+        const initialY = positions[i]?.y || 0;
         gsap.to(el, {
           scale: 0.7,
           x: map.x !== undefined ? map.x : initialX, // Preserve initial X if not specified
@@ -160,16 +195,17 @@ export default function BottlesSection({ items, locale }: Props) {
           ease: "power2.out",
         });
     },
-    [hoverMaps, goesRight, openIdx, initialBottlePositions]
+    [hoverMaps, goesRight, openIdx, getInitialBottlePositions]
   );
 
   const onHoverOut = useCallback(
     (idx: number) => {
       if (openIdx !== null) return; // disable hover while open
+      const positions = getInitialBottlePositions();
       const hovered = bottleRefs.current[idx];
       if (hovered) {
-        const initialX = initialBottlePositions[idx]?.x || 0;
-        const initialY = initialBottlePositions[idx]?.y || 0;
+        const initialX = positions[idx]?.x || 0;
+        const initialY = positions[idx]?.y || 0;
         gsap.to(hovered, {
           scale: 1,
           rotate: 0,
@@ -181,8 +217,8 @@ export default function BottlesSection({ items, locale }: Props) {
       }
       bottleRefs.current.forEach((el, i) => {
         if (el) {
-          const initialX = initialBottlePositions[i]?.x || 0;
-          const initialY = initialBottlePositions[i]?.y || 0;
+          const initialX = positions[i]?.x || 0;
+          const initialY = positions[i]?.y || 0;
           gsap.to(el, {
             scale: 1,
             x: initialX, // Reset to initial X position
@@ -199,7 +235,7 @@ export default function BottlesSection({ items, locale }: Props) {
           ease: "power2.out",
         });
     },
-    [openIdx, initialBottlePositions]
+    [openIdx, getInitialBottlePositions]
   );
 
   // Build a per-index open timeline lazily
@@ -213,6 +249,7 @@ export default function BottlesSection({ items, locale }: Props) {
       const clicked = bottleRefs.current[idx];
       const others = bottleRefs.current.filter((_, i) => i !== idx);
       const section = sectionRef.current;
+      const isMobile = window.innerWidth < 768;
       let targetX = 0;
       let targetY = 0;
       if (section && clicked) {
@@ -259,9 +296,23 @@ export default function BottlesSection({ items, locale }: Props) {
           fgBgRef.current,
           { yPercent: 0, autoAlpha: 1, duration: 0.45 },
           "start+=0.05"
-        )
-        // Desktop: slide content from side
-        .fromTo(
+        );
+
+      // Content animation - different for mobile vs desktop
+      if (isMobile) {
+        // Mobile: slide from top
+        tl.fromTo(
+          contentRefs.current[idx],
+          {
+            y: -100,
+            autoAlpha: 0,
+          },
+          { y: 0, autoAlpha: 1, duration: 0.5 },
+          "start+=0.15"
+        );
+      } else {
+        // Desktop: slide from side
+        tl.fromTo(
           contentRefs.current[idx],
           {
             xPercent: 0,
@@ -273,6 +324,7 @@ export default function BottlesSection({ items, locale }: Props) {
           { xPercent: 0, x: 0, autoAlpha: 1, duration: 0.5 },
           "start+=0.15"
         );
+      }
       return tl;
     },
     [goesRight, contentOnLeft]
@@ -444,6 +496,7 @@ export default function BottlesSection({ items, locale }: Props) {
               onComplete: () => {
                 // Step 5: Now reverse the open timeline
                 const openTl = openTls.current[idx];
+                const isMobile = window.innerWidth < 768;
                 if (openTl) {
                   openTl.reverse();
                   // Reset rotation and scale after reverse completes
@@ -452,8 +505,9 @@ export default function BottlesSection({ items, locale }: Props) {
                     const bottle = bottleRefs.current[idx];
                     const content = contentRefs.current[idx];
                     if (bottle) {
-                      const initialX = initialBottlePositions[idx]?.x || 0;
-                      const initialY = initialBottlePositions[idx]?.y || 0;
+                      const positions = getInitialBottlePositions();
+                      const initialX = positions[idx]?.x || 0;
+                      const initialY = positions[idx]?.y || 0;
                       gsap.to(bottle, {
                         rotate: 0,
                         scale: 1,
@@ -465,10 +519,14 @@ export default function BottlesSection({ items, locale }: Props) {
                     }
                     // Reset content to initial state
                     if (content) {
-                      gsap.set(content, {
-                        xPercent: contentOnLeft(idx) ? -110 : 110,
-                        autoAlpha: 0,
-                      });
+                      if (isMobile) {
+                        gsap.set(content, { y: 100, autoAlpha: 0 });
+                      } else {
+                        gsap.set(content, {
+                          xPercent: contentOnLeft(idx) ? -110 : 110,
+                          autoAlpha: 0,
+                        });
+                      }
                     }
                   });
                 }
@@ -502,6 +560,7 @@ export default function BottlesSection({ items, locale }: Props) {
     } else {
       // Carousel not showing yet - just reverse normally
       const openTl = openTls.current[idx];
+      const isMobile = window.innerWidth < 768;
       if (openTl) {
         openTl.reverse();
         // Reset rotation and scale after reverse completes
@@ -510,8 +569,9 @@ export default function BottlesSection({ items, locale }: Props) {
           const bottle = bottleRefs.current[idx];
           const content = contentRefs.current[idx];
           if (bottle) {
-            const initialX = initialBottlePositions[idx]?.x || 0;
-            const initialY = initialBottlePositions[idx]?.y || 0;
+            const positions = getInitialBottlePositions();
+            const initialX = positions[idx]?.x || 0;
+            const initialY = positions[idx]?.y || 0;
             gsap.to(bottle, {
               rotate: 0,
               scale: 1,
@@ -523,16 +583,26 @@ export default function BottlesSection({ items, locale }: Props) {
           }
           // Reset content to initial state
           if (content) {
-            gsap.set(content, {
-              xPercent: contentOnLeft(idx) ? -110 : 110,
-              autoAlpha: 0,
-            });
+            if (isMobile) {
+              gsap.set(content, { y: -100, autoAlpha: 0 });
+            } else {
+              gsap.set(content, {
+                xPercent: contentOnLeft(idx) ? -110 : 110,
+                autoAlpha: 0,
+              });
+            }
           }
         });
       }
       setOpenIdx(null);
     }
-  }, [openIdx, showCarousel, goesRight, initialBottlePositions, contentOnLeft]);
+  }, [
+    openIdx,
+    showCarousel,
+    goesRight,
+    getInitialBottlePositions,
+    contentOnLeft,
+  ]);
 
   // Close on ESC / outside
   useEffect(() => {
@@ -631,8 +701,8 @@ export default function BottlesSection({ items, locale }: Props) {
         }}
       />
 
-      {/* Bottles row */}
-      <div className="relative h-full flex flex-row items-center justify-center gap-10 px-4">
+      {/* Bottles row/column */}
+      <div className="relative h-full flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 px-4">
         {items.map((it, idx) => (
           <div key={idx} className="relative flex flex-col items-center">
             <BottleCard
@@ -659,10 +729,10 @@ export default function BottlesSection({ items, locale }: Props) {
             if (el) contentRefs.current[idx] = el;
           }}
           data-elem="content"
-          className={`z-[1300] w-[40vw] absolute top-1/2 -translate-y-1/2 px-0 text-foreground ${
+          className={`z-[1300] w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
             contentOnLeft(idx)
-              ? "left-8 right-auto"
-              : "right-8 left-auto"
+              ? "md:left-8 md:right-auto"
+              : "md:right-8 md:left-auto"
           }`}
         >
           <div className="">
