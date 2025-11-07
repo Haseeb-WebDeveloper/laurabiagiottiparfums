@@ -653,7 +653,7 @@ export default function BottlesSection({ items, locale }: Props) {
       : "";
 
   return (
-    <section ref={sectionRef} className="relative h-[100dvh] overflow-hidden">
+    <section ref={sectionRef} className="relative h-[100vh] overflow-hidden">
       {/* Base background (kept) */}
       <div
         ref={baseBgRef}
@@ -937,7 +937,7 @@ function CornerCarousel({
 
   return (
     <div
-      className="absolute z-[1100] lg:h-[100dvh] h-[50vh] pointer-events-none "
+      className="absolute z-[1100] lg:h-[100vh] h-[50vh] pointer-events-none "
       style={
         {
           bottom: 0,

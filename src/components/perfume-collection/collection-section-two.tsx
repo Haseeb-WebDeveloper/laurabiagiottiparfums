@@ -176,7 +176,7 @@ const CollectionSectionTwo: React.FC<Props> = ({
 
   return (
     <section ref={sectionRef} className="relative invisible">
-      <div ref={pinRef} className="sticky top-0 lg:h-screen h-[100dvh] overflow-hidden ">
+      <div ref={pinRef} className="sticky top-0 lg:h-screen h-[100vh] overflow-hidden ">
         {/* Animated video frame */}
         <div
           ref={frameRef}

@@ -17,7 +17,7 @@ export default function NewCollectionSlug({
   return (
     <div className="mb-[15rem] ">
       {/* 1st hero section */}
-      <section className="h-[100vh] relative overflow-hidden">
+      <section className="h-[calc(100vh-30px)] relative overflow-hidden">
         {/* Background video */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
@@ -36,7 +36,7 @@ export default function NewCollectionSlug({
           <h1 className="text-background text-center 2xl:text-[4.5rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide custom-text-shadow">
             {collection.title}
           </h1>
-          <p className="w-full text-background text-center mt-[0.8rem] custom-text-shadow 2xl:text-[1.85rem] text-[1.2rem]">
+          <p className="w-full text-background text-center mt-[0.8rem] custom-text-shadow 2xl:text-[1.85rem] text-[1rem]">
             {collection.firstSection.tagLine}
           </p>
         </div>

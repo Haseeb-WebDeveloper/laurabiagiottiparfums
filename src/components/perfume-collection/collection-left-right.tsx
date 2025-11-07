@@ -209,7 +209,7 @@ function CustomCarousel({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[50vh] lg:h-[100dvh] 2xl:min-h-auto"
+      className="relative w-full h-[50vh] lg:h-[100vh] 2xl:min-h-auto"
       style={{ contain: "layout paint" }}
     >
       {images.map((image, index) => (
@@ -264,7 +264,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
       {items.map((item, index) => (
         <div
           key={index}
-          className={` min-h-[100dvh] 2xl:min-h-auto`}
+          className={``}
           //   background image
           style={{
             backgroundImage: `url(${item.backgroundImage.asset.url})`,
@@ -274,7 +274,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
         >
           {/* max-w  */}
           <div
-            className={` flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
+            className={`h-[100vh] lg:h-[100vh] 2xl:min-h-auto flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
               index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
             }`}
           >
