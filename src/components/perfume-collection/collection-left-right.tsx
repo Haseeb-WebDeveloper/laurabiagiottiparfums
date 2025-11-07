@@ -281,7 +281,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
               <h2 className="text-[2.5rem] lg:text-[3.2rem] font-[700] font-times-new-roman">
                 {item.product.title}
               </h2>
-              <p className="text-[1.2rem] font-[400] font-roboto-condensed">{item.product.description}</p>
+              <p className="">{item.product.description}</p>
 
               <div className="lg:mt-[1rem] mt-[1rem] flex gap-4 items-center">
                 {item.product.buy && (

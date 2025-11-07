@@ -56,6 +56,7 @@ export default function NewCollectionSlug({
         <BottlesSection
           items={collection.bottlesSection}
           firstSection={collection.firstSection}
+          locale={locale}
         />
       </div>
 

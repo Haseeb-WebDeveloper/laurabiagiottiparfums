@@ -25,7 +25,7 @@ const BottleCard = forwardRef<HTMLDivElement, BottleCardProps>(
           type="button"
           aria-label={alt}
           aria-expanded={isOpen ? true : false}
-          className="block outline-none"
+          className="block outline-none cursor-pointer"
           onMouseEnter={() => onHoverIn?.(idx)}
           onMouseLeave={() => onHoverOut?.(idx)}
           onFocus={() => onHoverIn?.(idx)}
