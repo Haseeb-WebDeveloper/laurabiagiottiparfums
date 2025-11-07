@@ -349,22 +349,15 @@ export default function BottlesSection({ items, locale }: Props) {
               transformOrigin: isRight ? "100% 100%" : "0% 100%",
             });
 
-            // Timeline: move to corner (KEEP rotate and scale), then exit down
+            // Timeline: exit directly down (bottle is already at corner from open animation)
             const tl = gsap.timeline({
               onComplete: () => {
                 // Show carousel after bottle exits
                 setShowCarousel(true);
               },
             });
-            tl.to(bottle, {
-              x: targetCornerX,
-              y: targetCornerY,
-              rotate: currentRotate, // KEEP rotation
-              scale: currentScale, // KEEP scale
-              duration: 0.4,
-              ease: "power2.out",
-              force3D: true,
-            });
+            // Directly animate to exit position without moving to corner first
+            // (bottle is already positioned at corner from open animation)
             tl.to(bottle, {
               y: targetCornerY + currentRect.height,
               x: targetCornerX + exitX,
