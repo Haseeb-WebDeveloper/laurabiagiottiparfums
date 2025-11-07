@@ -37,6 +37,9 @@ const CollectionSectionTwo: React.FC<Props> = ({
 
       const ease = "power2.out";
 
+      // Determine if mobile based on window width
+      const isMobile = window.innerWidth < 1024;
+
       // Initial state
       gsap.set(frameRef.current, {
         // start centered in viewport; slight below-center for gentle lift-in
@@ -45,7 +48,7 @@ const CollectionSectionTwo: React.FC<Props> = ({
         width: "72vw",
         height: "auto",
         left: "50%",
-        top: "50%",
+        top: isMobile ? "37%" : "50%",
         xPercent: -50,
         transformOrigin: "center center",
         borderRadius: "10px",
@@ -142,17 +145,17 @@ const CollectionSectionTwo: React.FC<Props> = ({
 
   return (
     <section ref={sectionRef} className="relative invisible">
-      <div ref={pinRef} className="sticky top-0 h-screen overflow-hidden ">
+      <div ref={pinRef} className="sticky top-0 lg:h-screen h-[100dvh] overflow-hidden ">
         {/* Animated video frame */}
         <div
           ref={frameRef}
-          className="absolute aspect-video will-change-transform overflow-hidden"
+          className="absolute lg:aspect-video aspect-[9/16] will-change-transform overflow-hidden"
           style={{
             // start roughly centered; GSAP will manage precise transforms
             left: "50%",
             // top: "50%",
             // transform: "translate(-50%, -45%)",
-            width: "72vw",
+            width: window.innerWidth < 1024 ? "75vw" : "72vw",
             height: "auto",
             maxWidth: "100vw",
             transformOrigin: "center center",

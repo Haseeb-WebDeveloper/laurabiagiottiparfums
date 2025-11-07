@@ -517,7 +517,7 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
       : "";
 
   return (
-    <section ref={sectionRef} className="relative h-[100vh] overflow-hidden">
+    <section ref={sectionRef} className="relative h-[100dvh] overflow-hidden">
       {/* Base background (kept) */}
       <div
         ref={baseBgRef}
