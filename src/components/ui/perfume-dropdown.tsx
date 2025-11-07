@@ -18,6 +18,7 @@ interface PerfumeDropdownProps {
   isOpen: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  isSlugPage?: boolean;
 }
 
 export default function PerfumeDropdown({
@@ -28,6 +29,7 @@ export default function PerfumeDropdown({
   isOpen,
   onMouseEnter,
   onMouseLeave,
+  isSlugPage = false,
 }: PerfumeDropdownProps) {
   const [hoveredPerfume, setHoveredPerfume] = useState<CombinedPerfume | null>(
     null
@@ -169,8 +171,8 @@ export default function PerfumeDropdown({
         className="overflow-hidden border-b border-foreground/[0.08]"
         style={{ display: "none" }}
       >
-        <div className="max-w mx-auto px-[2rem] pb-[4rem] pt-[3.2rem]">
-          <div className="flex justify-center gap-[1rem]">
+        <div className="pb-[4rem] mt-[0.5rem] pt-[2.8rem] bg-background/60 backdrop-blur-[10px]">
+          <div className="flex justify-center gap-[1rem] max-w mx-auto px-[2rem] ">
             {/* First Column */}
             <div className="w-[200px] flex flex-col justify-center">
               {firstColumnPerfumes.map((perfume, index) => (
@@ -257,7 +259,7 @@ export default function PerfumeDropdown({
                       <motion.div
                         initial={{ width: 0, height: 2 }}
                         animate={
-                           hoveredIndex === index + midPoint
+                          hoveredIndex === index + midPoint
                             ? {
                                 width: "100%",
                                 height: 1,
@@ -282,7 +284,10 @@ export default function PerfumeDropdown({
               ))}
             </div>
             {/* Hovered perfume image */}
-            <div ref={imageContainerRef} className="flex items-center justify-center min-w-[220px] min-h-[160px]">
+            <div
+              ref={imageContainerRef}
+              className="flex items-center justify-center min-w-[220px] min-h-[160px]"
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={imageKey}

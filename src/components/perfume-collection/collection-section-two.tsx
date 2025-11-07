@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -143,6 +143,37 @@ const CollectionSectionTwo: React.FC<Props> = ({
     { scope: sectionRef }
   );
 
+  // Handle window resize to refresh ScrollTrigger and update initial state
+  useEffect(() => {
+    const handleResize = () => {
+      // Refresh ScrollTrigger to recalculate positions
+      ScrollTrigger.refresh();
+      
+      // Update initial frame state based on new screen size
+      if (frameRef.current) {
+        const isMobile = window.innerWidth < 1024;
+        gsap.set(frameRef.current, {
+          top: isMobile ? "37%" : "50%",
+          width: isMobile ? "75vw" : "72vw",
+        });
+      }
+    };
+
+    // Debounce resize to avoid too many refreshes
+    let resizeTimer: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleResize, 150);
+    };
+
+    window.addEventListener("resize", debouncedResize);
+    
+    return () => {
+      window.removeEventListener("resize", debouncedResize);
+      clearTimeout(resizeTimer);
+    };
+  }, []);
+
   return (
     <section ref={sectionRef} className="relative invisible">
       <div ref={pinRef} className="sticky top-0 lg:h-screen h-[100dvh] overflow-hidden ">
@@ -155,7 +186,8 @@ const CollectionSectionTwo: React.FC<Props> = ({
             left: "50%",
             // top: "50%",
             // transform: "translate(-50%, -45%)",
-            width: window.innerWidth < 1024 ? "75vw" : "72vw",
+            // Initial width - GSAP will update this, but we set a default
+            width: typeof window !== "undefined" && window.innerWidth < 1024 ? "75vw" : "72vw",
             height: "auto",
             maxWidth: "100vw",
             transformOrigin: "center center",

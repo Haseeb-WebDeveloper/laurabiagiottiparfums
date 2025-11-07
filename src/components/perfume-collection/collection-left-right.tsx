@@ -208,7 +208,7 @@ function CustomCarousel({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[50vh] lg:h-[100dvh] "
+      className="relative w-full h-[50vh] lg:h-[100dvh] 2xl:min-h-auto"
       style={{ contain: "layout paint" }}
     >
       {images.map((image, index) => (
@@ -259,13 +259,11 @@ export default function CollectionLeftRight({ items, locale }: Props) {
   };
 
   return (
-    <section className="flex flex-col ">
+    <section className="flex flex-col">
       {items.map((item, index) => (
         <div
           key={index}
-          className={`min-h-[100dvh] flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
-            index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-          }`}
+          className={` min-h-[100dvh] 2xl:min-h-auto`}
           //   background image
           style={{
             backgroundImage: `url(${item.backgroundImage.asset.url})`,
@@ -273,6 +271,10 @@ export default function CollectionLeftRight({ items, locale }: Props) {
             backgroundPosition: "center",
           }}
         >
+          <div className={` max-w flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
+            index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+          }`}>
+
           {/* Text (left) */}
           <div
             className={`w-full lg:w-[40%] pt-[5rem] md:pt-0 px-[18px] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] md:pr-0" : "2xl:pr-[34px] md:pr-[38px] md:pl-0"}`}
@@ -305,6 +307,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
                 isRightSide={index % 2 === 0}
               />
             )}
+          </div>
           </div>
         </div>
       ))}

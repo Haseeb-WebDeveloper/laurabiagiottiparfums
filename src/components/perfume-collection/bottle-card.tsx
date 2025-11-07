@@ -36,7 +36,7 @@ const BottleCard = forwardRef<HTMLDivElement, BottleCardProps>(
           <img
             src={src}
             alt={alt}
-            className="pointer-events-none h-[280px] w-auto sm:h-[340px] md:h-[420px] object-contain"
+            className="pointer-events-none w-auto h-[200px] md:h-[420px] object-contain"
             draggable={false}
           />
         </button>

@@ -266,11 +266,12 @@ export default function Navbar() {
         {/* Dropdown */}
         {hoveredCategory && (
           <div
-            className="absolute left-0 top-[160px] bg-background z-[110] w-full"
+            className="absolute left-0 top-[160px]  z-[110] w-full border-b border-foreground/10"
             onMouseEnter={() => setHoveredCategory(hoveredCategory)}
             onMouseLeave={() => setHoveredCategory(null)}
           >
             <PerfumeDropdown
+              isSlugPage={true}
               isOpen={hoveredCategory === hoveredCategory}
               onMouseEnter={() => setHoveredCategory(hoveredCategory)}
               onMouseLeave={() => setHoveredCategory(null)}
