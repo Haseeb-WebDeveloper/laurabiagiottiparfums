@@ -208,7 +208,7 @@ function CustomCarousel({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[100dvh] "
+      className="relative w-full h-[50vh] lg:h-[100dvh] "
       style={{ contain: "layout paint" }}
     >
       {images.map((image, index) => (
@@ -263,7 +263,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
       {items.map((item, index) => (
         <div
           key={index}
-          className={`min-h-[100dvh] flex items-center flex-col lg:flex-row justify-between gap-[2rem] ${
+          className={`min-h-[100dvh] flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
             index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
           }`}
           //   background image
@@ -275,7 +275,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
         >
           {/* Text (left) */}
           <div
-            className={`w-full lg:w-[40%] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] pl-[18px]" : "2xl:pr-[34px] md:pr-[38px] pr-[18px]"}`}
+            className={`w-full lg:w-[40%] pt-[5rem] md:pt-0 px-[18px] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] md:pr-0" : "2xl:pr-[34px] md:pr-[38px] md:pl-0"}`}
           >
             <div className="flex flex-col gap-[1rem]">
               <h2 className="text-[2.5rem] lg:text-[3.2rem] font-[700] font-times-new-roman">

@@ -20,11 +20,10 @@ gsap.registerPlugin();
 
 type Props = {
   items: BottlesSectionItem[];
-  firstSection: Collection["firstSection"];
   locale: string;
 };
 
-export default function BottlesSection({ items, firstSection, locale }: Props) {
+export default function BottlesSection({ items, locale }: Props) {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
   const baseBgRef = useRef<HTMLDivElement>(null);
@@ -70,10 +69,17 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
       gsap.set(fgBgRef.current, { yPercent: 100, autoAlpha: 0 });
       contentRefs.current.forEach((el, i) => {
         if (!el) return;
-        gsap.set(el, { xPercent: contentOnLeft(i) ? -110 : 110, autoAlpha: 0 });
+        if (isMobile) {
+          // Mobile: start from top
+          gsap.set(el, { y: -100, autoAlpha: 0 });
+        } else {
+          // Desktop: start from side
+          gsap.set(el, { xPercent: contentOnLeft(i) ? -110 : 110, autoAlpha: 0 });
+        }
       });
       // Set initial Y positions for bottles (staggered vertically)
       bottleRefs.current.forEach((el, i) => {
@@ -180,6 +186,7 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
       const clicked = bottleRefs.current[idx];
       const others = bottleRefs.current.filter((_, i) => i !== idx);
       const section = sectionRef.current;
+      const isMobile = window.innerWidth < 768;
       let targetX = 0;
       let targetY = 0;
       if (section && clicked) {
@@ -226,8 +233,23 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
           fgBgRef.current,
           { yPercent: 0, autoAlpha: 1, duration: 0.45 },
           "start+=0.05"
-        )
-        .fromTo(
+        );
+      
+      // Content animation - different for mobile vs desktop
+      if (isMobile) {
+        // Mobile: slide from top
+        tl.fromTo(
+          contentRefs.current[idx],
+          {
+            y: -100,
+            autoAlpha: 0,
+          },
+          { y: 0, autoAlpha: 1, duration: 0.5 },
+          "start+=0.15"
+        );
+      } else {
+        // Desktop: slide from side
+        tl.fromTo(
           contentRefs.current[idx],
           {
             xPercent: 0,
@@ -239,6 +261,7 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
           { xPercent: 0, x: 0, autoAlpha: 1, duration: 0.5 },
           "start+=0.15"
         );
+      }
       return tl;
     },
     [goesRight, contentOnLeft]
@@ -417,12 +440,14 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
               onComplete: () => {
                 // Step 5: Now reverse the open timeline
                 const openTl = openTls.current[idx];
+                const isMobile = window.innerWidth < 768;
                 if (openTl) {
                   openTl.reverse();
                   // Reset rotation and scale after reverse completes
                   const duration = openTl.duration();
                   gsap.delayedCall(duration, () => {
                     const bottle = bottleRefs.current[idx];
+                    const content = contentRefs.current[idx];
                     if (bottle) {
                       const initialY = initialBottlePositions[idx]?.y || 0;
                       gsap.to(bottle, {
@@ -432,6 +457,14 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
                         duration: 0.3,
                         ease: "power2.out",
                       });
+                    }
+                    // Reset content to initial state
+                    if (content) {
+                      if (isMobile) {
+                        gsap.set(content, { y: 100, autoAlpha: 0 });
+                      } else {
+                        gsap.set(content, { xPercent: contentOnLeft(idx) ? -110 : 110, autoAlpha: 0 });
+                      }
                     }
                   });
                 }
@@ -465,12 +498,14 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
     } else {
       // Carousel not showing yet - just reverse normally
       const openTl = openTls.current[idx];
+      const isMobile = window.innerWidth < 768;
       if (openTl) {
         openTl.reverse();
         // Reset rotation and scale after reverse completes
         const duration = openTl.duration();
         gsap.delayedCall(duration, () => {
           const bottle = bottleRefs.current[idx];
+          const content = contentRefs.current[idx];
           if (bottle) {
             const initialY = initialBottlePositions[idx]?.y || 0;
             gsap.to(bottle, {
@@ -481,11 +516,19 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
               ease: "power2.out",
             });
           }
+          // Reset content to initial state
+          if (content) {
+            if (isMobile) {
+              gsap.set(content, { y: -100, autoAlpha: 0 });
+            } else {
+              gsap.set(content, { xPercent: contentOnLeft(idx) ? -110 : 110, autoAlpha: 0 });
+            }
+          }
         });
       }
       setOpenIdx(null);
     }
-  }, [openIdx, showCarousel, goesRight, initialBottlePositions]);
+  }, [openIdx, showCarousel, goesRight, initialBottlePositions, contentOnLeft]);
 
   // Close on ESC / outside
   useEffect(() => {
@@ -571,8 +614,8 @@ export default function BottlesSection({ items, firstSection, locale }: Props) {
             if (el) contentRefs.current[idx] = el;
           }}
           data-elem="content"
-          className={`z-[1000] w-[min(560px,92vw)] md:w-[40vw] mt-4 md:mt-0 md:absolute md:top-1/2 md:-translate-y-1/2 text-foreground ${
-            contentOnLeft(idx) ? "md:left-8" : "md:right-8"
+          className={`z-[1000] w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
+            contentOnLeft(idx) ? "md:left-8 md:right-auto" : "md:right-8 md:left-auto"
           }`}
         >
           <div className="">
@@ -772,9 +815,9 @@ function CornerCarousel({
 
   return (
     <div
-      className="absolute z-[1100] h-[100dvh] pointer-events-none"
+      className="absolute z-[1100] lg:h-[100dvh] h-[50vh] pointer-events-none"
       style={
-        { bottom: 0, [isRightSide ? "right" : "left"]: 0, width: "100%" } as any
+        { bottom: 0, [isRightSide ? "right" : "left"]: 0, width: "100%", height: "100%" } as any
       }
     >
       {images.map((img, i) => (
@@ -791,11 +834,11 @@ function CornerCarousel({
             alt="carousel"
             width={1000}
             height={1000}
-            className="block rounded-[1rem] object-contain"
+            className="block rounded-[1rem] object-contain max-w-[100vw] lg:max-w-[50vw]"
             style={{
               width: "100%",
               height: "auto",
-              maxWidth: "50vw",
+              // maxWidth: "50vw",
             }}
           />
         </div>

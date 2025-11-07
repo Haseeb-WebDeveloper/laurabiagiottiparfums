@@ -52,12 +52,8 @@ export default function NewCollectionSlug({
       />
 
       {/* 2nd bottles animation section */}
-      <div className="pt-[6vw]">
-        <BottlesSection
-          items={collection.bottlesSection}
-          firstSection={collection.firstSection}
-          locale={locale}
-        />
+      <div className="lg:pt-[6vw] pt-[8rem]">
+        <BottlesSection items={collection.bottlesSection} locale={locale} />
       </div>
 
       <div className="">
