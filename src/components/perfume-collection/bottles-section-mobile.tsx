@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -36,6 +37,17 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
     { x: number; y: number; scale: number; rotate: number }[]
   >([]);
 
+  // Initial positions for mobile bottles (staggered vertically and horizontally)
+  const initialBottlePositionsMobile = useMemo(
+    () => [
+      { x: -80, y: 80 }, // 1st bottle
+      { x: 80, y: -30 }, // 2nd bottle 
+      { x: -80, y: -30 }, // 3rd bottle
+      { x: 80, y: -80 }, // 4th bottle 
+    ],
+    []
+  );
+
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [selectedItem, setSelectedItem] = useState<BottlesSectionItem | null>(
     null
@@ -63,16 +75,20 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
         if (!el) return;
         // Mobile: start from top
         gsap.set(el, { y: -100, autoAlpha: 0 });
+        
       });
-      // Set initial positions for bottles (centered, no offset)
-      bottleRefs.current.forEach((el) => {
-        if (el) {
-          gsap.set(el, { x: 0, y: 0 });
+      // Set initial positions for bottles (staggered vertically and horizontally)
+      bottleRefs.current.forEach((el, i) => {
+        if (el && initialBottlePositionsMobile[i]) {
+          gsap.set(el, {
+            x: initialBottlePositionsMobile[i].x || 0,
+            y: initialBottlePositionsMobile[i].y || 0,
+          });
         }
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [initialBottlePositionsMobile]);
 
   // Hover behavior (simplified for mobile - can be disabled if needed)
   const onHoverIn = useCallback(
@@ -100,8 +116,12 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
       if (openIdx !== null) return;
       const hovered = bottleRefs.current[idx];
       if (hovered) {
+        const initialX = initialBottlePositionsMobile[idx]?.x || 0;
+        const initialY = initialBottlePositionsMobile[idx]?.y || 0;
         gsap.to(hovered, {
           scale: 1,
+          x: initialX,
+          y: initialY,
           duration: 0.3,
           ease: "power2.out",
         });
@@ -113,7 +133,7 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
           ease: "power2.out",
         });
     },
-    [openIdx]
+    [openIdx, initialBottlePositionsMobile]
   );
 
   // Build open timeline for mobile with proper corner positioning
@@ -133,56 +153,63 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
       const sec = section.getBoundingClientRect();
       const el = clicked.getBoundingClientRect();
       
-      // Get current transform values
-      const currentX = (gsap.getProperty(clicked, "x") as number) || 0;
-      const currentY = (gsap.getProperty(clicked, "y") as number) || 0;
-
       // Calculate target position for bottom corner
-      // Scale will be 1.18, so we need to account for that
-      const scale = 1.18;
+      const scale = 1.5;
       const rotate = moveRight ? 12 : -12;
 
+      // Get the element's natural position (without any GSAP transforms)
+      // We'll calculate transforms relative to the current rendered position
+      const currentLeft = el.left;
+      const currentTop = el.top;
+      const currentRight = el.right;
+      const currentBottom = el.bottom;
+
       // Calculate target X position
-      // For right side: align right edge of scaled bottle to section right edge
-      // For left side: align left edge of scaled bottle to section left edge
+      // We need to position the bottle so that after scaling, its edge aligns with section edge
+      // getBoundingClientRect() already includes all current transforms
       let targetX = 0;
+      let targetY = 0;
       if (moveRight) {
-        // Right side: bottle's right edge should be at section's right edge after scaling
-        // When scaled from center, right edge moves right by (width * (scale - 1)) / 2
+        // Right side: after scaling, right edge should be at sec.right
         const scaledWidth = el.width * scale;
-        const widthIncrease = scaledWidth - el.width;
-        const rightExpansion = widthIncrease / 2; // Half goes to the right
-        
-        // Target: after scaling, right edge at sec.right
-        // So before scaling, right edge should be at sec.right - rightExpansion
-        const targetRightEdge = sec.right - rightExpansion;
-        const currentRightEdge = el.right;
-        targetX = currentX + (targetRightEdge - currentRightEdge);
+        // Current right edge position
+        const currentRightEdge = currentRight;
+        // After scaling from center, right edge expands by: (scaledWidth - width) / 2
+        const expansion = (scaledWidth - el.width) / 2;
+        // To have right edge at sec.right after scaling, current right edge should be at:
+        const targetRightEdgeBeforeScale = sec.right - expansion;
+        // The X transform needed to move from current position to target
+        const xOffset = targetRightEdgeBeforeScale - currentRightEdge;
+        // Get current X transform (handle percentage values)
+        const currentXValue = gsap.getProperty(clicked, "x");
+        const currentX = typeof currentXValue === "number" ? currentXValue : 0;
+        targetX = currentX + xOffset;
       } else {
-        // Left side: bottle's left edge should be at section's left edge after scaling
-        // When scaled from center, left edge moves left by (width * (scale - 1)) / 2
+        // Left side: after scaling, left edge should be at sec.left
         const scaledWidth = el.width * scale;
-        const widthIncrease = scaledWidth - el.width;
-        const leftExpansion = widthIncrease / 2; // Half goes to the left
-        
-        // Target: after scaling, left edge at sec.left
-        // So before scaling, left edge should be at sec.left + leftExpansion
-        const targetLeftEdge = sec.left + leftExpansion;
-        const currentLeftEdge = el.left;
-        targetX = currentX + (targetLeftEdge - currentLeftEdge);
+        const currentLeftEdge = currentLeft;
+        // After scaling from center, left edge contracts by: (scaledWidth - width) / 2
+        const expansion = (scaledWidth - el.width) / 2;
+        // To have left edge at sec.left after scaling, current left edge should be at:
+        const targetLeftEdgeBeforeScale = sec.left + expansion;
+        const xOffset = targetLeftEdgeBeforeScale - currentLeftEdge;
+        const currentXValue = gsap.getProperty(clicked, "x");
+        const currentX = typeof currentXValue === "number" ? currentXValue : 0;
+        targetX = currentX + xOffset;
       }
 
       // Calculate target Y position (bottom corner)
-      // Bottle's bottom edge should be at section's bottom edge after scaling
+      // After scaling, bottom edge should be at sec.bottom
       const scaledHeight = el.height * scale;
-      const heightIncrease = scaledHeight - el.height;
-      const bottomExpansion = heightIncrease / 2; // Half goes down
-      
-      // Target: after scaling, bottom edge at sec.bottom
-      // So before scaling, bottom edge should be at sec.bottom - bottomExpansion
-      const targetBottomEdge = sec.bottom - bottomExpansion;
-      const currentBottomEdge = el.bottom;
-      const targetY = currentY + (targetBottomEdge - currentBottomEdge);
+      const currentBottomEdge = currentBottom;
+      // After scaling from center, bottom edge expands down by: (scaledHeight - height) / 2
+      const expansion = (scaledHeight - el.height) / 2;
+      // To have bottom edge at sec.bottom after scaling, current bottom edge should be at:
+      const targetBottomEdgeBeforeScale = sec.bottom - expansion;
+      const yOffset = targetBottomEdgeBeforeScale - currentBottomEdge;
+      const currentYValue = gsap.getProperty(clicked, "y");
+      const currentY = typeof currentYValue === "number" ? currentYValue : 0;
+      targetY = currentY + yOffset;
 
       // Store the target position
       bottleOriginalPositions.current[idx] = {
@@ -349,11 +376,13 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
                     const bottle = bottleRefs.current[idx];
                     const content = contentRefs.current[idx];
                     if (bottle) {
+                      const initialX = initialBottlePositionsMobile[idx]?.x || 0;
+                      const initialY = initialBottlePositionsMobile[idx]?.y || 0;
                       gsap.to(bottle, {
                         rotate: 0,
                         scale: 1,
-                        x: 0,
-                        y: 0,
+                        x: initialX,
+                        y: initialY,
                         duration: 0.3,
                         ease: "power2.out",
                       });
@@ -400,11 +429,13 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
           const bottle = bottleRefs.current[idx];
           const content = contentRefs.current[idx];
           if (bottle) {
+            const initialX = initialBottlePositionsMobile[idx]?.x || 0;
+            const initialY = initialBottlePositionsMobile[idx]?.y || 0;
             gsap.to(bottle, {
               rotate: 0,
               scale: 1,
-              x: 0,
-              y: 0,
+              x: initialX,
+              y: initialY,
               duration: 0.3,
               ease: "power2.out",
             });
@@ -416,7 +447,7 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
       }
       setOpenIdx(null);
     }
-  }, [openIdx, showCarousel, goesRight]);
+  }, [openIdx, showCarousel, goesRight, initialBottlePositionsMobile]);
 
   // Close on ESC / outside
   useEffect(() => {
