@@ -4,19 +4,16 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
-// import { useGSAP } from "@gsap/react";
 import BottleCard from "./bottle-card";
-import type { BottlesSectionItem, Collection } from "@/types/collection";
+import type { BottlesSectionItem } from "@/types/collection";
 import { useLocale } from "@/lib/i18n/context";
 import BuyNowPopup from "../ui/buy-now-popup";
-import BottlesSectionMobile from "./bottles-section-mobile";
 
 gsap.registerPlugin();
 
@@ -25,28 +22,7 @@ type Props = {
   locale: string;
 };
 
-export default function BottlesSection({ items, locale }: Props) {
-  // Detect mobile and render mobile component
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.innerWidth < 768;
-  });
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Render mobile component on mobile devices
-  if (isMobile) {
-    return <BottlesSectionMobile items={items} locale={locale} />;
-  }
-
-  // Desktop component continues below
+export default function BottlesSectionMobile({ items, locale }: Props) {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
   const baseBgRef = useRef<HTMLDivElement>(null);
@@ -59,17 +35,6 @@ export default function BottlesSection({ items, locale }: Props) {
   const bottleOriginalPositions = useRef<
     { x: number; y: number; scale: number; rotate: number }[]
   >([]);
-
-  // Custom initial positions for each bottle (staggered vertically and horizontally)
-  const initialBottlePositions = useMemo(
-    () => [
-      { x: -30, y: 30 }, // 1st bottle
-      { x: 0, y: 130 }, // 2nd bottle
-      { x: 30, y: 35 }, // 3rd bottle
-      { x: 60, y: 130 }, // 4th bottle
-    ],
-    []
-  );
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [selectedItem, setSelectedItem] = useState<BottlesSectionItem | null>(
@@ -94,115 +59,64 @@ export default function BottlesSection({ items, locale }: Props) {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.set(fgBgRef.current, { yPercent: 100, autoAlpha: 0 });
-      contentRefs.current.forEach((el, i) => {
+      contentRefs.current.forEach((el) => {
         if (!el) return;
-        // Desktop: start from side
-        gsap.set(el, {
-          xPercent: contentOnLeft(i) ? -110 : 110,
-          autoAlpha: 0,
-        });
+        // Mobile: start from top
+        gsap.set(el, { y: -100, autoAlpha: 0 });
       });
-      // Set initial positions for bottles (staggered vertically and horizontally)
-      bottleRefs.current.forEach((el, i) => {
-        if (el && initialBottlePositions[i]) {
-          gsap.set(el, {
-            x: initialBottlePositions[i].x || 0,
-            y: initialBottlePositions[i].y || 0,
-          });
+      // Set initial positions for bottles (centered, no offset)
+      bottleRefs.current.forEach((el) => {
+        if (el) {
+          gsap.set(el, { x: 0, y: 0 });
         }
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, [contentOnLeft, initialBottlePositions]);
+  }, []);
 
-  // Hover behavior
-  const hoverMaps = useMemo(
-    () => ({
-      0: [{}, { x: 60 }, { x: 50 }, { x: 40 }],
-      1: [{ x: -60 }, {}, { x: 60 }, { x: 40 }],
-      2: [{ x: -50 }, { x: -60 }, {}, { x: 60 }],
-      3: [{ x: -40 }, { x: -50 }, { x: -60 }, {}],
-    }),
-    []
-  );
-
+  // Hover behavior (simplified for mobile - can be disabled if needed)
   const onHoverIn = useCallback(
     (idx: number) => {
-      if (openIdx !== null) return; // disable hover while open
-      const others = bottleRefs.current
-        .map((el, i) => ({ el, i }))
-        .filter(({ i }) => i !== idx);
+      if (openIdx !== null) return;
       const hovered = bottleRefs.current[idx];
       if (!hovered) return;
       gsap.to(hovered, {
-        scale: 1.12,
-        rotate: goesRight(idx) ? 8 : -8,
-        duration: 0.35,
+        scale: 1.1,
+        duration: 0.3,
         ease: "power2.out",
-      });
-      others.forEach(({ el, i }) => {
-        if (!el) return;
-        const map = (hoverMaps as any)[idx]?.[i] || {};
-        const initialX = initialBottlePositions[i]?.x || 0;
-        const initialY = initialBottlePositions[i]?.y || 0;
-        gsap.to(el, {
-          scale: 0.7,
-          x: map.x !== undefined ? map.x : initialX, // Preserve initial X if not specified
-          y: map.y !== undefined ? map.y : initialY, // Preserve initial Y if not specified
-          duration: 0.35,
-          ease: "power2.out",
-        });
       });
       if (baseBgRef.current)
         gsap.to(baseBgRef.current, {
-          scale: 1.1,
-          duration: 0.5,
+          scale: 1.05,
+          duration: 0.4,
           ease: "power2.out",
         });
     },
-    [hoverMaps, goesRight, openIdx, initialBottlePositions]
+    [openIdx]
   );
 
   const onHoverOut = useCallback(
     (idx: number) => {
-      if (openIdx !== null) return; // disable hover while open
+      if (openIdx !== null) return;
       const hovered = bottleRefs.current[idx];
       if (hovered) {
-        const initialX = initialBottlePositions[idx]?.x || 0;
-        const initialY = initialBottlePositions[idx]?.y || 0;
         gsap.to(hovered, {
           scale: 1,
-          rotate: 0,
-          x: initialX, // Reset to initial X position
-          y: initialY, // Reset to initial Y position
-          duration: 0.35,
+          duration: 0.3,
           ease: "power2.out",
         });
       }
-      bottleRefs.current.forEach((el, i) => {
-        if (el) {
-          const initialX = initialBottlePositions[i]?.x || 0;
-          const initialY = initialBottlePositions[i]?.y || 0;
-          gsap.to(el, {
-            scale: 1,
-            x: initialX, // Reset to initial X position
-            y: initialY, // Reset to initial Y position
-            duration: 0.35,
-            ease: "power2.out",
-          });
-        }
-      });
       if (baseBgRef.current)
         gsap.to(baseBgRef.current, {
           scale: 1,
-          duration: 0.5,
+          duration: 0.4,
           ease: "power2.out",
         });
     },
-    [openIdx, initialBottlePositions]
+    [openIdx]
   );
 
-  // Build a per-index open timeline lazily
+  // Build open timeline for mobile with proper corner positioning
   const buildOpenTl = useCallback(
     (idx: number) => {
       const tl = gsap.timeline({
@@ -213,44 +127,85 @@ export default function BottlesSection({ items, locale }: Props) {
       const clicked = bottleRefs.current[idx];
       const others = bottleRefs.current.filter((_, i) => i !== idx);
       const section = sectionRef.current;
+
+      if (!section || !clicked) return tl;
+
+      const sec = section.getBoundingClientRect();
+      const el = clicked.getBoundingClientRect();
+      
+      // Get current transform values
+      const currentX = (gsap.getProperty(clicked, "x") as number) || 0;
+      const currentY = (gsap.getProperty(clicked, "y") as number) || 0;
+
+      // Calculate target position for bottom corner
+      // Scale will be 1.18, so we need to account for that
+      const scale = 1.18;
+      const rotate = moveRight ? 12 : -12;
+
+      // Calculate target X position
+      // For right side: align right edge of scaled bottle to section right edge
+      // For left side: align left edge of scaled bottle to section left edge
       let targetX = 0;
-      let targetY = 0;
-      if (section && clicked) {
-        const sec = section.getBoundingClientRect();
-        const el = clicked.getBoundingClientRect();
-        const centerX = el.left + el.width / 2;
-        const padding = Math.max(24, Math.min(72, sec.width * 0.06));
-
-        // Calculate X position (side)
-        if (moveRight) {
-          const rightCenter = sec.right - padding - el.width / 2;
-          targetX = rightCenter - centerX;
-        } else {
-          const leftCenter = sec.left + padding + el.width / 2;
-          targetX = leftCenter - centerX;
-        }
-
-        // Calculate Y position (move to bottom corner)
-        const currentY = (gsap.getProperty(clicked, "y") as number) || 0;
-        const elBottom = el.bottom;
-        const secBottom = sec.bottom;
-        // Move to bottom: calculate how much to move down
-        targetY = secBottom - elBottom + currentY;
+      if (moveRight) {
+        // Right side: bottle's right edge should be at section's right edge after scaling
+        // When scaled from center, right edge moves right by (width * (scale - 1)) / 2
+        const scaledWidth = el.width * scale;
+        const widthIncrease = scaledWidth - el.width;
+        const rightExpansion = widthIncrease / 2; // Half goes to the right
+        
+        // Target: after scaling, right edge at sec.right
+        // So before scaling, right edge should be at sec.right - rightExpansion
+        const targetRightEdge = sec.right - rightExpansion;
+        const currentRightEdge = el.right;
+        targetX = currentX + (targetRightEdge - currentRightEdge);
+      } else {
+        // Left side: bottle's left edge should be at section's left edge after scaling
+        // When scaled from center, left edge moves left by (width * (scale - 1)) / 2
+        const scaledWidth = el.width * scale;
+        const widthIncrease = scaledWidth - el.width;
+        const leftExpansion = widthIncrease / 2; // Half goes to the left
+        
+        // Target: after scaling, left edge at sec.left
+        // So before scaling, left edge should be at sec.left + leftExpansion
+        const targetLeftEdge = sec.left + leftExpansion;
+        const currentLeftEdge = el.left;
+        targetX = currentX + (targetLeftEdge - currentLeftEdge);
       }
+
+      // Calculate target Y position (bottom corner)
+      // Bottle's bottom edge should be at section's bottom edge after scaling
+      const scaledHeight = el.height * scale;
+      const heightIncrease = scaledHeight - el.height;
+      const bottomExpansion = heightIncrease / 2; // Half goes down
+      
+      // Target: after scaling, bottom edge at sec.bottom
+      // So before scaling, bottom edge should be at sec.bottom - bottomExpansion
+      const targetBottomEdge = sec.bottom - bottomExpansion;
+      const currentBottomEdge = el.bottom;
+      const targetY = currentY + (targetBottomEdge - currentBottomEdge);
+
+      // Store the target position
+      bottleOriginalPositions.current[idx] = {
+        x: targetX,
+        y: targetY,
+        scale: scale,
+        rotate: rotate,
+      };
+
       tl.addLabel("start")
         .to(
           others,
           { yPercent: 120, autoAlpha: 0, stagger: 0.06, duration: 0.4 },
           "start"
         )
-        // Move clicked bottle to bottom corner (side + bottom)
+        // Move clicked bottle to bottom corner
         .to(
           clicked,
           {
             x: targetX,
             y: targetY,
-            rotate: moveRight ? 12 : -12,
-            scale: 1.18,
+            rotate: rotate,
+            scale: scale,
             duration: 0.5,
           },
           "start"
@@ -260,22 +215,20 @@ export default function BottlesSection({ items, locale }: Props) {
           { yPercent: 0, autoAlpha: 1, duration: 0.45 },
           "start+=0.05"
         )
-        // Desktop: slide content from side
+        // Content animation - slide from top
         .fromTo(
           contentRefs.current[idx],
           {
-            xPercent: 0,
-            x:
-              (sectionRef.current?.getBoundingClientRect().width || 1000) *
-              (contentOnLeft(idx) ? -1 : 1),
+            y: -100,
             autoAlpha: 0,
           },
-          { xPercent: 0, x: 0, autoAlpha: 1, duration: 0.5 },
+          { y: 0, autoAlpha: 1, duration: 0.5 },
           "start+=0.15"
         );
+
       return tl;
     },
-    [goesRight, contentOnLeft]
+    [goesRight]
   );
 
   const open = useCallback(
@@ -285,58 +238,18 @@ export default function BottlesSection({ items, locale }: Props) {
       if (!openTls.current[idx]) openTls.current[idx] = buildOpenTl(idx);
       openTls.current[idx]!.play(0);
 
-      // Store bottle's target position (will be set after animation completes)
-      const moveRight = goesRight(idx);
-      // Get the target position from the timeline
-      const padding = sectionRef.current
-        ? Math.max(
-            24,
-            Math.min(
-              72,
-              sectionRef.current.getBoundingClientRect().width * 0.06
-            )
-          )
-        : 60;
-      const sectionRect = sectionRef.current?.getBoundingClientRect();
-      const clicked = bottleRefs.current[idx];
-      if (sectionRect && clicked) {
-        const rect = clicked.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        let targetX = 0;
-        if (moveRight) {
-          const rightCenter = sectionRect.right - padding - rect.width / 2;
-          targetX = rightCenter - centerX;
-        } else {
-          const leftCenter = sectionRect.left + padding + rect.width / 2;
-          targetX = leftCenter - centerX;
-        }
-        // Calculate target Y (bottom corner position)
-        const currentY = (gsap.getProperty(clicked, "y") as number) || 0;
-        const elBottom = rect.bottom;
-        const secBottom = sectionRect.bottom;
-        const targetY = secBottom - elBottom + currentY;
-
-        bottleOriginalPositions.current[idx] = {
-          x: targetX,
-          y: targetY, // Bottom corner Y position
-          scale: 1.18,
-          rotate: moveRight ? 12 : -12,
-        };
-      }
-
-      // schedule carousel reveal after 4s
+      // Schedule carousel reveal after 4s
       if (carouselTimerRef.current)
         window.clearTimeout(carouselTimerRef.current);
       setShowCarousel(false);
       carouselTimerRef.current = window.setTimeout(() => {
-        // Animate bottle to corner, then down (carousel exit)
+        // Animate bottle exit for carousel
         const bottle = bottleRefs.current[idx];
         if (bottle && items[idx]?.images?.length > 0) {
           const isRight = goesRight(idx);
           const exitX = isRight ? -350 : 350;
           const sectionRect = sectionRef.current?.getBoundingClientRect();
           if (sectionRect) {
-            // Get current bottle position, rotation, and scale (PRESERVE THESE)
             const currentX = (gsap.getProperty(bottle, "x") as number) || 0;
             const currentY = (gsap.getProperty(bottle, "y") as number) || 0;
             const currentRotate =
@@ -345,35 +258,30 @@ export default function BottlesSection({ items, locale }: Props) {
               (gsap.getProperty(bottle, "scale") as number) || 1;
             const currentRect = bottle.getBoundingClientRect();
 
-            // Calculate corner position (absolute)
+            // Calculate corner position
             const cornerX = isRight
               ? sectionRect.right - currentRect.width
               : sectionRect.left;
             const cornerY = sectionRect.bottom - currentRect.height;
 
-            // Calculate target x position relative to bottle's current transform
             const targetCornerX = cornerX - (currentRect.left - currentX);
             const targetCornerY = cornerY - (currentRect.top - currentY);
 
-            // Set transform origin for corner animation
             gsap.set(bottle, {
               transformOrigin: isRight ? "100% 100%" : "0% 100%",
             });
 
-            // Timeline: exit directly down (bottle is already at corner from open animation)
             const tl = gsap.timeline({
               onComplete: () => {
-                // Show carousel after bottle exits
                 setShowCarousel(true);
               },
             });
-            // Directly animate to exit position without moving to corner first
-            // (bottle is already positioned at corner from open animation)
+
             tl.to(bottle, {
               y: targetCornerY + currentRect.height,
               x: targetCornerX + exitX,
-              rotate: currentRotate, // KEEP rotation during exit
-              scale: currentScale, // KEEP scale during exit
+              rotate: currentRotate,
+              scale: currentScale,
               opacity: 0,
               duration: 0.6,
               ease: "power2.in",
@@ -400,10 +308,8 @@ export default function BottlesSection({ items, locale }: Props) {
 
     if (showCarousel && bottle && originalPos) {
       // Carousel is showing - need to bring bottle back
-      // Step 1: Hide carousel instantly
       setShowCarousel(false);
 
-      // Step 2: Show bottle at corner instantly (like carousel enter)
       const sectionRect = sectionRef.current?.getBoundingClientRect();
       if (sectionRect) {
         const bottleRect = bottle.getBoundingClientRect();
@@ -412,63 +318,48 @@ export default function BottlesSection({ items, locale }: Props) {
           : sectionRect.left;
         const cornerY = sectionRect.bottom - bottleRect.height;
 
-        // Get current transform values
         const currentX = (gsap.getProperty(bottle, "x") as number) || 0;
         const currentY = (gsap.getProperty(bottle, "y") as number) || 0;
 
-        // Calculate corner position relative to current transform
         const targetCornerX = cornerX - (bottleRect.left - currentX);
         const targetCornerY = cornerY - (bottleRect.top - currentY);
 
-        // Set transform origin
         gsap.set(bottle, {
           transformOrigin: isRight ? "100% 100%" : "0% 100%",
         });
 
-        // Set bottle at corner position (from bottom with X, like carousel enter)
-        // Use original rotate and scale values (PRESERVE THEM)
         gsap.set(bottle, {
           x: targetCornerX + enterX,
           y: targetCornerY + bottleRect.height,
           opacity: 0,
-          rotate: originalPos.rotate, // KEEP original rotation
-          scale: originalPos.scale, // KEEP original scale
+          rotate: originalPos.rotate,
+          scale: originalPos.scale,
           force3D: true,
         });
 
-        // Step 3: Animate bottle entering from bottom (like carousel)
         const enterTl = gsap.timeline({
           onComplete: () => {
-            // Step 4: Move bottle back to side position
             const moveBackTl = gsap.timeline({
               onComplete: () => {
-                // Step 5: Now reverse the open timeline
                 const openTl = openTls.current[idx];
                 if (openTl) {
                   openTl.reverse();
-                  // Reset rotation and scale after reverse completes
                   const duration = openTl.duration();
                   gsap.delayedCall(duration, () => {
                     const bottle = bottleRefs.current[idx];
                     const content = contentRefs.current[idx];
                     if (bottle) {
-                      const initialX = initialBottlePositions[idx]?.x || 0;
-                      const initialY = initialBottlePositions[idx]?.y || 0;
                       gsap.to(bottle, {
                         rotate: 0,
                         scale: 1,
-                        x: initialX, // Reset to initial X position
-                        y: initialY, // Reset to initial Y position
+                        x: 0,
+                        y: 0,
                         duration: 0.3,
                         ease: "power2.out",
                       });
                     }
-                    // Reset content to initial state
                     if (content) {
-                      gsap.set(content, {
-                        xPercent: contentOnLeft(idx) ? -110 : 110,
-                        autoAlpha: 0,
-                      });
+                      gsap.set(content, { y: -100, autoAlpha: 0 });
                     }
                   });
                 }
@@ -479,8 +370,8 @@ export default function BottlesSection({ items, locale }: Props) {
             moveBackTl.to(bottle, {
               x: originalPos.x,
               y: originalPos.y,
-              rotate: originalPos.rotate, // KEEP rotation
-              scale: originalPos.scale, // KEEP scale
+              rotate: originalPos.rotate,
+              scale: originalPos.scale,
               duration: 0.4,
               ease: "power2.out",
               force3D: true,
@@ -491,8 +382,8 @@ export default function BottlesSection({ items, locale }: Props) {
         enterTl.to(bottle, {
           x: targetCornerX,
           y: targetCornerY,
-          rotate: originalPos.rotate, // KEEP rotation during enter
-          scale: originalPos.scale, // KEEP scale during enter
+          rotate: originalPos.rotate,
+          scale: originalPos.scale,
           opacity: 1,
           duration: 0.6,
           ease: "power2.out",
@@ -504,35 +395,28 @@ export default function BottlesSection({ items, locale }: Props) {
       const openTl = openTls.current[idx];
       if (openTl) {
         openTl.reverse();
-        // Reset rotation and scale after reverse completes
         const duration = openTl.duration();
         gsap.delayedCall(duration, () => {
           const bottle = bottleRefs.current[idx];
           const content = contentRefs.current[idx];
           if (bottle) {
-            const initialX = initialBottlePositions[idx]?.x || 0;
-            const initialY = initialBottlePositions[idx]?.y || 0;
             gsap.to(bottle, {
               rotate: 0,
               scale: 1,
-              x: initialX, // Reset to initial X position
-              y: initialY, // Reset to initial Y position
+              x: 0,
+              y: 0,
               duration: 0.3,
               ease: "power2.out",
             });
           }
-          // Reset content to initial state
           if (content) {
-            gsap.set(content, {
-              xPercent: contentOnLeft(idx) ? -110 : 110,
-              autoAlpha: 0,
-            });
+            gsap.set(content, { y: -100, autoAlpha: 0 });
           }
         });
       }
       setOpenIdx(null);
     }
-  }, [openIdx, showCarousel, goesRight, initialBottlePositions, contentOnLeft]);
+  }, [openIdx, showCarousel, goesRight]);
 
   // Close on ESC / outside
   useEffect(() => {
@@ -543,7 +427,6 @@ export default function BottlesSection({ items, locale }: Props) {
     const onClick = (e: MouseEvent) => {
       if (!sectionRef.current) return;
       if (!sectionRef.current.contains(e.target as Node)) return;
-      // If clicked directly on the foreground bg while open, close
       const fg = fgBgRef.current;
       if (fg && (e.target === fg || (e.target as Node).contains(fg))) {
         close();
@@ -557,7 +440,7 @@ export default function BottlesSection({ items, locale }: Props) {
     };
   }, [openIdx, close]);
 
-  // Auto-close on scroll: close when user scrolls 50vh past section bottom
+  // Auto-close on scroll
   useEffect(() => {
     if (openIdx === null) return;
     if (!sectionRef.current) return;
@@ -606,7 +489,7 @@ export default function BottlesSection({ items, locale }: Props) {
 
   return (
     <section ref={sectionRef} className="relative h-[100vh] overflow-hidden">
-      {/* Base background (kept) */}
+      {/* Base background */}
       <div
         ref={baseBgRef}
         className="absolute inset-0 -z-10"
@@ -631,8 +514,8 @@ export default function BottlesSection({ items, locale }: Props) {
         }}
       />
 
-      {/* Bottles row */}
-      <div className="relative h-full flex flex-row items-center justify-center gap-10 px-4">
+      {/* Bottles column */}
+      <div className="relative h-full flex flex-col items-center justify-center gap-6 px-4">
         {items.map((it, idx) => (
           <div key={idx} className="relative flex flex-col items-center">
             <BottleCard
@@ -659,28 +542,26 @@ export default function BottlesSection({ items, locale }: Props) {
             if (el) contentRefs.current[idx] = el;
           }}
           data-elem="content"
-          className={`z-[1300] w-[40vw] absolute top-1/2 -translate-y-1/2 px-0 text-foreground ${
-            contentOnLeft(idx)
-              ? "left-8 right-auto"
-              : "right-8 left-auto"
-          }`}
+          className="z-[1300] w-[min(560px,92vw)] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] text-foreground"
         >
           <div className="">
             <h3 className="text-[2.5rem] lg:text-[3.2rem] 2xl:text-[3.8rem] font-[700] font-times-new-roman">
               {it.product?.title}
             </h3>
-            <p className="leading-relaxed 2xl:text-[1.4rem]">{it.product?.description}</p>
+            <p className="leading-relaxed 2xl:text-[1.4rem]">
+              {it.product?.description}
+            </p>
           </div>
           <div className="lg:mt-[2rem] mt-[2rem] flex gap-4 items-center pointer-events-auto">
             {it.product?.buy && (
               <button
                 onClick={() => handleBuyNowClick(it)}
-                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[0.9rem] py-[0.6rem] rounded-[7.127px] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-foreground/90  transition-colors duration-300"
+                className="cursor-pointer w-fit flex items-center justify-center uppercase px-[0.9rem] py-[0.6rem] rounded-[7.127px] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-foreground bg-foreground text-background hover:bg-foreground/90 transition-colors duration-300"
               >
                 {t("shop")}
               </button>
             )}
-             {it.product?.slug && it.product?.category && (
+            {it.product?.slug && it.product?.category && (
               <Link
                 href={`/${locale}/${it.product.category}-perfume/${it.product.slug}`}
                 className="cursor-pointer w-fit flex items-center justify-center uppercase py-[0.6rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400]"
@@ -710,16 +591,13 @@ export default function BottlesSection({ items, locale }: Props) {
           aria-label="Close details"
           className="absolute inset-0 z-[1200] bg-transparent"
           onClick={(e) => {
-            // Don't close if clicking on interactive elements within content
             const target = e.target as HTMLElement;
-            
-            // Check if click is on a button or link within content area
-            const clickedButton = target.closest('button:not([aria-label="Close details"])');
-            const clickedLink = target.closest('a');
+            const clickedButton = target.closest(
+              'button:not([aria-label="Close details"])'
+            );
+            const clickedLink = target.closest("a");
             const contentElement = target.closest('[data-elem="content"]');
-            
-            // Only prevent closing if clicking on buttons/links that are inside content
-            // Allow closing on carousel, empty areas, and content text
+
             if (
               (clickedButton && contentElement?.contains(clickedButton)) ||
               (clickedLink && contentElement?.contains(clickedLink))
@@ -727,8 +605,7 @@ export default function BottlesSection({ items, locale }: Props) {
               e.stopPropagation();
               return;
             }
-            
-            // Close on all other clicks (carousel, empty areas, etc.)
+
             close();
           }}
         />
@@ -750,7 +627,7 @@ export default function BottlesSection({ items, locale }: Props) {
   );
 }
 
-// Minimal corner carousel reused from collection-left-right
+// Corner carousel component
 function CornerCarousel({
   images,
   isRightSide,
@@ -829,7 +706,6 @@ function CornerCarousel({
       const el = imageRefs.current[i];
       if (!el) return;
       const enterX = isRightSide ? 350 : -350;
-      // Initialize all images as hidden (including first one)
       gsap.set(el, {
         transformOrigin: isRightSide ? "100% 100%" : "0% 100%",
         y: "100%",
@@ -841,7 +717,6 @@ function CornerCarousel({
       });
     });
 
-    // Animate first image in from bottom (same animation as others)
     const firstImg = imageRefs.current[0];
     if (firstImg) {
       gsap.to(firstImg, {
@@ -863,7 +738,6 @@ function CornerCarousel({
     let intervalId: NodeJS.Timeout | null = null;
     let timeoutId: NodeJS.Timeout | null = null;
 
-    // Wait for first image animation to complete before starting auto-play
     const startAutoPlay = () => {
       if (firstImageAnimatedRef.current) {
         intervalId = setInterval(() => {
@@ -889,7 +763,7 @@ function CornerCarousel({
 
   return (
     <div
-      className="absolute z-[1100] lg:h-[100vh] h-[50vh] pointer-events-none "
+      className="absolute z-[1100] h-[50vh] pointer-events-none"
       style={
         {
           bottom: 0,
@@ -905,7 +779,7 @@ function CornerCarousel({
           ref={(el) => {
             imageRefs.current[i] = el;
           }}
-          className="absolute opacity-0 w-fit  h-full flex items-end justify-end"
+          className="absolute opacity-0 w-fit h-full flex items-end justify-end"
           style={{ bottom: 0, [isRightSide ? "right" : "left"]: 0 } as any}
         >
           <Image
@@ -913,11 +787,10 @@ function CornerCarousel({
             alt="carousel"
             width={1000}
             height={1000}
-            className="block rounded-[1rem] object-contain max-w-[100vw] lg:max-w-[50vw]"
+            className="block rounded-[1rem] object-contain max-w-[100vw]"
             style={{
               width: "100%",
               height: "auto",
-              // maxWidth: "50vw",
             }}
           />
         </div>
@@ -925,3 +798,4 @@ function CornerCarousel({
     </div>
   );
 }
+
