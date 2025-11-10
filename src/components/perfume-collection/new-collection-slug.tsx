@@ -2,7 +2,6 @@
 
 import { Collection } from "@/types/collection";
 import RelatedPerfumes from "../perfumms/related-perfumes";
-// import { useLocale } from "@/lib/i18n/context";
 import CollectionSectionTwo from "./collection-section-two";
 import BottlesSection from "./bottles-section";
 import CollectionLeftRight from "./collection-left-right";
@@ -17,11 +16,11 @@ export default function NewCollectionSlug({
   return (
     <div className="mb-[15rem] ">
       {/* 1st hero section */}
-      <section className="h-[calc(100vh-30px)] md:h-[100vh] relative overflow-hidden">
+      <section className="h-[100dvh] relative overflow-hidden">
         {/* Background video */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src={collection.firstSection.bgMedia.asset?.url || ""}
+          src={collection.firstSection.video.asset?.url || ""}
           autoPlay
           muted
           loop
@@ -37,18 +36,18 @@ export default function NewCollectionSlug({
             {collection.title}
           </h1>
           <p className="w-full text-background text-center mt-[0.8rem] custom-text-shadow 2xl:text-[1.85rem] text-[1rem]">
-            {collection.firstSection.tagLine}
+            {collection.description}
           </p>
         </div>
       </section>
 
       {/* 2nd animation section a video with  text animation */}
       <CollectionSectionTwo
-        videoUrl={collection.firstSection.bgMedia.asset?.url || ""}
-        firstTitle="Moment. Purity. Essence."
-        firstDesc="A journey inspire by the eternal rhythem of Roma."
-        secondTitle="Aqvè Romane is a tribute to the city of Rome — its fountains, its light, its artistry."
-        secondDesc="our fragrances inspired by water and form, designed to reflect purity, strength, and timeless elegance."
+        videoUrl={collection.secondSection.video.asset?.url || ""}
+        firstTitle={collection.secondSection.titleOnVideo}
+        firstDesc={collection.secondSection.descriptionOnVideo}
+        secondTitle={collection.secondSection.rightTitle}
+        secondDesc={collection.secondSection.rightDescription}
       />
 
       {/* 2nd bottles animation section */}

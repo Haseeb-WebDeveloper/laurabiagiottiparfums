@@ -118,7 +118,7 @@ const CollectionSectionTwo: React.FC<Props> = ({
             {
               x: 0,
               width: "100vw",
-              height: "60vh",
+              height: "74vh",
               yPercent: -50,
               xPercent: -50, // keep centered horizontally until width reaches 100vw
               duration: 0.8,
@@ -269,7 +269,7 @@ const CollectionSectionTwo: React.FC<Props> = ({
           <MainSplitText
             tag="h2"
             text={secondTitle}
-            className="text-[clamp(1.2rem,6vw,1.6rem)] font-semibold text-center"
+            className="text-[20px] font-semibold text-center"
             splitType="words, chars"
             delay={20}
             duration={0.5}
@@ -278,7 +278,7 @@ const CollectionSectionTwo: React.FC<Props> = ({
           <MainSplitText
             tag="p"
             text={secondDesc}
-            className="mt-2 text-[clamp(0.9rem,3.6vw,1rem)] opacity-90 text-center"
+            className="mt-2 text-[16px] opacity-90 text-center"
             splitType="words, chars"
             delay={10}
             duration={0.45}

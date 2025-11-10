@@ -26,27 +26,14 @@ type Props = {
 };
 
 export default function BottlesSection({ items, locale }: Props) {
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
   // Detect mobile and render mobile component
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.innerWidth < 768;
   });
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Render mobile component on mobile devices
-  if (isMobile) {
-    return <BottlesSectionMobile items={items} locale={locale} />;
-  }
-
-  // Desktop component continues below
+  // Desktop hooks - must be called unconditionally
   const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
   const baseBgRef = useRef<HTMLDivElement>(null);
@@ -110,8 +97,19 @@ export default function BottlesSection({ items, locale }: Props) {
     [goesRight]
   );
 
-  // Initialize states
+  // Handle resize to detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Initialize states - must be called before conditional return
   useLayoutEffect(() => {
+    if (isMobile) return; // Skip desktop initialization on mobile
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
@@ -144,6 +142,7 @@ export default function BottlesSection({ items, locale }: Props) {
     }, sectionRef);
     return () => ctx.revert();
   }, [
+    isMobile,
     contentOnLeft,
     initialBottlePositionsMobile,
     initialBottlePositionsDesktop,
@@ -152,10 +151,10 @@ export default function BottlesSection({ items, locale }: Props) {
   // Hover behavior
   const hoverMaps = useMemo(
     () => ({
-      0: [{}, { x: 60 }, { x: 50 }, { x: 40 }],
-      1: [{ x: -60 }, {}, { x: 60 }, { x: 40 }],
-      2: [{ x: -50 }, { x: -60 }, {}, { x: 60 }],
-      3: [{ x: -40 }, { x: -50 }, { x: -60 }, {}],
+      0: [{}, { x: 80 }, { x: 30 }, { x: 10 }],
+      1: [{ x: -60 }, {}, { x: 80 }, { x: 40 }],
+      2: [{ x: -50 }, { x: -80 }, {}, { x: 80 }],
+      3: [{ x: -40 }, { x: -50 }, { x: -90 }, {}],
     }),
     []
   );
@@ -168,11 +167,15 @@ export default function BottlesSection({ items, locale }: Props) {
         .filter(({ i }) => i !== idx);
       const hovered = bottleRefs.current[idx];
       if (!hovered) return;
+      
+      // Kill any ongoing animations for smooth transitions
+      gsap.killTweensOf([hovered, ...others.map(({ el }) => el).filter(Boolean), baseBgRef.current]);
+      
       gsap.to(hovered, {
         scale: 1.12,
         rotate: goesRight(idx) ? 8 : -8,
-        duration: 0.35,
-        ease: "power2.out",
+        duration: 0.5,
+        ease: "power1.out",
       });
       const positions = getInitialBottlePositions();
       others.forEach(({ el, i }) => {
@@ -181,18 +184,18 @@ export default function BottlesSection({ items, locale }: Props) {
         const initialX = positions[i]?.x || 0;
         const initialY = positions[i]?.y || 0;
         gsap.to(el, {
-          scale: 0.7,
+          scale: 0.6,
           x: map.x !== undefined ? map.x : initialX, // Preserve initial X if not specified
           y: map.y !== undefined ? map.y : initialY, // Preserve initial Y if not specified
-          duration: 0.35,
-          ease: "power2.out",
+          duration: 0.5,
+          ease: "power1.out",
         });
       });
       if (baseBgRef.current)
         gsap.to(baseBgRef.current, {
-          scale: 1.1,
-          duration: 0.5,
-          ease: "power2.out",
+          scale: 1.13,
+          duration: 0.7,
+          ease: "power1.out",
         });
     },
     [hoverMaps, goesRight, openIdx, getInitialBottlePositions]
@@ -203,6 +206,10 @@ export default function BottlesSection({ items, locale }: Props) {
       if (openIdx !== null) return; // disable hover while open
       const positions = getInitialBottlePositions();
       const hovered = bottleRefs.current[idx];
+      
+      // Kill any ongoing animations for smooth transitions
+      gsap.killTweensOf([hovered, ...bottleRefs.current.filter(Boolean), baseBgRef.current]);
+      
       if (hovered) {
         const initialX = positions[idx]?.x || 0;
         const initialY = positions[idx]?.y || 0;
@@ -211,8 +218,8 @@ export default function BottlesSection({ items, locale }: Props) {
           rotate: 0,
           x: initialX, // Reset to initial X position
           y: initialY, // Reset to initial Y position
-          duration: 0.35,
-          ease: "power2.out",
+          duration: 0.6,
+          ease: "power1.out",
         });
       }
       bottleRefs.current.forEach((el, i) => {
@@ -223,16 +230,16 @@ export default function BottlesSection({ items, locale }: Props) {
             scale: 1,
             x: initialX, // Reset to initial X position
             y: initialY, // Reset to initial Y position
-            duration: 0.35,
-            ease: "power2.out",
+            duration: 0.6,
+            ease: "power1.out",
           });
         }
       });
       if (baseBgRef.current)
         gsap.to(baseBgRef.current, {
           scale: 1,
-          duration: 0.5,
-          ease: "power2.out",
+          duration: 0.7,
+          ease: "power1.out",
         });
     },
     [openIdx, getInitialBottlePositions]
@@ -243,7 +250,7 @@ export default function BottlesSection({ items, locale }: Props) {
     (idx: number) => {
       const tl = gsap.timeline({
         paused: true,
-        defaults: { ease: "power2.out" },
+        defaults: { ease: "power1.out" },
       });
       const moveRight = goesRight(idx);
       const clicked = bottleRefs.current[idx];
@@ -277,7 +284,7 @@ export default function BottlesSection({ items, locale }: Props) {
       tl.addLabel("start")
         .to(
           others,
-          { yPercent: 120, autoAlpha: 0, stagger: 0.06, duration: 0.4 },
+          { yPercent: 120, autoAlpha: 0, stagger: 0.08, duration: 0.6 },
           "start"
         )
         // Move clicked bottle to bottom corner (side + bottom)
@@ -288,13 +295,14 @@ export default function BottlesSection({ items, locale }: Props) {
             y: targetY,
             rotate: moveRight ? 12 : -12,
             scale: 1.18,
-            duration: 0.5,
+            duration: 0.7,
+            ease: "power1.out",
           },
           "start"
         )
         .to(
           fgBgRef.current,
-          { yPercent: 0, autoAlpha: 1, duration: 0.45 },
+          { yPercent: 0, autoAlpha: 1, duration: 0.65, ease: "power1.out" },
           "start+=0.05"
         );
 
@@ -307,8 +315,8 @@ export default function BottlesSection({ items, locale }: Props) {
             y: -100,
             autoAlpha: 0,
           },
-          { y: 0, autoAlpha: 1, duration: 0.5 },
-          "start+=0.15"
+          { y: 0, autoAlpha: 1, duration: 0.7, ease: "power1.out" },
+          "start+=0.2"
         );
       } else {
         // Desktop: slide from side
@@ -321,8 +329,8 @@ export default function BottlesSection({ items, locale }: Props) {
               (contentOnLeft(idx) ? -1 : 1),
             autoAlpha: 0,
           },
-          { xPercent: 0, x: 0, autoAlpha: 1, duration: 0.5 },
-          "start+=0.15"
+          { xPercent: 0, x: 0, autoAlpha: 1, duration: 0.7, ease: "power1.out" },
+          "start+=0.2"
         );
       }
       return tl;
@@ -427,8 +435,8 @@ export default function BottlesSection({ items, locale }: Props) {
               rotate: currentRotate, // KEEP rotation during exit
               scale: currentScale, // KEEP scale during exit
               opacity: 0,
-              duration: 0.6,
-              ease: "power2.in",
+              duration: 0.7,
+              ease: "power1.in",
               force3D: true,
             });
           }
@@ -502,22 +510,24 @@ export default function BottlesSection({ items, locale }: Props) {
                   // Reset rotation and scale after reverse completes
                   const duration = openTl.duration();
                   gsap.delayedCall(duration, () => {
-                    const bottle = bottleRefs.current[idx];
-                    const content = contentRefs.current[idx];
-                    if (bottle) {
-                      const positions = getInitialBottlePositions();
-                      const initialX = positions[idx]?.x || 0;
-                      const initialY = positions[idx]?.y || 0;
-                      gsap.to(bottle, {
-                        rotate: 0,
-                        scale: 1,
-                        x: initialX, // Reset to initial X position
-                        y: initialY, // Reset to initial Y position
-                        duration: 0.3,
-                        ease: "power2.out",
-                      });
-                    }
+                    const positions = getInitialBottlePositions();
+                    // Reset ALL bottles to original scale and positions
+                    bottleRefs.current.forEach((bottle, i) => {
+                      if (bottle) {
+                        const initialX = positions[i]?.x || 0;
+                        const initialY = positions[i]?.y || 0;
+                        gsap.to(bottle, {
+                          rotate: 0,
+                          scale: 1,
+                          x: initialX, // Reset to initial X position
+                          y: initialY, // Reset to initial Y position
+                          duration: 0.7,
+                          ease: "power1.out",
+                        });
+                      }
+                    });
                     // Reset content to initial state
+                    const content = contentRefs.current[idx];
                     if (content) {
                       if (isMobile) {
                         gsap.set(content, { y: 100, autoAlpha: 0 });
@@ -539,8 +549,8 @@ export default function BottlesSection({ items, locale }: Props) {
               y: originalPos.y,
               rotate: originalPos.rotate, // KEEP rotation
               scale: originalPos.scale, // KEEP scale
-              duration: 0.4,
-              ease: "power2.out",
+              duration: 1.0,
+              ease: "power1.out",
               force3D: true,
             });
           },
@@ -552,8 +562,8 @@ export default function BottlesSection({ items, locale }: Props) {
           rotate: originalPos.rotate, // KEEP rotation during enter
           scale: originalPos.scale, // KEEP scale during enter
           opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
+          duration: 0.8,
+          ease: "power1.out",
           force3D: true,
         });
       }
@@ -566,22 +576,24 @@ export default function BottlesSection({ items, locale }: Props) {
         // Reset rotation and scale after reverse completes
         const duration = openTl.duration();
         gsap.delayedCall(duration, () => {
-          const bottle = bottleRefs.current[idx];
-          const content = contentRefs.current[idx];
-          if (bottle) {
-            const positions = getInitialBottlePositions();
-            const initialX = positions[idx]?.x || 0;
-            const initialY = positions[idx]?.y || 0;
-            gsap.to(bottle, {
-              rotate: 0,
-              scale: 1,
-              x: initialX, // Reset to initial X position
-              y: initialY, // Reset to initial Y position
-              duration: 0.3,
-              ease: "power2.out",
-            });
-          }
+          const positions = getInitialBottlePositions();
+          // Reset ALL bottles to original scale and positions
+          bottleRefs.current.forEach((bottle, i) => {
+            if (bottle) {
+              const initialX = positions[i]?.x || 0;
+              const initialY = positions[i]?.y || 0;
+              gsap.to(bottle, {
+                rotate: 0,
+                scale: 1,
+                x: initialX, // Reset to initial X position
+                y: initialY, // Reset to initial Y position
+                duration: 0.5,
+                ease: "power1.out",
+              });
+            }
+          });
           // Reset content to initial state
+          const content = contentRefs.current[idx];
           if (content) {
             if (isMobile) {
               gsap.set(content, { y: -100, autoAlpha: 0 });
@@ -606,6 +618,7 @@ export default function BottlesSection({ items, locale }: Props) {
 
   // Close on ESC / outside
   useEffect(() => {
+    if (isMobile) return; // Skip desktop-only effects on mobile
     if (openIdx === null) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
@@ -625,10 +638,11 @@ export default function BottlesSection({ items, locale }: Props) {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("click", onClick);
     };
-  }, [openIdx, close]);
+  }, [isMobile, openIdx, close]);
 
-  // Auto-close on scroll: close when user scrolls 50vh past section bottom
+  // Auto-close on scroll: close when user scrolls 50vh past section bottom or top
   useEffect(() => {
+    if (isMobile) return; // Skip desktop-only effects on mobile
     if (openIdx === null) return;
     if (!sectionRef.current) return;
 
@@ -646,12 +660,15 @@ export default function BottlesSection({ items, locale }: Props) {
         if (!sectionRef.current || hasClosed) return;
 
         const sectionRect = sectionRef.current.getBoundingClientRect();
+        const sectionTop = sectionRect.top + window.scrollY;
         const sectionBottom = sectionRect.bottom + window.scrollY;
         const fiftyVh = window.innerHeight * 0.5;
-        const threshold = sectionBottom + fiftyVh;
+        const thresholdBottom = sectionBottom + fiftyVh;
+        const thresholdTop = sectionTop - fiftyVh;
         const currentScrollY = window.scrollY;
 
-        if (currentScrollY >= threshold) {
+        // Close if scrolled down 50vh past bottom OR scrolled up 50vh past top
+        if (currentScrollY >= thresholdBottom || currentScrollY <= thresholdTop) {
           hasClosed = true;
           close();
         }
@@ -666,7 +683,12 @@ export default function BottlesSection({ items, locale }: Props) {
       }
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [openIdx, close]);
+  }, [isMobile, openIdx, close]);
+
+  // Render mobile component on mobile devices - AFTER all hooks
+  if (isMobile) {
+    return <BottlesSectionMobile items={items} locale={locale} />;
+  }
 
   // Determine the foreground background image to display
   const foregroundBgUrl =
@@ -729,7 +751,7 @@ export default function BottlesSection({ items, locale }: Props) {
             if (el) contentRefs.current[idx] = el;
           }}
           data-elem="content"
-          className={`z-[1300] w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
+          className={`z-[1300] select-none pointer-events-none w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
             contentOnLeft(idx)
               ? "md:left-8 md:right-auto"
               : "md:right-8 md:left-auto"
@@ -739,7 +761,9 @@ export default function BottlesSection({ items, locale }: Props) {
             <h3 className="text-[2.5rem] lg:text-[3.2rem] 2xl:text-[3.8rem] font-[700] font-times-new-roman">
               {it.product?.title}
             </h3>
-            <p className="leading-relaxed 2xl:text-[1.4rem]">{it.product?.description}</p>
+            <p className="leading-relaxed 2xl:text-[1.4rem]">
+              {it.productDescription || it.product?.description}
+            </p>
           </div>
           <div className="lg:mt-[2rem] mt-[2rem] flex gap-4 items-center pointer-events-auto">
             {it.product?.buy && (
@@ -872,8 +896,8 @@ function CornerCarousel({
         y: "100%",
         x: exitX,
         opacity: 0,
-        duration: 0.6,
-        ease: "power2.in",
+        duration: 0.7,
+        ease: "power1.in",
         force3D: true,
       });
       tl.fromTo(
@@ -883,11 +907,11 @@ function CornerCarousel({
           y: 0,
           x: 0,
           opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
+          duration: 0.7,
+          ease: "power1.out",
           force3D: true,
         },
-        "-=0.3"
+        "-=0.35"
       );
     },
     [isRightSide]
@@ -918,8 +942,8 @@ function CornerCarousel({
         y: 0,
         x: 0,
         opacity: 1,
-        duration: 0.6,
-        ease: "power2.out",
+        duration: 0.7,
+        ease: "power1.out",
         force3D: true,
         onComplete: () => {
           gsap.set(firstImg, { pointerEvents: "auto" });

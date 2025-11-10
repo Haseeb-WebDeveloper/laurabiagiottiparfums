@@ -1,4 +1,4 @@
-import CollectionSlug from "@/components/perfume-collection/collection-slug";
+// import CollectionSlug from "@/components/perfume-collection/collection-slug";
 import MainPerfumeSlug from "@/components/main-perfumes/main-perfume-slug";
 import PerfumeSlug from "@/components/perfumms/perfume-slug";
 import { LOCALES } from "@/lib/i18n/constants";
@@ -12,6 +12,8 @@ import { PerfumeSeoTagsInterface } from "@/types/news";
 import { getAllPerfumesSlugQuery, getProductBySlugsForSitemapQuery } from "@/lib/sanity/queries";
 import { fetchSanityData } from "@/lib/sanity/fetch";
 import { PerfumeData } from "@/app/sitemap.xml/route";
+import SlugNavbar from "@/components/layout/navbar";
+import NewCollectionSlug from "@/components/perfume-collection/new-collection-slug";
 
 export default async function PerfumePage({
   params,
@@ -52,8 +54,16 @@ export default async function PerfumePage({
 
   if (productData.collection) {
     return (
-      <div className="bg-background 2xl:px-[34px] md:px-[38px] px-[18px]">
-        <CollectionSlug collection={productData.collection} locale={locale} />
+      <div className=" ">
+        {/* For collection only: make navbar transparent and absolute at top (not fixed on scroll) */}
+        {/* <NavbarAppearanceToggle transparent fixed={false} position="absolute" /> */}
+        <SlugNavbar />
+
+        {/* <CollectionSlug collection={productData.collection} locale={locale} /> */}
+        <NewCollectionSlug
+          collection={productData.collection}
+          locale={locale}
+        />
       </div>
     );
   }

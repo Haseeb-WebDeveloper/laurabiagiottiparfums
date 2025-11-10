@@ -45,6 +45,7 @@ export interface BottlesSectionItem {
   backgroundImage: {
     asset: SanityImage;
   };
+  productDescription?: string;
   product: {
     // Only require the fields queried for in bottlesSection in the query
     title: string;
@@ -61,14 +62,19 @@ type BottlesSection = BottlesSectionItem[];
 
 // First section content type
 interface FirstSection {
-  tagLine: string;
-  image: {
-    asset: SanityImage;
-  };
+  title: string;
   description: string;
-  bgMedia: SanityFile;
+  video: SanityFile;
 }
 
+// Second section content type
+interface SecondSection {
+  video: SanityFile;
+  titleOnVideo: string;
+  descriptionOnVideo: string;
+  rightTitle: string;
+  rightDescription: string;
+}
 // Main collection interface
 export interface Collection {
   _id: string;
@@ -82,7 +88,7 @@ export interface Collection {
     asset: SanityImage;
   };
   firstSection: FirstSection;
-  productsCollection: CollectionPerfume[];
+  secondSection: SecondSection;
   bottlesSection: BottlesSection;
   relatedProducts: RelatedProduct[];
 }

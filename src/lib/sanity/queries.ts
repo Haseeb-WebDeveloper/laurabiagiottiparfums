@@ -335,7 +335,7 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     _type == "collections" &&
     (
       title match "*${searchTerm}*" ||
-      firstSection.tagLine.${locale} match "*${searchTerm}*" ||
+      description.${locale} match "*${searchTerm}*" ||
       coalesce(
         *[_type == "translation.metadata" && references(^._id) && language == "${locale}"].value.title match "*${searchTerm}*",
         false
@@ -346,13 +346,8 @@ export const getSearchResultsQuery = (searchTerm: string, locale: string) => `{
     _type,
     title,
     "slug": slug.current,
-    "description": firstSection.description.${locale},
+    "description": description.${locale},
     category,
-    featuredImage {
-      asset-> {
-        url
-      }
-    },
   },
   "news": *[
     _type == "news" &&
@@ -879,7 +874,7 @@ export const getCollectionBySlugQuery = (
   title,
   "slug": slug.current,
   category,
-  // "description": description.${locale},
+  "description": description.${locale},
   "subCategory": subCategory->name.${locale},
   featuredImage {
     asset-> {
@@ -887,29 +882,49 @@ export const getCollectionBySlugQuery = (
     }
   },
   firstSection {
-    "tagLine": tagLine.${locale},
-    image {
-      asset-> {
-        url,
-      }
-    },
-    // "description": description.${locale},
-    bgMedia {
+    "title": title.${locale},
+    "description": description.${locale},
+    video {
       asset-> {
         url,
         mimeType
       }
     }
   },
-  productsCollection[]-> {
-    _id,
-    title,
-    "slug": slug.current,
-    "description": description.${locale},
-    category,
-    featuredImage {
+  bottlesSection[] {
+    bottleImage {
       asset-> {
-        url,
+        url
+      }
+    },
+    images[] {
+      asset-> {
+        url
+      }
+    },
+    backgroundImage {
+      asset-> {
+        url
+      }
+    },
+    "productDescription": productDescription.${locale},
+    product->{
+      title,
+      "description": description.${locale},
+      "slug": slug.current,
+      category,
+      buy {
+        countries[] {
+          countryName,
+          websites[] {
+            logo {
+              asset-> {
+                url
+              }
+            },
+            url
+          }
+        }
       }
     }
   },
@@ -1162,62 +1177,27 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
     "slug": slug.current,
     category,
     "subCategory": subCategory->name.${locale},
-    featuredImage {
-      asset-> {
-        url,
-      }
-    },
     firstSection {
-      "tagLine": tagLine.${locale},
-      image {
-        asset-> {
-          url,
-        }
-      },
+      "title": title.${locale},
       "description": description.${locale},
-      bgMedia {
+      video {
         asset-> {
           url,
           mimeType
         }
       }
     },
-    productsCollection[]-> {
-      _id,
-      title,
-      "slug": slug.current,
-      "description": descriptionForCollectionPage.${locale},
-      category,
-      collectionPageImages[] {
-        asset -> {
-          _id,
-          url
+    secondSection {
+      video {
+        asset-> {
+          url,
+          mimeType
         }
       },
-      isPartOfCollection,
-      ingredients[] {
-        "ingredientName": ingredientName.${locale},
-        image {
-          asset -> {
-            _id,
-            url
-          }
-        },
-        "description": description.${locale}
-      },
-      buy {
-        countries[] {
-          countryName,
-          websites[] {
-            logo {
-              asset-> {
-                url
-              }
-            },
-            url
-          }
-        }
-      },
+      "titleOnVideo": titleOnVideo.${locale},
+      "descriptionOnVideo": descriptionOnVideo.${locale},
+      "rightTitle": rightTitle.${locale},
+      "rightDescription": rightDescription.${locale}
     },
     bottlesSection[] {
       bottleImage {
@@ -1235,6 +1215,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
           url
         }
       },
+      "productDescription": productDescription.${locale},
       product->{
         title,
         "description": description.${locale},

@@ -8,75 +8,17 @@ export const collections = defineType({
     defineField({
       name: 'title',
       title: 'Title',
+      description: 'This will show at different places like collection page, search result, etc.',
       type: 'string',
-    }),
-    // TODO add description
-    // defineField({
-    //     name: "description",
-    //     type: "object",
-    //     title: "Description",
-    //     description: "This will show when we will show this collection in the women or men perfume page.",
-    //     fields: [
-    //         { name: "en", type: "text", title: "English" },
-    //         { name: "it", type: "text", title: "Italian" },
-    //         { name: "de", type: "text", title: "German" }
-    //     ]
-    // }),
-    defineField({
-      name: 'firstSection',
-      title: 'First Section',
-      type: 'object',
-      fields: [
-        {
-          name: 'tagLine',
-          type: 'object',
-          title: 'Tag Line',
-          fields: [
-            {name: 'en', type: 'string', title: 'English'},
-            {name: 'it', type: 'string', title: 'Italian'},
-            {name: 'de', type: 'string', title: 'German'},
-          ],
-        },
-        {
-          name: 'image',
-          type: 'image',
-          title: 'First Section Main Image',
-        },
-        {
-          name: 'description',
-          type: 'object',
-          title: 'Description',
-          fields: [
-            {name: 'en', type: 'text', title: 'English'},
-            {name: 'it', type: 'text', title: 'Italian'},
-            {name: 'de', type: 'text', title: 'German'},
-          ],
-        },
-        {
-          name: 'bgMedia',
-          type: 'file',
-          title: 'Background Media Video or Image',
-          options: {
-            accept: 'video/*, image/*',
-          },
-        },
-      ],
     }),
     defineField({
       name: 'slug',
       type: 'slug',
       title: 'Slug',
-      description: 'URL-friendly identifier for the news',
       options: {
         source: 'title',
         maxLength: 96,
       },
-    }),
-    defineField({
-      name: 'featuredImage',
-      title: 'Featured Image',
-      type: 'image',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
@@ -98,17 +40,117 @@ export const collections = defineType({
       to: [{type: 'sub-category'}],
       validation: (Rule) => Rule.required(),
     }),
+    {
+      name: 'description',
+      type: 'object',
+      description: 'This will show in search result.',
+      title: 'Description',
+      fields: [
+        {name: 'en', type: 'text', title: 'English', rows: 3},
+        {name: 'it', type: 'text', title: 'Italian', rows: 3},
+        {name: 'de', type: 'text', title: 'German', rows: 3},
+      ],
+    },
     defineField({
-      name: 'productsCollection',
-      type: 'array',
-      of: [
+      name: 'firstSection',
+      title: 'First Section',
+      type: 'object',
+      fields: [
         {
-          type: 'reference',
-          to: [{type: 'perfume'}, {type: 'collections'}, {type: 'mainPerfume'}],
+          name: 'title',
+          type: 'object',
+          title: 'Title',
+          fields: [
+            {name: 'en', type: 'string', title: 'English'},
+            {name: 'it', type: 'string', title: 'Italian'},
+            {name: 'de', type: 'string', title: 'German'},
+          ],
+        },
+        defineField({
+          name: 'description',
+          type: 'object',
+          title: 'Description',
+          fields: [
+            {name: 'en', type: 'text', title: 'English', rows: 2},
+            {name: 'it', type: 'text', title: 'Italian', rows: 2},
+            {name: 'de', type: 'text', title: 'German', rows: 2},
+          ],
+        }),
+        {
+          name: 'video',
+          type: 'file',
+          description:
+            'Main video file for this collection. This will show in background of the first section.',
+          title: 'Video',
+          options: {
+            accept: 'video/*',
+          },
         },
       ],
-      title: 'Products Collection',
-      description: 'References to products in the collection',
+    }),
+    defineField({
+      name: 'secondSection',
+      title: 'Second Section (Video + Text)',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'video',
+          title: 'Video',
+          type: 'file',
+          description: 'Main video file for this section.',
+          validation: (Rule) => Rule.required(),
+          options: {
+            accept: 'video/*',
+          },
+        }),
+        defineField({
+          name: 'titleOnVideo',
+          title: 'Title on Video',
+          type: 'object',
+          description: 'Title text overlayed on the video.',
+          fields: [
+            {name: 'en', type: 'string', title: 'English'},
+            {name: 'it', type: 'string', title: 'Italian'},
+            {name: 'de', type: 'string', title: 'German'},
+          ],
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'descriptionOnVideo',
+          title: 'Description on Video',
+          type: 'object',
+          description: 'Description text overlayed on the video.',
+          fields: [
+            {name: 'en', type: 'text', title: 'English', rows: 3},
+            {name: 'it', type: 'text', title: 'Italian', rows: 3},
+            {name: 'de', type: 'text', title: 'German', rows: 3},
+          ],
+        }),
+        defineField({
+          name: 'rightTitle',
+          title: 'Right Side Title',
+          type: 'object',
+          description: 'Title text shown to the right of the video.',
+          fields: [
+            {name: 'en', type: 'string', title: 'English'},
+            {name: 'it', type: 'string', title: 'Italian'},
+            {name: 'de', type: 'string', title: 'German'},
+          ],
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'rightDescription',
+          title: 'Right Side Description',
+          type: 'object',
+          description: 'Description text shown to the right of the video.',
+          fields: [
+            {name: 'en', type: 'text', title: 'English', rows: 3},
+            {name: 'it', type: 'text', title: 'Italian', rows: 3},
+            {name: 'de', type: 'text', title: 'German', rows: 3},
+          ],
+        }),
+      ],
+      options: {collapsible: true, collapsed: false},
     }),
     defineField({
       name: 'bottlesSection',
@@ -146,11 +188,24 @@ export const collections = defineType({
               description: 'Reference to the product featured in this section',
               validation: (Rule) => Rule.required(),
             }),
+            // description for the product
+            defineField({
+              name: 'productDescription',
+              title: 'Product Description',
+              type: 'object',
+              description: 'Description text shown for the product.',
+              fields: [
+                {name: 'en', type: 'text', title: 'English', rows: 3},
+                {name: 'it', type: 'text', title: 'Italian', rows: 3},
+                {name: 'de', type: 'text', title: 'German', rows: 3},
+              ],
+            }),
           ],
           preview: {
             select: {
               bottleImage: 'bottleImage',
               product: 'product',
+              productDescription: 'productDescription.en',
             },
             prepare(selection) {
               let subtitle = ''
@@ -160,7 +215,7 @@ export const collections = defineType({
               return {
                 title: 'Bottle Section',
                 media: selection.bottleImage,
-                subtitle,
+                subtitle: selection.productDescription || subtitle,
               }
             },
           },
@@ -448,14 +503,13 @@ export const collections = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
-      media: 'featuredImage',
+      media: 'ogImage',
       category: 'category',
     },
     prepare(selection) {
-      const {title, media, category} = selection
+      const {media, category} = selection
       return {
-        title: title || 'Untitled Collection',
+        title: 'Collection',
         media,
         subtitle: category || 'Untitled Collection',
       }
