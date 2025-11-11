@@ -31,8 +31,6 @@ export default function SlugNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  console.log("I am a navbar");
-
   // GSAP refs
   const menuIconRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLDivElement>(null);

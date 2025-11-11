@@ -33,10 +33,10 @@ export default function NewCollectionSlug({
 
         <div className="relative z-10 flex flex-col justify-end items-center 2xl:gap-[1rem] h-full pb-[4rem]">
           <h1 className="text-background text-center 2xl:text-[4.5rem] lg:text-[3.85rem] text-[2.6rem] tracking-wide custom-text-shadow">
-            {collection.title}
+            {collection.firstSection.title}
           </h1>
           <p className="w-full text-background text-center mt-[0.8rem] custom-text-shadow 2xl:text-[1.85rem] text-[1rem]">
-            {collection.description}
+            {collection.firstSection.description}
           </p>
         </div>
       </section>
