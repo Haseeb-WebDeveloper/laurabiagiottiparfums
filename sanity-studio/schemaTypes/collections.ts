@@ -20,6 +20,14 @@ export const collections = defineType({
         maxLength: 96,
       },
     }),
+    // Featured Image
+    defineField({
+      name: 'featuredImage',
+      type: 'image',
+      title: 'Featured Image',
+      description: 'This will show in search result or in the navbar dropdown.',
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: 'category',
       title: 'Category',
@@ -224,6 +232,18 @@ export const collections = defineType({
       validation: (Rule) => Rule.max(4),
       description:
         'Section displaying bottles with images, a background, and a single related product (Max 4).',
+    }),
+    defineField({
+      name: 'carouselAssets',
+      title: 'Carousel Assets',
+      type: 'array',
+      of: [
+        {
+          type: 'file',
+          options: {accept: 'video/*,image/*,.gif'},
+        },
+      ],
+      description: 'Assets for the carousel section.',
     }),
     // defineField({
     //   name: 'momentOfDay',

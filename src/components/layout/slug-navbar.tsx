@@ -25,6 +25,9 @@ export default function Navbar() {
   const [hoveredCategory, setHoveredCategory] = useState<
     "mens" | "womens" | null
   >(null);
+  const [displayCategory, setDisplayCategory] = useState<
+    "mens" | "womens" | null
+  >(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -46,6 +49,19 @@ export default function Navbar() {
     };
     fetchPerfumes();
   }, [locale]);
+
+  // Handle dropdown visibility with animation delay
+  useEffect(() => {
+    if (hoveredCategory) {
+      setDisplayCategory(hoveredCategory);
+    } else {
+      // Delay hiding to allow closing animation to complete (0.3s animation + buffer)
+      const timer = setTimeout(() => {
+        setDisplayCategory(null);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [hoveredCategory]);
 
   // GSAP animations
   useGSAP(() => {
@@ -264,22 +280,22 @@ export default function Navbar() {
         </div>
         {/* <div className="h-[29px] w-[100vw] border-b-[1px] border-foreground/[0.08]"></div> */}
         {/* Dropdown */}
-        {hoveredCategory && (
+        {displayCategory && (
           <div
             className="absolute left-0 top-[160px]  z-[110] w-full border-b border-foreground/10"
-            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+            onMouseEnter={() => setHoveredCategory(displayCategory)}
             onMouseLeave={() => setHoveredCategory(null)}
           >
             <PerfumeDropdown
               isSlugPage={true}
-              isOpen={hoveredCategory === hoveredCategory}
-              onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+              isOpen={hoveredCategory !== null}
+              onMouseEnter={() => setHoveredCategory(displayCategory)}
               onMouseLeave={() => setHoveredCategory(null)}
               perfumes={perfumes}
-              category={hoveredCategory}
+              category={displayCategory}
               locale={locale}
               categoryName={
-                navItems.find((item) => item.category === hoveredCategory)
+                navItems.find((item) => item.category === displayCategory)
                   ?.label || ""
               }
             />

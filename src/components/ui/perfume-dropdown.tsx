@@ -38,6 +38,9 @@ export default function PerfumeDropdown({
   const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const wasOpenRef = useRef<boolean>(false);
+  const animationTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const storedHeightRef = useRef<number>(0);
 
   const categoryPerfumes =
     category === "mens" ? perfumes.mens : perfumes.womens;
@@ -46,15 +49,23 @@ export default function PerfumeDropdown({
   useEffect(() => {
     if (!dropdownRef.current) return;
 
+    // Kill any existing animation
+    if (animationTimelineRef.current) {
+      animationTimelineRef.current.kill();
+    }
+
     const ctx = gsap.context(() => {
       if (isOpen) {
-        // Initial state
+        wasOpenRef.current = true;
+        // Ensure dropdown is visible before animating
         gsap.set(dropdownRef.current, {
-          height: 0,
-          opacity: 0,
           display: "block",
+          height: "auto",
+          opacity: 0,
           y: 0,
         });
+
+        // Set initial states for opening animation
         gsap.set(titleRefs.current, {
           y: 50,
           opacity: 0,
@@ -62,13 +73,19 @@ export default function PerfumeDropdown({
         gsap.set(imageContainerRef.current, {
           y: 250,
           height: "auto",
-          opacity: 1,
+          opacity: 0,
         });
+
+        // Get the actual height for smooth animation
+        const height = dropdownRef.current?.offsetHeight || 0;
+        storedHeightRef.current = height; // Store for closing animation
+        gsap.set(dropdownRef.current, { height: 0 });
 
         // Animate dropdown container
         const tl = gsap.timeline();
+        animationTimelineRef.current = tl;
         tl.to(dropdownRef.current, {
-          height: "auto",
+          height: height,
           opacity: 1,
           duration: 0.3,
           ease: "power2.inOut",
@@ -95,45 +112,106 @@ export default function PerfumeDropdown({
               ease: "power2.out",
             },
             "-=0.2"
-          );
+          )
+          // Set height to auto after animation completes
+          .set(dropdownRef.current, { height: "auto" });
       } else {
-        // Enhanced exit animation
-        const tl = gsap.timeline();
+        // Only run closing animation if it was previously open
+        if (!wasOpenRef.current) {
+          return;
+        }
+        
+        // Enhanced exit animation - perfect reverse of opening
+        // Ensure dropdown is visible to get accurate height
+        if (!dropdownRef.current) return;
+        
+        // Force display block to ensure we can measure height
+        gsap.set(dropdownRef.current, { display: "block" });
+        
+        // Get current height - prefer stored height, then try to measure, then fallback
+        let currentHeight = storedHeightRef.current;
+        if (currentHeight === 0) {
+          currentHeight = dropdownRef.current.offsetHeight;
+          if (currentHeight === 0) {
+            currentHeight = dropdownRef.current.scrollHeight;
+            if (currentHeight === 0) {
+              // Last resort: use a reasonable default
+              currentHeight = 300;
+            }
+          }
+        }
+        
+        // Set the current height explicitly - ensure it's at full height
+        gsap.set(dropdownRef.current, { 
+          height: currentHeight,
+          opacity: 1,
+          y: 0
+        });
 
-        // First, animate the image container to shrink vertically
+        // Prepare titles for reverse stagger (second column first, then first column)
+        // Create reversed array of refs for proper reverse stagger
+        const reversedTitleRefs = [...titleRefs.current].filter(Boolean).reverse();
+
+        const tl = gsap.timeline();
+        animationTimelineRef.current = tl;
+
+        // First, animate the image container (reverse of opening)
         tl.to(imageContainerRef.current, {
-          height: 0,
+          y: 250,
           opacity: 0,
-          duration: 0.25,
+          duration: 0.3,
           ease: "power2.in",
         })
-          // Then animate titles and move dropdown up
+          // Then animate titles with REVERSE stagger (second column first, then first column)
           .to(
-            titleRefs.current,
+            reversedTitleRefs,
             {
               opacity: 0,
-              y: -20,
-              duration: 0.2,
+              y: 50,
+              duration: 0.3,
+              stagger: 0.05,
               ease: "power2.in",
             },
             "-=0.1"
           )
-          // Finally animate the dropdown container
+          // Finally animate the dropdown container (background) - smooth collapse from top to bottom
+          // Keep opacity at 1 during height collapse (reverse of opening where opacity goes 0->1)
           .to(
             dropdownRef.current,
             {
               height: 0,
-              opacity: 0,
-              y: -20,
-              duration: 0.2,
+              opacity: 1, // Keep fully visible during collapse
+              duration: 0.3,
               ease: "power2.inOut",
               onComplete: () => {
-                gsap.set(dropdownRef.current, { display: "none", y: 0 });
-                // Reset image container height
-                gsap.set(imageContainerRef.current, { height: "auto" });
+                // Fade out opacity only after height has fully collapsed
+                gsap.to(dropdownRef.current, {
+                  opacity: 0,
+                  duration: 0.1,
+                  ease: "power2.in",
+                  onComplete: () => {
+                    wasOpenRef.current = false;
+                    if (dropdownRef.current) {
+                      gsap.set(dropdownRef.current, { display: "none", y: 0 });
+                    }
+                    // Reset image container
+                    if (imageContainerRef.current) {
+                      gsap.set(imageContainerRef.current, { 
+                        height: "auto",
+                        y: 0,
+                        opacity: 0
+                      });
+                    }
+                    // Reset titles
+                    gsap.set(titleRefs.current, { 
+                      y: 0,
+                      opacity: 0
+                    });
+                  },
+                });
               },
             },
-            "-=0.1"
+            "-=0.2"
           );
       }
     });

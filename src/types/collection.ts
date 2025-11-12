@@ -90,6 +90,13 @@ export interface Collection {
   firstSection: FirstSection;
   secondSection: SecondSection;
   bottlesSection: BottlesSection;
+  carouselAssets: {
+    _type: "file";
+    asset: {
+      mimeType: string;
+      url: string;
+    };
+  }[];
   relatedProducts: RelatedProduct[];
 }
 

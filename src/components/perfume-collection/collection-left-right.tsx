@@ -206,6 +206,7 @@ function CustomCarousel({
     });
   }, [images, isRightSide]);
 
+
   return (
     <div
       ref={containerRef}
@@ -228,7 +229,7 @@ function CustomCarousel({
           }}
         >
           <Image
-            src={image.asset.url}
+            src={image.asset.url || ""}
             alt={alt}
             width={1000}
             height={1000}
@@ -275,7 +276,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
           {/* max-w  */}
           <div
             className={`h-[100vh] lg:h-[100vh] 2xl:min-h-auto flex items-center flex-col lg:flex-row justify-between lg:gap-[2rem] ${
-              index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+              index % 2 === 0 ? "lg:flex-row 2xl:pl-[6vw] xl:pl-[3vw]" : "lg:flex-row-reverse 2xl:pr-[6vw] xl:pr-[3vw]"
             }`}
           >
             {/* Text (left) */}

@@ -703,7 +703,7 @@ export default function BottlesSection({ items, locale }: Props) {
         ref={baseBgRef}
         className="absolute inset-0 -z-10"
         style={{
-          backgroundImage: `url("/bottle-backgroud.jpg")`,
+          backgroundImage: `url("/bottle-backgroud.svg")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -753,8 +753,8 @@ export default function BottlesSection({ items, locale }: Props) {
           data-elem="content"
           className={`z-[1300] select-none pointer-events-none w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
             contentOnLeft(idx)
-              ? "md:left-8 md:right-auto"
-              : "md:right-8 md:left-auto"
+              ? "md:left-8 md:right-auto 2xl:pl-[6vw] xl:pl-[3vw]"
+              : "md:right-8 md:left-auto 2xl:pr-[6vw] xl:pr-[3vw]"
           }`}
         >
           <div className="">

@@ -1236,6 +1236,13 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
         }
       }
     },
+    "carouselAssets": carouselAssets[] {
+      _type,
+      asset-> {
+        url,
+        mimeType
+      }
+    },
     "relatedProducts": relatedProducts[]->{
       _id,
       title,
