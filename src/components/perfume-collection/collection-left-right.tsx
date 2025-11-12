@@ -234,7 +234,7 @@ function CustomCarousel({
             width={1000}
             height={1000}
             // sizes="(max-width: 768px) 100vw, 50vw"
-            className="rounded-[1rem] md:rounded-none block"
+            className="max-h-[50vh] lg:max-h-[80vh] object-contain block"
             style={{
               width: "auto",
               height: "auto",

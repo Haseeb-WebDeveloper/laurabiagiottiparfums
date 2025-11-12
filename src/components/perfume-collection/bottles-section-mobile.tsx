@@ -537,7 +537,7 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
         ref={baseBgRef}
         className="absolute inset-0 -z-10"
         style={{
-          backgroundImage: `url("/mobile-bottle-backgroud.jpg")`,
+          backgroundImage: `url("/mobile-bottle-backgroud.png")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

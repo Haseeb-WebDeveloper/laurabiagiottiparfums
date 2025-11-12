@@ -176,6 +176,7 @@ export default function BottlesSection({ items, locale }: Props) {
         rotate: goesRight(idx) ? 8 : -8,
         duration: 0.5,
         ease: "power1.out",
+        force3D: true,
       });
       const positions = getInitialBottlePositions();
       others.forEach(({ el, i }) => {
@@ -189,6 +190,7 @@ export default function BottlesSection({ items, locale }: Props) {
           y: map.y !== undefined ? map.y : initialY, // Preserve initial Y if not specified
           duration: 0.5,
           ease: "power1.out",
+          force3D: true,
         });
       });
       if (baseBgRef.current)
@@ -196,6 +198,7 @@ export default function BottlesSection({ items, locale }: Props) {
           scale: 1.13,
           duration: 0.7,
           ease: "power1.out",
+          force3D: true,
         });
     },
     [hoverMaps, goesRight, openIdx, getInitialBottlePositions]
@@ -220,6 +223,7 @@ export default function BottlesSection({ items, locale }: Props) {
           y: initialY, // Reset to initial Y position
           duration: 0.6,
           ease: "power1.out",
+          force3D: true,
         });
       }
       bottleRefs.current.forEach((el, i) => {
@@ -232,6 +236,7 @@ export default function BottlesSection({ items, locale }: Props) {
             y: initialY, // Reset to initial Y position
             duration: 0.6,
             ease: "power1.out",
+            force3D: true,
           });
         }
       });
@@ -240,6 +245,7 @@ export default function BottlesSection({ items, locale }: Props) {
           scale: 1,
           duration: 0.7,
           ease: "power1.out",
+          force3D: true,
         });
     },
     [openIdx, getInitialBottlePositions]
@@ -297,6 +303,7 @@ export default function BottlesSection({ items, locale }: Props) {
             scale: 1.18,
             duration: 0.7,
             ease: "power1.out",
+            force3D: true,
           },
           "start"
         )
@@ -523,6 +530,7 @@ export default function BottlesSection({ items, locale }: Props) {
                           y: initialY, // Reset to initial Y position
                           duration: 0.7,
                           ease: "power1.out",
+                          force3D: true,
                         });
                       }
                     });
@@ -589,6 +597,7 @@ export default function BottlesSection({ items, locale }: Props) {
                 y: initialY, // Reset to initial Y position
                 duration: 0.5,
                 ease: "power1.out",
+                force3D: true,
               });
             }
           });
@@ -697,17 +706,42 @@ export default function BottlesSection({ items, locale }: Props) {
       : "";
 
   return (
-    <section ref={sectionRef} className="relative h-[100vh] overflow-hidden">
-      {/* Base background (kept) */}
+    <section 
+      ref={sectionRef} 
+      className="relative h-[100vh] overflow-hidden"
+      style={{
+        willChange: "transform",
+        backfaceVisibility: "hidden",
+      }}
+    >
+      {/* Base background (kept) - Optimized for performance */}
       <div
         ref={baseBgRef}
         className="absolute inset-0 -z-10"
         style={{
-          backgroundImage: `url("/bottle-backgroud.svg")`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+          transform: "translateZ(0)",
+          WebkitTransform: "translateZ(0)",
+          contain: "layout style paint",
+          isolation: "isolate",
         }}
-      />
+      >
+        <Image
+          src="/bottle-backgroud-4.svg"
+          alt=""
+          fill
+          priority
+          quality={90}
+          className="object-cover"
+          style={{
+            imageRendering: "auto",
+            willChange: "transform",
+            backfaceVisibility: "hidden",
+          }}
+          sizes="100vw"
+        />
+      </div>
 
       {/* Foreground background that rises from bottom */}
       <div
