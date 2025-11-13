@@ -84,6 +84,7 @@ export default function BottlesSection({ items, locale }: Props) {
     null
   );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const handleBuyNowClick = useCallback((item: BottlesSectionItem) => {
     setSelectedItem(item);
@@ -109,7 +110,10 @@ export default function BottlesSection({ items, locale }: Props) {
 
   // Initialize states - must be called before conditional return
   useLayoutEffect(() => {
-    if (isMobile) return; // Skip desktop initialization on mobile
+    if (isMobile) {
+      setIsInitialized(true);
+      return; // Skip desktop initialization on mobile
+    }
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
@@ -139,6 +143,8 @@ export default function BottlesSection({ items, locale }: Props) {
           });
         }
       });
+      // Mark as initialized after GSAP setup
+      setIsInitialized(true);
     }, sectionRef);
     return () => ctx.revert();
   }, [
@@ -285,7 +291,7 @@ export default function BottlesSection({ items, locale }: Props) {
         const elBottom = el.bottom;
         const secBottom = sec.bottom;
         // Move to bottom: calculate how much to move down
-        targetY = secBottom - elBottom + currentY;
+        targetY = (secBottom - elBottom + currentY) - 10;
       }
       tl.addLabel("start")
         .to(
@@ -381,7 +387,7 @@ export default function BottlesSection({ items, locale }: Props) {
         const currentY = (gsap.getProperty(clicked, "y") as number) || 0;
         const elBottom = rect.bottom;
         const secBottom = sectionRect.bottom;
-        const targetY = secBottom - elBottom + currentY;
+        const targetY = (secBottom - elBottom + currentY) - 15;
 
         bottleOriginalPositions.current[idx] = {
           x: targetX,
@@ -778,19 +784,29 @@ export default function BottlesSection({ items, locale }: Props) {
       </div>
 
       {/* Content divs positioned absolutely relative to section */}
-      {items.map((it, idx) => (
-        <div
-          key={idx}
-          ref={(el) => {
-            if (el) contentRefs.current[idx] = el;
-          }}
-          data-elem="content"
-          className={`z-[1300] select-none pointer-events-none w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
-            contentOnLeft(idx)
-              ? "md:left-8 md:right-auto 2xl:pl-[6vw] xl:pl-[3vw]"
-              : "md:right-8 md:left-auto 2xl:pr-[6vw] xl:pr-[3vw]"
-          }`}
-        >
+      {items.map((it, idx) => {
+        const isLeft = contentOnLeft(idx);
+        return (
+          <div
+            key={idx}
+            ref={(el) => {
+              if (el) contentRefs.current[idx] = el;
+            }}
+            data-elem="content"
+            className={`z-[1300] select-none pointer-events-none w-[min(560px,92vw)] md:w-[40vw] absolute top-[5rem] left-1/2 -translate-x-1/2 px-[18px] md:mt-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:px-0 text-foreground ${
+              isLeft
+                ? "md:left-8 md:right-auto 2xl:pl-[6vw] xl:pl-[3vw]"
+                : "md:right-8 md:left-auto 2xl:pr-[6vw] xl:pr-[3vw]"
+            }`}
+            style={
+              !isInitialized
+                ? {
+                    opacity: 0,
+                    visibility: "hidden" as const,
+                  }
+                : undefined
+            }
+          >
           <div className="">
             <h3 className="text-[2.5rem] lg:text-[3.2rem] 2xl:text-[3.8rem] font-[700] font-times-new-roman">
               {it.product?.title}
@@ -818,7 +834,8 @@ export default function BottlesSection({ items, locale }: Props) {
             )}
           </div>
         </div>
-      ))}
+        );
+      })}
 
       {/* Corner carousel shown 4s after open */}
       {openIdx !== null &&
@@ -1041,7 +1058,7 @@ function CornerCarousel({
             alt="carousel"
             width={1000}
             height={1000}
-            className="block rounded-[1rem] object-contain max-w-[100vw] lg:max-w-[50vw]"
+            className="block rounded-[1rem] object-contain max-h-[50vh] lg:max-h-[80vh] "
             style={{
               width: "100%",
               height: "auto",

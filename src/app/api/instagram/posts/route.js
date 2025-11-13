@@ -13,7 +13,6 @@ const fetchPosts = async (limit) => {
     const data = await response.json();
 
 
-  console.log("data from api", data);
     if (data.error) {
     throw new Error(data.error.message);
     }
