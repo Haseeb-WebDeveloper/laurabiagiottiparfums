@@ -39,7 +39,7 @@ export default function BottlesSection({ items, locale }: Props) {
   const baseBgRef = useRef<HTMLDivElement>(null);
   const fgBgRef = useRef<HTMLDivElement>(null);
   const bottleRefs = useRef<HTMLDivElement[]>([]);
-  const contentRefs = useRef<HTMLDivElement[]>([]);git 
+  const contentRefs = useRef<HTMLDivElement[]>([]);
   const openTls = useRef<(gsap.core.Timeline | null)[]>([]);
   const carouselTimerRef = useRef<number | null>(null);
   const [showCarousel, setShowCarousel] = useState(false);
@@ -48,6 +48,7 @@ export default function BottlesSection({ items, locale }: Props) {
     { x: number; y: number; scale: number; rotate: number }[]
   >([]);
 
+  
   // Custom initial positions for each bottle (staggered vertically and horizontally)
   // Desktop positions
   const initialBottlePositionsDesktop = useMemo(
