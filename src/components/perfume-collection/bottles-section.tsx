@@ -39,7 +39,7 @@ export default function BottlesSection({ items, locale }: Props) {
   const baseBgRef = useRef<HTMLDivElement>(null);
   const fgBgRef = useRef<HTMLDivElement>(null);
   const bottleRefs = useRef<HTMLDivElement[]>([]);
-  const contentRefs = useRef<HTMLDivElement[]>([]);
+  const contentRefs = useRef<HTMLDivElement[]>([]);git 
   const openTls = useRef<(gsap.core.Timeline | null)[]>([]);
   const carouselTimerRef = useRef<number | null>(null);
   const [showCarousel, setShowCarousel] = useState(false);
@@ -90,7 +90,10 @@ export default function BottlesSection({ items, locale }: Props) {
   const hoverInAnimatingRef = useRef<boolean>(false);
   const hoverOutAnimatingRef = useRef<boolean>(false);
   const hoverOutQueuedRef = useRef<number | null>(null); // Store the idx that needs hover out
-  const currentHoveredIdxRef = useRef<number | null>(null); // Track which bottle is currently hovered
+  const currentHoveredIdxRef = useRef<number | null>(null); // Track which bottle is currently hovered (animated state)
+  const cursorOverBottleRef = useRef<number | null>(null); // Track which bottle cursor is physically over
+  const pendingHoverIdxRef = useRef<number | null>(null); // Track pending hover to execute after animation
+  const onHoverInRef = useRef<((idx: number) => void) | null>(null); // Ref to onHoverIn function for circular dependency
   
   // Check if any animation is currently running
   const isAnyAnimationRunning = useCallback(() => {
@@ -199,6 +202,20 @@ export default function BottlesSection({ items, locale }: Props) {
       onComplete: () => {
         hoverOutAnimatingRef.current = false;
         currentHoveredIdxRef.current = null;
+        
+        // Check if there's a pending hover to execute
+        if (pendingHoverIdxRef.current !== null) {
+          const pendingIdx = pendingHoverIdxRef.current;
+          // Check if cursor is still over that bottle
+          if (cursorOverBottleRef.current === pendingIdx) {
+            pendingHoverIdxRef.current = null;
+            // Execute the pending hover using ref
+            onHoverInRef.current?.(pendingIdx);
+          } else {
+            // Cursor moved away, clear pending
+            pendingHoverIdxRef.current = null;
+          }
+        }
       },
     });
     
@@ -242,9 +259,13 @@ export default function BottlesSection({ items, locale }: Props) {
     (idx: number) => {
       if (openIdx !== null) return; // disable hover while open
       
-      // DISABLE: If any animation is running, ignore this hover in completely
+      // Update cursor tracking
+      cursorOverBottleRef.current = idx;
+      
+      // If any animation is running, store as pending and return
       if (isAnyAnimationRunning()) {
-        return; // Don't queue, just ignore - user must wait for animation to complete
+        pendingHoverIdxRef.current = idx;
+        return;
       }
       
       // If already hovering this bottle, skip
@@ -254,6 +275,9 @@ export default function BottlesSection({ items, locale }: Props) {
       if (hoverOutQueuedRef.current === idx) {
         hoverOutQueuedRef.current = null;
       }
+      
+      // Clear pending since we're executing now
+      pendingHoverIdxRef.current = null;
       
       const others = bottleRefs.current
         .map((el, i) => ({ el, i }))
@@ -280,6 +304,18 @@ export default function BottlesSection({ items, locale }: Props) {
             const queuedIdx = hoverOutQueuedRef.current;
             hoverOutQueuedRef.current = null;
             executeHoverOut(queuedIdx);
+          } else if (pendingHoverIdxRef.current !== null) {
+            // Check if there's a pending hover to execute
+            const pendingIdx = pendingHoverIdxRef.current;
+            // Check if cursor is still over that bottle
+            if (cursorOverBottleRef.current === pendingIdx) {
+              pendingHoverIdxRef.current = null;
+              // Execute the pending hover using ref
+              onHoverInRef.current?.(pendingIdx);
+            } else {
+              // Cursor moved away, clear pending
+              pendingHoverIdxRef.current = null;
+            }
           }
         },
       });
@@ -318,9 +354,24 @@ export default function BottlesSection({ items, locale }: Props) {
     [hoverMaps, goesRight, openIdx, getInitialBottlePositions, executeHoverOut, isAnyAnimationRunning]
   );
 
+  // Update ref whenever onHoverIn changes
+  useEffect(() => {
+    onHoverInRef.current = onHoverIn;
+  }, [onHoverIn]);
+
   const onHoverOut = useCallback(
     (idx: number) => {
       if (openIdx !== null) return; // disable hover while open
+      
+      // Clear cursor tracking for this bottle
+      if (cursorOverBottleRef.current === idx) {
+        cursorOverBottleRef.current = null;
+      }
+      
+      // Clear pending hover if it's for this bottle
+      if (pendingHoverIdxRef.current === idx) {
+        pendingHoverIdxRef.current = null;
+      }
       
       // Only process hover out if this is the currently hovered bottle
       if (currentHoveredIdxRef.current !== idx) return;
