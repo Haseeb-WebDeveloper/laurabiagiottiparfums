@@ -41,6 +41,9 @@ export default function SlugNavbar() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement>(null);
   const socialIconsRef = useRef<HTMLDivElement>(null);
+  
+  // Timer ref to handle delayed hide - can be cancelled if user re-enters
+  const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchPerfumes = async () => {
@@ -54,15 +57,28 @@ export default function SlugNavbar() {
 
   // Handle dropdown visibility with animation delay
   useEffect(() => {
+    // Clear any pending hide timer
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
+
     if (hoveredCategory) {
       setDisplayCategory(hoveredCategory);
     } else {
       // Delay hiding to allow closing animation to complete (0.3s animation + buffer)
-      const timer = setTimeout(() => {
+      hideTimerRef.current = setTimeout(() => {
         setDisplayCategory(null);
+        hideTimerRef.current = null;
       }, 800);
-      return () => clearTimeout(timer);
     }
+
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+        hideTimerRef.current = null;
+      }
+    };
   }, [hoveredCategory]);
 
   // GSAP animations
@@ -264,8 +280,24 @@ export default function SlugNavbar() {
               {navItems.map((item, index) => (
                 <div
                   key={item.label}
-                  onMouseEnter={() => setHoveredCategory(item.category || null)}
-                  onMouseLeave={() => setHoveredCategory(null)}
+                  onMouseEnter={() => {
+                    // Cancel any pending hide timer
+                    if (hideTimerRef.current) {
+                      clearTimeout(hideTimerRef.current);
+                      hideTimerRef.current = null;
+                    }
+                    setHoveredCategory(item.category || null);
+                  }}
+                  onMouseLeave={() => {
+                    // Start hide timer - will be cancelled if user re-enters quickly
+                    if (hideTimerRef.current) {
+                      clearTimeout(hideTimerRef.current);
+                    }
+                    hideTimerRef.current = setTimeout(() => {
+                      setHoveredCategory(null);
+                      hideTimerRef.current = null;
+                    }, 100);
+                  }}
                 >
                   <Link
                     href={item.href}
@@ -297,13 +329,45 @@ export default function SlugNavbar() {
         {displayCategory && (
           <div
             className="absolute left-0 top-[160px] bg-background z-[110] w-full"
-            onMouseEnter={() => setHoveredCategory(displayCategory)}
-            onMouseLeave={() => setHoveredCategory(null)}
+            onMouseEnter={() => {
+              // Cancel any pending hide timer
+              if (hideTimerRef.current) {
+                clearTimeout(hideTimerRef.current);
+                hideTimerRef.current = null;
+              }
+              setHoveredCategory(displayCategory);
+            }}
+            onMouseLeave={() => {
+              // Start hide timer - will be cancelled if user re-enters quickly
+              if (hideTimerRef.current) {
+                clearTimeout(hideTimerRef.current);
+              }
+              hideTimerRef.current = setTimeout(() => {
+                setHoveredCategory(null);
+                hideTimerRef.current = null;
+              }, 100);
+            }}
           >
             <PerfumeDropdown
               isOpen={hoveredCategory !== null}
-              onMouseEnter={() => setHoveredCategory(displayCategory)}
-              onMouseLeave={() => setHoveredCategory(null)}
+              onMouseEnter={() => {
+                // Cancel any pending hide timer
+                if (hideTimerRef.current) {
+                  clearTimeout(hideTimerRef.current);
+                  hideTimerRef.current = null;
+                }
+                setHoveredCategory(displayCategory);
+              }}
+              onMouseLeave={() => {
+                // Start hide timer - will be cancelled if user re-enters quickly
+                if (hideTimerRef.current) {
+                  clearTimeout(hideTimerRef.current);
+                }
+                hideTimerRef.current = setTimeout(() => {
+                  setHoveredCategory(null);
+                  hideTimerRef.current = null;
+                }, 100);
+              }}
               perfumes={perfumes}
               category={displayCategory}
               locale={locale}

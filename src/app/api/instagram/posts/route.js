@@ -17,13 +17,13 @@ const fetchPosts = async (limit) => {
     throw new Error(data.error.message);
     }
 
-  console.log("Raw data.data length:", data.data.length);
-  console.log("Media types in raw data:", data.data.map(p => ({ id: p.id, media_type: p.media_type })));
+  // console.log("Raw data.data length:", data.data.length);
+  // console.log("Media types in raw data:", data.data.map(p => ({ id: p.id, media_type: p.media_type })));
   
     const posts = data.data
     .filter(post => {
       const isAllowed = ['IMAGE', 'VIDEO', 'CAROUSEL_ALBUM'].includes(post.media_type);
-      console.log(`Post ${post.id} (${post.media_type}): ${isAllowed ? 'INCLUDED' : 'FILTERED OUT'}`);
+      // console.log(`Post ${post.id} (${post.media_type}): ${isAllowed ? 'INCLUDED' : 'FILTERED OUT'}`);
       return isAllowed;
     })
       .map(post => ({
@@ -37,7 +37,7 @@ const fetchPosts = async (limit) => {
         formatted_date: new Date(post.timestamp).toLocaleDateString(),
       }));
 
-    console.log("posts from api", posts);
+    // console.log("posts from api", posts);
 
   return { posts, count: posts.length };
 };
