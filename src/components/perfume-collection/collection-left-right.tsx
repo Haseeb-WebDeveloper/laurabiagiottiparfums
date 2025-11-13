@@ -233,7 +233,7 @@ function CustomCarousel({
             alt={alt}
             width={1000}
             height={1000}
-            // sizes="(max-width: 768px) 100vw, 50vw"
+            quality={85}
             className="max-h-[50vh] lg:max-h-[80vh] object-contain block"
             style={{
               width: "auto",

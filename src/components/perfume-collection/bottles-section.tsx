@@ -85,6 +85,17 @@ export default function BottlesSection({ items, locale }: Props) {
   );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  
+  // Track hover animation states
+  const hoverInAnimatingRef = useRef<boolean>(false);
+  const hoverOutAnimatingRef = useRef<boolean>(false);
+  const hoverOutQueuedRef = useRef<number | null>(null); // Store the idx that needs hover out
+  const currentHoveredIdxRef = useRef<number | null>(null); // Track which bottle is currently hovered
+  
+  // Check if any animation is currently running
+  const isAnyAnimationRunning = useCallback(() => {
+    return hoverInAnimatingRef.current || hoverOutAnimatingRef.current;
+  }, []);
 
   const handleBuyNowClick = useCallback((item: BottlesSectionItem) => {
     setSelectedItem(item);
@@ -165,96 +176,170 @@ export default function BottlesSection({ items, locale }: Props) {
     []
   );
 
+
+  // Helper function to execute hover out animation
+  const executeHoverOut = useCallback((idx: number) => {
+    const positions = getInitialBottlePositions();
+    const hovered = bottleRefs.current[idx];
+    
+    if (!hovered) {
+      hoverOutAnimatingRef.current = false;
+      currentHoveredIdxRef.current = null;
+      return;
+    }
+    
+    // Set hover out animation flag
+    hoverOutAnimatingRef.current = true;
+    
+    // Kill any ongoing animations for smooth transitions
+    gsap.killTweensOf([hovered, ...bottleRefs.current.filter(Boolean), baseBgRef.current]);
+    
+    // Create timeline to track when hover out completes
+    const tl = gsap.timeline({
+      onComplete: () => {
+        hoverOutAnimatingRef.current = false;
+        currentHoveredIdxRef.current = null;
+      },
+    });
+    
+    const initialX = positions[idx]?.x || 0;
+    const initialY = positions[idx]?.y || 0;
+    tl.to(hovered, {
+      scale: 1,
+      rotate: 0,
+      x: initialX,
+      y: initialY,
+      duration: 0.6,
+      ease: "power1.out",
+      force3D: true,
+    });
+    
+    bottleRefs.current.forEach((el, i) => {
+      if (el) {
+        const initialX = positions[i]?.x || 0;
+        const initialY = positions[i]?.y || 0;
+        tl.to(el, {
+          scale: 1,
+          x: initialX,
+          y: initialY,
+          duration: 0.6,
+          ease: "power1.out",
+          force3D: true,
+        }, 0); // Start at same time
+      }
+    });
+    
+    if (baseBgRef.current)
+      tl.to(baseBgRef.current, {
+        scale: 1,
+        duration: 0.7,
+        ease: "power1.out",
+        force3D: true,
+      }, 0); // Start at same time
+  }, [getInitialBottlePositions]);
+
   const onHoverIn = useCallback(
     (idx: number) => {
       if (openIdx !== null) return; // disable hover while open
+      
+      // DISABLE: If any animation is running, ignore this hover in completely
+      if (isAnyAnimationRunning()) {
+        return; // Don't queue, just ignore - user must wait for animation to complete
+      }
+      
+      // If already hovering this bottle, skip
+      if (currentHoveredIdxRef.current === idx) return;
+      
+      // Clear any queued hover out for this bottle (user hovered back in)
+      if (hoverOutQueuedRef.current === idx) {
+        hoverOutQueuedRef.current = null;
+      }
+      
       const others = bottleRefs.current
         .map((el, i) => ({ el, i }))
         .filter(({ i }) => i !== idx);
       const hovered = bottleRefs.current[idx];
       if (!hovered) return;
       
+      // Set hover in animation flag and current hovered index
+      hoverInAnimatingRef.current = true;
+      currentHoveredIdxRef.current = idx;
+      
       // Kill any ongoing animations for smooth transitions
       gsap.killTweensOf([hovered, ...others.map(({ el }) => el).filter(Boolean), baseBgRef.current]);
       
-      gsap.to(hovered, {
+      const positions = getInitialBottlePositions();
+      
+      // Create timeline to track when animation completes
+      const tl = gsap.timeline({
+        onComplete: () => {
+          hoverInAnimatingRef.current = false;
+          
+          // If hover out was queued while hover in was animating, execute it now
+          if (hoverOutQueuedRef.current === idx) {
+            const queuedIdx = hoverOutQueuedRef.current;
+            hoverOutQueuedRef.current = null;
+            executeHoverOut(queuedIdx);
+          }
+        },
+      });
+      
+      tl.to(hovered, {
         scale: 1.12,
         rotate: goesRight(idx) ? 8 : -8,
         duration: 0.5,
         ease: "power1.out",
         force3D: true,
       });
-      const positions = getInitialBottlePositions();
+      
       others.forEach(({ el, i }) => {
         if (!el) return;
         const map = (hoverMaps as any)[idx]?.[i] || {};
         const initialX = positions[i]?.x || 0;
         const initialY = positions[i]?.y || 0;
-        gsap.to(el, {
+        tl.to(el, {
           scale: 0.6,
           x: map.x !== undefined ? map.x : initialX, // Preserve initial X if not specified
           y: map.y !== undefined ? map.y : initialY, // Preserve initial Y if not specified
           duration: 0.5,
           ease: "power1.out",
           force3D: true,
-        });
+        }, 0); // Start at same time
       });
+      
       if (baseBgRef.current)
-        gsap.to(baseBgRef.current, {
+        tl.to(baseBgRef.current, {
           scale: 1.13,
           duration: 0.7,
           ease: "power1.out",
           force3D: true,
-        });
+        }, 0); // Start at same time
     },
-    [hoverMaps, goesRight, openIdx, getInitialBottlePositions]
+    [hoverMaps, goesRight, openIdx, getInitialBottlePositions, executeHoverOut, isAnyAnimationRunning]
   );
 
   const onHoverOut = useCallback(
     (idx: number) => {
       if (openIdx !== null) return; // disable hover while open
-      const positions = getInitialBottlePositions();
-      const hovered = bottleRefs.current[idx];
       
-      // Kill any ongoing animations for smooth transitions
-      gsap.killTweensOf([hovered, ...bottleRefs.current.filter(Boolean), baseBgRef.current]);
+      // Only process hover out if this is the currently hovered bottle
+      if (currentHoveredIdxRef.current !== idx) return;
       
-      if (hovered) {
-        const initialX = positions[idx]?.x || 0;
-        const initialY = positions[idx]?.y || 0;
-        gsap.to(hovered, {
-          scale: 1,
-          rotate: 0,
-          x: initialX, // Reset to initial X position
-          y: initialY, // Reset to initial Y position
-          duration: 0.6,
-          ease: "power1.out",
-          force3D: true,
-        });
+      // If hover in animation is still in progress, queue the hover out
+      if (hoverInAnimatingRef.current) {
+        hoverOutQueuedRef.current = idx;
+        return; // Wait for hover in to complete
       }
-      bottleRefs.current.forEach((el, i) => {
-        if (el) {
-          const initialX = positions[i]?.x || 0;
-          const initialY = positions[i]?.y || 0;
-          gsap.to(el, {
-            scale: 1,
-            x: initialX, // Reset to initial X position
-            y: initialY, // Reset to initial Y position
-            duration: 0.6,
-            ease: "power1.out",
-            force3D: true,
-          });
-        }
-      });
-      if (baseBgRef.current)
-        gsap.to(baseBgRef.current, {
-          scale: 1,
-          duration: 0.7,
-          ease: "power1.out",
-          force3D: true,
-        });
+      
+      // If hover out is already animating, skip (shouldn't happen, but safety check)
+      if (hoverOutAnimatingRef.current) {
+        return;
+      }
+      
+      // Execute hover out
+      executeHoverOut(idx);
     },
-    [openIdx, getInitialBottlePositions]
+    [openIdx, executeHoverOut]
   );
 
   // Build a per-index open timeline lazily
