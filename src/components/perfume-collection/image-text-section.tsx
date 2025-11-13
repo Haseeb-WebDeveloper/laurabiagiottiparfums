@@ -28,8 +28,6 @@ export default function ImageTextSection({
     setIsPopupOpen(true);
   };
 
-  console.log(products);
-
   return (
     <section className="max-w  pt-[6rem] flex flex-col lg:gap-[10rem] gap-[5rem]">
       {products.map((product, index) => (

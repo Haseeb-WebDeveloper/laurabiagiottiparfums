@@ -175,9 +175,9 @@ export default function SocialMedia({
     );
   }
 
-  console.log("stats", stats);
-  console.log("posts", posts);
-  console.log("posts length:", posts.length);
+  // console.log("stats", stats);
+  // console.log("posts", posts);
+  // console.log("posts length:", posts.length);
 
 
   return (

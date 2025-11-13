@@ -728,7 +728,7 @@ export default function BottlesSection({ items, locale }: Props) {
         }}
       >
         <Image
-          src="/bottle-backgroud-4.svg"
+          src="/bottle-backgroud-3.webp"
           alt=""
           fill
           priority

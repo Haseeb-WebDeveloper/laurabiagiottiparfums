@@ -29,8 +29,6 @@ export default function CollectionCarouselSection({
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
   const thumbGroupSize = 3; // Show 3 thumbnails at a time
 
-  console.log("assets", assets);
-
   // Swiper slide transition speed in ms
   const SWIPER_TRANSITION_SPEED = 1000;
 
