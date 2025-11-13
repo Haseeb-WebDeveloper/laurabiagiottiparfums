@@ -64,7 +64,7 @@ const CollectionSectionTwo: React.FC<Props> = ({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=250%",
+          end: "+=200%",  // increase it if you want to delay the animation
           pin: true,
           scrub: 0.6,
           anticipatePin: 0.1,
