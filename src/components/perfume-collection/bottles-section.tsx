@@ -398,9 +398,10 @@ export default function BottlesSection({ items, locale }: Props) {
           },
           "start"
         )
-        .to(
+        .fromTo(
           fgBgRef.current,
-          { yPercent: 0, autoAlpha: 1, duration: 0.65, ease: "power1.out" },
+          { yPercent: 100, autoAlpha: 0 },
+          { yPercent: 0, autoAlpha: 1, duration: 0.4, ease: "power1.out" },
           "start+=0.05"
         );
 
@@ -637,9 +638,10 @@ export default function BottlesSection({ items, locale }: Props) {
                         });
                       }
                     }
+                    // Clear openIdx AFTER all animations complete so background image stays visible
+                    setOpenIdx(null);
                   });
                 }
-                setOpenIdx(null);
               },
             });
 
@@ -704,9 +706,10 @@ export default function BottlesSection({ items, locale }: Props) {
               });
             }
           }
+          // Clear openIdx AFTER all animations complete so background image stays visible
+          setOpenIdx(null);
         });
       }
-      setOpenIdx(null);
     }
   }, [
     openIdx,
