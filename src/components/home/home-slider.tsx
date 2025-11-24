@@ -345,7 +345,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                   {/* Title */}
                   <h3
                     id={`slide-title-${index}`}
-                    className="lg:w-[500px] w-full text-[2rem] md:text-[2rem] lg:text-[2.8rem] font-bold text-background leading-tight mb-6"
+                    className="lg:w-[500px] w-full text-[2rem] md:text-[2rem] lg:text-[2.8rem] font-[500] text-background leading-tight mb-6"
                   >
                     {slide.title}
                   </h3>

@@ -633,7 +633,7 @@ export const getPerfumeBySlugQuery = (slug: string, locale: string) => `
         url
       }
     },
-    heroSectionImages[] {
+    "heroSectionImages": heroSectionImages.${locale}[] {
       asset -> {
         _id,
         url
@@ -957,7 +957,7 @@ export const getProductBySlugQuery = (slug: string, locale: string) => `{
         url
       }
     },
-    heroSectionImages[] {
+    "heroSectionImages": heroSectionImages.${locale}[] {
       asset -> {
         _id,
         url

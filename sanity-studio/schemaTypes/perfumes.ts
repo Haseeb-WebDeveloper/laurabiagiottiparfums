@@ -62,10 +62,32 @@ export const perfume = defineType({
     }),
     defineField({
       name: 'heroSectionImages',
-      type: 'array',
+      type: 'object',
       title: 'Hero Section Images',
       description: 'This will be used the the 1st section of this perfume slug page.',
-      of: [{type: 'image', title: 'Image'}],
+      fields: [
+        {
+          name: 'en',
+          type: 'array',
+          title: 'English Images',
+          of: [{type: 'image', title: 'Image'}],
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: 'it',
+          type: 'array',
+          title: 'Italian Images',
+          of: [{type: 'image', title: 'Image'}],
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: 'de',
+          type: 'array',
+          title: 'German Images',
+          of: [{type: 'image', title: 'Image'}],
+          validation: (Rule) => Rule.required(),
+        },
+      ],
       validation: (Rule) => Rule.required(),
     }),
     defineField({

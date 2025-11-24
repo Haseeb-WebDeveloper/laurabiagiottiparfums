@@ -132,33 +132,40 @@ export default function BottlesSection({ items, locale }: Props) {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
+      
+      // Initialize foreground background
       gsap.set(fgBgRef.current, { yPercent: 100, autoAlpha: 0 });
+      
+      // Initialize content panels
       contentRefs.current.forEach((el, i) => {
         if (!el) return;
         if (isMobile) {
-          // Mobile: start from top
           gsap.set(el, { y: -100, autoAlpha: 0 });
         } else {
-          // Desktop: start from side
           gsap.set(el, {
             xPercent: contentOnLeft(i) ? -110 : 110,
             autoAlpha: 0,
           });
         }
       });
-      // Set initial positions for bottles (staggered vertically and horizontally)
+      
+      // Initialize bottles: position them and make visible
       const positions = isMobile
         ? initialBottlePositionsMobile
         : initialBottlePositionsDesktop;
+      
       bottleRefs.current.forEach((el, i) => {
         if (el && positions[i]) {
           gsap.set(el, {
             x: positions[i].x || 0,
             y: positions[i].y || 0,
+            opacity: 1,
+            scale: 1,
+            rotate: 0,
           });
         }
       });
-      // Mark as initialized after GSAP setup
+      
       setIsInitialized(true);
     }, sectionRef);
     return () => ctx.revert();
@@ -906,19 +913,27 @@ export default function BottlesSection({ items, locale }: Props) {
       {/* Bottles row/column */}
       <div className="relative h-full flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 px-4">
         {items.map((it, idx) => (
-          <div key={idx} className="relative flex flex-col items-center">
-            <BottleCard
-              idx={idx}
-              src={it.bottleImage?.asset?.url || ""}
-              alt={it.product?.title || `Bottle ${idx + 1}`}
-              onHoverIn={onHoverIn}
-              onHoverOut={onHoverOut}
-              onClick={open}
-              isOpen={openIdx === idx}
+          <div 
+            key={idx} 
+            className="relative flex flex-col items-center"
+          >
+            <div
               ref={(el) => {
                 if (el) bottleRefs.current[idx] = el;
               }}
-            />
+              className="opacity-0"
+              style={{ willChange: 'transform' }}
+            >
+              <BottleCard
+                idx={idx}
+                src={it.bottleImage?.asset?.url || ""}
+                alt={it.product?.title || `Bottle ${idx + 1}`}
+                onHoverIn={onHoverIn}
+                onHoverOut={onHoverOut}
+                onClick={open}
+                isOpen={openIdx === idx}
+              />
+            </div>
           </div>
         ))}
       </div>
