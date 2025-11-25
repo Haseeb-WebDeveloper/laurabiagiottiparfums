@@ -34,9 +34,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
   );
   const [selectedPerfume, setSelectedPerfume] = useState<Perfume | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [hoveredLearnIndex, setHoveredLearnIndex] = useState<number | null>(null);
+  const [hoveredLearnIndex, setHoveredLearnIndex] = useState<number | null>(
+    null
+  );
   const [scrollProgress, setScrollProgress] = useState(0);
-  
+
   const totalSlides = slides.length;
 
   useEffect(() => {
@@ -46,12 +48,15 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const sectionHeight = Math.max(rect.height, 1);
-      
+
       // Start parallax earlier - when section is 200px below viewport
       const startOffset = 200;
-      const traveled = Math.min(Math.max(-rect.top + startOffset, 0), sectionHeight + startOffset);
+      const traveled = Math.min(
+        Math.max(-rect.top + startOffset, 0),
+        sectionHeight + startOffset
+      );
       const progress = traveled / (sectionHeight + startOffset); // 0 → 1 while section scrolls past
-      
+
       // Apply easing for more dramatic effect
       const easedProgress = 1 - Math.pow(1 - progress, 2); // Ease out quad
       setScrollProgress(easedProgress);
@@ -157,7 +162,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
           fromContent.style.visibility = "hidden";
           fromContent.style.opacity = "0";
         }
-      }
+      },
     });
 
     // Set initial state for new content
@@ -205,7 +210,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
           duration: 1,
           ease: "power2.inOut",
         },
-        0.2  // This is the delay for the buttons to exit
+        0.2 // This is the delay for the buttons to exit
       );
     }
 
@@ -350,33 +355,36 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, locale }) => {
                     {slide.title}
                   </h3>
 
-                  {/* CTAs */}
-                  <div
-                    id={`slide-buttons-${index}`}
-                    className="max-w-[500px] flex flex-col md:flex-row md:items-center gap-4"
-                  >
-                    {/* Primary CTA */}
-                    <button
-                      onClick={() => handleBuyNowClick(slide.perfume)}
-                      className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-background text-background hover:bg-background hover:text-foreground transition-colors duration-300"
+                  {slide.perfume && (
+                    <div
+                      id={`slide-buttons-${index}`}
+                      className="max-w-[500px] flex flex-col md:flex-row md:items-center gap-4"
                     >
-                      {t("shop")}
-                    </button>
+                      {/* Primary CTA */}
+                      <button
+                        onClick={() => handleBuyNowClick(slide.perfume)}
+                        className="cursor-pointer w-fit flex items-center justify-center uppercase px-[1.6rem] py-[0.6rem] rounded-[1rem] tracking-[1.1px] text-[14px] leading-[20px] font-[400] border border-background text-background hover:bg-background hover:text-foreground transition-colors duration-300"
+                      >
+                        {t("shop")}
+                      </button>
 
-                    {/* Secondary CTA */}
-                    <Link
-                      href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
-                      className="cursor-pointer text-background  text-[14px] leading-[20px] font-[400] relative inline-block"
-                      onMouseEnter={() => setHoveredLearnIndex(index)}
-                      onMouseLeave={() => setHoveredLearnIndex(null)}
-                    >
-                      {t("learnMore")}
-                      <AnimatedUnderline
-                        isActive={hoveredLearnIndex === index}
-                        className="bg-background"
-                      />
-                    </Link>
-                  </div>
+                      {/* Secondary CTA */}
+                      <Link
+                        href={`/${locale}/${slide.perfume.category}-perfume/${slide.perfume.slug}`}
+                        className="cursor-pointer text-background  text-[14px] leading-[20px] font-[400] relative inline-block"
+                        onMouseEnter={() => setHoveredLearnIndex(index)}
+                        onMouseLeave={() => setHoveredLearnIndex(null)}
+                      >
+                        {t("learnMore")}
+                        <AnimatedUnderline
+                          isActive={hoveredLearnIndex === index}
+                          className="bg-background"
+                        />
+                      </Link>
+                    </div>
+                  )}
+
+                  {/* CTAs */}
                 </div>
               ))}
             </div>
