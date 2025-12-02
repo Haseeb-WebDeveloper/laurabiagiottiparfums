@@ -33,6 +33,10 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
   const openTls = useRef<(gsap.core.Timeline | null)[]>([]);
   const carouselTimerRef = useRef<number | null>(null);
   const baseSectionHeightRef = useRef<number | null>(null);
+  // For smooth scroll scaling without creating many tweens
+  const scrollTargetScalesRef = useRef<number[]>([]);
+  const scrollCurrentScalesRef = useRef<number[]>([]);
+  const scrollAnimRafRef = useRef<number | null>(null);
   const [showCarousel, setShowCarousel] = useState(false);
   const bottleOriginalPositions = useRef<
     { x: number; y: number; scale: number; rotate: number }[]
@@ -42,7 +46,7 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
   const initialBottlePositionsMobile = useMemo(
     () => [
       { x: -80, y: 80 }, // 1st bottle
-      { x: 80, y: -30 }, // 2nd bottle 
+      { x: 80, y: 0 }, // 2nd bottle 
       { x: -80, y: -30 }, // 3rd bottle
       { x: 80, y: -80 }, // 4th bottle 
     ],
@@ -116,6 +120,106 @@ export default function BottlesSectionMobile({ items, locale }: Props) {
     baseSectionHeightRef.current = totalHeight;
     sectionRef.current.style.height = `${totalHeight}px`;
   }, [items.length]);
+
+  // Scroll-based scaling: smooth and scrubby.
+  // We compute a target scale per bottle based on distance to viewport center,
+  // then smoothly lerp the scale toward that target in a single rAF loop
+  // (no per-scroll tweens), which avoids glitches and performance issues.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!sectionRef.current) return;
+
+    const handleScroll = () => {
+      // Disable while a bottle is open to avoid fighting the open animation
+      if (openIdx !== null) return;
+
+      const isMobile = window.innerWidth < 1024;
+      if (!isMobile) return;
+
+      const viewportCenter = window.innerHeight / 2;
+      const maxDistance = window.innerHeight * 0.3; // beyond this, bottles are at min scale
+      const scaleMin = 0.80;
+      const scaleMax = 1.25;
+
+      bottleRefs.current.forEach((el, idx) => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const bottleCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(bottleCenter - viewportCenter);
+
+        // t in [0,1], 0 = center, 1 = far
+        const t = Math.max(0, Math.min(1, distance / maxDistance));
+        // Slightly curved falloff so center is clearly bigger but transitions are smooth
+        const influence = (1 - t) ** 1.5;
+        const targetScale = scaleMin + (scaleMax - scaleMin) * influence;
+
+        const prevTarget =
+          scrollTargetScalesRef.current[idx] ?? targetScale;
+        // Avoid tiny target adjustments that can cause a micro-jerk
+        if (Math.abs(targetScale - prevTarget) < 0.004) {
+          scrollTargetScalesRef.current[idx] = prevTarget;
+        } else {
+          scrollTargetScalesRef.current[idx] = targetScale;
+        }
+      });
+
+      // Start animation loop if not running
+      if (scrollAnimRafRef.current === null) {
+        const animate = () => {
+          scrollAnimRafRef.current = null;
+
+          let needsMoreAnimation = false;
+          bottleRefs.current.forEach((el, idx) => {
+            if (!el) return;
+            const target =
+              scrollTargetScalesRef.current[idx] ??
+              1;
+            const current =
+              scrollCurrentScalesRef.current[idx] ??
+              target;
+
+            // Lerp toward target
+            const next =
+              current + (target - current) * 0.14;
+            scrollCurrentScalesRef.current[idx] = next;
+
+            // Apply scale instantly (no tween)
+            gsap.set(el, { scale: next, force3D: true });
+
+            if (Math.abs(next - target) > 0.002) {
+              needsMoreAnimation = true;
+            }
+          });
+
+          if (needsMoreAnimation) {
+            scrollAnimRafRef.current = requestAnimationFrame(animate);
+          } else {
+            scrollAnimRafRef.current = null;
+          }
+        };
+
+        scrollAnimRafRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    // Simple scroll handler – animation smoothness is handled by the lerp loop
+    const onScroll = () => {
+      handleScroll();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Run once on mount to set initial scales
+    handleScroll();
+
+    return () => {
+      if (scrollAnimRafRef.current !== null) {
+        cancelAnimationFrame(scrollAnimRafRef.current);
+        scrollAnimRafRef.current = null;
+      }
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [openIdx]);
 
   // Hover behavior (simplified for mobile - can be disabled if needed)
   const onHoverIn = useCallback(
