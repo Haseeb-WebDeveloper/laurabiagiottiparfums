@@ -17,7 +17,7 @@ export default function NewCollectionSlug({
   return (
     <div className="mb-[15rem] ">
       {/* 1st hero section */}
-      <section className="h-[100dvh] relative overflow-hidden">
+      <section className="h-[100svh] relative overflow-hidden">
         {/* Background video */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
