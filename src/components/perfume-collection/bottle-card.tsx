@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { forwardRef } from "react";
 
 type BottleCardProps = {
@@ -33,10 +34,13 @@ const BottleCard = forwardRef<HTMLDivElement, BottleCardProps>(
           onClick={() => onClick?.(idx)}
         >
           {/* using img for full control over transforms; Next/Image isn't necessary here */}
-          <img
+          <Image
+            width={1000}
+            height={1000}
             src={src}
             alt={alt}
-            className="pointer-events-none w-auto h-[230px]  md:h-[420px] object-contain"
+            quality={85}
+            className="pointer-events-none w-auto h-[230px] md:h-[420px] object-contain"
             draggable={false}
           />
         </button>

@@ -891,7 +891,7 @@ function CornerCarousel({
             alt="carousel"
             width={1000}
             height={1000}
-            className="block rounded-[1rem] object-contain max-w-[100vw]"
+            className="block max-h-[50vh] object-contain max-w-[100vw]"
             style={{
               width: "100%",
               height: "auto",

@@ -234,10 +234,10 @@ function CustomCarousel({
             width={1000}
             height={1000}
             quality={85}
-            className="max-h-[50vh] lg:max-h-[80vh] object-contain block"
+            className="max-h-[50vh] lg:max-h-[80vh] h-full object-contain block border border-red-500"
             style={{
               width: "auto",
-              height: "auto",
+              height: "full",
               //   maxWidth: "min(560px, 50vw)",
               display: "block",
             }}
