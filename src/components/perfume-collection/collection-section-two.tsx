@@ -264,18 +264,12 @@ const CollectionSectionTwo: React.FC<Props> = ({
             ref={firstTextRef}
             className="absolute inset-x-0 bottom-[6%] text-center px-6 opacity-0"
           >
-            <SplitText
-              element="h2"
-              text={firstTitle}
-              className="block w-full text-[clamp(1.5rem,3vw,2.5rem)] font-semibold text-background custom-text-shadow"
-              textAlign="center"
-            />
-            <SplitText
-              element="p"
-              text={firstDesc}
-              className="block w-full mt-[-1vw] text-[clamp(0.95rem,1.4vw,1.15rem)] text-background custom-text-shadow"
-              textAlign="center"
-            />
+            <h3 className="block w-full text-[clamp(1.5rem,3vw,2.5rem)] font-semibold text-background custom-text-shadow mb-2">
+              {firstTitle}
+            </h3>
+            <p className="block w-full mt-[-1vw] text-[clamp(0.95rem,1.4vw,1.15rem)] text-background custom-text-shadow">
+              {firstDesc}
+            </p>
           </div>
         </div>
 
@@ -316,18 +310,12 @@ const CollectionSectionTwo: React.FC<Props> = ({
             transform: "translateX(-50%)",
           }}
         >
-          <SplitText
-            element="h2"
-            text={secondTitle}
-            className="text-[20px] font-semibold text-center"
-            textAlign="center"
-          />
-          <SplitText
-            element="p"
-            text={secondDesc}
-            className="mt-2 text-[16px] opacity-90 text-center"
-            textAlign="center"
-          />
+          <h3 className="text-[20px] font-semibold text-center mb-[2px]">
+            {secondTitle}
+          </h3>
+          <p className="mt-2 text-[16px] opacity-90 text-center">
+            {secondDesc}
+          </p>
         </div>
       </div>
     </section>
