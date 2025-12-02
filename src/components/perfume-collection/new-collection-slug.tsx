@@ -42,6 +42,9 @@ export default function NewCollectionSlug({
         </div>
       </section>
 
+      {/* gap div on mobile */}
+      <div className="lg:hidden block h-[4rem]"></div>
+
       {/* 2nd animation section a video with  text animation */}
       <CollectionSectionTwo
         videoUrl={collection.secondSection.video.asset?.url || ""}

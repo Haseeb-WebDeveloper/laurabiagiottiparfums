@@ -281,7 +281,7 @@ export default function CollectionLeftRight({ items, locale }: Props) {
           >
             {/* Text (left) */}
             <div
-              className={`w-full lg:w-[40%] pt-[5rem] md:pt-0 px-[18px] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] md:pr-0" : "2xl:pr-[34px] md:pr-[38px] md:pl-0"}`}
+              className={`w-full lg:w-[40%] pt-[3.5rem] md:pt-0 px-[18px] ${index % 2 === 0 ? "2xl:pl-[34px] md:pl-[38px] md:pr-0" : "2xl:pr-[34px] md:pr-[38px] md:pl-0"}`}
             >
               <div className="flex flex-col">
                 <h2 className="text-[2.5rem] lg:text-[3.2rem] 2xl:text-[3.8rem] font-[700] font-times-new-roman">
