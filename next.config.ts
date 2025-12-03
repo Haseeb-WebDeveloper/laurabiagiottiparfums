@@ -69,6 +69,13 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      // Added to allow images from lb2025.figmenta.info
+      {
+        protocol: "https",
+        hostname: "lb2025.figmenta.info",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };
